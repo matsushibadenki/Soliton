@@ -1,0 +1,518 @@
+{
+  "schema": 1,
+  "passed": true,
+  "environment": {
+    "architecture": "arm64",
+    "loadAverageAtStart": [
+      7.61962890625,
+      12.88037109375,
+      15.39794921875
+    ],
+    "loadAverageAtEnd": [
+      9.08837890625,
+      12.0712890625,
+      14.869140625
+    ]
+  },
+  "binarySha256": "1e7d5cd49eb6b6bd4168bf895f34998c03fcc6dced126e33bef7cba4724b89e2",
+  "label": "before",
+  "runtime": "shared Rust headless core",
+  "startedAt": "2026-10-22T12:21:59.259Z",
+  "evidenceSha256": "9b0f61a62ab894045838e613e81ebee3f40e4037ad61362aa8cecb7e16ea9bd3",
+  "context": 1024,
+  "settingsFingerprint": "68227c4f2a05806f4a21e98482aea6ddd3e837ecc7acad7f511d85a984c108f9",
+  "cases": [
+    {
+      "round": 0,
+      "language": "en",
+      "kind": "retrieval",
+      "rows": 0,
+      "status": 200,
+      "elapsedMs": 476.782,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 32,
+        "completion_tokens": 10,
+        "total_tokens": 42,
+        "prompt_tokens_details": {
+          "cached_tokens": 4
+        }
+      }
+    },
+    {
+      "round": 0,
+      "language": "en",
+      "kind": "retrieval",
+      "rows": 32,
+      "status": 200,
+      "elapsedMs": 2939.967,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 535,
+        "completion_tokens": 10,
+        "total_tokens": 545,
+        "prompt_tokens_details": {
+          "cached_tokens": 4
+        }
+      }
+    },
+    {
+      "round": 0,
+      "language": "en",
+      "kind": "retrieval",
+      "rows": 58,
+      "status": 200,
+      "elapsedMs": 3229.9,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 951,
+        "completion_tokens": 10,
+        "total_tokens": 961,
+        "prompt_tokens_details": {
+          "cached_tokens": 251
+        }
+      }
+    },
+    {
+      "round": 0,
+      "language": "en",
+      "kind": "retrieval",
+      "rows": 64,
+      "status": 422,
+      "elapsedMs": 17.237,
+      "rejectionCode": "context_length_exceeded"
+    },
+    {
+      "round": 0,
+      "language": "en",
+      "kind": "multi-turn",
+      "rows": null,
+      "status": 200,
+      "elapsedMs": 788.853,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 54,
+        "completion_tokens": 11,
+        "total_tokens": 65,
+        "prompt_tokens_details": {
+          "cached_tokens": 4
+        }
+      }
+    },
+    {
+      "round": 0,
+      "language": "ja",
+      "kind": "retrieval",
+      "rows": 0,
+      "status": 200,
+      "elapsedMs": 695.385,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 34,
+        "completion_tokens": 10,
+        "total_tokens": 44,
+        "prompt_tokens_details": {
+          "cached_tokens": 4
+        }
+      }
+    },
+    {
+      "round": 0,
+      "language": "ja",
+      "kind": "retrieval",
+      "rows": 32,
+      "status": 200,
+      "elapsedMs": 1303.837,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 537,
+        "completion_tokens": 10,
+        "total_tokens": 547,
+        "prompt_tokens_details": {
+          "cached_tokens": 251
+        }
+      }
+    },
+    {
+      "round": 0,
+      "language": "ja",
+      "kind": "retrieval",
+      "rows": 58,
+      "status": 200,
+      "elapsedMs": 2706.199,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 953,
+        "completion_tokens": 10,
+        "total_tokens": 963,
+        "prompt_tokens_details": {
+          "cached_tokens": 459
+        }
+      }
+    },
+    {
+      "round": 0,
+      "language": "ja",
+      "kind": "retrieval",
+      "rows": 64,
+      "status": 422,
+      "elapsedMs": 13.457,
+      "rejectionCode": "context_length_exceeded"
+    },
+    {
+      "round": 0,
+      "language": "ja",
+      "kind": "multi-turn",
+      "rows": null,
+      "status": 200,
+      "elapsedMs": 732.278,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 53,
+        "completion_tokens": 11,
+        "total_tokens": 64,
+        "prompt_tokens_details": {
+          "cached_tokens": 6
+        }
+      }
+    },
+    {
+      "round": 0,
+      "language": "zh",
+      "kind": "retrieval",
+      "rows": 0,
+      "status": 200,
+      "elapsedMs": 706.181,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 27,
+        "completion_tokens": 10,
+        "total_tokens": 37,
+        "prompt_tokens_details": {
+          "cached_tokens": 4
+        }
+      }
+    },
+    {
+      "round": 0,
+      "language": "zh",
+      "kind": "retrieval",
+      "rows": 32,
+      "status": 200,
+      "elapsedMs": 1443.331,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 530,
+        "completion_tokens": 10,
+        "total_tokens": 540,
+        "prompt_tokens_details": {
+          "cached_tokens": 251
+        }
+      }
+    },
+    {
+      "round": 0,
+      "language": "zh",
+      "kind": "retrieval",
+      "rows": 58,
+      "status": 200,
+      "elapsedMs": 2735.258,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 946,
+        "completion_tokens": 10,
+        "total_tokens": 956,
+        "prompt_tokens_details": {
+          "cached_tokens": 459
+        }
+      }
+    },
+    {
+      "round": 0,
+      "language": "zh",
+      "kind": "retrieval",
+      "rows": 64,
+      "status": 422,
+      "elapsedMs": 15.763,
+      "rejectionCode": "context_length_exceeded"
+    },
+    {
+      "round": 0,
+      "language": "zh",
+      "kind": "multi-turn",
+      "rows": null,
+      "status": 200,
+      "elapsedMs": 802.54,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 48,
+        "completion_tokens": 11,
+        "total_tokens": 59,
+        "prompt_tokens_details": {
+          "cached_tokens": 4
+        }
+      }
+    },
+    {
+      "round": 1,
+      "language": "en",
+      "kind": "retrieval",
+      "rows": 0,
+      "status": 200,
+      "elapsedMs": 739.823,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 32,
+        "completion_tokens": 10,
+        "total_tokens": 42,
+        "prompt_tokens_details": {
+          "cached_tokens": 4
+        }
+      }
+    },
+    {
+      "round": 1,
+      "language": "en",
+      "kind": "retrieval",
+      "rows": 32,
+      "status": 200,
+      "elapsedMs": 1410.514,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 535,
+        "completion_tokens": 10,
+        "total_tokens": 545,
+        "prompt_tokens_details": {
+          "cached_tokens": 251
+        }
+      }
+    },
+    {
+      "round": 1,
+      "language": "en",
+      "kind": "retrieval",
+      "rows": 58,
+      "status": 200,
+      "elapsedMs": 2899.976,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 951,
+        "completion_tokens": 10,
+        "total_tokens": 961,
+        "prompt_tokens_details": {
+          "cached_tokens": 459
+        }
+      }
+    },
+    {
+      "round": 1,
+      "language": "en",
+      "kind": "retrieval",
+      "rows": 64,
+      "status": 422,
+      "elapsedMs": 17.794,
+      "rejectionCode": "context_length_exceeded"
+    },
+    {
+      "round": 1,
+      "language": "en",
+      "kind": "multi-turn",
+      "rows": null,
+      "status": 200,
+      "elapsedMs": 945.836,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 54,
+        "completion_tokens": 11,
+        "total_tokens": 65,
+        "prompt_tokens_details": {
+          "cached_tokens": 4
+        }
+      }
+    },
+    {
+      "round": 1,
+      "language": "ja",
+      "kind": "retrieval",
+      "rows": 0,
+      "status": 200,
+      "elapsedMs": 823.961,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 34,
+        "completion_tokens": 10,
+        "total_tokens": 44,
+        "prompt_tokens_details": {
+          "cached_tokens": 6
+        }
+      }
+    },
+    {
+      "round": 1,
+      "language": "ja",
+      "kind": "retrieval",
+      "rows": 32,
+      "status": 200,
+      "elapsedMs": 1337.256,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 537,
+        "completion_tokens": 10,
+        "total_tokens": 547,
+        "prompt_tokens_details": {
+          "cached_tokens": 251
+        }
+      }
+    },
+    {
+      "round": 1,
+      "language": "ja",
+      "kind": "retrieval",
+      "rows": 58,
+      "status": 200,
+      "elapsedMs": 2761.881,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 953,
+        "completion_tokens": 10,
+        "total_tokens": 963,
+        "prompt_tokens_details": {
+          "cached_tokens": 459
+        }
+      }
+    },
+    {
+      "round": 1,
+      "language": "ja",
+      "kind": "retrieval",
+      "rows": 64,
+      "status": 422,
+      "elapsedMs": 11.388,
+      "rejectionCode": "context_length_exceeded"
+    },
+    {
+      "round": 1,
+      "language": "ja",
+      "kind": "multi-turn",
+      "rows": null,
+      "status": 200,
+      "elapsedMs": 653.734,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 53,
+        "completion_tokens": 11,
+        "total_tokens": 64,
+        "prompt_tokens_details": {
+          "cached_tokens": 6
+        }
+      }
+    },
+    {
+      "round": 1,
+      "language": "zh",
+      "kind": "retrieval",
+      "rows": 0,
+      "status": 200,
+      "elapsedMs": 574.006,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 27,
+        "completion_tokens": 10,
+        "total_tokens": 37,
+        "prompt_tokens_details": {
+          "cached_tokens": 4
+        }
+      }
+    },
+    {
+      "round": 1,
+      "language": "zh",
+      "kind": "retrieval",
+      "rows": 32,
+      "status": 200,
+      "elapsedMs": 1331.839,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 530,
+        "completion_tokens": 10,
+        "total_tokens": 540,
+        "prompt_tokens_details": {
+          "cached_tokens": 251
+        }
+      }
+    },
+    {
+      "round": 1,
+      "language": "zh",
+      "kind": "retrieval",
+      "rows": 58,
+      "status": 200,
+      "elapsedMs": 3683.915,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 946,
+        "completion_tokens": 10,
+        "total_tokens": 956,
+        "prompt_tokens_details": {
+          "cached_tokens": 459
+        }
+      }
+    },
+    {
+      "round": 1,
+      "language": "zh",
+      "kind": "retrieval",
+      "rows": 64,
+      "status": 422,
+      "elapsedMs": 21.228,
+      "rejectionCode": "context_length_exceeded"
+    },
+    {
+      "round": 1,
+      "language": "zh",
+      "kind": "multi-turn",
+      "rows": null,
+      "status": 200,
+      "elapsedMs": 774.382,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 48,
+        "completion_tokens": 11,
+        "total_tokens": 59,
+        "prompt_tokens_details": {
+          "cached_tokens": 4
+        }
+      }
+    }
+  ],
+  "checks": {
+    "exactContextBoundary": true,
+    "stopReapsCounter": true,
+    "stopReapsWholeTree": true,
+    "noCounterWithStrata": true,
+    "stateAndEvidencePreserved": true
+  },
+  "engineStartupMs": 26249.162834000002,
+  "coldStream": {
+    "firstContentMs": 5570.042959000002,
+    "completedMs": 5651.172291999999,
+    "engineStartToFirstContentMs": 31819.205793000005,
+    "exact": true
+  },
+  "counterProcessesAfterRequests": 1,
+  "counterRssKiB": [
+    633984
+  ],
+  "summary": {
+    "accepted": 24,
+    "rejected": 6,
+    "firstAcceptedMs": 476.782,
+    "warmMedianMs": 1303.837,
+    "warmMeanMs": 1566.124
+  },
+  "applicationExit": {
+    "code": 0,
+    "signal": null
+  },
+  "finishedAt": "2026-10-22T12:23:15.822Z"
+}

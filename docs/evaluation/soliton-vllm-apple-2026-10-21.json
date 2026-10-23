@@ -1,0 +1,180 @@
+{
+  "date": "2026-10-21",
+  "hardware": "Apple M4 / 32 GiB",
+  "dependencies": {
+    "mlx": "0.32.1",
+    "mlx-lm": "0.32.0",
+    "transformers": "5.19.0"
+  },
+  "normalStartupChecksSkipped": false,
+  "qualificationCandidateVersion": "0.32.0",
+  "scope": "Gemma 2 2B 4-bit, short text, context 1024, concurrency 1",
+  "qualification": {
+    "passed": true,
+    "shutdown_clean": true,
+    "quality_smoke": {
+      "checks": {
+        "english": true,
+        "japanese": true,
+        "simplified_chinese": true
+      },
+      "match_policy": "trimmed_exact",
+      "passed": true,
+      "sample_count": 3,
+      "schema_version": 1,
+      "stores_generated_text": false
+    },
+    "soak": {
+      "certification_required": true,
+      "elapsed_seconds": 1800.568,
+      "errors": {},
+      "failures": 0,
+      "latency_ms": {
+        "max": 3543.257,
+        "mean": 573.961,
+        "p50_upper_bound": 1000,
+        "p95_upper_bound": 2500
+      },
+      "passed": true,
+      "process_alive": true,
+      "requests": 3137,
+      "requests_per_second": 1.742,
+      "rss": {
+        "baseline_bytes": 2192195584,
+        "final_bytes": 1662353408,
+        "growth_bytes": 0,
+        "limit_bytes": 268435456,
+        "peak_bytes": 2207645696,
+        "peak_growth_bytes": 15450112
+      },
+      "stability_window_met": true,
+      "storage": {
+        "error_keys": 0,
+        "latency_buckets": 12
+      },
+      "successes": 3137
+    }
+  },
+  "evidenceSha256": "24140a3c045abd4907663d0c6f29d9d1916b017521dc8aff22a7128a0470e273",
+  "evidenceIssuedJst": "2026-10-21T14:05:33.720639+09:00",
+  "evidenceExpiresJst": "2026-10-28T14:05:33.720639+09:00",
+  "soliton": {
+    "schemaVersion": 1,
+    "runtime": "Tauri native bundle",
+    "startedAt": "2026-10-21T05:06:02.679Z",
+    "model": "/Users/Shared/Program/Tauri/Soliton/vLLM-apple/models/gemma-2-2b-it-4bit",
+    "backend": "mlx_lm",
+    "context": 1024,
+    "concurrency": 1,
+    "compatibilityChecksSkipped": false,
+    "checks": {
+      "noEvidenceRejected": true,
+      "expiredEvidenceRejected": true,
+      "excessContextRejected": true,
+      "inferenceReady": true,
+      "multilingualGui": true,
+      "nonstreamApi": true,
+      "cancel": true,
+      "stopSwitchRestart": true,
+      "persistence": true,
+      "console": true
+    },
+    "requests": [
+      {
+        "locale": "English",
+        "matched": true,
+        "metrics": {
+          "elapsedMs": 1653,
+          "engine": "vLLM-Apple",
+          "finishReason": "stop",
+          "firstAnswerMs": 1567,
+          "firstOutputMs": 1567,
+          "id": "27a04c96-ead8-4f8f-ac68-900a056eb280",
+          "model": "default_model",
+          "source": "chat",
+          "startedAt": 1792559187787,
+          "status": "completed",
+          "timings": null,
+          "usage": {
+            "cached": 0,
+            "completion": 5,
+            "prompt": 19,
+            "reasoning": null,
+            "total": 24
+          }
+        }
+      },
+      {
+        "locale": "日本語",
+        "matched": true,
+        "metrics": {
+          "elapsedMs": 354,
+          "engine": "vLLM-Apple",
+          "finishReason": "stop",
+          "firstAnswerMs": 295,
+          "firstOutputMs": 295,
+          "id": "fa633098-d8a0-493e-8a5a-362840bd771e",
+          "model": "default_model",
+          "source": "chat",
+          "startedAt": 1792559190082,
+          "status": "completed",
+          "timings": null,
+          "usage": {
+            "cached": 4,
+            "completion": 4,
+            "prompt": 22,
+            "reasoning": null,
+            "total": 26
+          }
+        }
+      },
+      {
+        "locale": "简体中文",
+        "matched": true,
+        "metrics": {
+          "elapsedMs": 373,
+          "engine": "vLLM-Apple",
+          "finishReason": "stop",
+          "firstAnswerMs": 310,
+          "firstOutputMs": 310,
+          "id": "48bbd91f-cbb2-4a44-b395-9e952238c20d",
+          "model": "default_model",
+          "source": "chat",
+          "startedAt": 1792559190750,
+          "status": "completed",
+          "timings": null,
+          "usage": {
+            "cached": 4,
+            "completion": 4,
+            "prompt": 19,
+            "reasoning": null,
+            "total": 23
+          }
+        }
+      }
+    ],
+    "evidenceSha256": "24140a3c045abd4907663d0c6f29d9d1916b017521dc8aff22a7128a0470e273",
+    "memorySample": {
+      "pid": 202,
+      "processCount": 2,
+      "rootBytes": 36881080,
+      "sampledAt": 1792559191616,
+      "usedBytes": 2264796424
+    },
+    "passed": true,
+    "finishedAt": "2026-10-21T05:06:56.272Z"
+  },
+  "limitations": [
+    "Short text smoke and 30-minute stability only; not broad quality, long-context or performance certification.",
+    "Switch-to-Strata test uses the existing mock, not a real Strata model.",
+    "GUI interactions were through a browser connected to the native Tauri runtime."
+  ],
+  "normalNativeStartup": {
+    "passed": true,
+    "isolatedStateOverride": false,
+    "inferenceReady": true,
+    "apiReplyMatched": true,
+    "existingMessagesPreserved": 6,
+    "stopped": true
+  }
+}

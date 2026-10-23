@@ -1,0 +1,101 @@
+{
+  "schema": 1,
+  "kind": "synthetic-retrieval",
+  "model": "qwen3.8-flash-next-q2_0",
+  "environment": {
+    "architecture": "aarch64",
+    "backend": "Metal",
+    "memoryBytes": 34359738368,
+    "memoryTuning": {
+      "active": null,
+      "automatic": {
+        "context": 8192,
+        "keepFreeGb": 7,
+        "promptChunk": 64
+      },
+      "next": {
+        "automatic": true,
+        "context": 8192,
+        "keepFreeGb": 7,
+        "promptChunk": 64
+      }
+    },
+    "initialStatus": "offline"
+  },
+  "cases": [
+    {
+      "rows": 0,
+      "inputBytes": 93,
+      "startedMs": 3,
+      "status": "completed",
+      "retrieval": "exact",
+      "finishReason": "stop",
+      "usage": {
+        "prompt_tokens": 35,
+        "completion_tokens": 8,
+        "total_tokens": 43,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "timings": {
+        "cache_n": 0,
+        "prompt_n": 35,
+        "prompt_ms": 10699.8,
+        "prompt_per_token_ms": 305.709,
+        "prompt_per_second": 3.3,
+        "predicted_n": 8,
+        "predicted_ms": 4938.2,
+        "predicted_per_token_ms": 617.275,
+        "predicted_per_second": 1.6,
+        "draft_n": 0,
+        "draft_n_accepted": 0
+      },
+      "elapsedMs": 15651,
+      "endedMs": 15654
+    },
+    {
+      "rows": 64,
+      "inputBytes": 2772,
+      "startedMs": 15666,
+      "status": "completed",
+      "retrieval": "exact",
+      "finishReason": "stop",
+      "usage": {
+        "prompt_tokens": 1050,
+        "completion_tokens": 8,
+        "total_tokens": 1058,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "timings": {
+        "cache_n": 0,
+        "prompt_n": 1050,
+        "prompt_ms": 73786,
+        "prompt_per_token_ms": 70.272,
+        "prompt_per_second": 14.2,
+        "predicted_n": 8,
+        "predicted_ms": 3021.4,
+        "predicted_per_token_ms": 377.675,
+        "predicted_per_second": 2.6,
+        "draft_n": 0,
+        "draft_n_accepted": 0
+      },
+      "elapsedMs": 76827,
+      "endedMs": 92493
+    },
+    {
+      "rows": 256,
+      "inputBytes": 10993,
+      "startedMs": 92513,
+      "status": "timeout",
+      "error": "This operation was aborted",
+      "elapsedMs": 240185,
+      "endedMs": 332698
+    }
+  ],
+  "engineRestored": true,
+  "error": "This operation was aborted",
+  "note": "Initial run before process-group memory fix. Parent-only memory samples intentionally omitted. The timed-out case reported no final usage/timings."
+}

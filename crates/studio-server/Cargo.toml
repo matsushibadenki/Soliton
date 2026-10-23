@@ -1,0 +1,7 @@
+[package]
+name = "studio-server"
+version = "0.1.0"
+edition = "2021"
+[dependencies]
+studio-core = { path = "../studio-core" }
+tokio = { version = "1", features = ["full"] }

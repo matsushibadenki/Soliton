@@ -1,0 +1,75 @@
+{
+  "schema": 1,
+  "mode": "prewarm",
+  "passed": true,
+  "hardware": "Apple M4 / 32 GiB",
+  "scope": "Gemma 2 2B 4-bit, context 1024, concurrency 1; EN/JA/ZH retrieval and synthetic multi-turn; 2 rounds",
+  "before": "docs/benchmarks/prewarm-before-20261023.json",
+  "after": "docs/benchmarks/prewarm-after-20261023.json",
+  "evidenceSha256": "9b0f61a62ab894045838e613e81ebee3f40e4037ad61362aa8cecb7e16ea9bd3",
+  "countsAndDecisionsIdentical": 30,
+  "acceptedExactPerRun": 24,
+  "rejectedOverLimitPerRun": 6,
+  "firstResponseBasis": "First nonempty stream content after engine readiness, shared Rust headless core",
+  "firstResponseReductionPercent": 27.3,
+  "beforeCounterRssMiB": [
+    200.72
+  ],
+  "counterRssReductionPercent": 17.45,
+  "beforeStartup": null,
+  "afterStartup": {
+    "controlReadyObservedMs": 21932,
+    "counterSpawnedMs": 21932,
+    "inferenceReadyObservedMs": 25593,
+    "modelLoadingObservedMs": 3661
+  },
+  "beforeColdStream": {
+    "firstContentMs": 1225.074625000001,
+    "completedMs": 1305.4412080000002,
+    "engineStartToFirstContentMs": 19069.269375,
+    "exact": true
+  },
+  "afterColdStream": {
+    "firstContentMs": 890.6046249999999,
+    "completedMs": 970.0109579999989,
+    "engineStartToFirstContentMs": 26545.611459,
+    "exact": true
+  },
+  "firstContentReductionPercent": 27.3,
+  "beforeSummary": {
+    "accepted": 24,
+    "rejected": 6,
+    "firstAcceptedMs": 432.851,
+    "warmMedianMs": 833.583,
+    "warmMeanMs": 854.5431304347825
+  },
+  "afterSummary": {
+    "accepted": 24,
+    "rejected": 6,
+    "firstAcceptedMs": 481.258,
+    "warmMedianMs": 1203.718,
+    "warmMeanMs": 1354.043608695652
+  },
+  "warmMedianReductionPercent": -44.4,
+  "warmMedianSpeedup": 0.69,
+  "retainedCounterRssMiB": [
+    165.69
+  ],
+  "checks": {
+    "counterOverlapsModelLoadingAfterQualification": true,
+    "exactContextBoundary": true,
+    "counterFailureClosedAndLatched": true,
+    "stopReapsCounter": true,
+    "stopReapsWholeTree": true,
+    "noCounterWithStrata": true,
+    "stateAndEvidencePreserved": true,
+    "headlessSignalReapsTree": true,
+    "restartAfterCounterFailure": true
+  },
+  "limitations": [
+    "Shared Rust headless debug builds, one first-content observation per version; OS caches retained, startup qualification excluded. See alternating CPU-only trials for repeated samples.",
+    "HTTP elapsed includes counting, inference and transport; normal desktop activity, not an isolated GPU performance certification.",
+    "Counter retains tokenizer metadata only during the selected engine session; no request/answer/count cache or model weights.",
+    "Switch-to-Strata check uses the mock, not a real Strata model."
+  ]
+}

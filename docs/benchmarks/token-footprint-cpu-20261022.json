@@ -1,0 +1,134 @@
+{
+  "schema": 1,
+  "trials": [
+    {
+      "trial": 0,
+      "label": "before",
+      "firstCountMs": 9574.018749997776,
+      "rssKiB": 610800,
+      "result": {
+        "id": 1,
+        "prompt_tokens": 19
+      },
+      "warmMedianMs": 12.190229499537963
+    },
+    {
+      "trial": 0,
+      "label": "after",
+      "firstCountMs": 893.1070830003591,
+      "rssKiB": 190944,
+      "result": {
+        "id": 1,
+        "prompt_tokens": 19
+      },
+      "warmMedianMs": 10.96385399796418
+    },
+    {
+      "trial": 1,
+      "label": "before",
+      "firstCountMs": 9503.111500001978,
+      "rssKiB": 631456,
+      "result": {
+        "id": 1,
+        "prompt_tokens": 19
+      },
+      "warmMedianMs": 14.662979003333021
+    },
+    {
+      "trial": 1,
+      "label": "after",
+      "firstCountMs": 2183.401958005561,
+      "rssKiB": 190896,
+      "result": {
+        "id": 1,
+        "prompt_tokens": 19
+      },
+      "warmMedianMs": 14.873854499455774
+    },
+    {
+      "trial": 2,
+      "label": "before",
+      "firstCountMs": 12974.790375003067,
+      "rssKiB": 628592,
+      "result": {
+        "id": 1,
+        "prompt_tokens": 19
+      },
+      "warmMedianMs": 16.662166501191678
+    },
+    {
+      "trial": 2,
+      "label": "after",
+      "firstCountMs": 2537.0600829992327,
+      "rssKiB": 190928,
+      "result": {
+        "id": 1,
+        "prompt_tokens": 19
+      },
+      "warmMedianMs": 16.317250003339723
+    },
+    {
+      "trial": 3,
+      "label": "before",
+      "firstCountMs": 17888.81745799881,
+      "rssKiB": 577168,
+      "result": {
+        "id": 1,
+        "prompt_tokens": 19
+      },
+      "warmMedianMs": 21.029624997026986
+    },
+    {
+      "trial": 3,
+      "label": "after",
+      "firstCountMs": 3559.4337500006077,
+      "rssKiB": 190880,
+      "result": {
+        "id": 1,
+        "prompt_tokens": 19
+      },
+      "warmMedianMs": 16.753561998484656
+    },
+    {
+      "trial": 4,
+      "label": "before",
+      "firstCountMs": 28355.505457999243,
+      "rssKiB": 612288,
+      "result": {
+        "id": 1,
+        "prompt_tokens": 19
+      },
+      "warmMedianMs": 21.332686999812722
+    },
+    {
+      "trial": 4,
+      "label": "after",
+      "firstCountMs": 2051.419082999928,
+      "rssKiB": 190944,
+      "result": {
+        "id": 1,
+        "prompt_tokens": 19
+      },
+      "warmMedianMs": 16.658104501402704
+    }
+  ],
+  "sourceSha256": {
+    "before": "88364c85d76c139135312e7835791af9d3b9a680e2fc00068ec42c645c3143e6",
+    "after": "a1b7bb5f8f40f0d4a060144a6370e1fcf155e6f0f234a9fecfb5a920e537472d"
+  },
+  "rssMeaning": "Resident set sampled after first count; not peak or unique physical pages",
+  "reference": "AutoTokenizer-only worker copy",
+  "summary": {
+    "before": {
+      "medianFirstCountMs": 12974.790375003067,
+      "medianWarmCountMs": 16.662166501191678,
+      "medianRssMiB": 597.9375
+    },
+    "after": {
+      "medianFirstCountMs": 2183.401958005561,
+      "medianWarmCountMs": 16.317250003339723,
+      "medianRssMiB": 186.453125
+    }
+  },
+  "passed": true
+}

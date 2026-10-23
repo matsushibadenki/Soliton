@@ -1,0 +1,288 @@
+{
+  "date": "2026-10-22",
+  "hardware": "Apple M4 / 32 GiB",
+  "dependencies": {
+    "mlx": "0.32.2",
+    "mlx-lm": "0.32.0",
+    "transformers": "5.19.0"
+  },
+  "normalStartupChecksSkipped": false,
+  "qualificationCandidateVersion": "0.32.0",
+  "scope": "Gemma 2 2B 4-bit, short text, context 1024, concurrency 1",
+  "qualification": {
+    "passed": true,
+    "shutdown_clean": true,
+    "quality_smoke": {
+      "checks": {
+        "english": true,
+        "japanese": true,
+        "simplified_chinese": true
+      },
+      "match_policy": "trimmed_exact",
+      "passed": true,
+      "sample_count": 3,
+      "schema_version": 1,
+      "stores_generated_text": false
+    },
+    "soak": {
+      "certification_required": true,
+      "elapsed_seconds": 1800.506,
+      "errors": {},
+      "failures": 0,
+      "latency_ms": {
+        "max": 5256.408,
+        "mean": 622.136,
+        "p50_upper_bound": 500,
+        "p95_upper_bound": 2500
+      },
+      "passed": true,
+      "process_alive": true,
+      "requests": 2894,
+      "requests_per_second": 1.607,
+      "rss": {
+        "baseline_bytes": 2245607424,
+        "final_bytes": 188350464,
+        "growth_bytes": 0,
+        "limit_bytes": 268435456,
+        "peak_bytes": 2257436672,
+        "peak_growth_bytes": 11829248
+      },
+      "stability_window_met": true,
+      "storage": {
+        "error_keys": 0,
+        "latency_buckets": 12
+      },
+      "successes": 2894
+    }
+  },
+  "evidenceSha256": "9b0f61a62ab894045838e613e81ebee3f40e4037ad61362aa8cecb7e16ea9bd3",
+  "evidenceIssuedJst": "2026-10-22T18:16:20.416448+09:00",
+  "evidenceExpiresJst": "2026-10-29T18:16:20.416448+09:00",
+  "diagnostic": {
+    "nativeRuntime": true,
+    "oldEvidenceReason": "evidence_identity_mismatch",
+    "modelNotStarted": true,
+    "existingMessagesPreserved": 6,
+    "ordinaryStatePreserved": true,
+    "consoleErrors": 0
+  },
+  "limitations": [
+    "Short synthetic text and 30-minute stability only; not broad model quality, long-context or performance certification.",
+    "Qualification ran during ordinary desktop activity including Soliton builds; timings are not an isolated comparison.",
+    "Switch-to-Strata QA uses the existing mock, not a real Strata model.",
+    "GUI interaction uses a browser connected to the native Tauri runtime."
+  ],
+  "soliton": {
+    "schemaVersion": 1,
+    "runtime": "Tauri native bundle",
+    "startedAt": "2026-10-22T09:34:37.966Z",
+    "model": "/Users/Shared/Program/Tauri/Soliton/vLLM-apple/models/gemma-2-2b-it-4bit",
+    "backend": "mlx_lm",
+    "context": 1024,
+    "concurrency": 1,
+    "compatibilityChecksSkipped": false,
+    "checks": {
+      "noEvidenceRejectedDiagnostic": true,
+      "noEvidenceRejected": true,
+      "expiredEvidenceRejectedDiagnostic": true,
+      "expiredEvidenceRejected": true,
+      "excessContextRejectedDiagnostic": true,
+      "excessContextRejected": true,
+      "evidenceDiagnosticVerified": true,
+      "inferenceReady": true,
+      "multilingualGui": true,
+      "nonstreamApi": true,
+      "exactContextRejectionAndHistory": true,
+      "cancel": true,
+      "stopSwitchRestart": true,
+      "persistence": true,
+      "console": true
+    },
+    "requests": [
+      {
+        "locale": "English",
+        "matched": true,
+        "metrics": {
+          "elapsedMs": 6154,
+          "engine": "vLLM-Apple",
+          "finishReason": "stop",
+          "firstAnswerMs": 6074,
+          "firstOutputMs": 6074,
+          "id": "c4fac1fe-d5f7-4f35-a3b7-80138dc48e86",
+          "model": "default_model",
+          "source": "chat",
+          "startedAt": 1792661734420,
+          "status": "completed",
+          "timings": null,
+          "usage": {
+            "cached": 0,
+            "completion": 5,
+            "prompt": 19,
+            "reasoning": null,
+            "total": 24
+          }
+        }
+      },
+      {
+        "locale": "日本語",
+        "matched": true,
+        "metrics": {
+          "elapsedMs": 7010,
+          "engine": "vLLM-Apple",
+          "finishReason": "stop",
+          "firstAnswerMs": 6948,
+          "firstOutputMs": 6948,
+          "id": "11baf054-a35b-478a-9fe9-594b1107c81a",
+          "model": "default_model",
+          "source": "chat",
+          "startedAt": 1792661741187,
+          "status": "completed",
+          "timings": null,
+          "usage": {
+            "cached": 4,
+            "completion": 4,
+            "prompt": 22,
+            "reasoning": null,
+            "total": 26
+          }
+        }
+      },
+      {
+        "locale": "简体中文",
+        "matched": true,
+        "metrics": {
+          "elapsedMs": 6223,
+          "engine": "vLLM-Apple",
+          "finishReason": "stop",
+          "firstAnswerMs": 6155,
+          "firstOutputMs": 6155,
+          "id": "b1c84d9b-90dc-4dfc-a17d-f4aad97f8fff",
+          "model": "default_model",
+          "source": "chat",
+          "startedAt": 1792661748819,
+          "status": "completed",
+          "timings": null,
+          "usage": {
+            "cached": 4,
+            "completion": 4,
+            "prompt": 19,
+            "reasoning": null,
+            "total": 23
+          }
+        }
+      }
+    ],
+    "evidenceSha256": "9b0f61a62ab894045838e613e81ebee3f40e4037ad61362aa8cecb7e16ea9bd3",
+    "memorySample": {
+      "pid": 57262,
+      "processCount": 2,
+      "rootBytes": 69714664,
+      "sampledAt": 1792661771272,
+      "usedBytes": 2302217552
+    },
+    "passed": true,
+    "finishedAt": "2026-10-22T09:36:44.610Z"
+  },
+  "tokenization": {
+    "localAndEngineCountsMatchCases": 15,
+    "languages": [
+      "en",
+      "ja",
+      "zh"
+    ],
+    "scope": "plain text local chat template, Gemma2ForCausalLM",
+    "overflow": "422 context_length_exceeded before inference/history mutation",
+    "unavailable": "503 tokenization_unavailable; no fallback",
+    "weightsLoadedByCounter": false,
+    "backendRuntimeModified": false
+  },
+  "benchmarks": {
+    "workload": {
+      "report": "../benchmarks/vllm-m4-32g-workload-20261022.json",
+      "passed": true,
+      "plannedCases": 12,
+      "coverage": {
+        "completed": 12,
+        "exact": 12,
+        "contains": 0,
+        "incorrect": 0,
+        "unanswered": 0,
+        "rejected": 0,
+        "failed": 0,
+        "timeout": 0,
+        "interrupted": 0,
+        "memory-limit": 0
+      },
+      "engineRestored": true
+    },
+    "boundary": {
+      "report": "../benchmarks/vllm-m4-32g-boundary-20261022.json",
+      "passed": false,
+      "plannedCases": 15,
+      "coverage": {
+        "completed": 12,
+        "exact": 12,
+        "contains": 0,
+        "incorrect": 0,
+        "unanswered": 0,
+        "rejected": 3,
+        "failed": 0,
+        "timeout": 0,
+        "interrupted": 0,
+        "memory-limit": 0
+      },
+      "engineRestored": true
+    },
+    "near-limit": {
+      "report": "../benchmarks/vllm-m4-32g-near-limit-20261022.json",
+      "passed": false,
+      "plannedCases": 9,
+      "coverage": {
+        "completed": 6,
+        "exact": 6,
+        "contains": 0,
+        "incorrect": 0,
+        "unanswered": 0,
+        "rejected": 3,
+        "failed": 0,
+        "timeout": 0,
+        "interrupted": 0,
+        "memory-limit": 0
+      },
+      "engineRestored": true
+    }
+  },
+  "existingStateVerification": {
+    "messages": 6,
+    "documentAndSettingsPreserved": true,
+    "ordinaryStateFilePreservedDuringIsolatedRuns": true,
+    "normalEvidenceUpdatedOnly": true
+  },
+  "tests": {
+    "rust": 67,
+    "benchmark": 16,
+    "upstreamEvidenceFingerprintCompatibility": 32,
+    "engineSwitchBrowser": true,
+    "locales": [
+      "en",
+      "ja",
+      "zh"
+    ],
+    "viewports": [
+      320,
+      390,
+      1440
+    ]
+  },
+  "normalNativeStartup": {
+    "passed": true,
+    "isolatedStateOverride": false,
+    "inferenceReady": true,
+    "apiMatched": true,
+    "contextGuardEnabled": true,
+    "engineStopped": true,
+    "preservedMessages": 6,
+    "documentPreserved": true,
+    "settingsPreserved": true
+  }
+}

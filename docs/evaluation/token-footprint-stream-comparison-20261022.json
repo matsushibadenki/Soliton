@@ -1,0 +1,67 @@
+{
+  "schema": 1,
+  "mode": "stream",
+  "passed": true,
+  "hardware": "Apple M4 / 32 GiB",
+  "scope": "Gemma 2 2B 4-bit, context 1024, concurrency 1; EN/JA/ZH retrieval and synthetic multi-turn; 2 rounds",
+  "before": "docs/benchmarks/token-footprint-headless-stream-before-20261022.json",
+  "after": "docs/benchmarks/token-footprint-headless-stream-after-20261022.json",
+  "evidenceSha256": "9b0f61a62ab894045838e613e81ebee3f40e4037ad61362aa8cecb7e16ea9bd3",
+  "countsAndDecisionsIdentical": 30,
+  "acceptedExactPerRun": 24,
+  "rejectedOverLimitPerRun": 6,
+  "firstResponseBasis": "First nonempty stream content after engine readiness, shared Rust headless core",
+  "firstResponseReductionPercent": 82.57,
+  "beforeCounterRssMiB": [
+    619.13
+  ],
+  "counterRssReductionPercent": 70.02,
+  "beforeColdStream": {
+    "firstContentMs": 5570.042959000002,
+    "completedMs": 5651.172291999999,
+    "engineStartToFirstContentMs": 31819.205793000005,
+    "exact": true
+  },
+  "afterColdStream": {
+    "firstContentMs": 970.7199169999985,
+    "completedMs": 1053.7926669999997,
+    "engineStartToFirstContentMs": 15458.154458999998,
+    "exact": true
+  },
+  "firstContentReductionPercent": 82.57,
+  "beforeSummary": {
+    "accepted": 24,
+    "rejected": 6,
+    "firstAcceptedMs": 476.782,
+    "warmMedianMs": 1303.837,
+    "warmMeanMs": 1566.124
+  },
+  "afterSummary": {
+    "accepted": 24,
+    "rejected": 6,
+    "firstAcceptedMs": 469.43,
+    "warmMedianMs": 1329.708,
+    "warmMeanMs": 1513.6158695652175
+  },
+  "warmMedianReductionPercent": -1.98,
+  "warmMedianSpeedup": 0.98,
+  "retainedCounterRssMiB": [
+    185.64
+  ],
+  "checks": {
+    "exactContextBoundary": true,
+    "counterFailureClosedAndLatched": true,
+    "stopReapsCounter": true,
+    "stopReapsWholeTree": true,
+    "noCounterWithStrata": true,
+    "stateAndEvidencePreserved": true,
+    "headlessSignalReapsTree": true,
+    "restartAfterCounterFailure": true
+  },
+  "limitations": [
+    "Shared Rust headless debug builds, one fresh-worker first-content observation per version; OS caches retained, startup qualification excluded. See alternating CPU-only trials for repeated samples.",
+    "HTTP elapsed includes counting, inference and transport; normal desktop activity, not an isolated GPU performance certification.",
+    "Counter retains tokenizer metadata only during the selected engine session; no request/answer/count cache or model weights.",
+    "Switch-to-Strata check uses the mock, not a real Strata model."
+  ]
+}

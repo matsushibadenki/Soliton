@@ -1,0 +1,75 @@
+# JavaScript dependencies and frontend build/cache output
+node_modules/
+/dist/
+/.vite/
+/.cache/
+*.tsbuildinfo
+
+# Rust / Tauri build output and generated schemas
+/target/
+/src-tauri/target/
+/src-tauri/gen/
+**/*.rs.bk
+
+# Local environment and credentials (keep distributable examples)
+.env
+.env.*
+!.env.example
+!.env.*.example
+!.env.template
+!.env.*.template
+.cargo/credentials
+.cargo/credentials.toml
+
+# Studio settings, conversation history, and atomic-save temporary files
+.studio-state.*
+
+# Strata runtime downloads, model packs, and local Python environments
+/Strata-data/
+/models/
+/packs/
+/mtp/
+.venv/
+.venv-*/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+*.egg-info/
+.coverage
+htmlcov/
+.build/
+.swiftpm/
+DerivedData/
+
+# Logs and test artifacts
+*.log
+/logs/
+/coverage/
+/playwright-report/
+/test-results/
+/blob-report/
+
+# OS and editor temporary files
+.DS_Store
+._*
+Thumbs.db
+Desktop.ini
+.idea/
+*.swp
+*.swo
+*~
+
+# Keep Cargo.lock and package-lock.json tracked for reproducible app builds.
+# Strata source files remain trackable; its own .gitignore handles engine output.
+
+# vLLM-Apple remains an independently versioned local runtime checkout.
+# Avoid accidental embedded-repository gitlinks and duplicate source/evidence.
+# Its own .gitignore manages environments, models, runner secrets and reports.
+/vLLM-apple/
+
+# Soliton runtime state and private session files
+.soliton-state.*
+.soliton-runtime/

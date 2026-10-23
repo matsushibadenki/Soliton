@@ -1,0 +1,163 @@
+{
+  "schema": 1,
+  "passed": true,
+  "hardware": "Apple M4 / 32 GiB",
+  "scope": "Gemma 2 2B 4-bit, context 1024, concurrency 1; EN/JA/ZH retrieval and synthetic multi-turn; 2 rounds",
+  "before": "docs/benchmarks/token-reuse-before-20261022.json",
+  "after": "docs/benchmarks/token-reuse-after-20261022.json",
+  "evidenceSha256": "9b0f61a62ab894045838e613e81ebee3f40e4037ad61362aa8cecb7e16ea9bd3",
+  "countsAndDecisionsIdentical": 30,
+  "acceptedExactPerRun": 24,
+  "rejectedOverLimitPerRun": 6,
+  "beforeSummary": {
+    "accepted": 24,
+    "rejected": 6,
+    "firstAcceptedMs": 6911.712,
+    "warmMedianMs": 8382.756,
+    "warmMeanMs": 8992.422217391302
+  },
+  "afterSummary": {
+    "accepted": 24,
+    "rejected": 6,
+    "firstAcceptedMs": 5583.233,
+    "warmMedianMs": 1366.464,
+    "warmMeanMs": 1634.1246956521736
+  },
+  "warmMedianReductionPercent": 83.7,
+  "warmMedianSpeedup": 6.13,
+  "retainedCounterRssMiB": [
+    460.47
+  ],
+  "checks": {
+    "counterFailureClosedAndLatched": true,
+    "stopReapsCounter": true,
+    "stopReapsWholeTree": true,
+    "noCounterWithStrata": true,
+    "stateAndEvidencePreserved": true,
+    "nativeSignalReapsTree": true,
+    "restartAfterCounterFailure": true
+  },
+  "limitations": [
+    "First request still imports/loads tokenizer; warm reuse removes repeated initialization.",
+    "HTTP elapsed includes counting, inference and transport; normal desktop activity, not an isolated GPU performance certification.",
+    "Counter retains tokenizer metadata only during the selected engine session; no request/answer/count cache or model weights.",
+    "Switch-to-Strata check uses the mock, not a real Strata model."
+  ],
+  "nativeIntegration": {
+    "schemaVersion": 1,
+    "runtime": "Tauri native bundle",
+    "startedAt": "2026-10-22T11:40:25.332Z",
+    "model": "/Users/Shared/Program/Tauri/Soliton/vLLM-apple/models/gemma-2-2b-it-4bit",
+    "backend": "mlx_lm",
+    "context": 1024,
+    "concurrency": 1,
+    "compatibilityChecksSkipped": false,
+    "checks": {
+      "noEvidenceRejectedDiagnostic": true,
+      "noEvidenceRejected": true,
+      "expiredEvidenceRejectedDiagnostic": true,
+      "expiredEvidenceRejected": true,
+      "excessContextRejectedDiagnostic": true,
+      "excessContextRejected": true,
+      "evidenceDiagnosticVerified": true,
+      "inferenceReady": true,
+      "multilingualGui": true,
+      "nonstreamApi": true,
+      "exactContextRejectionAndHistory": true,
+      "cancel": true,
+      "stopSwitchRestart": true,
+      "persistence": true,
+      "console": true
+    },
+    "requests": [
+      {
+        "locale": "English",
+        "matched": true,
+        "metrics": {
+          "elapsedMs": 4287,
+          "engine": "vLLM-Apple",
+          "finishReason": "stop",
+          "firstAnswerMs": 4210,
+          "firstOutputMs": 4210,
+          "id": "b2d8d157-7fb2-4480-b7ee-29407bd9cc19",
+          "model": "default_model",
+          "source": "chat",
+          "startedAt": 1792669317119,
+          "status": "completed",
+          "timings": null,
+          "usage": {
+            "cached": 0,
+            "completion": 5,
+            "prompt": 19,
+            "reasoning": null,
+            "total": 24
+          }
+        }
+      },
+      {
+        "locale": "日本語",
+        "matched": true,
+        "metrics": {
+          "elapsedMs": 325,
+          "engine": "vLLM-Apple",
+          "finishReason": "stop",
+          "firstAnswerMs": 264,
+          "firstOutputMs": 264,
+          "id": "3e9f911e-5742-4aab-bc71-15f82245be11",
+          "model": "default_model",
+          "source": "chat",
+          "startedAt": 1792669321834,
+          "status": "completed",
+          "timings": null,
+          "usage": {
+            "cached": 4,
+            "completion": 4,
+            "prompt": 22,
+            "reasoning": null,
+            "total": 26
+          }
+        }
+      },
+      {
+        "locale": "简体中文",
+        "matched": true,
+        "metrics": {
+          "elapsedMs": 349,
+          "engine": "vLLM-Apple",
+          "finishReason": "stop",
+          "firstAnswerMs": 291,
+          "firstOutputMs": 291,
+          "id": "5fd0361e-c3f0-4600-8657-5759f4357c3e",
+          "model": "default_model",
+          "source": "chat",
+          "startedAt": 1792669322501,
+          "status": "completed",
+          "timings": null,
+          "usage": {
+            "cached": 4,
+            "completion": 4,
+            "prompt": 19,
+            "reasoning": null,
+            "total": 23
+          }
+        }
+      }
+    ],
+    "evidenceSha256": "9b0f61a62ab894045838e613e81ebee3f40e4037ad61362aa8cecb7e16ea9bd3",
+    "memorySample": {
+      "pid": 97314,
+      "processCount": 2,
+      "rootBytes": 37372624,
+      "sampledAt": 1792669323269,
+      "usedBytes": 2331102520
+    },
+    "passed": true,
+    "finishedAt": "2026-10-22T11:42:30.360Z"
+  },
+  "tests": {
+    "rust": 68,
+    "benchmarkHttp": 16,
+    "upstreamCompatibilityEvidenceFingerprint": 32,
+    "pythonCounterProtocolAndFileChange": true
+  }
+}
