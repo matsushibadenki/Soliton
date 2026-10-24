@@ -25,7 +25,9 @@
     "test:real-model": "node scripts/real-model-smoke.mjs",
     "test:token-counter": "python3 scripts/token-counter.test.py",
     "benchmark:token-count": "node scripts/token-count-benchmark.mjs",
-    "benchmark:token-count:compare": "node scripts/compare-token-count.mjs"
+    "benchmark:token-count:compare": "node scripts/compare-token-count.mjs",
+    "test:context-matrix": "node --test scripts/context-matrix.test.mjs",
+    "test:cache-memory": "node --test scripts/cache-memory-workload.test.mjs"
   },
   "dependencies": {
     "@tauri-apps/api": "^2.9.0",

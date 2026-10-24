@@ -167,6 +167,10 @@ try {
         assert.equal(counters, 0, "counter started before qualification");
       previousPhase = phase;
     }
+    if (snapshot.status === "offline") {
+      report.startupRejection = "engine_offline_before_ready";
+      throw Error("engine startup refused before readiness");
+    }
     return snapshot.status === "ready" ? snapshot : false;
   });
   report.startup = readyState.startup ?? null;
@@ -271,7 +275,7 @@ try {
         status: r.status,
         elapsedMs: Math.round(elapsedMs * 1000) / 1000,
       };
-      if (item.rows === 64) {
+      if (item.rows === 64 && report.context === 1024) {
         assert.equal(r.status, 422);
         assert.equal(body.error.code, "context_length_exceeded");
         row.rejectionCode = body.error.code;
@@ -286,7 +290,7 @@ try {
         `${label}: ${report.cases.length}/30 ${item.language}/${item.rows ?? item.kind} HTTP ${r.status}`,
       );
     }
-  if (report.coldStream) {
+  if (report.coldStream && report.context === 1024) {
     const boundaryIndex = cases.findIndex(
       (c) => c.language === "en" && c.rows === 58,
     );
@@ -318,6 +322,87 @@ try {
       }
     }
     report.checks.exactContextBoundary = true;
+  }
+  const sampleMemory = async () => {
+    const ids = descendants();
+    assert(ids.length > 0, "owned process tree disappeared");
+    const rows = execFileSync(
+      "/bin/ps",
+      ["-p", ids.join(","), "-o", "pid=,rss="],
+      { encoding: "utf8" },
+    )
+      .trim()
+      .split("\n")
+      .map((line) => line.trim().split(/\s+/).map(Number));
+    assert.equal(rows.length, ids.length, "owned memory sample lost a process");
+    assert(
+      rows.every(
+        ([pid, rss]) => ids.includes(pid) && Number.isFinite(rss) && rss > 0,
+      ),
+    );
+    const snapshot = await state();
+    assert.equal(snapshot.status, "ready");
+    return {
+      elapsedMs: performance.now() - engineStarted,
+      ownedProcessCount: rows.length,
+      ownedRssKiB: rows.reduce((sum, [, rss]) => sum + rss, 0),
+      enginePhysicalFootprint: snapshot.memoryUsage?.engine?.current ?? null,
+      systemAvailableBytes:
+        snapshot.memoryUsage?.current?.availableBytes ?? null,
+    };
+  };
+  if (process.env.SOLITON_CONTEXT_MATRIX === "1") {
+    const { verifyContextMatrix } = await import("./context-matrix.mjs");
+    report.contextMatrix = await verifyContextMatrix({
+      base,
+      headers,
+      context: report.context,
+      sampleMemory,
+    });
+  }
+  if (process.env.SOLITON_CACHE_MEMORY === "1") {
+    const { verifyCacheMemory } = await import("./cache-memory-workload.mjs");
+    report.cacheMemory = await verifyCacheMemory({
+      base,
+      headers,
+      context: report.context,
+      sampleMemory,
+    });
+  }
+  if (report.contextMatrix || report.cacheMemory) {
+    assert(
+      report.contextMatrix?.passed || report.cacheMemory?.boundary?.passed,
+    );
+    report.checks.exactContextBoundary = true;
+    const snapshot = await state();
+    assert(snapshot.requests.length > 0 && snapshot.requests.length <= 100);
+    assert(
+      snapshot.requests.every(
+        (row) => row.engine === "vLLM-Apple" && row.source === "api",
+      ),
+    );
+    const long = snapshot.requests.filter(
+      (row) =>
+        Number.isSafeInteger(row.usage?.prompt) &&
+        row.usage.prompt >= report.context - 512,
+    );
+    assert(long.length > 0, "shared telemetry lost long-prompt usage");
+    if (report.cacheMemory) {
+      const cached = long.map((row) => row.usage?.cached);
+      assert(cached.every((n) => Number.isSafeInteger(n) && n >= 0));
+      assert(cached.some((n) => n >= 3500) && cached.some((n) => n < 64));
+      report.cacheMemory.sharedCachedTelemetry = {
+        verified: true,
+        min: Math.min(...cached),
+        max: Math.max(...cached),
+      };
+    }
+    report.sharedRequestMetrics = {
+      retained: snapshot.requests.length,
+      longPromptUsageRecords: long.length,
+      engine: "vLLM-Apple",
+      bounded: true,
+    };
   }
   const counters = counterPids();
   report.counterProcessesAfterRequests = counters.length;
@@ -357,6 +442,17 @@ try {
   assert.equal(engineRows().length, 0);
   report.checks.stopReapsCounter = true;
   report.checks.stopReapsWholeTree = true;
+  if (report.cacheMemory) {
+    const stopped = await state();
+    assert.equal(stopped.status, "offline");
+    assert.equal(stopped.memoryUsage?.engine?.current, null);
+    report.cacheMemory.afterStop = {
+      enginePhysicalFootprint: null,
+      ownedTreeGone: true,
+      systemAvailableBytes:
+        stopped.memoryUsage?.current?.availableBytes ?? null,
+    };
+  }
   await act("switchEngine", { engine: "strata" });
   assert.equal(counterPids().length, 0);
   await act("start");

@@ -81,4 +81,22 @@ for messages in [[{"role": "system", "content": "test"}], [{"role": "assistant",
         else:
             raise AssertionError("invalid conversation accepted")
     counts["rejected"] += 1
+# Optional synthetic long-context fixtures; compare complete IDs, not only lengths.
+if len(sys.argv) > 2:
+    fixture_path = Path(sys.argv[2])
+    assert fixture_path.stat().st_size <= 2 * 1024 * 1024
+    fixtures = json.loads(fixture_path.read_text())
+    assert isinstance(fixtures, list) and 0 < len(fixtures) <= 256
+    counts["longChat"] = 0
+    counts["longMinTokens"] = None
+    counts["longMaxTokens"] = 0
+    for messages in fixtures:
+        kwargs = dict(tokenize=True, add_generation_prompt=True, return_dict=False, tools=None)
+        a = reference.apply_chat_template(messages, **kwargs)
+        b = fast.apply_chat_template(messages, **kwargs)
+        assert a == b, "long-context full token-ID mismatch"
+        digest.update(json.dumps(a).encode())
+        counts["longChat"] += 1
+        counts["longMinTokens"] = min(counts["longMinTokens"] or len(a), len(a))
+        counts["longMaxTokens"] = max(counts["longMaxTokens"], len(a))
 print(json.dumps({"passed": True, "counts": counts, "tokenIdsSha256": digest.hexdigest(), "heavyImportsInFastPath": False, "fallbackGuards": 6}))

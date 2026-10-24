@@ -1,0 +1,99 @@
+{
+  "passed": true,
+  "contextBefore": 1024,
+  "contextAfter": 4096,
+  "concurrency": 1,
+  "identityUnchanged": true,
+  "sameSharedRustBinary": true,
+  "previousExactPromptCountsPreserved": 24,
+  "previousOverflowCasesNowExact": 6,
+  "qualification": {
+    "elapsedSeconds": 1800.106,
+    "successes": 5918,
+    "failures": 0,
+    "peakRssGrowthMiB": 16.0,
+    "shutdownClean": true,
+    "workload": "mixed short text at configured 4096 bound"
+  },
+  "longMatrix": {
+    "elapsedSeconds": 598.083475917,
+    "exactBoundaryAnswers": 108,
+    "oneTokenOverRefusals": 108,
+    "promptTokensMin": 3970,
+    "promptTokensMax": 4033,
+    "historyMessages": 13,
+    "rounds": 3,
+    "positions": [
+      "start",
+      "middle",
+      "end"
+    ],
+    "languages": [
+      "en",
+      "ja",
+      "zh"
+    ],
+    "probeRequests": 111,
+    "sampledOwnedRssMiBMax": 2037.984375,
+    "sampledEnginePhysicalFootprintMiBMax": 7813.597068786621,
+    "systemAvailableGiBMin": 7.760772705078125
+  },
+  "tokenParity": {
+    "passed": true,
+    "counts": {
+      "raw": 211,
+      "chat": 844,
+      "rejected": 3,
+      "longChat": 18,
+      "longMinTokens": 3970,
+      "longMaxTokens": 4033
+    },
+    "tokenIdsSha256": "4c6ffb7fbc4b0c36c443aec3e24a58030e323909118a20f71baaef1f003730c0",
+    "heavyImportsInFastPath": false,
+    "fallbackGuards": 6
+  },
+  "sharedMetrics": {
+    "retained": 100,
+    "longPromptUsageRecords": 54,
+    "engine": "vLLM-Apple",
+    "bounded": true
+  },
+  "lifecycleChecks": {
+    "counterOverlapsModelLoadingAfterQualification": true,
+    "exactContextBoundary": true,
+    "counterFailureClosedAndLatched": true,
+    "stopReapsCounter": true,
+    "stopReapsWholeTree": true,
+    "noCounterWithStrata": true,
+    "stateAndEvidencePreserved": true,
+    "headlessSignalReapsTree": true,
+    "restartAfterCounterFailure": true
+  },
+  "preferences": {
+    "updatedStates": 2,
+    "onlyContextAndEvidenceChanged": true,
+    "documentsAndOtherSettingsPreserved": true
+  },
+  "tests": {
+    "node": 22,
+    "upstreamEvidenceFingerprintCompatibility": 35,
+    "optimizedPythonActivationRejected": true
+  },
+  "sourceSha256": {
+    "scripts/context-matrix.mjs": "653c2847cf96ece7f5fb343c35612e84b20ca74fb50a44c1ebcdda6e1e83089b",
+    "scripts/context-matrix.test.mjs": "8a77cc1b52c4db854472d7aeb6264ed9489b91fb482c6b55654b7cadfa171d3f",
+    "scripts/token-count-benchmark.mjs": "0880d4aac403de35647a1cd998426588e6e6585eee297fefb6a0bf78eff7b8d2",
+    "scripts/token-counter-parity.py": "cc627e8aeac791576252b6a69be1946c9f9cb2caf54dc68d99649869fa4fb5c8",
+    "scripts/activate-context-profile.py": "f093fb24b1c80d5eb03318619b062f5d198b9ff92d203cc907fafbadc63c61ba",
+    "scripts/context-gates.mjs": "6d5ee0eba113095b9595102cee95e01974e3a1e92127f22ac77794890f4044a9",
+    "crates/studio-core/src/token_budget.py": "a1b7bb5f8f40f0d4a060144a6370e1fcf155e6f0f234a9fecfb5a920e537472d",
+    "crates/studio-core/src/token_budget.rs": "4ec997a7365156715672cec3fbdae1d0a439847dca27b2114aeeed8bc911aa8c"
+  },
+  "limits": [
+    "Evidence is valid only for the identical measured installation/Mac and seven days.",
+    "30-minute qualification uses short mixed text; separate repeated near-limit matrix lasted approximately ten minutes.",
+    "Near-limit measurements use shared Rust headless gateway; no 4096 GUI interaction or other-Mac certification.",
+    "Memory values are sampled RSS/physical footprint, not continuous GPU peaks.",
+    "No performance improvement claim."
+  ]
+}

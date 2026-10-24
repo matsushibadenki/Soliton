@@ -182,3 +182,126 @@ vLLM-apple/.venv/bin/python scripts/profile-startup.py vLLM-apple vLLM-apple/mod
 日本語: 互換性・証跡検査後、モデル読込中に計数を先行起動しました。初回文字到着は1.23→0.89秒でしたが、起動全体とウォーム推論は今回遅く、全体の高速化は未確認です。正確な計数、上限境界、異常時拒否、エンジン排他稼働、回収を確認しました。初回チャット前からtokenizerのメモリを保持します。指紋計算は約10.8秒かかり、毎回の完全検査を残しています。起動段階はRust共有状態から観測できます。
 
 简体中文：在兼容性及证据检查通过后，于模型加载期间提前启动计数。首个流式内容1.23→0.89秒；本次完整启动及热态推理较慢，未证实整体加速。已验证准确计数、上下文边界、异常拒绝、引擎互斥及进程回收。首次聊天前就会保留tokenizer内存。后端指纹计算约10.8秒，每次完整检查保持启用，可通过Rust共享状态观察启动阶段。
+
+## Full-content fingerprint optimization — 2026-10-23
+
+**Fresh full qualification and Soliton inference passed.** The measured implementation changes path handling only. Every distribution, launcher/interpreter and inventoried non-bytecode file is still read in full on every fingerprint. Per-file open/fstat/size/mtime/ctime checks, byte/file limits, `.pth` restrictions, editable/shared-environment rejection, external-link/directory-link rejection, isolated interpreter probing and the final inventory recheck remain enabled. No content, path-resolution or approval cache was added.
+
+A profile observed approximately 124,000 strict path resolutions and 82,000 containment checks. macOS now uses the operating system's strict `realpath` through the Python standard library's ctypes binding, freeing each returned allocation; unavailable native resolution/other platforms retain pathlib. Resolution errors propagate rather than falling back to a previously valid path. POSIX containment uses normalized path text plus a separator boundary, so `env-other` cannot be treated as a child of `env`. Native canonical spelling may differ for case-aliased paths; fingerprint equivalence is verified for this measured installation rather than asserted for all possible names/platforms.
+
+[Three paired full-content trials](benchmarks/fingerprint-content-20261023.json), the same M4 / 32 GiB and backend environment, produced the same 64-character digest on all six scans:
+
+| Component | Original | Updated |
+| --- | ---: | ---: |
+| Median complete backend fingerprint | 9.353 s | 6.219 s |
+| Reduction | — | 33.5% |
+
+OS caches were retained and real-model qualification was active during these CPU trials. They are not isolated throughput certification or an end-to-end engine startup comparison. The pre-change engine attempt was correctly refused because the previous evidence's environment identity did not match the current environment; the failed [startup report](benchmarks/fingerprint-startup-before-20261023.json) is not passing inference/timing evidence. Model/backend/hardware/runtime identities matched before modification; the differing field was `environment_sha256`. The code update additionally requires a new runtime identity, so the old approval is not reused or edited.
+
+Fresh [qualification](evaluation/soliton-vllm-apple-fingerprint-2026-10-23.json) passed **1800.076 s, 5223/5223 successes, zero failures**, 12,140,544 bytes (11.58 MiB) peak RSS growth, clean shutdown and matching before/after identity. Promotion/stream repeatability, EN/JA/ZH quality, context reevaluation and three phase samples passed. The installed backend, model and hardware digests are unchanged; environment and wrapper-runtime bindings are newly qualified. Issued 2026-10-23 20:50:58 JST, valid through 2026-10-30 20:50:58 JST if identity and workload bounds stay unchanged. No prior evidence fields were edited.
+
+The isolated shared Rust [gateway run](benchmarks/fingerprint-startup-after-20261023.json) passed initial streamed output, 24 exact EN/JA/ZH answers, six overflows, exact-limit acceptance/one-token-over rejection, counter prewarm/failure latch/restart, stop/full-tree cleanup, Strata-mock switching and SIGINT cleanup. Ordinary state/evidence bytes stayed unchanged during that run. After validation, native and standalone saved settings were backed up and atomically changed **only** in `vllm.evidence`; documents and all other preferences compare equal. A subsequent [complete verifier profile](benchmarks/fingerprint-qualified-profile-20261023.json) passed: fingerprint 4.786 s and full evidence verification 6.229 s. These separate observations are not a controlled full-startup speedup claim. The after run observed control readiness at 10.097 s, inference readiness at 13.390 s and first content 0.706 s after readiness. Its failed pre-change counterpart remains excluded. See [combined evidence](evaluation/fingerprint-optimization-20261023.json).
+
+Regression verification passed 35 upstream compatibility/evidence/fingerprint tests, including missing/looping/retargeted paths, non-native fallback, sibling-prefix/external-directory rejection, content writes with restored mtime and additions during hashing. Soliton's 69 Rust tests passed. The [patch](../patches/vllm-apple-fingerprint.patch) and [base/apply instructions](../patches/README.md) preserve the independently managed checkout changes; applying it to a frozen clean base reproduced both modified files exactly. The reference worker is measurement-only and is not selected by the application.
+
+Reproduce with the selected backend's adjacent Python; preserve its interpreter symlink so the virtual environment is not discarded:
+
+```sh
+python3 scripts/benchmark-fingerprint.py --python /opt/homebrew/opt/vllm-metal/libexec/bin/python --executable /opt/homebrew/opt/vllm-metal/libexec/bin/mlx_lm.server --before scripts/fixtures/fingerprint-reference.py --after vLLM-apple/vllm_apple/backend_fingerprint.py --output /tmp/fingerprint-comparison.json
+```
+
+日本語: 全ファイルを毎回読み直す指紋計算を、パス処理の改善で9.35→6.22秒（33.5%短縮）にしました。6回すべてのSHA-256が一致し、変更検出・上限・外部パス拒否を維持します。以前の証跡は環境の不一致で正しく拒否され、変更後は新しい30分検証が5223件成功・失敗0件で合格しました。Solitonの実推論・正確な上限拒否・排他稼働・回収も通過し、通常起動の証跡設定だけを更新しました。起動全体の前後比較は主張しません。
+
+简体中文：通过优化路径处理，每次完整读取全部文件的指纹计算9.35→6.22秒（降低33.5%）。六次SHA-256完全一致，保留变更检测、限制及外部路径拒绝。旧证据因环境不匹配被正确拒绝，修改后的新30分钟验证5223次全部成功、零失败。Soliton真实推理、准确上下文拒绝、引擎互斥及回收通过，仅更新正常启动的证据设置。不声称完整启动时间的前后加速。
+
+## Multilingual exact context matrix — 2026-10-23
+
+Run the existing isolated shared-Rust real-model suite with the additional matrix:
+
+```sh
+SOLITON_BENCHMARK_RUNTIME=headless SOLITON_EXPECT_PREWARM=1 \
+SOLITON_FIRST_STREAM=1 SOLITON_CONTEXT_MATRIX=1 \
+node scripts/token-count-benchmark.mjs after target/debug/studio-server \
+  docs/benchmarks/context-matrix-NEW.json
+```
+
+English: The matrix measures the actual prompt usage first, then reserves exactly `context - prompt_tokens` output tokens. EN/JA/ZH retrievals, each with and without a synthetic earlier conversation, exercise both ordinary JSON and SSE responses. Every condition must return the exact identifier at the boundary and HTTP 422 `context_length_exceeded` with one additional reserved token. Stream runs require a normal `[DONE]` terminator and reject error frames. The fixture requires a 32–511-token output reservation; it fails explicitly outside that range instead of silently adapting an unqualified profile. Reports contain counts and timings, not prompts or conversation content. This expands coverage within the existing 1,024-token/concurrency-one evidence; it does not certify a larger context or extend evidence expiry.
+
+日本語: 実際のprompt usageから出力予約数を算出し、英語・日本語・简体中文、履歴あり／なし、JSON／SSEの12条件で境界を検証します。上限ちょうどでは識別子の完全一致、1トークン超過では推論前の422拒否を必須とします。既存の1,024トークン・同時実行1の証跡内の検証であり、上限や有効期限は変更しません。
+
+简体中文：根据实际prompt usage计算输出预留量，验证英日中三种语言、带历史／无历史、JSON／SSE共12种条件。恰好达到上限时必须准确回答，多预留一个token时必须返回422。验证范围仍为已有证据的1024 token、并发1，不扩大上下文，也不延长证据有效期。
+
+Verified report: [context-matrix-verified-20261023.json](benchmarks/context-matrix-verified-20261023.json), `passed: true`: 12 boundary answers, 12 overflow refusals, six probe answers, and the original 24 answers/six refusals passed. Counter failure stays latched until explicit restart; Stop, Strata-mock switching and headless SIGINT reap owned processes. User state and evidence hashes remain unchanged. The initial [incomplete run](benchmarks/context-matrix-20261023.json) is retained as `passed: false`: its missing explicit language selection exercised English only, and the coverage assertion prevented a false pass. Neither run measures a before/after performance improvement.
+
+## Qualified context expansion — 2026-10-24
+
+The candidate raises the exact Gemma 2 2B 4-bit installation's total input plus requested output reservation from 1,024 to 4,096 tokens, at concurrency one. The model, backend, dependency files, runtime, environment identity and normal compatibility matrix stay unchanged. Fresh full qualification is mandatory; the old 1,024 evidence cannot authorize 4,096, and new 4,096 evidence cannot authorize 4,097. Owner-only copies of the unchanged original qualification report and actual Soliton startup refusals are retained in [qualification](evaluation/soliton-vllm-apple-context4096-20261024.json) and [startup gates](evaluation/context4096-startup-gates-20261024.json).
+
+The extended `SOLITON_CONTEXT_MATRIX=1` runner uses a bounded search over synthetic record lengths. It uses actual response-reported token counts to select 3,968–4,064-token prompts, reserves the remainder exactly, and verifies one-token-over refusal for both JSON and SSE. Three query languages, beginning/middle/end identifier placements, single messages or six prior user/assistant pairs plus the final question (13 messages), and three repeated rounds yield 108 boundary answers and 108 expected refusals. The latest question contains no identifier in the history cases. Oversized search probes must refuse specifically for context overflow; accepted probes must answer exactly. It requires normal SSE termination, samples owned RSS and Rust engine physical footprint, and verifies bounded shared request telemetry. Fixed earlier 64-row overflow fixtures are now expected to fit at 4,096; historical 1,024 runs keep their original refusal expectations. All inference is serial through the shared Rust gateway.
+
+Use an isolated seed with the candidate context and matching fresh evidence; this does not change normal preferences:
+
+```sh
+SOLITON_NATIVE_STATE=/absolute/path/to/private-candidate-state.json \
+SOLITON_REAL_EVIDENCE=/absolute/path/to/fresh-4096-evidence.json \
+SOLITON_BENCHMARK_RUNTIME=headless SOLITON_EXPECT_PREWARM=1 \
+SOLITON_FIRST_STREAM=1 SOLITON_CONTEXT_MATRIX=1 \
+node scripts/token-count-benchmark.mjs after target/debug/studio-server /tmp/context4096-NEW.json
+npm run test:context-matrix
+```
+
+`activate-context-profile.py` is an explicit preference migration for this measured 4,096 profile. It requires the complete passing matrix, matching evidence hashes, actual Soliton refusal reports, no live preferences owner, and the original full startup verifier against each state's current model/backend/environment. It backs up original bytes and atomically changes only `settings.vllm.context` and `settings.vllm.evidence`, preserving documents and other preferences. It rejects optimized Python (`-O`) so assertions cannot be disabled. New installations retain the conservative 1,024 default and must supply their own valid evidence.
+
+The 30-minute qualification workload is mixed short text under a 4,096 configured bound. The separate near-limit matrix tests repeated long inputs; it is not a claim of a 30-minute near-limit workload, arbitrary long-document comprehension, all model families, another Mac, larger contexts, GUI interaction at 4,096, or performance improvement. RSS snapshots and physical footprint are distinct measurements; per-request snapshots are not continuous GPU allocation peaks. The older `test:real-model` GUI suite remains a 1,024-scope fixture requiring matching 1,024 evidence; use the extended headless matrix for this expansion.
+
+
+Verified result: [consolidated evidence](evaluation/context-expansion-20261024.json), [real Soliton matrix](benchmarks/context4096-matrix-20261024.json), [actual-fixture full token-ID parity](evaluation/context4096-token-parity-20261024.json). Qualification passed 1800.106 s with 5918/5918 successes, zero failures, 16 MiB peak RSS growth and clean shutdown; the complete identity equals the previous 1,024 profile. The separate long matrix passed in 598.083 s: 108/108 exact boundary answers and 108/108 expected one-token-over refusals, actual input 3,970–4,033 tokens. All 24 previous accepted prompt counts match; all six previous overflow cases now answer exactly. Eighteen actual long fixtures match the original tokenizer's full IDs, in addition to 211 raw/844 chat cases, three malformed-role rejections and six fallback guards. Node tests: 22; upstream evidence/fingerprint/compatibility tests: 35.
+
+All 108 owned-tree memory samples succeeded: sampled RSS maximum 2,037.98 MiB, engine physical footprint maximum 7,813.60 MiB (7.63 GiB), minimum system available memory 7.76 GiB; retained counter RSS at the final sample was 33.30 MiB. These are different memory scopes, not a memory-reduction comparison or continuous allocation peaks. Shared API telemetry remains capped at 100 records with long prompt usage retained. Counter failure refuses/latches until explicit restart; Stop, Strata-mock switch and headless SIGINT remove the owned tree. Both ordinary native/headless preferences now select context 4,096 and the fresh evidence, with original-byte backups and no document/other-preference changes. Startup still revalidates in full; evidence expires 2026-10-31 12:30:03 JST while identity remains unchanged.
+
+日本語: コンテキスト合計を1,024→4,096へ拡大しました。30分の短文混合試験は5,918件成功・失敗0件。別途、約10分の長文・13メッセージ履歴試験で、108件の完全一致と108件の1トークン超過拒否を確認しました。入力は3,970〜4,033トークンで、元のTokenizerとの全ID一致も確認しています。通常設定のcontextと証跡だけを更新し、会話・他の設定・排他稼働・互換性検査を維持しました。エンジンのphysical footprintは最大約7.63 GiBを観測しており、次は長文時のKV／prompt cacheのメモリと解放を検証します。新規環境の既定値は1,024です。
+
+简体中文：上下文总量从1024扩展到4096。30分钟短文本混合测试5918次成功、零失败；另行约10分钟的长文本及13条消息历史测试，108次边界回答完全正确，108次多预留一个token的请求均被拒绝。实际输入3970–4033 token，全部token ID与原Tokenizer一致。只更新正常配置的context和证据，保留会话、其他设置、互斥运行和完整兼容性检查。观察到引擎physical footprint最高约7.63 GiB，下一步测量长历史的KV／prompt cache内存和回收。新环境默认值仍为1024。
+
+## Diverse long-history cache memory — 2026-10-24
+
+The opt-in `SOLITON_CACHE_MEMORY=1` workload uses the existing isolated shared-Rust real-model runner. It keeps context 4,096, concurrency one, complete startup evidence verification and per-request exact CPU counting. Sixteen deterministic early prefixes cover EN/JA/ZH queries and six historical user/assistant pairs plus a final question. The final question contains no identifier. Each response must return the exact identifier; repeated instances must report identical input counts. Missing `prompt_tokens_details.cached_tokens` fails rather than becoming zero.
+
+The protocol first measures a cold anchor and immediate reuse, checks exact total 4,096 acceptance / 4,097 refusal, then runs two rounds of fifteen other histories followed by anchor revisit/reheat and recent-history reuse. Reuse loss after churn is consistent with eviction under the installed default ten-entry cache, not direct cache-inventory proof. All inference stays serial. The runner samples owned RSS, engine physical footprint and system available-memory estimates after each request, then at 0/5/10 idle seconds; low available memory stops the test rather than forcing OS pressure. Stop must remove the owned tree and clear the native engine footprint. Shared cache-usage telemetry, counter-failure latching/recovery, Strata-mock switching and SIGINT cleanup remain tested. It does not certify byte-level KV accounting, continuous GPU allocation peaks, a memory cap, forced-pressure behavior, or memory/performance reduction.
+
+```sh
+SOLITON_REAL_EVIDENCE=/absolute/path/to/fresh-matching-evidence.json \
+SOLITON_BENCHMARK_RUNTIME=headless SOLITON_EXPECT_PREWARM=1 \
+SOLITON_FIRST_STREAM=1 SOLITON_CACHE_MEMORY=1 \
+node scripts/token-count-benchmark.mjs after target/debug/studio-server /tmp/cache-memory-NEW.json
+npm run test:cache-memory
+```
+
+The initial [refused run](benchmarks/cache-memory-20261024.json) has `passed: false` and no inference cases: current login/tool environments include `PYTORCH_ENABLE_MPS_FALLBACK=1`, while the previous proof bound an empty set of relevant flags. Model/backend/runtime identity is unchanged. The flag was not removed to reuse old approval; fresh full qualification is required for this environment. The benchmark now fails promptly when its supervised engine exits before readiness, instead of polling until the ready timeout. Failed startup is not a memory baseline.
+
+日本語: 16種類の長文履歴を直列で2巡し、再利用・追い出し後の再計算・再加熱・10秒アイドル後の保持量を測ります。件数とバイトの上限、実際のKV使用量、RSS、physical footprintは別の値です。再利用トークン数が減っただけで「物理メモリを解放した」とは判断しません。通常の正確な事前計数・完全な証跡検査・排他稼働を維持し、会話を含む通常設定にはテストデータを書きません。
+
+简体中文：串行执行两轮、16种长历史，测量复用、轮换后的重新计算、再次复用及空闲10秒后的内存。条目上限、字节上限、KV用量、RSS和physical footprint是不同指标；复用token减少不代表物理内存已释放。保留准确预先计数、完整证据检查和引擎互斥，不把测试内容写入正常会话配置。
+
+
+Verified: [summary](evaluation/cache-memory-20261024.json), [real workload](benchmarks/cache-memory-verified-20261024.json), [full-ID parity](evaluation/cache-memory-token-parity-20261024.json), [environment-only change](evaluation/cache-memory-identity-20261024.json), [startup bounds](evaluation/cache-memory-startup-gates-20261024.json), [fresh full qualification](evaluation/soliton-vllm-apple-cache-memory-env-20261024.json). The fresh current-environment report passed 1800.675 seconds, 5978/5978 requests, zero failures, 15.27 MiB peak RSS growth and clean shutdown. Earlier proof remains unchanged and is correctly rejected in the changed environment. The [fast refusal](benchmarks/cache-memory-fast-refusal-20261024.json) completed in about 11.2 seconds with zero inference cases, preserving `passed: false`.
+
+The separate cache workload passed in 375.261 seconds: 38/38 exact answers, 3,930–3,937 input tokens, 16 histories, two anchor reuse losses after churn and successful reheat/recent-history reuse. Exact total 4,096 was accepted and 4,097 refused. Full token-ID parity passed for every actual fixture, plus 211 raw/844 chat cases, three malformed-role rejections and six fallback guards. The common Rust request log retained 70 API records and correctly reported cached-token values 4–3,934. Counter failure stayed latched until explicit restart; Stop, Strata-mock switching, recovery and SIGINT cleanup passed. Tests: 26 Node, two profile-refresh rejection tests, 35 upstream evidence/fingerprint/compatibility tests.
+
+| Observed phase | Anchor reused tokens | Engine physical footprint |
+| --- | ---: | ---: |
+| Before long-history workload (already warmed by short cases) | — | 2.82 GiB |
+| First anchor | 4 / 3,935 | 3.63 GiB |
+| Immediate anchor reuse | 3,934 / 3,935 | 4.59 GiB |
+| End of first churn/revisit/reheat cycle | recent history: 3,934 / 3,935 | 6.54 GiB |
+| End of second cycle | recent history: 3,934 / 3,935 | 7.96 GiB |
+| Ten seconds idle | no inference | 7.91 GiB |
+| Stop | no model/counter processes | no engine footprint sample |
+
+Both anchor revisits reused only eight tokens, then reheated to 3,934. Cache misses after churn and memory retention are different observations; this does not prove exact cache inventory, leaked allocations, or which bytes belong to retained KV versus MLX allocator cache. Sampled owned-tree RSS reached 2,423.44 MiB; system available-memory estimate stayed at least 6.62 GiB. Native physical footprint includes memory outside RSS; neither is unique KV bytes. No forced-pressure test or before/after memory reduction is claimed. The next intervention is a measured byte budget, with allocator policy assessed separately and a fresh certification for any runtime/environment change.
+
+Ordinary native/headless preferences now use `.soliton-runtime/gemma2-cache-memory-env-20261024.json`; only the evidence path changed, with byte-for-byte original backups and unchanged context 4,096, documents and other settings. Evidence expires 2026-10-31 18:31:45 JST if the measured environment/model/backend/runtime/Mac stays identical. The activation tool's cache-workload path is restricted to refreshing an already-certified 4,096 profile when only environment identity changes; raising context or changing any other identity requires the complete long-context matrix. It still runs the original full startup verifier for each state before writing.
+
+日本語: 38件の長文要求はすべて正答し、2巡とも再利用数が3,934→8→3,934へ変化しました。ただしphysical footprintは最大7.96 GiB、10秒アイドル後も7.91 GiBを保持しており、追い出しだけでは物理メモリの解放を意味しません。停止後は所有プロセスとエンジン計測が消えました。現在の環境変数を含む30分再認証は5,978件成功・失敗0件で合格し、通常設定は証跡パスだけ更新、コンテキスト4,096・会話・他の設定・排他稼働を維持しました。次は保持KVのバイト上限とアロケータを分けて検証します。
+
+简体中文：38次长文本请求全部准确，两轮复用数均为3934→8→3934。但physical footprint最高7.96 GiB，空闲10秒后仍保持7.91 GiB；复用下降不表示物理内存已经释放。停止后所属进程和引擎内存样本均消失。包含当前环境变量的完整30分钟再认证5978次成功、零失败。正常配置只更新证据路径，保留4096上下文、会话、其他设置和引擎互斥。下一步分别验证保留KV的字节上限和分配器缓存。

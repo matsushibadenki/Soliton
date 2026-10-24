@@ -101,3 +101,5 @@ Strata 0.2.1系の `9de04cd4`（ソース版0.1.46.3）に対応しました。[
 [vLLM-Appleの証跡検証と実モデル試験](docs/VLLM_APPLE.md)。
 
 現在のGemma 2 2Bは、既存のidentity-bound証跡を使ってSoliton.appで実推論を確認済みです。対象環境と7日ごとの証跡更新手順は上記を参照してください。
+
+現在のStrataソースは0.2.4、Tauriは2.12.5です。[依存更新と検証範囲](docs/DEPENDENCY_UPDATE_20261024.md)を参照してください。旧0.2.1の実推論結果は新エンジンの認定ではありません。

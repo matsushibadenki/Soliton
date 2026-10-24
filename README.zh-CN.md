@@ -97,3 +97,5 @@ Release构建面向Apple Silicon。发布签名与公证需要Apple开发者凭�
 [vLLM-Apple证据验证与真实模型测试](docs/VLLM_APPLE.md)。
 
 当前Gemma 2 2B已通过既有identity-bound证据机制，在Soliton.app中验证真实推理。具体环境及七天证据更新流程请参见上述文档。
+
+当前Strata源码为0.2.4，Tauri为2.12.5。参见[依赖更新与验证范围](docs/DEPENDENCY_UPDATE_20261024.md)。旧0.2.1的真实推理结果不能认证新引擎。

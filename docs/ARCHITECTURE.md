@@ -131,3 +131,19 @@ The Rust-owned transient `startup` snapshot records `controlReadyObservedMs`, `c
 日本語: 起動検査後の認証済み`control_ready`を確認した時点で、モデル読込と並行して計数プロセスを先行起動します。入力や計数結果は作らず、実要求の正確な計数・異常時拒否・再起動時の再検査は維持します。起動時間はRust共有状態に観測値として保持し、検査結果のキャッシュには使いません。初回チャット前からtokenizer分のメモリを保持する点がトレードオフです。
 
 简体中文：确认启动检查后的已认证`control_ready`后，在模型加载期间提前启动计数进程，不构造输入或计数结果。真实请求仍执行准确计数、异常拒绝及重启重新检查。Rust共享状态记录启动阶段的观测时间，不缓存兼容性批准。代价是在首次聊天前就保留tokenizer内存。
+
+Backend fingerprint path processing uses a reviewable [local upstream patch](../patches/README.md): macOS invokes the system strict `realpath` for every resolution and uses separator-bounded normalized POSIX containment. It does not retain path results, file digests or approvals. Full content reads, file mutation checks, isolated probe, inventory recheck and limits remain unchanged. Each returned native allocation is freed; missing/looping/inaccessible paths fail closed. Non-native fallback retains pathlib. Native canonical spelling can differ on case-aliased paths, and wrapper changes require fresh qualification regardless of matching backend content digests. The 2026-10-23 full certification binds this changed runtime and current environment. Settings retain the new private evidence path; the old report is preserved rather than edited.
+
+日本語: パス解決はmacOSの厳密な標準APIへ置き換えますが、毎回の全内容検査・変更検出・上限・再走査を維持します。結果のキャッシュや古い証跡の書き換えは行いません。変更したruntimeと現在の環境を新しい30分証跡に結び付けています。
+
+简体中文：路径解析改用macOS严格系统API，保留每次完整内容检查、变更检测、限制及重扫。不缓存结果、不改写旧证据；修改后的runtime及当前环境由新的30分钟证据绑定。
+
+
+The 2026-10-24 measured M4/Gemma profile raises the selected total context to 4,096 using new identity-bound evidence; the generic default remains 1,024. The guarded activation script consumes passing real workload/startup-refusal reports and invokes the original full startup verifier before atomically changing only context/evidence preferences. It preserves documents, requires stopped preferences owners and stores original-byte backups. Thirty-minute short-text qualification and the separate near-limit repeated workload are reported separately. See [scope and memory measurements](BENCHMARKS.md#qualified-context-expansion--2026-10-24).
+
+日本語: 4,096は実証済みの個別設定です。新規既定値は1,024を維持し、反映前も通常起動時も元の完全な証跡検査を実行します。会話や他の設定を変更せず、エンジンの同時常駐を許可しません。
+
+简体中文：4096是此环境的实测配置；新环境默认仍为1024。应用配置前及正常启动时均执行原有完整证据检查，不修改会话和其他设置，也不允许两套引擎同时常驻。
+
+
+The cache-memory workload samples backend-reported `prompt_tokens_details.cached_tokens` and native owned-tree RSS/engine physical footprint without changing backend cache policy. Missing accounting fails the measurement. Reuse loss after prefix churn is an observation consistent with eviction; it is not direct KV inventory or proof of physical memory release. Normal counter reuse still caches no request/answer/count data. The 2026-10-24 current environment adds `PYTORCH_ENABLE_MPS_FALLBACK=1`, so complete qualification was rerun rather than bypassing identity checks. An environment-only refresh at an existing certified 4,096 bound requires the prior valid identity, passing cache/lifecycle/boundary reports and the original full startup verifier; other identity changes require the full matrix. Documents and other preferences remain unchanged. [Results](BENCHMARKS.md#diverse-long-history-cache-memory--2026-10-24).

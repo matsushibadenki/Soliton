@@ -1,0 +1,4413 @@
+{
+  "schema": 1,
+  "passed": true,
+  "environment": {
+    "architecture": "arm64",
+    "loadAverageAtStart": [
+      2.90380859375,
+      3.08837890625,
+      3.185546875
+    ],
+    "loadAverageAtEnd": [
+      1.89013671875,
+      2.15283203125,
+      2.59228515625
+    ]
+  },
+  "binarySha256": "15ae9d354e640abe57407e7cf54bc236bc6bf44405d29299c1f00317491c2d1e",
+  "label": "after",
+  "runtime": "shared Rust headless core",
+  "startedAt": "2026-10-24T03:30:26.897Z",
+  "evidenceSha256": "12e5dd5d1120ef61f4e79c73e7c8f9ec5902570d57f1b01245973d0d45dc6f51",
+  "context": 4096,
+  "settingsFingerprint": "df1800f9aa40b3c5a8daafe1779d20fd880847cc26136ff2f0a91170a9bf6926",
+  "cases": [
+    {
+      "round": 0,
+      "language": "en",
+      "kind": "retrieval",
+      "rows": 0,
+      "status": 200,
+      "elapsedMs": 408.099,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 32,
+        "completion_tokens": 10,
+        "total_tokens": 42,
+        "prompt_tokens_details": {
+          "cached_tokens": 4
+        }
+      }
+    },
+    {
+      "round": 0,
+      "language": "en",
+      "kind": "retrieval",
+      "rows": 32,
+      "status": 200,
+      "elapsedMs": 1744.509,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 535,
+        "completion_tokens": 10,
+        "total_tokens": 545,
+        "prompt_tokens_details": {
+          "cached_tokens": 4
+        }
+      }
+    },
+    {
+      "round": 0,
+      "language": "en",
+      "kind": "retrieval",
+      "rows": 58,
+      "status": 200,
+      "elapsedMs": 2184.175,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 951,
+        "completion_tokens": 10,
+        "total_tokens": 961,
+        "prompt_tokens_details": {
+          "cached_tokens": 251
+        }
+      }
+    },
+    {
+      "round": 0,
+      "language": "en",
+      "kind": "retrieval",
+      "rows": 64,
+      "status": 200,
+      "elapsedMs": 1941.239,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 1047,
+        "completion_tokens": 10,
+        "total_tokens": 1057,
+        "prompt_tokens_details": {
+          "cached_tokens": 459
+        }
+      }
+    },
+    {
+      "round": 0,
+      "language": "en",
+      "kind": "multi-turn",
+      "rows": null,
+      "status": 200,
+      "elapsedMs": 648.555,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 54,
+        "completion_tokens": 11,
+        "total_tokens": 65,
+        "prompt_tokens_details": {
+          "cached_tokens": 4
+        }
+      }
+    },
+    {
+      "round": 0,
+      "language": "ja",
+      "kind": "retrieval",
+      "rows": 0,
+      "status": 200,
+      "elapsedMs": 547.905,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 34,
+        "completion_tokens": 10,
+        "total_tokens": 44,
+        "prompt_tokens_details": {
+          "cached_tokens": 4
+        }
+      }
+    },
+    {
+      "round": 0,
+      "language": "ja",
+      "kind": "retrieval",
+      "rows": 32,
+      "status": 200,
+      "elapsedMs": 1090.507,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 537,
+        "completion_tokens": 10,
+        "total_tokens": 547,
+        "prompt_tokens_details": {
+          "cached_tokens": 251
+        }
+      }
+    },
+    {
+      "round": 0,
+      "language": "ja",
+      "kind": "retrieval",
+      "rows": 58,
+      "status": 200,
+      "elapsedMs": 1863.376,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 953,
+        "completion_tokens": 10,
+        "total_tokens": 963,
+        "prompt_tokens_details": {
+          "cached_tokens": 459
+        }
+      }
+    },
+    {
+      "round": 0,
+      "language": "ja",
+      "kind": "retrieval",
+      "rows": 64,
+      "status": 200,
+      "elapsedMs": 1728.814,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 1049,
+        "completion_tokens": 10,
+        "total_tokens": 1059,
+        "prompt_tokens_details": {
+          "cached_tokens": 507
+        }
+      }
+    },
+    {
+      "round": 0,
+      "language": "ja",
+      "kind": "multi-turn",
+      "rows": null,
+      "status": 200,
+      "elapsedMs": 613.148,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 53,
+        "completion_tokens": 11,
+        "total_tokens": 64,
+        "prompt_tokens_details": {
+          "cached_tokens": 6
+        }
+      }
+    },
+    {
+      "round": 0,
+      "language": "zh",
+      "kind": "retrieval",
+      "rows": 0,
+      "status": 200,
+      "elapsedMs": 560.095,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 27,
+        "completion_tokens": 10,
+        "total_tokens": 37,
+        "prompt_tokens_details": {
+          "cached_tokens": 4
+        }
+      }
+    },
+    {
+      "round": 0,
+      "language": "zh",
+      "kind": "retrieval",
+      "rows": 32,
+      "status": 200,
+      "elapsedMs": 1021.66,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 530,
+        "completion_tokens": 10,
+        "total_tokens": 540,
+        "prompt_tokens_details": {
+          "cached_tokens": 251
+        }
+      }
+    },
+    {
+      "round": 0,
+      "language": "zh",
+      "kind": "retrieval",
+      "rows": 58,
+      "status": 200,
+      "elapsedMs": 1923.871,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 946,
+        "completion_tokens": 10,
+        "total_tokens": 956,
+        "prompt_tokens_details": {
+          "cached_tokens": 459
+        }
+      }
+    },
+    {
+      "round": 0,
+      "language": "zh",
+      "kind": "retrieval",
+      "rows": 64,
+      "status": 200,
+      "elapsedMs": 1770.183,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 1042,
+        "completion_tokens": 10,
+        "total_tokens": 1052,
+        "prompt_tokens_details": {
+          "cached_tokens": 507
+        }
+      }
+    },
+    {
+      "round": 0,
+      "language": "zh",
+      "kind": "multi-turn",
+      "rows": null,
+      "status": 200,
+      "elapsedMs": 568.982,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 48,
+        "completion_tokens": 11,
+        "total_tokens": 59,
+        "prompt_tokens_details": {
+          "cached_tokens": 4
+        }
+      }
+    },
+    {
+      "round": 1,
+      "language": "en",
+      "kind": "retrieval",
+      "rows": 0,
+      "status": 200,
+      "elapsedMs": 455.664,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 32,
+        "completion_tokens": 10,
+        "total_tokens": 42,
+        "prompt_tokens_details": {
+          "cached_tokens": 4
+        }
+      }
+    },
+    {
+      "round": 1,
+      "language": "en",
+      "kind": "retrieval",
+      "rows": 32,
+      "status": 200,
+      "elapsedMs": 983.939,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 535,
+        "completion_tokens": 10,
+        "total_tokens": 545,
+        "prompt_tokens_details": {
+          "cached_tokens": 251
+        }
+      }
+    },
+    {
+      "round": 1,
+      "language": "en",
+      "kind": "retrieval",
+      "rows": 58,
+      "status": 200,
+      "elapsedMs": 1842.751,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 951,
+        "completion_tokens": 10,
+        "total_tokens": 961,
+        "prompt_tokens_details": {
+          "cached_tokens": 459
+        }
+      }
+    },
+    {
+      "round": 1,
+      "language": "en",
+      "kind": "retrieval",
+      "rows": 64,
+      "status": 200,
+      "elapsedMs": 1705.317,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 1047,
+        "completion_tokens": 10,
+        "total_tokens": 1057,
+        "prompt_tokens_details": {
+          "cached_tokens": 507
+        }
+      }
+    },
+    {
+      "round": 1,
+      "language": "en",
+      "kind": "multi-turn",
+      "rows": null,
+      "status": 200,
+      "elapsedMs": 517.048,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 54,
+        "completion_tokens": 11,
+        "total_tokens": 65,
+        "prompt_tokens_details": {
+          "cached_tokens": 4
+        }
+      }
+    },
+    {
+      "round": 1,
+      "language": "ja",
+      "kind": "retrieval",
+      "rows": 0,
+      "status": 200,
+      "elapsedMs": 432.216,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 34,
+        "completion_tokens": 10,
+        "total_tokens": 44,
+        "prompt_tokens_details": {
+          "cached_tokens": 4
+        }
+      }
+    },
+    {
+      "round": 1,
+      "language": "ja",
+      "kind": "retrieval",
+      "rows": 32,
+      "status": 200,
+      "elapsedMs": 939.19,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 537,
+        "completion_tokens": 10,
+        "total_tokens": 547,
+        "prompt_tokens_details": {
+          "cached_tokens": 251
+        }
+      }
+    },
+    {
+      "round": 1,
+      "language": "ja",
+      "kind": "retrieval",
+      "rows": 58,
+      "status": 200,
+      "elapsedMs": 2026.159,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 953,
+        "completion_tokens": 10,
+        "total_tokens": 963,
+        "prompt_tokens_details": {
+          "cached_tokens": 459
+        }
+      }
+    },
+    {
+      "round": 1,
+      "language": "ja",
+      "kind": "retrieval",
+      "rows": 64,
+      "status": 200,
+      "elapsedMs": 1807.387,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 1049,
+        "completion_tokens": 10,
+        "total_tokens": 1059,
+        "prompt_tokens_details": {
+          "cached_tokens": 507
+        }
+      }
+    },
+    {
+      "round": 1,
+      "language": "ja",
+      "kind": "multi-turn",
+      "rows": null,
+      "status": 200,
+      "elapsedMs": 532.385,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 53,
+        "completion_tokens": 11,
+        "total_tokens": 64,
+        "prompt_tokens_details": {
+          "cached_tokens": 6
+        }
+      }
+    },
+    {
+      "round": 1,
+      "language": "zh",
+      "kind": "retrieval",
+      "rows": 0,
+      "status": 200,
+      "elapsedMs": 449.022,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 27,
+        "completion_tokens": 10,
+        "total_tokens": 37,
+        "prompt_tokens_details": {
+          "cached_tokens": 4
+        }
+      }
+    },
+    {
+      "round": 1,
+      "language": "zh",
+      "kind": "retrieval",
+      "rows": 32,
+      "status": 200,
+      "elapsedMs": 976.165,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 530,
+        "completion_tokens": 10,
+        "total_tokens": 540,
+        "prompt_tokens_details": {
+          "cached_tokens": 251
+        }
+      }
+    },
+    {
+      "round": 1,
+      "language": "zh",
+      "kind": "retrieval",
+      "rows": 58,
+      "status": 200,
+      "elapsedMs": 2004.354,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 946,
+        "completion_tokens": 10,
+        "total_tokens": 956,
+        "prompt_tokens_details": {
+          "cached_tokens": 459
+        }
+      }
+    },
+    {
+      "round": 1,
+      "language": "zh",
+      "kind": "retrieval",
+      "rows": 64,
+      "status": 200,
+      "elapsedMs": 1730.244,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 1042,
+        "completion_tokens": 10,
+        "total_tokens": 1052,
+        "prompt_tokens_details": {
+          "cached_tokens": 507
+        }
+      }
+    },
+    {
+      "round": 1,
+      "language": "zh",
+      "kind": "multi-turn",
+      "rows": null,
+      "status": 200,
+      "elapsedMs": 539.893,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 48,
+        "completion_tokens": 11,
+        "total_tokens": 59,
+        "prompt_tokens_details": {
+          "cached_tokens": 4
+        }
+      }
+    }
+  ],
+  "checks": {
+    "counterOverlapsModelLoadingAfterQualification": true,
+    "exactContextBoundary": true,
+    "counterFailureClosedAndLatched": true,
+    "stopReapsCounter": true,
+    "stopReapsWholeTree": true,
+    "noCounterWithStrata": true,
+    "stateAndEvidencePreserved": true,
+    "headlessSignalReapsTree": true,
+    "restartAfterCounterFailure": true
+  },
+  "startupObservations": [
+    {
+      "elapsedMs": 31.729499999999973,
+      "phase": "starting/false",
+      "counterProcesses": 0
+    },
+    {
+      "elapsedMs": 9304.294917,
+      "phase": "starting/true",
+      "counterProcesses": 1
+    },
+    {
+      "elapsedMs": 12145.6905,
+      "phase": "ready/true",
+      "counterProcesses": 1
+    }
+  ],
+  "startup": {
+    "controlReadyObservedMs": 9281,
+    "counterSpawnedMs": 9281,
+    "inferenceReadyObservedMs": 12121,
+    "modelLoadingObservedMs": 2840
+  },
+  "engineStartupMs": 12165.92925,
+  "coldStream": {
+    "firstContentMs": 502.4877499999984,
+    "completedMs": 577.5420829999985,
+    "engineStartToFirstContentMs": 12668.416999999998,
+    "exact": true
+  },
+  "contextMatrix": {
+    "passed": true,
+    "startedAt": "2026-10-24T03:31:15.628Z",
+    "elapsedMs": 598083.475917,
+    "rounds": 3,
+    "reservationCeiling": 128,
+    "probes": [
+      {
+        "language": "en",
+        "history": false,
+        "position": "start",
+        "rows": 246,
+        "status": 422
+      },
+      {
+        "language": "en",
+        "history": false,
+        "position": "start",
+        "rows": 122,
+        "status": 200
+      },
+      {
+        "language": "en",
+        "history": false,
+        "position": "start",
+        "rows": 184,
+        "status": 200
+      },
+      {
+        "language": "en",
+        "history": false,
+        "position": "start",
+        "rows": 215,
+        "status": 200
+      },
+      {
+        "language": "en",
+        "history": false,
+        "position": "start",
+        "rows": 230,
+        "status": 200
+      },
+      {
+        "language": "en",
+        "history": false,
+        "position": "start",
+        "rows": 238,
+        "status": 200
+      },
+      {
+        "language": "en",
+        "history": false,
+        "position": "middle",
+        "rows": 246,
+        "status": 422
+      },
+      {
+        "language": "en",
+        "history": false,
+        "position": "middle",
+        "rows": 122,
+        "status": 200
+      },
+      {
+        "language": "en",
+        "history": false,
+        "position": "middle",
+        "rows": 184,
+        "status": 200
+      },
+      {
+        "language": "en",
+        "history": false,
+        "position": "middle",
+        "rows": 215,
+        "status": 200
+      },
+      {
+        "language": "en",
+        "history": false,
+        "position": "middle",
+        "rows": 230,
+        "status": 200
+      },
+      {
+        "language": "en",
+        "history": false,
+        "position": "middle",
+        "rows": 238,
+        "status": 200
+      },
+      {
+        "language": "en",
+        "history": false,
+        "position": "end",
+        "rows": 246,
+        "status": 422
+      },
+      {
+        "language": "en",
+        "history": false,
+        "position": "end",
+        "rows": 122,
+        "status": 200
+      },
+      {
+        "language": "en",
+        "history": false,
+        "position": "end",
+        "rows": 184,
+        "status": 200
+      },
+      {
+        "language": "en",
+        "history": false,
+        "position": "end",
+        "rows": 215,
+        "status": 200
+      },
+      {
+        "language": "en",
+        "history": false,
+        "position": "end",
+        "rows": 230,
+        "status": 200
+      },
+      {
+        "language": "en",
+        "history": false,
+        "position": "end",
+        "rows": 238,
+        "status": 200
+      },
+      {
+        "language": "en",
+        "history": true,
+        "position": "start",
+        "rows": 246,
+        "status": 422
+      },
+      {
+        "language": "en",
+        "history": true,
+        "position": "start",
+        "rows": 122,
+        "status": 200
+      },
+      {
+        "language": "en",
+        "history": true,
+        "position": "start",
+        "rows": 184,
+        "status": 200
+      },
+      {
+        "language": "en",
+        "history": true,
+        "position": "start",
+        "rows": 215,
+        "status": 200
+      },
+      {
+        "language": "en",
+        "history": true,
+        "position": "start",
+        "rows": 230,
+        "status": 200
+      },
+      {
+        "language": "en",
+        "history": true,
+        "position": "start",
+        "rows": 238,
+        "status": 200
+      },
+      {
+        "language": "en",
+        "history": true,
+        "position": "middle",
+        "rows": 246,
+        "status": 422
+      },
+      {
+        "language": "en",
+        "history": true,
+        "position": "middle",
+        "rows": 122,
+        "status": 200
+      },
+      {
+        "language": "en",
+        "history": true,
+        "position": "middle",
+        "rows": 184,
+        "status": 200
+      },
+      {
+        "language": "en",
+        "history": true,
+        "position": "middle",
+        "rows": 215,
+        "status": 200
+      },
+      {
+        "language": "en",
+        "history": true,
+        "position": "middle",
+        "rows": 230,
+        "status": 200
+      },
+      {
+        "language": "en",
+        "history": true,
+        "position": "middle",
+        "rows": 238,
+        "status": 200
+      },
+      {
+        "language": "en",
+        "history": true,
+        "position": "end",
+        "rows": 246,
+        "status": 422
+      },
+      {
+        "language": "en",
+        "history": true,
+        "position": "end",
+        "rows": 122,
+        "status": 200
+      },
+      {
+        "language": "en",
+        "history": true,
+        "position": "end",
+        "rows": 184,
+        "status": 200
+      },
+      {
+        "language": "en",
+        "history": true,
+        "position": "end",
+        "rows": 215,
+        "status": 200
+      },
+      {
+        "language": "en",
+        "history": true,
+        "position": "end",
+        "rows": 230,
+        "status": 200
+      },
+      {
+        "language": "en",
+        "history": true,
+        "position": "end",
+        "rows": 238,
+        "status": 200
+      },
+      {
+        "language": "ja",
+        "history": false,
+        "position": "start",
+        "rows": 246,
+        "status": 422
+      },
+      {
+        "language": "ja",
+        "history": false,
+        "position": "start",
+        "rows": 122,
+        "status": 200
+      },
+      {
+        "language": "ja",
+        "history": false,
+        "position": "start",
+        "rows": 184,
+        "status": 200
+      },
+      {
+        "language": "ja",
+        "history": false,
+        "position": "start",
+        "rows": 215,
+        "status": 200
+      },
+      {
+        "language": "ja",
+        "history": false,
+        "position": "start",
+        "rows": 230,
+        "status": 200
+      },
+      {
+        "language": "ja",
+        "history": false,
+        "position": "start",
+        "rows": 238,
+        "status": 200
+      },
+      {
+        "language": "ja",
+        "history": false,
+        "position": "middle",
+        "rows": 246,
+        "status": 422
+      },
+      {
+        "language": "ja",
+        "history": false,
+        "position": "middle",
+        "rows": 122,
+        "status": 200
+      },
+      {
+        "language": "ja",
+        "history": false,
+        "position": "middle",
+        "rows": 184,
+        "status": 200
+      },
+      {
+        "language": "ja",
+        "history": false,
+        "position": "middle",
+        "rows": 215,
+        "status": 200
+      },
+      {
+        "language": "ja",
+        "history": false,
+        "position": "middle",
+        "rows": 230,
+        "status": 200
+      },
+      {
+        "language": "ja",
+        "history": false,
+        "position": "middle",
+        "rows": 238,
+        "status": 200
+      },
+      {
+        "language": "ja",
+        "history": false,
+        "position": "end",
+        "rows": 246,
+        "status": 422
+      },
+      {
+        "language": "ja",
+        "history": false,
+        "position": "end",
+        "rows": 122,
+        "status": 200
+      },
+      {
+        "language": "ja",
+        "history": false,
+        "position": "end",
+        "rows": 184,
+        "status": 200
+      },
+      {
+        "language": "ja",
+        "history": false,
+        "position": "end",
+        "rows": 215,
+        "status": 200
+      },
+      {
+        "language": "ja",
+        "history": false,
+        "position": "end",
+        "rows": 230,
+        "status": 200
+      },
+      {
+        "language": "ja",
+        "history": false,
+        "position": "end",
+        "rows": 238,
+        "status": 200
+      },
+      {
+        "language": "ja",
+        "history": true,
+        "position": "start",
+        "rows": 246,
+        "status": 422
+      },
+      {
+        "language": "ja",
+        "history": true,
+        "position": "start",
+        "rows": 122,
+        "status": 200
+      },
+      {
+        "language": "ja",
+        "history": true,
+        "position": "start",
+        "rows": 184,
+        "status": 200
+      },
+      {
+        "language": "ja",
+        "history": true,
+        "position": "start",
+        "rows": 215,
+        "status": 200
+      },
+      {
+        "language": "ja",
+        "history": true,
+        "position": "start",
+        "rows": 230,
+        "status": 200
+      },
+      {
+        "language": "ja",
+        "history": true,
+        "position": "start",
+        "rows": 238,
+        "status": 200
+      },
+      {
+        "language": "ja",
+        "history": true,
+        "position": "middle",
+        "rows": 246,
+        "status": 422
+      },
+      {
+        "language": "ja",
+        "history": true,
+        "position": "middle",
+        "rows": 122,
+        "status": 200
+      },
+      {
+        "language": "ja",
+        "history": true,
+        "position": "middle",
+        "rows": 184,
+        "status": 200
+      },
+      {
+        "language": "ja",
+        "history": true,
+        "position": "middle",
+        "rows": 215,
+        "status": 200
+      },
+      {
+        "language": "ja",
+        "history": true,
+        "position": "middle",
+        "rows": 230,
+        "status": 200
+      },
+      {
+        "language": "ja",
+        "history": true,
+        "position": "middle",
+        "rows": 238,
+        "status": 200
+      },
+      {
+        "language": "ja",
+        "history": true,
+        "position": "end",
+        "rows": 246,
+        "status": 422
+      },
+      {
+        "language": "ja",
+        "history": true,
+        "position": "end",
+        "rows": 122,
+        "status": 200
+      },
+      {
+        "language": "ja",
+        "history": true,
+        "position": "end",
+        "rows": 184,
+        "status": 200
+      },
+      {
+        "language": "ja",
+        "history": true,
+        "position": "end",
+        "rows": 215,
+        "status": 200
+      },
+      {
+        "language": "ja",
+        "history": true,
+        "position": "end",
+        "rows": 230,
+        "status": 200
+      },
+      {
+        "language": "ja",
+        "history": true,
+        "position": "end",
+        "rows": 238,
+        "status": 200
+      },
+      {
+        "language": "zh",
+        "history": false,
+        "position": "start",
+        "rows": 246,
+        "status": 422
+      },
+      {
+        "language": "zh",
+        "history": false,
+        "position": "start",
+        "rows": 122,
+        "status": 200
+      },
+      {
+        "language": "zh",
+        "history": false,
+        "position": "start",
+        "rows": 184,
+        "status": 200
+      },
+      {
+        "language": "zh",
+        "history": false,
+        "position": "start",
+        "rows": 215,
+        "status": 200
+      },
+      {
+        "language": "zh",
+        "history": false,
+        "position": "start",
+        "rows": 230,
+        "status": 200
+      },
+      {
+        "language": "zh",
+        "history": false,
+        "position": "start",
+        "rows": 238,
+        "status": 200
+      },
+      {
+        "language": "zh",
+        "history": false,
+        "position": "start",
+        "rows": 242,
+        "status": 200
+      },
+      {
+        "language": "zh",
+        "history": false,
+        "position": "middle",
+        "rows": 246,
+        "status": 422
+      },
+      {
+        "language": "zh",
+        "history": false,
+        "position": "middle",
+        "rows": 122,
+        "status": 200
+      },
+      {
+        "language": "zh",
+        "history": false,
+        "position": "middle",
+        "rows": 184,
+        "status": 200
+      },
+      {
+        "language": "zh",
+        "history": false,
+        "position": "middle",
+        "rows": 215,
+        "status": 200
+      },
+      {
+        "language": "zh",
+        "history": false,
+        "position": "middle",
+        "rows": 230,
+        "status": 200
+      },
+      {
+        "language": "zh",
+        "history": false,
+        "position": "middle",
+        "rows": 238,
+        "status": 200
+      },
+      {
+        "language": "zh",
+        "history": false,
+        "position": "middle",
+        "rows": 242,
+        "status": 200
+      },
+      {
+        "language": "zh",
+        "history": false,
+        "position": "end",
+        "rows": 246,
+        "status": 422
+      },
+      {
+        "language": "zh",
+        "history": false,
+        "position": "end",
+        "rows": 122,
+        "status": 200
+      },
+      {
+        "language": "zh",
+        "history": false,
+        "position": "end",
+        "rows": 184,
+        "status": 200
+      },
+      {
+        "language": "zh",
+        "history": false,
+        "position": "end",
+        "rows": 215,
+        "status": 200
+      },
+      {
+        "language": "zh",
+        "history": false,
+        "position": "end",
+        "rows": 230,
+        "status": 200
+      },
+      {
+        "language": "zh",
+        "history": false,
+        "position": "end",
+        "rows": 238,
+        "status": 200
+      },
+      {
+        "language": "zh",
+        "history": false,
+        "position": "end",
+        "rows": 242,
+        "status": 200
+      },
+      {
+        "language": "zh",
+        "history": true,
+        "position": "start",
+        "rows": 246,
+        "status": 422
+      },
+      {
+        "language": "zh",
+        "history": true,
+        "position": "start",
+        "rows": 122,
+        "status": 200
+      },
+      {
+        "language": "zh",
+        "history": true,
+        "position": "start",
+        "rows": 184,
+        "status": 200
+      },
+      {
+        "language": "zh",
+        "history": true,
+        "position": "start",
+        "rows": 215,
+        "status": 200
+      },
+      {
+        "language": "zh",
+        "history": true,
+        "position": "start",
+        "rows": 230,
+        "status": 200
+      },
+      {
+        "language": "zh",
+        "history": true,
+        "position": "start",
+        "rows": 238,
+        "status": 200
+      },
+      {
+        "language": "zh",
+        "history": true,
+        "position": "middle",
+        "rows": 246,
+        "status": 422
+      },
+      {
+        "language": "zh",
+        "history": true,
+        "position": "middle",
+        "rows": 122,
+        "status": 200
+      },
+      {
+        "language": "zh",
+        "history": true,
+        "position": "middle",
+        "rows": 184,
+        "status": 200
+      },
+      {
+        "language": "zh",
+        "history": true,
+        "position": "middle",
+        "rows": 215,
+        "status": 200
+      },
+      {
+        "language": "zh",
+        "history": true,
+        "position": "middle",
+        "rows": 230,
+        "status": 200
+      },
+      {
+        "language": "zh",
+        "history": true,
+        "position": "middle",
+        "rows": 238,
+        "status": 200
+      },
+      {
+        "language": "zh",
+        "history": true,
+        "position": "end",
+        "rows": 246,
+        "status": 422
+      },
+      {
+        "language": "zh",
+        "history": true,
+        "position": "end",
+        "rows": 122,
+        "status": 200
+      },
+      {
+        "language": "zh",
+        "history": true,
+        "position": "end",
+        "rows": 184,
+        "status": 200
+      },
+      {
+        "language": "zh",
+        "history": true,
+        "position": "end",
+        "rows": 215,
+        "status": 200
+      },
+      {
+        "language": "zh",
+        "history": true,
+        "position": "end",
+        "rows": 230,
+        "status": 200
+      },
+      {
+        "language": "zh",
+        "history": true,
+        "position": "end",
+        "rows": 238,
+        "status": 200
+      }
+    ],
+    "memory": [
+      {
+        "elapsedMs": 62207.609375,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 1878944,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 64553656,
+          "sampledAt": 1792812689528,
+          "usedBytes": 5926473136
+        },
+        "systemAvailableBytes": 9732669440
+      },
+      {
+        "elapsedMs": 62697.008167,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 1879536,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 64553656,
+          "sampledAt": 1792812690017,
+          "usedBytes": 6108138928
+        },
+        "systemAvailableBytes": 9641017344
+      },
+      {
+        "elapsedMs": 63192.020542,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 1880704,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 64553656,
+          "sampledAt": 1792812690512,
+          "usedBytes": 6109171120
+        },
+        "systemAvailableBytes": 9641017344
+      },
+      {
+        "elapsedMs": 63692.220084,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 1880784,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 64553656,
+          "sampledAt": 1792812691012,
+          "usedBytes": 6109285808
+        },
+        "systemAvailableBytes": 9654272000
+      },
+      {
+        "elapsedMs": 64220.87575,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 1880848,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 64553656,
+          "sampledAt": 1792812691541,
+          "usedBytes": 6109285808
+        },
+        "systemAvailableBytes": 9654272000
+      },
+      {
+        "elapsedMs": 64749.246375,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 1880816,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 64553656,
+          "sampledAt": 1792812692069,
+          "usedBytes": 6109253040
+        },
+        "systemAvailableBytes": 9703718912
+      },
+      {
+        "elapsedMs": 98211.459167,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 1883696,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 56017592,
+          "sampledAt": 1792812725531,
+          "usedBytes": 7380716976
+        },
+        "systemAvailableBytes": 9082273792
+      },
+      {
+        "elapsedMs": 98765.518,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 1877472,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 56017592,
+          "sampledAt": 1792812726083,
+          "usedBytes": 7554174384
+        },
+        "systemAvailableBytes": 8796307456
+      },
+      {
+        "elapsedMs": 99816.477375,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 1878768,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 56017592,
+          "sampledAt": 1792812727130,
+          "usedBytes": 7555108272
+        },
+        "systemAvailableBytes": 8731394048
+      },
+      {
+        "elapsedMs": 101685.111417,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 1883104,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 55984824,
+          "sampledAt": 1792812728914,
+          "usedBytes": 7558925744
+        },
+        "systemAvailableBytes": 8837038080
+      },
+      {
+        "elapsedMs": 102793.273,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 1883600,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 56017592,
+          "sampledAt": 1792812730107,
+          "usedBytes": 6291246512
+        },
+        "systemAvailableBytes": 10059644928
+      },
+      {
+        "elapsedMs": 103848.5935,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 1883936,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 56017592,
+          "sampledAt": 1792812731163,
+          "usedBytes": 6636817840
+        },
+        "systemAvailableBytes": 9433333760
+      },
+      {
+        "elapsedMs": 115948.080584,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 1883888,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 56017592,
+          "sampledAt": 1792812743266,
+          "usedBytes": 7319375280
+        },
+        "systemAvailableBytes": 8479227904
+      },
+      {
+        "elapsedMs": 116744.558834,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 1883680,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 56017592,
+          "sampledAt": 1792812744062,
+          "usedBytes": 7492685232
+        },
+        "systemAvailableBytes": 8496365568
+      },
+      {
+        "elapsedMs": 117663.071167,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 1883408,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 56017592,
+          "sampledAt": 1792812744907,
+          "usedBytes": 7492685232
+        },
+        "systemAvailableBytes": 8549302272
+      },
+      {
+        "elapsedMs": 118449.048584,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 1883344,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 56017592,
+          "sampledAt": 1792812745765,
+          "usedBytes": 7492685232
+        },
+        "systemAvailableBytes": 8528166912
+      },
+      {
+        "elapsedMs": 119159.244959,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 1883376,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 56017592,
+          "sampledAt": 1792812746476,
+          "usedBytes": 7492685232
+        },
+        "systemAvailableBytes": 8472756224
+      },
+      {
+        "elapsedMs": 119783.207459,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 1883344,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 56017592,
+          "sampledAt": 1792812747100,
+          "usedBytes": 7492685232
+        },
+        "systemAvailableBytes": 8480620544
+      },
+      {
+        "elapsedMs": 168335.37137500002,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 1882304,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 56017592,
+          "sampledAt": 1792812795654,
+          "usedBytes": 7841942960
+        },
+        "systemAvailableBytes": 8549826560
+      },
+      {
+        "elapsedMs": 168796.744834,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 1883280,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 56017592,
+          "sampledAt": 1792812796116,
+          "usedBytes": 8018611632
+        },
+        "systemAvailableBytes": 8427634688
+      },
+      {
+        "elapsedMs": 169263.36133400002,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 1882288,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 56017592,
+          "sampledAt": 1792812796582,
+          "usedBytes": 8017563056
+        },
+        "systemAvailableBytes": 8426979328
+      },
+      {
+        "elapsedMs": 169770.353042,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 1882416,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 56017592,
+          "sampledAt": 1792812797089,
+          "usedBytes": 8017726896
+        },
+        "systemAvailableBytes": 8423718912
+      },
+      {
+        "elapsedMs": 170313.54100000003,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 1883312,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 56017592,
+          "sampledAt": 1792812797632,
+          "usedBytes": 8018578864
+        },
+        "systemAvailableBytes": 8423505920
+      },
+      {
+        "elapsedMs": 171211.54016700003,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 1883328,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 56017592,
+          "sampledAt": 1792812798529,
+          "usedBytes": 8018578864
+        },
+        "systemAvailableBytes": 8344813568
+      },
+      {
+        "elapsedMs": 218366.39154200003,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 1885648,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 56017592,
+          "sampledAt": 1792812845685,
+          "usedBytes": 7939722672
+        },
+        "systemAvailableBytes": 8574435328
+      },
+      {
+        "elapsedMs": 218830.241417,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 1885616,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 56017592,
+          "sampledAt": 1792812846149,
+          "usedBytes": 8115359152
+        },
+        "systemAvailableBytes": 8333656064
+      },
+      {
+        "elapsedMs": 219294.97620900001,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 1885664,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 56017592,
+          "sampledAt": 1792812846613,
+          "usedBytes": 8115359152
+        },
+        "systemAvailableBytes": 8333377536
+      },
+      {
+        "elapsedMs": 219777.249167,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 1885648,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 56017592,
+          "sampledAt": 1792812847095,
+          "usedBytes": 8115326384
+        },
+        "systemAvailableBytes": 8333066240
+      },
+      {
+        "elapsedMs": 220319.97650000002,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 1885680,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 56017592,
+          "sampledAt": 1792812847637,
+          "usedBytes": 8115326384
+        },
+        "systemAvailableBytes": 8379219968
+      },
+      {
+        "elapsedMs": 221490.192917,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 1887504,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 56017592,
+          "sampledAt": 1792812848808,
+          "usedBytes": 8115326384
+        },
+        "systemAvailableBytes": 8385904640
+      },
+      {
+        "elapsedMs": 254197.329792,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2084528,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 56017592,
+          "sampledAt": 1792812881515,
+          "usedBytes": 7488654768
+        },
+        "systemAvailableBytes": 8990785536
+      },
+      {
+        "elapsedMs": 254679.701084,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2084496,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 56017592,
+          "sampledAt": 1792812881998,
+          "usedBytes": 7664291248
+        },
+        "systemAvailableBytes": 8677998592
+      },
+      {
+        "elapsedMs": 255183.15475000002,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2084544,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 56017592,
+          "sampledAt": 1792812882501,
+          "usedBytes": 7664291248
+        },
+        "systemAvailableBytes": 8663990272
+      },
+      {
+        "elapsedMs": 255802.814959,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2084528,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 56017592,
+          "sampledAt": 1792812883117,
+          "usedBytes": 7664291248
+        },
+        "systemAvailableBytes": 8592424960
+      },
+      {
+        "elapsedMs": 257456.40687500002,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2084464,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 56017592,
+          "sampledAt": 1792812884772,
+          "usedBytes": 7664291248
+        },
+        "systemAvailableBytes": 8715747328
+      },
+      {
+        "elapsedMs": 258120.11670900002,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2084432,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 56017592,
+          "sampledAt": 1792812885435,
+          "usedBytes": 7664291248
+        },
+        "systemAvailableBytes": 8670117888
+      },
+      {
+        "elapsedMs": 274780.564792,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2085040,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 56033976,
+          "sampledAt": 1792812902098,
+          "usedBytes": 6360616368
+        },
+        "systemAvailableBytes": 12013191168
+      },
+      {
+        "elapsedMs": 275305.671875,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2085008,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 56033976,
+          "sampledAt": 1792812902623,
+          "usedBytes": 6705876400
+        },
+        "systemAvailableBytes": 11722653696
+      },
+      {
+        "elapsedMs": 275831.303334,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2085040,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 56033976,
+          "sampledAt": 1792812903149,
+          "usedBytes": 6705876400
+        },
+        "systemAvailableBytes": 11720671232
+      },
+      {
+        "elapsedMs": 276409.61487499997,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2085008,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 56033976,
+          "sampledAt": 1792812903726,
+          "usedBytes": 6705876400
+        },
+        "systemAvailableBytes": 11727699968
+      },
+      {
+        "elapsedMs": 277125.66825,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2085040,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 56033976,
+          "sampledAt": 1792812904442,
+          "usedBytes": 6705876400
+        },
+        "systemAvailableBytes": 11683987456
+      },
+      {
+        "elapsedMs": 277886.649042,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2085008,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 56033976,
+          "sampledAt": 1792812905204,
+          "usedBytes": 6705876400
+        },
+        "systemAvailableBytes": 11628920832
+      },
+      {
+        "elapsedMs": 312315.44779199996,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2083952,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 37372576,
+          "sampledAt": 1792812939632,
+          "usedBytes": 7784926616
+        },
+        "systemAvailableBytes": 10640195584
+      },
+      {
+        "elapsedMs": 312803.693209,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2083920,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 37372576,
+          "sampledAt": 1792812940121,
+          "usedBytes": 7958269336
+        },
+        "systemAvailableBytes": 10474913792
+      },
+      {
+        "elapsedMs": 313291.65091699996,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2083952,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 37372576,
+          "sampledAt": 1792812940608,
+          "usedBytes": 7958269336
+        },
+        "systemAvailableBytes": 10484318208
+      },
+      {
+        "elapsedMs": 313791.815625,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2083920,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 37372576,
+          "sampledAt": 1792812941109,
+          "usedBytes": 7958269336
+        },
+        "systemAvailableBytes": 10487545856
+      },
+      {
+        "elapsedMs": 314331.247584,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2083952,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 37372576,
+          "sampledAt": 1792812941648,
+          "usedBytes": 7958269336
+        },
+        "systemAvailableBytes": 10487545856
+      },
+      {
+        "elapsedMs": 315094.1555,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2083920,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 37372576,
+          "sampledAt": 1792812942411,
+          "usedBytes": 7958269336
+        },
+        "systemAvailableBytes": 10493362176
+      },
+      {
+        "elapsedMs": 325284.51879199996,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2084304,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 37405344,
+          "sampledAt": 1792812952601,
+          "usedBytes": 7305923992
+        },
+        "systemAvailableBytes": 11188699136
+      },
+      {
+        "elapsedMs": 325791.665,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2084272,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 37405344,
+          "sampledAt": 1792812953108,
+          "usedBytes": 7479266712
+        },
+        "systemAvailableBytes": 11012571136
+      },
+      {
+        "elapsedMs": 326304.718292,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2084304,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 37405344,
+          "sampledAt": 1792812953621,
+          "usedBytes": 7479266712
+        },
+        "systemAvailableBytes": 11009343488
+      },
+      {
+        "elapsedMs": 326830.497417,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2084272,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 37405344,
+          "sampledAt": 1792812954147,
+          "usedBytes": 7479266712
+        },
+        "systemAvailableBytes": 10971971584
+      },
+      {
+        "elapsedMs": 327424.12425,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2084304,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 37405344,
+          "sampledAt": 1792812954741,
+          "usedBytes": 7479266712
+        },
+        "systemAvailableBytes": 10969251840
+      },
+      {
+        "elapsedMs": 328125.489917,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2084288,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 37405344,
+          "sampledAt": 1792812955442,
+          "usedBytes": 7479283096
+        },
+        "systemAvailableBytes": 10977148928
+      },
+      {
+        "elapsedMs": 373537.77575,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2084592,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 37405344,
+          "sampledAt": 1792813000854,
+          "usedBytes": 7828114840
+        },
+        "systemAvailableBytes": 10622959616
+      },
+      {
+        "elapsedMs": 374028.57741699996,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2084560,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 37405344,
+          "sampledAt": 1792813001345,
+          "usedBytes": 8003751320
+        },
+        "systemAvailableBytes": 10429513728
+      },
+      {
+        "elapsedMs": 374517.740334,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2084592,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 37405344,
+          "sampledAt": 1792813001834,
+          "usedBytes": 8003751320
+        },
+        "systemAvailableBytes": 10428825600
+      },
+      {
+        "elapsedMs": 375018.464084,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2084560,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 37405344,
+          "sampledAt": 1792813002335,
+          "usedBytes": 8003751320
+        },
+        "systemAvailableBytes": 10423386112
+      },
+      {
+        "elapsedMs": 375523.252542,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2084592,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 37405344,
+          "sampledAt": 1792813002840,
+          "usedBytes": 8003751320
+        },
+        "systemAvailableBytes": 10444849152
+      },
+      {
+        "elapsedMs": 376135.36825,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2084560,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 37405344,
+          "sampledAt": 1792813003452,
+          "usedBytes": 8003751320
+        },
+        "systemAvailableBytes": 10546036736
+      },
+      {
+        "elapsedMs": 423218.945375,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2085776,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 37405344,
+          "sampledAt": 1792813050535,
+          "usedBytes": 7922830744
+        },
+        "systemAvailableBytes": 9055305728
+      },
+      {
+        "elapsedMs": 423707.547584,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2085744,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 37405344,
+          "sampledAt": 1792813051024,
+          "usedBytes": 8098467224
+        },
+        "systemAvailableBytes": 8878997504
+      },
+      {
+        "elapsedMs": 424200.532792,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2085776,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 37405344,
+          "sampledAt": 1792813051517,
+          "usedBytes": 8098467224
+        },
+        "systemAvailableBytes": 8877834240
+      },
+      {
+        "elapsedMs": 424693.432459,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2085744,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 37405344,
+          "sampledAt": 1792813052009,
+          "usedBytes": 8098467224
+        },
+        "systemAvailableBytes": 8876589056
+      },
+      {
+        "elapsedMs": 425201.51287499996,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2085776,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 37405344,
+          "sampledAt": 1792813052517,
+          "usedBytes": 8098467224
+        },
+        "systemAvailableBytes": 8879112192
+      },
+      {
+        "elapsedMs": 425720.460292,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2085744,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 37405344,
+          "sampledAt": 1792813053037,
+          "usedBytes": 8098467224
+        },
+        "systemAvailableBytes": 9292464128
+      },
+      {
+        "elapsedMs": 454959.41825,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2085760,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 37405344,
+          "sampledAt": 1792813082275,
+          "usedBytes": 7473778072
+        },
+        "systemAvailableBytes": 10519511040
+      },
+      {
+        "elapsedMs": 455449.155292,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2085744,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 37405344,
+          "sampledAt": 1792813082765,
+          "usedBytes": 7649414552
+        },
+        "systemAvailableBytes": 10459250688
+      },
+      {
+        "elapsedMs": 455935.07375,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2085776,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 37405344,
+          "sampledAt": 1792813083251,
+          "usedBytes": 7649414552
+        },
+        "systemAvailableBytes": 10384932864
+      },
+      {
+        "elapsedMs": 456428.7575,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2085760,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 37405344,
+          "sampledAt": 1792813083744,
+          "usedBytes": 7649414552
+        },
+        "systemAvailableBytes": 10383720448
+      },
+      {
+        "elapsedMs": 456934.34441699996,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2085792,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 37405344,
+          "sampledAt": 1792813084250,
+          "usedBytes": 7649414552
+        },
+        "systemAvailableBytes": 10383687680
+      },
+      {
+        "elapsedMs": 457452.69474999997,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2085760,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 37405344,
+          "sampledAt": 1792813084769,
+          "usedBytes": 7649414552
+        },
+        "systemAvailableBytes": 10281598976
+      },
+      {
+        "elapsedMs": 473735.2065,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2086576,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 37405344,
+          "sampledAt": 1792813101051,
+          "usedBytes": 7873203608
+        },
+        "systemAvailableBytes": 10101161984
+      },
+      {
+        "elapsedMs": 474245.606375,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2086544,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 37405344,
+          "sampledAt": 1792813101561,
+          "usedBytes": 8048840088
+        },
+        "systemAvailableBytes": 10101161984
+      },
+      {
+        "elapsedMs": 474765.726959,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2086576,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 37405344,
+          "sampledAt": 1792813102081,
+          "usedBytes": 8048840088
+        },
+        "systemAvailableBytes": 9602908160
+      },
+      {
+        "elapsedMs": 475272.180084,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2086544,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 37405344,
+          "sampledAt": 1792813102588,
+          "usedBytes": 8048840088
+        },
+        "systemAvailableBytes": 9782476800
+      },
+      {
+        "elapsedMs": 475807.669917,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2086576,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 37405344,
+          "sampledAt": 1792813103123,
+          "usedBytes": 8048840088
+        },
+        "systemAvailableBytes": 9689169920
+      },
+      {
+        "elapsedMs": 476407.024667,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2086544,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 37405344,
+          "sampledAt": 1792813103722,
+          "usedBytes": 8048840088
+        },
+        "systemAvailableBytes": 9775497216
+      },
+      {
+        "elapsedMs": 513557.427792,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2086464,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 37405344,
+          "sampledAt": 1792813140873,
+          "usedBytes": 8017513880
+        },
+        "systemAvailableBytes": 10102095872
+      },
+      {
+        "elapsedMs": 514054.1125,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2086432,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 37405344,
+          "sampledAt": 1792813141369,
+          "usedBytes": 8193150360
+        },
+        "systemAvailableBytes": 10042097664
+      },
+      {
+        "elapsedMs": 514551.959834,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2086464,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 37405344,
+          "sampledAt": 1792813141867,
+          "usedBytes": 8193150360
+        },
+        "systemAvailableBytes": 10041507840
+      },
+      {
+        "elapsedMs": 515044.891,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2086432,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 37405344,
+          "sampledAt": 1792813142360,
+          "usedBytes": 8193150360
+        },
+        "systemAvailableBytes": 10132062208
+      },
+      {
+        "elapsedMs": 515535.842167,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2086464,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 37405344,
+          "sampledAt": 1792813142851,
+          "usedBytes": 8193150360
+        },
+        "systemAvailableBytes": 9879846912
+      },
+      {
+        "elapsedMs": 516035.645167,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2086432,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 37405344,
+          "sampledAt": 1792813143351,
+          "usedBytes": 8193150360
+        },
+        "systemAvailableBytes": 9878634496
+      },
+      {
+        "elapsedMs": 526096.696292,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2086608,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 37405344,
+          "sampledAt": 1792813153412,
+          "usedBytes": 7995215256
+        },
+        "systemAvailableBytes": 10221600768
+      },
+      {
+        "elapsedMs": 526599.621,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2086576,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 37372576,
+          "sampledAt": 1792813153904,
+          "usedBytes": 8170818968
+        },
+        "systemAvailableBytes": 10131210240
+      },
+      {
+        "elapsedMs": 527183.7131670001,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2086608,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 37405344,
+          "sampledAt": 1792813154499,
+          "usedBytes": 8170851736
+        },
+        "systemAvailableBytes": 9823535104
+      },
+      {
+        "elapsedMs": 527715.885584,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2086576,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 37405344,
+          "sampledAt": 1792813155030,
+          "usedBytes": 8170851736
+        },
+        "systemAvailableBytes": 9820061696
+      },
+      {
+        "elapsedMs": 528352.822292,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2086608,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 37405344,
+          "sampledAt": 1792813155665,
+          "usedBytes": 8170851736
+        },
+        "systemAvailableBytes": 9743286272
+      },
+      {
+        "elapsedMs": 529170.451417,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2086576,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 37405344,
+          "sampledAt": 1792813156483,
+          "usedBytes": 8170884504
+        },
+        "systemAvailableBytes": 9838247936
+      },
+      {
+        "elapsedMs": 571317.2424590001,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2086896,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 37405344,
+          "sampledAt": 1792813198632,
+          "usedBytes": 6527061400
+        },
+        "systemAvailableBytes": 11482038272
+      },
+      {
+        "elapsedMs": 571821.027,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2086864,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 37405344,
+          "sampledAt": 1792813199136,
+          "usedBytes": 6876106136
+        },
+        "systemAvailableBytes": 11117985792
+      },
+      {
+        "elapsedMs": 572308.6782920001,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2086896,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 37405344,
+          "sampledAt": 1792813199624,
+          "usedBytes": 6876106136
+        },
+        "systemAvailableBytes": 11093950464
+      },
+      {
+        "elapsedMs": 572826.1013750001,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2086864,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 37405344,
+          "sampledAt": 1792813200141,
+          "usedBytes": 6876106136
+        },
+        "systemAvailableBytes": 11106140160
+      },
+      {
+        "elapsedMs": 573356.5156670001,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2086896,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 37405344,
+          "sampledAt": 1792813200671,
+          "usedBytes": 6876106136
+        },
+        "systemAvailableBytes": 11115102208
+      },
+      {
+        "elapsedMs": 573889.001084,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2086864,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 37405344,
+          "sampledAt": 1792813201204,
+          "usedBytes": 6876106136
+        },
+        "systemAvailableBytes": 11211489280
+      },
+      {
+        "elapsedMs": 614345.198084,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2086560,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 37405344,
+          "sampledAt": 1792813241660,
+          "usedBytes": 7493127576
+        },
+        "systemAvailableBytes": 10594762752
+      },
+      {
+        "elapsedMs": 614830.8943340001,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2086544,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 37405344,
+          "sampledAt": 1792813242146,
+          "usedBytes": 7668452760
+        },
+        "systemAvailableBytes": 10338156544
+      },
+      {
+        "elapsedMs": 615326.243125,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2086576,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 37405344,
+          "sampledAt": 1792813242641,
+          "usedBytes": 7668452760
+        },
+        "systemAvailableBytes": 10359603200
+      },
+      {
+        "elapsedMs": 615806.052792,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2086544,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 37405344,
+          "sampledAt": 1792813243121,
+          "usedBytes": 7668452760
+        },
+        "systemAvailableBytes": 10300702720
+      },
+      {
+        "elapsedMs": 616290.9824590001,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2086592,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 37405344,
+          "sampledAt": 1792813243606,
+          "usedBytes": 7668452760
+        },
+        "systemAvailableBytes": 10260889600
+      },
+      {
+        "elapsedMs": 616792.308959,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2086560,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 37405344,
+          "sampledAt": 1792813244107,
+          "usedBytes": 7668452760
+        },
+        "systemAvailableBytes": 10321903616
+      },
+      {
+        "elapsedMs": 643912.0687920001,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2086576,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 37405344,
+          "sampledAt": 1792813271229,
+          "usedBytes": 7468371352
+        },
+        "systemAvailableBytes": 10590797824
+      },
+      {
+        "elapsedMs": 644390.236917,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2086544,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 37405344,
+          "sampledAt": 1792813271708,
+          "usedBytes": 7643680152
+        },
+        "systemAvailableBytes": 10415357952
+      },
+      {
+        "elapsedMs": 644889.044542,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2086576,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 37405344,
+          "sampledAt": 1792813272206,
+          "usedBytes": 7643680152
+        },
+        "systemAvailableBytes": 10420420608
+      },
+      {
+        "elapsedMs": 645388.364834,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2086544,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 37405344,
+          "sampledAt": 1792813272706,
+          "usedBytes": 7643680152
+        },
+        "systemAvailableBytes": 10419470336
+      },
+      {
+        "elapsedMs": 645890.030042,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2086576,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 37405344,
+          "sampledAt": 1792813273207,
+          "usedBytes": 7643680152
+        },
+        "systemAvailableBytes": 10521198592
+      },
+      {
+        "elapsedMs": 646389.294375,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2086544,
+        "enginePhysicalFootprint": {
+          "pid": 24885,
+          "processCount": 2,
+          "rootBytes": 37405344,
+          "sampledAt": 1792813273707,
+          "usedBytes": 7643680152
+        },
+        "systemAvailableBytes": 10521706496
+      }
+    ],
+    "cases": [
+      {
+        "language": "en",
+        "history": false,
+        "messageCount": 1,
+        "position": "start",
+        "rows": 238,
+        "round": 0,
+        "stream": false,
+        "promptTokens": 3970,
+        "reservedOutputTokens": 126,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 474.36958400000003
+      },
+      {
+        "language": "en",
+        "history": false,
+        "messageCount": 1,
+        "position": "start",
+        "rows": 238,
+        "round": 0,
+        "stream": true,
+        "promptTokens": 3970,
+        "reservedOutputTokens": 126,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 454.3207079999993
+      },
+      {
+        "language": "en",
+        "history": false,
+        "messageCount": 1,
+        "position": "start",
+        "rows": 238,
+        "round": 1,
+        "stream": false,
+        "promptTokens": 3970,
+        "reservedOutputTokens": 126,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 458.3563329999961
+      },
+      {
+        "language": "en",
+        "history": false,
+        "messageCount": 1,
+        "position": "start",
+        "rows": 238,
+        "round": 1,
+        "stream": true,
+        "promptTokens": 3970,
+        "reservedOutputTokens": 126,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 458.8349999999991
+      },
+      {
+        "language": "en",
+        "history": false,
+        "messageCount": 1,
+        "position": "start",
+        "rows": 238,
+        "round": 2,
+        "stream": false,
+        "promptTokens": 3970,
+        "reservedOutputTokens": 126,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 485.7018750000061
+      },
+      {
+        "language": "en",
+        "history": false,
+        "messageCount": 1,
+        "position": "start",
+        "rows": 238,
+        "round": 2,
+        "stream": true,
+        "promptTokens": 3970,
+        "reservedOutputTokens": 126,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 486.6033749999988
+      },
+      {
+        "language": "en",
+        "history": false,
+        "messageCount": 1,
+        "position": "middle",
+        "rows": 238,
+        "round": 0,
+        "stream": false,
+        "promptTokens": 3970,
+        "reservedOutputTokens": 126,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 459.25937500000873
+      },
+      {
+        "language": "en",
+        "history": false,
+        "messageCount": 1,
+        "position": "middle",
+        "rows": 238,
+        "round": 0,
+        "stream": true,
+        "promptTokens": 3970,
+        "reservedOutputTokens": 126,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 478.69504099999904
+      },
+      {
+        "language": "en",
+        "history": false,
+        "messageCount": 1,
+        "position": "middle",
+        "rows": 238,
+        "round": 1,
+        "stream": false,
+        "promptTokens": 3970,
+        "reservedOutputTokens": 126,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 901.0053749999934
+      },
+      {
+        "language": "en",
+        "history": false,
+        "messageCount": 1,
+        "position": "middle",
+        "rows": 238,
+        "round": 1,
+        "stream": true,
+        "promptTokens": 3970,
+        "reservedOutputTokens": 126,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 1679.91004100001
+      },
+      {
+        "language": "en",
+        "history": false,
+        "messageCount": 1,
+        "position": "middle",
+        "rows": 238,
+        "round": 2,
+        "stream": false,
+        "promptTokens": 3970,
+        "reservedOutputTokens": 126,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 968.528707999998
+      },
+      {
+        "language": "en",
+        "history": false,
+        "messageCount": 1,
+        "position": "middle",
+        "rows": 238,
+        "round": 2,
+        "stream": true,
+        "promptTokens": 3970,
+        "reservedOutputTokens": 126,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 961.4707079999935
+      },
+      {
+        "language": "en",
+        "history": false,
+        "messageCount": 1,
+        "position": "end",
+        "rows": 238,
+        "round": 0,
+        "stream": false,
+        "promptTokens": 3970,
+        "reservedOutputTokens": 126,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 637.4451249999984
+      },
+      {
+        "language": "en",
+        "history": false,
+        "messageCount": 1,
+        "position": "end",
+        "rows": 238,
+        "round": 0,
+        "stream": true,
+        "promptTokens": 3970,
+        "reservedOutputTokens": 126,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 736.9572090000001
+      },
+      {
+        "language": "en",
+        "history": false,
+        "messageCount": 1,
+        "position": "end",
+        "rows": 238,
+        "round": 1,
+        "stream": false,
+        "promptTokens": 3970,
+        "reservedOutputTokens": 126,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 786.7587079999939
+      },
+      {
+        "language": "en",
+        "history": false,
+        "messageCount": 1,
+        "position": "end",
+        "rows": 238,
+        "round": 1,
+        "stream": true,
+        "promptTokens": 3970,
+        "reservedOutputTokens": 126,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 720.5678750000079
+      },
+      {
+        "language": "en",
+        "history": false,
+        "messageCount": 1,
+        "position": "end",
+        "rows": 238,
+        "round": 2,
+        "stream": false,
+        "promptTokens": 3970,
+        "reservedOutputTokens": 126,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 654.7612079999963
+      },
+      {
+        "language": "en",
+        "history": false,
+        "messageCount": 1,
+        "position": "end",
+        "rows": 238,
+        "round": 2,
+        "stream": true,
+        "promptTokens": 3970,
+        "reservedOutputTokens": 126,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 568.0582500000019
+      },
+      {
+        "language": "en",
+        "history": true,
+        "messageCount": 13,
+        "position": "start",
+        "rows": 238,
+        "round": 0,
+        "stream": false,
+        "promptTokens": 4030,
+        "reservedOutputTokens": 66,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 452.5730829999957
+      },
+      {
+        "language": "en",
+        "history": true,
+        "messageCount": 13,
+        "position": "start",
+        "rows": 238,
+        "round": 0,
+        "stream": true,
+        "promptTokens": 4030,
+        "reservedOutputTokens": 66,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 430.42037500001607
+      },
+      {
+        "language": "en",
+        "history": true,
+        "messageCount": 13,
+        "position": "start",
+        "rows": 238,
+        "round": 1,
+        "stream": false,
+        "promptTokens": 4030,
+        "reservedOutputTokens": 66,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 432.5042909999902
+      },
+      {
+        "language": "en",
+        "history": true,
+        "messageCount": 13,
+        "position": "start",
+        "rows": 238,
+        "round": 1,
+        "stream": true,
+        "promptTokens": 4030,
+        "reservedOutputTokens": 66,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 472.13133299999754
+      },
+      {
+        "language": "en",
+        "history": true,
+        "messageCount": 13,
+        "position": "start",
+        "rows": 238,
+        "round": 2,
+        "stream": false,
+        "promptTokens": 4030,
+        "reservedOutputTokens": 66,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 505.1946670000034
+      },
+      {
+        "language": "en",
+        "history": true,
+        "messageCount": 13,
+        "position": "start",
+        "rows": 238,
+        "round": 2,
+        "stream": true,
+        "promptTokens": 4030,
+        "reservedOutputTokens": 66,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 845.6183749999909
+      },
+      {
+        "language": "en",
+        "history": true,
+        "messageCount": 13,
+        "position": "middle",
+        "rows": 238,
+        "round": 0,
+        "stream": false,
+        "promptTokens": 4030,
+        "reservedOutputTokens": 66,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 453.0728340000205
+      },
+      {
+        "language": "en",
+        "history": true,
+        "messageCount": 13,
+        "position": "middle",
+        "rows": 238,
+        "round": 0,
+        "stream": true,
+        "promptTokens": 4030,
+        "reservedOutputTokens": 66,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 434.74683299998287
+      },
+      {
+        "language": "en",
+        "history": true,
+        "messageCount": 13,
+        "position": "middle",
+        "rows": 238,
+        "round": 1,
+        "stream": false,
+        "promptTokens": 4030,
+        "reservedOutputTokens": 66,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 433.58183399998234
+      },
+      {
+        "language": "en",
+        "history": true,
+        "messageCount": 13,
+        "position": "middle",
+        "rows": 238,
+        "round": 1,
+        "stream": true,
+        "promptTokens": 4030,
+        "reservedOutputTokens": 66,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 446.91962499998044
+      },
+      {
+        "language": "en",
+        "history": true,
+        "messageCount": 13,
+        "position": "middle",
+        "rows": 238,
+        "round": 2,
+        "stream": false,
+        "promptTokens": 4030,
+        "reservedOutputTokens": 66,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 505.882042000012
+      },
+      {
+        "language": "en",
+        "history": true,
+        "messageCount": 13,
+        "position": "middle",
+        "rows": 238,
+        "round": 2,
+        "stream": true,
+        "promptTokens": 4030,
+        "reservedOutputTokens": 66,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 1122.1156659999979
+      },
+      {
+        "language": "en",
+        "history": true,
+        "messageCount": 13,
+        "position": "end",
+        "rows": 238,
+        "round": 0,
+        "stream": false,
+        "promptTokens": 4030,
+        "reservedOutputTokens": 66,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 447.69383299999754
+      },
+      {
+        "language": "en",
+        "history": true,
+        "messageCount": 13,
+        "position": "end",
+        "rows": 238,
+        "round": 0,
+        "stream": true,
+        "promptTokens": 4030,
+        "reservedOutputTokens": 66,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 451.8568749999977
+      },
+      {
+        "language": "en",
+        "history": true,
+        "messageCount": 13,
+        "position": "end",
+        "rows": 238,
+        "round": 1,
+        "stream": false,
+        "promptTokens": 4030,
+        "reservedOutputTokens": 66,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 469.0807499999937
+      },
+      {
+        "language": "en",
+        "history": true,
+        "messageCount": 13,
+        "position": "end",
+        "rows": 238,
+        "round": 1,
+        "stream": true,
+        "promptTokens": 4030,
+        "reservedOutputTokens": 66,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 578.4814999999944
+      },
+      {
+        "language": "en",
+        "history": true,
+        "messageCount": 13,
+        "position": "end",
+        "rows": 238,
+        "round": 2,
+        "stream": false,
+        "promptTokens": 4030,
+        "reservedOutputTokens": 66,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 1594.4291669999948
+      },
+      {
+        "language": "en",
+        "history": true,
+        "messageCount": 13,
+        "position": "end",
+        "rows": 238,
+        "round": 2,
+        "stream": true,
+        "promptTokens": 4030,
+        "reservedOutputTokens": 66,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 608.0192500000121
+      },
+      {
+        "language": "ja",
+        "history": false,
+        "messageCount": 1,
+        "position": "start",
+        "rows": 238,
+        "round": 0,
+        "stream": false,
+        "promptTokens": 3972,
+        "reservedOutputTokens": 124,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 510.6487919999636
+      },
+      {
+        "language": "ja",
+        "history": false,
+        "messageCount": 1,
+        "position": "start",
+        "rows": 238,
+        "round": 0,
+        "stream": true,
+        "promptTokens": 3972,
+        "reservedOutputTokens": 124,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 482.1376249999739
+      },
+      {
+        "language": "ja",
+        "history": false,
+        "messageCount": 1,
+        "position": "start",
+        "rows": 238,
+        "round": 1,
+        "stream": false,
+        "promptTokens": 3972,
+        "reservedOutputTokens": 124,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 485.6058339999872
+      },
+      {
+        "language": "ja",
+        "history": false,
+        "messageCount": 1,
+        "position": "start",
+        "rows": 238,
+        "round": 1,
+        "stream": true,
+        "promptTokens": 3972,
+        "reservedOutputTokens": 124,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 531.5209579999791
+      },
+      {
+        "language": "ja",
+        "history": false,
+        "messageCount": 1,
+        "position": "start",
+        "rows": 238,
+        "round": 2,
+        "stream": false,
+        "promptTokens": 3972,
+        "reservedOutputTokens": 124,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 669.1141250000219
+      },
+      {
+        "language": "ja",
+        "history": false,
+        "messageCount": 1,
+        "position": "start",
+        "rows": 238,
+        "round": 2,
+        "stream": true,
+        "promptTokens": 3972,
+        "reservedOutputTokens": 124,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 709.9507500000182
+      },
+      {
+        "language": "ja",
+        "history": false,
+        "messageCount": 1,
+        "position": "middle",
+        "rows": 238,
+        "round": 0,
+        "stream": false,
+        "promptTokens": 3972,
+        "reservedOutputTokens": 124,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 467.26929199998267
+      },
+      {
+        "language": "ja",
+        "history": false,
+        "messageCount": 1,
+        "position": "middle",
+        "rows": 238,
+        "round": 0,
+        "stream": true,
+        "promptTokens": 3972,
+        "reservedOutputTokens": 124,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 449.6742090000189
+      },
+      {
+        "language": "ja",
+        "history": false,
+        "messageCount": 1,
+        "position": "middle",
+        "rows": 238,
+        "round": 1,
+        "stream": false,
+        "promptTokens": 3972,
+        "reservedOutputTokens": 124,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 448.4500419999822
+      },
+      {
+        "language": "ja",
+        "history": false,
+        "messageCount": 1,
+        "position": "middle",
+        "rows": 238,
+        "round": 1,
+        "stream": true,
+        "promptTokens": 3972,
+        "reservedOutputTokens": 124,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 457.0361250000424
+      },
+      {
+        "language": "ja",
+        "history": false,
+        "messageCount": 1,
+        "position": "middle",
+        "rows": 238,
+        "round": 2,
+        "stream": false,
+        "promptTokens": 3972,
+        "reservedOutputTokens": 124,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 493.9617919999873
+      },
+      {
+        "language": "ja",
+        "history": false,
+        "messageCount": 1,
+        "position": "middle",
+        "rows": 238,
+        "round": 2,
+        "stream": true,
+        "promptTokens": 3972,
+        "reservedOutputTokens": 124,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 712.9821249999804
+      },
+      {
+        "language": "ja",
+        "history": false,
+        "messageCount": 1,
+        "position": "end",
+        "rows": 238,
+        "round": 0,
+        "stream": false,
+        "promptTokens": 3972,
+        "reservedOutputTokens": 124,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 477.74412500002654
+      },
+      {
+        "language": "ja",
+        "history": false,
+        "messageCount": 1,
+        "position": "end",
+        "rows": 238,
+        "round": 0,
+        "stream": true,
+        "promptTokens": 3972,
+        "reservedOutputTokens": 124,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 463.6966249999823
+      },
+      {
+        "language": "ja",
+        "history": false,
+        "messageCount": 1,
+        "position": "end",
+        "rows": 238,
+        "round": 1,
+        "stream": false,
+        "promptTokens": 3972,
+        "reservedOutputTokens": 124,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 468.84908299997915
+      },
+      {
+        "language": "ja",
+        "history": false,
+        "messageCount": 1,
+        "position": "end",
+        "rows": 238,
+        "round": 1,
+        "stream": true,
+        "promptTokens": 3972,
+        "reservedOutputTokens": 124,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 480.7636250000214
+      },
+      {
+        "language": "ja",
+        "history": false,
+        "messageCount": 1,
+        "position": "end",
+        "rows": 238,
+        "round": 2,
+        "stream": false,
+        "promptTokens": 3972,
+        "reservedOutputTokens": 124,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 548.7567080000299
+      },
+      {
+        "language": "ja",
+        "history": false,
+        "messageCount": 1,
+        "position": "end",
+        "rows": 238,
+        "round": 2,
+        "stream": true,
+        "promptTokens": 3972,
+        "reservedOutputTokens": 124,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 651.8135840000468
+      },
+      {
+        "language": "ja",
+        "history": true,
+        "messageCount": 13,
+        "position": "start",
+        "rows": 238,
+        "round": 0,
+        "stream": false,
+        "promptTokens": 4032,
+        "reservedOutputTokens": 64,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 471.8922499999753
+      },
+      {
+        "language": "ja",
+        "history": true,
+        "messageCount": 13,
+        "position": "start",
+        "rows": 238,
+        "round": 0,
+        "stream": true,
+        "promptTokens": 4032,
+        "reservedOutputTokens": 64,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 449.2899589999579
+      },
+      {
+        "language": "ja",
+        "history": true,
+        "messageCount": 13,
+        "position": "start",
+        "rows": 238,
+        "round": 1,
+        "stream": false,
+        "promptTokens": 4032,
+        "reservedOutputTokens": 64,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 450.2338330000057
+      },
+      {
+        "language": "ja",
+        "history": true,
+        "messageCount": 13,
+        "position": "start",
+        "rows": 238,
+        "round": 1,
+        "stream": true,
+        "promptTokens": 4032,
+        "reservedOutputTokens": 64,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 459.3764169999631
+      },
+      {
+        "language": "ja",
+        "history": true,
+        "messageCount": 13,
+        "position": "start",
+        "rows": 238,
+        "round": 2,
+        "stream": false,
+        "promptTokens": 4032,
+        "reservedOutputTokens": 64,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 466.82387500000186
+      },
+      {
+        "language": "ja",
+        "history": true,
+        "messageCount": 13,
+        "position": "start",
+        "rows": 238,
+        "round": 2,
+        "stream": true,
+        "promptTokens": 4032,
+        "reservedOutputTokens": 64,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 564.2037089999649
+      },
+      {
+        "language": "ja",
+        "history": true,
+        "messageCount": 13,
+        "position": "middle",
+        "rows": 238,
+        "round": 0,
+        "stream": false,
+        "promptTokens": 4032,
+        "reservedOutputTokens": 64,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 476.67875000002095
+      },
+      {
+        "language": "ja",
+        "history": true,
+        "messageCount": 13,
+        "position": "middle",
+        "rows": 238,
+        "round": 0,
+        "stream": true,
+        "promptTokens": 4032,
+        "reservedOutputTokens": 64,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 446.7939999999944
+      },
+      {
+        "language": "ja",
+        "history": true,
+        "messageCount": 13,
+        "position": "middle",
+        "rows": 238,
+        "round": 1,
+        "stream": false,
+        "promptTokens": 4032,
+        "reservedOutputTokens": 64,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 449.0120839999872
+      },
+      {
+        "language": "ja",
+        "history": true,
+        "messageCount": 13,
+        "position": "middle",
+        "rows": 238,
+        "round": 1,
+        "stream": true,
+        "promptTokens": 4032,
+        "reservedOutputTokens": 64,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 449.14400000002934
+      },
+      {
+        "language": "ja",
+        "history": true,
+        "messageCount": 13,
+        "position": "middle",
+        "rows": 238,
+        "round": 2,
+        "stream": false,
+        "promptTokens": 4032,
+        "reservedOutputTokens": 64,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 463.52062500000466
+      },
+      {
+        "language": "ja",
+        "history": true,
+        "messageCount": 13,
+        "position": "middle",
+        "rows": 238,
+        "round": 2,
+        "stream": true,
+        "promptTokens": 4032,
+        "reservedOutputTokens": 64,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 478.76733300002525
+      },
+      {
+        "language": "ja",
+        "history": true,
+        "messageCount": 13,
+        "position": "end",
+        "rows": 238,
+        "round": 0,
+        "stream": false,
+        "promptTokens": 4032,
+        "reservedOutputTokens": 64,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 465.5089159999625
+      },
+      {
+        "language": "ja",
+        "history": true,
+        "messageCount": 13,
+        "position": "end",
+        "rows": 238,
+        "round": 0,
+        "stream": true,
+        "promptTokens": 4032,
+        "reservedOutputTokens": 64,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 446.2116249999963
+      },
+      {
+        "language": "ja",
+        "history": true,
+        "messageCount": 13,
+        "position": "end",
+        "rows": 238,
+        "round": 1,
+        "stream": false,
+        "promptTokens": 4032,
+        "reservedOutputTokens": 64,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 446.80374999996275
+      },
+      {
+        "language": "ja",
+        "history": true,
+        "messageCount": 13,
+        "position": "end",
+        "rows": 238,
+        "round": 1,
+        "stream": true,
+        "promptTokens": 4032,
+        "reservedOutputTokens": 64,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 449.6822500000126
+      },
+      {
+        "language": "ja",
+        "history": true,
+        "messageCount": 13,
+        "position": "end",
+        "rows": 238,
+        "round": 2,
+        "stream": false,
+        "promptTokens": 4032,
+        "reservedOutputTokens": 64,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 462.7727910000249
+      },
+      {
+        "language": "ja",
+        "history": true,
+        "messageCount": 13,
+        "position": "end",
+        "rows": 238,
+        "round": 2,
+        "stream": true,
+        "promptTokens": 4032,
+        "reservedOutputTokens": 64,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 478.5760419999715
+      },
+      {
+        "language": "zh",
+        "history": false,
+        "messageCount": 1,
+        "position": "start",
+        "rows": 242,
+        "round": 0,
+        "stream": false,
+        "promptTokens": 4033,
+        "reservedOutputTokens": 63,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 492.74716600001557
+      },
+      {
+        "language": "zh",
+        "history": false,
+        "messageCount": 1,
+        "position": "start",
+        "rows": 242,
+        "round": 0,
+        "stream": true,
+        "promptTokens": 4033,
+        "reservedOutputTokens": 63,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 469.84579200000735
+      },
+      {
+        "language": "zh",
+        "history": false,
+        "messageCount": 1,
+        "position": "start",
+        "rows": 242,
+        "round": 1,
+        "stream": false,
+        "promptTokens": 4033,
+        "reservedOutputTokens": 63,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 479.54383300000336
+      },
+      {
+        "language": "zh",
+        "history": false,
+        "messageCount": 1,
+        "position": "start",
+        "rows": 242,
+        "round": 1,
+        "stream": true,
+        "promptTokens": 4033,
+        "reservedOutputTokens": 63,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 459.42391700000735
+      },
+      {
+        "language": "zh",
+        "history": false,
+        "messageCount": 1,
+        "position": "start",
+        "rows": 242,
+        "round": 2,
+        "stream": false,
+        "promptTokens": 4033,
+        "reservedOutputTokens": 63,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 490.9746659999946
+      },
+      {
+        "language": "zh",
+        "history": false,
+        "messageCount": 1,
+        "position": "start",
+        "rows": 242,
+        "round": 2,
+        "stream": true,
+        "promptTokens": 4033,
+        "reservedOutputTokens": 63,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 551.2247079999652
+      },
+      {
+        "language": "zh",
+        "history": false,
+        "messageCount": 1,
+        "position": "middle",
+        "rows": 242,
+        "round": 0,
+        "stream": false,
+        "promptTokens": 4033,
+        "reservedOutputTokens": 63,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 475.67545799998334
+      },
+      {
+        "language": "zh",
+        "history": false,
+        "messageCount": 1,
+        "position": "middle",
+        "rows": 242,
+        "round": 0,
+        "stream": true,
+        "promptTokens": 4033,
+        "reservedOutputTokens": 63,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 455.3902089999756
+      },
+      {
+        "language": "zh",
+        "history": false,
+        "messageCount": 1,
+        "position": "middle",
+        "rows": 242,
+        "round": 1,
+        "stream": false,
+        "promptTokens": 4033,
+        "reservedOutputTokens": 63,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 455.37770799995633
+      },
+      {
+        "language": "zh",
+        "history": false,
+        "messageCount": 1,
+        "position": "middle",
+        "rows": 242,
+        "round": 1,
+        "stream": true,
+        "promptTokens": 4033,
+        "reservedOutputTokens": 63,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 448.803917000012
+      },
+      {
+        "language": "zh",
+        "history": false,
+        "messageCount": 1,
+        "position": "middle",
+        "rows": 242,
+        "round": 2,
+        "stream": false,
+        "promptTokens": 4033,
+        "reservedOutputTokens": 63,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 454.66841600002954
+      },
+      {
+        "language": "zh",
+        "history": false,
+        "messageCount": 1,
+        "position": "middle",
+        "rows": 242,
+        "round": 2,
+        "stream": true,
+        "promptTokens": 4033,
+        "reservedOutputTokens": 63,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 455.00179100001696
+      },
+      {
+        "language": "zh",
+        "history": false,
+        "messageCount": 1,
+        "position": "end",
+        "rows": 242,
+        "round": 0,
+        "stream": false,
+        "promptTokens": 4033,
+        "reservedOutputTokens": 63,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 486.4776249999413
+      },
+      {
+        "language": "zh",
+        "history": false,
+        "messageCount": 1,
+        "position": "end",
+        "rows": 242,
+        "round": 0,
+        "stream": true,
+        "promptTokens": 4033,
+        "reservedOutputTokens": 63,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 459.93345799995586
+      },
+      {
+        "language": "zh",
+        "history": false,
+        "messageCount": 1,
+        "position": "end",
+        "rows": 242,
+        "round": 1,
+        "stream": false,
+        "promptTokens": 4033,
+        "reservedOutputTokens": 63,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 550.8028329999652
+      },
+      {
+        "language": "zh",
+        "history": false,
+        "messageCount": 1,
+        "position": "end",
+        "rows": 242,
+        "round": 1,
+        "stream": true,
+        "promptTokens": 4033,
+        "reservedOutputTokens": 63,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 494.3691659999313
+      },
+      {
+        "language": "zh",
+        "history": false,
+        "messageCount": 1,
+        "position": "end",
+        "rows": 242,
+        "round": 2,
+        "stream": false,
+        "promptTokens": 4033,
+        "reservedOutputTokens": 63,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 585.1990000000224
+      },
+      {
+        "language": "zh",
+        "history": false,
+        "messageCount": 1,
+        "position": "end",
+        "rows": 242,
+        "round": 2,
+        "stream": true,
+        "promptTokens": 4033,
+        "reservedOutputTokens": 63,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 756.1184999999823
+      },
+      {
+        "language": "zh",
+        "history": true,
+        "messageCount": 13,
+        "position": "start",
+        "rows": 238,
+        "round": 0,
+        "stream": false,
+        "promptTokens": 4025,
+        "reservedOutputTokens": 71,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 490.0044999999227
+      },
+      {
+        "language": "zh",
+        "history": true,
+        "messageCount": 13,
+        "position": "start",
+        "rows": 238,
+        "round": 0,
+        "stream": true,
+        "promptTokens": 4025,
+        "reservedOutputTokens": 71,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 462.46916700003203
+      },
+      {
+        "language": "zh",
+        "history": true,
+        "messageCount": 13,
+        "position": "start",
+        "rows": 238,
+        "round": 1,
+        "stream": false,
+        "promptTokens": 4025,
+        "reservedOutputTokens": 71,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 447.60725000000093
+      },
+      {
+        "language": "zh",
+        "history": true,
+        "messageCount": 13,
+        "position": "start",
+        "rows": 238,
+        "round": 1,
+        "stream": true,
+        "promptTokens": 4025,
+        "reservedOutputTokens": 71,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 473.0449999999255
+      },
+      {
+        "language": "zh",
+        "history": true,
+        "messageCount": 13,
+        "position": "start",
+        "rows": 238,
+        "round": 2,
+        "stream": false,
+        "promptTokens": 4025,
+        "reservedOutputTokens": 71,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 484.34975000005215
+      },
+      {
+        "language": "zh",
+        "history": true,
+        "messageCount": 13,
+        "position": "start",
+        "rows": 238,
+        "round": 2,
+        "stream": true,
+        "promptTokens": 4025,
+        "reservedOutputTokens": 71,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 485.9655410000123
+      },
+      {
+        "language": "zh",
+        "history": true,
+        "messageCount": 13,
+        "position": "middle",
+        "rows": 238,
+        "round": 0,
+        "stream": false,
+        "promptTokens": 4025,
+        "reservedOutputTokens": 71,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 478.1726250000065
+      },
+      {
+        "language": "zh",
+        "history": true,
+        "messageCount": 13,
+        "position": "middle",
+        "rows": 238,
+        "round": 0,
+        "stream": true,
+        "promptTokens": 4025,
+        "reservedOutputTokens": 71,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 442.34016700007487
+      },
+      {
+        "language": "zh",
+        "history": true,
+        "messageCount": 13,
+        "position": "middle",
+        "rows": 238,
+        "round": 1,
+        "stream": false,
+        "promptTokens": 4025,
+        "reservedOutputTokens": 71,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 451.70337499992456
+      },
+      {
+        "language": "zh",
+        "history": true,
+        "messageCount": 13,
+        "position": "middle",
+        "rows": 238,
+        "round": 1,
+        "stream": true,
+        "promptTokens": 4025,
+        "reservedOutputTokens": 71,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 439.4994579999475
+      },
+      {
+        "language": "zh",
+        "history": true,
+        "messageCount": 13,
+        "position": "middle",
+        "rows": 238,
+        "round": 2,
+        "stream": false,
+        "promptTokens": 4025,
+        "reservedOutputTokens": 71,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 445.3697080001002
+      },
+      {
+        "language": "zh",
+        "history": true,
+        "messageCount": 13,
+        "position": "middle",
+        "rows": 238,
+        "round": 2,
+        "stream": true,
+        "promptTokens": 4025,
+        "reservedOutputTokens": 71,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 459.3231670000823
+      },
+      {
+        "language": "zh",
+        "history": true,
+        "messageCount": 13,
+        "position": "end",
+        "rows": 238,
+        "round": 0,
+        "stream": false,
+        "promptTokens": 4025,
+        "reservedOutputTokens": 71,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 454.3066669999389
+      },
+      {
+        "language": "zh",
+        "history": true,
+        "messageCount": 13,
+        "position": "end",
+        "rows": 238,
+        "round": 0,
+        "stream": true,
+        "promptTokens": 4025,
+        "reservedOutputTokens": 71,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 439.3250420000404
+      },
+      {
+        "language": "zh",
+        "history": true,
+        "messageCount": 13,
+        "position": "end",
+        "rows": 238,
+        "round": 1,
+        "stream": false,
+        "promptTokens": 4025,
+        "reservedOutputTokens": 71,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 456.3089579999214
+      },
+      {
+        "language": "zh",
+        "history": true,
+        "messageCount": 13,
+        "position": "end",
+        "rows": 238,
+        "round": 1,
+        "stream": true,
+        "promptTokens": 4025,
+        "reservedOutputTokens": 71,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 455.02987500000745
+      },
+      {
+        "language": "zh",
+        "history": true,
+        "messageCount": 13,
+        "position": "end",
+        "rows": 238,
+        "round": 2,
+        "stream": false,
+        "promptTokens": 4025,
+        "reservedOutputTokens": 71,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 459.48004200006835
+      },
+      {
+        "language": "zh",
+        "history": true,
+        "messageCount": 13,
+        "position": "end",
+        "rows": 238,
+        "round": 2,
+        "stream": true,
+        "promptTokens": 4025,
+        "reservedOutputTokens": 71,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 454.32716600003187
+      }
+    ]
+  },
+  "sharedRequestMetrics": {
+    "retained": 100,
+    "longPromptUsageRecords": 54,
+    "engine": "vLLM-Apple",
+    "bounded": true
+  },
+  "counterProcessesAfterRequests": 1,
+  "counterRssKiB": [
+    34096
+  ],
+  "applicationExit": {
+    "code": 0,
+    "signal": null
+  },
+  "summary": {
+    "accepted": 30,
+    "rejected": 0,
+    "firstAcceptedMs": 408.099,
+    "warmMedianMs": 1021.66,
+    "warmMeanMs": 1212.0259655172415
+  },
+  "finishedAt": "2026-10-24T03:41:33.553Z"
+}

@@ -1,3 +1,7 @@
+# Current source update · 2026-10-24
+
+Strata source is now v0.2.4 (`96ca4383`). See [current dependency update and validation limits](DEPENDENCY_UPDATE_20261024.md). Real inference results below apply only to the historical 0.2.1 installation.
+
 # Upstream compatibility · 2026-10-21
 
 Studio's `Strata` gitlink now pins `9de04cd44e927a9a3df6bbc0e94fc1be8b844ba4` from [Niko1221/Strata](https://github.com/Niko1221/Strata/commit/9de04cd44e927a9a3df6bbc0e94fc1be8b844ba4). This is the Strata 0.2.1 line, with engine 0.1.46 and the Control-only source-version patch 0.1.46.3. The local Metal build's `BUILD.json` reports 0.1.46.3. The previous gitlink was `f85fbb151bd11542d686ca1f35ee22b7bc5e3f05`; that local commit remains on its existing branch. Its tracked Metal headers were retained as a local build dependency. Upstream tracked sources were not patched.

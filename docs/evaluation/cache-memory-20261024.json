@@ -1,0 +1,240 @@
+{
+  "passed": true,
+  "context": 4096,
+  "concurrency": 1,
+  "environment": {
+    "passed": true,
+    "changedKeys": [
+      "environment_sha256"
+    ],
+    "currentRelevantFlags": {
+      "PYTORCH_ENABLE_MPS_FALLBACK": "1"
+    },
+    "before": {
+      "backend": "mlx_lm",
+      "backend_sha256": "d1ba8a3ee8e3e6ffc708bda03e6cfc9725db9bdb2669061d60ece400b628c485",
+      "config_sha256": "9279e9a8c58d7656782dc02f787feaa45118f37109281acb88144b6a44093401",
+      "environment_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "hardware_sha256": "a33ec4e83ea8e3f7f8fe663c481b738c94851b02008e4c5c19318057eed7a2eb",
+      "model_root_sha256": "4f69654cb373cc4392fd048acf60d51d39d67e8176648a3e52a7936b0776cd14",
+      "runtime_sha256": "bc8f7d165f4e18ea2dc5a6ea6894a3b6b6c939110d83b58de34e73f6f692c242"
+    },
+    "after": {
+      "config_sha256": "9279e9a8c58d7656782dc02f787feaa45118f37109281acb88144b6a44093401",
+      "model_root_sha256": "4f69654cb373cc4392fd048acf60d51d39d67e8176648a3e52a7936b0776cd14",
+      "backend": "mlx_lm",
+      "backend_sha256": "d1ba8a3ee8e3e6ffc708bda03e6cfc9725db9bdb2669061d60ece400b628c485",
+      "environment_sha256": "49a127823b72aaa0a3112724b9dc2305892b1ead77d75466df4bbaf545eb3fbd",
+      "hardware_sha256": "a33ec4e83ea8e3f7f8fe663c481b738c94851b02008e4c5c19318057eed7a2eb",
+      "runtime_sha256": "bc8f7d165f4e18ea2dc5a6ea6894a3b6b6c939110d83b58de34e73f6f692c242"
+    },
+    "oldEvidenceRemainsRejected": true,
+    "checksDisabled": false,
+    "loginFallbackFlagMatches": true
+  },
+  "qualification": {
+    "elapsedSeconds": 1800.675,
+    "successes": 5978,
+    "failures": 0,
+    "peakRssGrowthMiB": 15.265625,
+    "shutdownClean": true,
+    "workload": "mixed short text; separate cache churn measured below"
+  },
+  "cacheWorkload": {
+    "elapsedSeconds": 375.260508,
+    "exactAnswers": 38,
+    "uniqueHistories": 16,
+    "messageCount": 13,
+    "promptTokensMin": 3930,
+    "promptTokensMax": 3937,
+    "phases": {
+      "anchor-cold": [
+        {
+          "phase": "anchor-cold",
+          "index": 0,
+          "language": "en",
+          "messageCount": 13,
+          "promptTokens": 3935,
+          "cachedTokens": 4,
+          "exact": true,
+          "elapsedMs": 11089.790042
+        }
+      ],
+      "anchor-hot": [
+        {
+          "phase": "anchor-hot",
+          "index": 0,
+          "language": "en",
+          "messageCount": 13,
+          "promptTokens": 3935,
+          "cachedTokens": 3934,
+          "exact": true,
+          "elapsedMs": 480.0356249999968
+        }
+      ],
+      "revisit-0": [
+        {
+          "phase": "revisit-0",
+          "index": 0,
+          "language": "en",
+          "messageCount": 13,
+          "promptTokens": 3935,
+          "cachedTokens": 8,
+          "exact": true,
+          "elapsedMs": 10681.442417000013
+        }
+      ],
+      "reheat-0": [
+        {
+          "phase": "reheat-0",
+          "index": 0,
+          "language": "en",
+          "messageCount": 13,
+          "promptTokens": 3935,
+          "cachedTokens": 3934,
+          "exact": true,
+          "elapsedMs": 453.11820799999987
+        }
+      ],
+      "recent-0": [
+        {
+          "phase": "recent-0",
+          "index": 15,
+          "language": "en",
+          "messageCount": 13,
+          "promptTokens": 3935,
+          "cachedTokens": 3934,
+          "exact": true,
+          "elapsedMs": 474.4963329999882
+        }
+      ],
+      "revisit-1": [
+        {
+          "phase": "revisit-1",
+          "index": 0,
+          "language": "en",
+          "messageCount": 13,
+          "promptTokens": 3935,
+          "cachedTokens": 8,
+          "exact": true,
+          "elapsedMs": 10274.433749999967
+        }
+      ],
+      "reheat-1": [
+        {
+          "phase": "reheat-1",
+          "index": 0,
+          "language": "en",
+          "messageCount": 13,
+          "promptTokens": 3935,
+          "cachedTokens": 3934,
+          "exact": true,
+          "elapsedMs": 448.7938749999739
+        }
+      ],
+      "recent-1": [
+        {
+          "phase": "recent-1",
+          "index": 15,
+          "language": "en",
+          "messageCount": 13,
+          "promptTokens": 3935,
+          "cachedTokens": 3934,
+          "exact": true,
+          "elapsedMs": 451.25875000003725
+        }
+      ]
+    },
+    "observedAnchorReuseLosses": 2,
+    "boundary": {
+      "passed": true,
+      "acceptedTotal": 4096,
+      "rejectedTotal": 4097
+    },
+    "sampledEngineFootprintGiBMax": 7.960589945316315,
+    "baselineEngineFootprintGiB": 2.8206058144569397,
+    "sampledOwnedRssMiBMax": 2423.4375,
+    "minimumSystemAvailableGiB": 6.6183319091796875,
+    "idle": [
+      {
+        "seconds": 0,
+        "engineFootprintGiB": 7.960589945316315
+      },
+      {
+        "seconds": 5,
+        "engineFootprintGiB": 7.91356235742569
+      },
+      {
+        "seconds": 10,
+        "engineFootprintGiB": 7.91356235742569
+      }
+    ],
+    "afterStop": {
+      "enginePhysicalFootprint": null,
+      "ownedTreeGone": true,
+      "systemAvailableBytes": 16694132736
+    },
+    "sharedCachedTelemetry": {
+      "verified": true,
+      "min": 4,
+      "max": 3934
+    }
+  },
+  "tokenParity": {
+    "passed": true,
+    "counts": {
+      "raw": 211,
+      "chat": 844,
+      "rejected": 3,
+      "longChat": 16,
+      "longMinTokens": 3930,
+      "longMaxTokens": 3937
+    },
+    "tokenIdsSha256": "994c6f7c94a0ed5512f21b6cceea20ced1634e196b0f2add4d661cdf658c409b",
+    "heavyImportsInFastPath": false,
+    "fallbackGuards": 6
+  },
+  "lifecycleChecks": {
+    "counterOverlapsModelLoadingAfterQualification": true,
+    "exactContextBoundary": true,
+    "counterFailureClosedAndLatched": true,
+    "stopReapsCounter": true,
+    "stopReapsWholeTree": true,
+    "noCounterWithStrata": true,
+    "stateAndEvidencePreserved": true,
+    "headlessSignalReapsTree": true,
+    "restartAfterCounterFailure": true
+  },
+  "sharedRequestMetrics": {
+    "retained": 70,
+    "longPromptUsageRecords": 39,
+    "engine": "vLLM-Apple",
+    "bounded": true
+  },
+  "preferences": {
+    "updatedProfiles": 2,
+    "onlyEvidenceChanged": true,
+    "contextRemains4096": true,
+    "documentsAndOtherSettingsPreserved": true,
+    "originalByteBackups": true
+  },
+  "tests": {
+    "node": 26,
+    "profileRefreshRejection": 2,
+    "upstreamEvidenceFingerprintCompatibility": 35
+  },
+  "sourceSha256": {
+    "scripts/cache-memory-workload.mjs": "defb62fc8b626e89ec1375fdd7815fbaadb9711eb1556720de4a47c3dd856fb1",
+    "scripts/cache-memory-workload.test.mjs": "2b2919b29dd70ffa86e862f1a803833edbbafdbb5d6c2109304e31a518d974f1",
+    "scripts/cache-profile-activation.test.py": "2b052f5a44272f258ffb76bff0e949c203361da48611efdbe2baf44c7ec818a4",
+    "scripts/activate-context-profile.py": "639131101f706379fba04aa9782bb8747700ad6a90ad416630350e1142da6303",
+    "scripts/token-count-benchmark.mjs": "8361537e70687f3f6c6287556909c9e24f0157e9e995081a302fda3984618d14"
+  },
+  "limits": [
+    "No cache policy, runtime source, model, or dependency was changed for this measurement.",
+    "Default cache capacity is source-inspected; reuse loss after churn is consistent with eviction, not direct inventory proof.",
+    "Physical footprint and RSS are sampled process measurements, not unique KV bytes or continuous GPU allocation peaks.",
+    "No memory-reduction or performance-improvement claim; no forced OS pressure.",
+    "Single measured M4/Gemma text profile through shared Rust headless gateway."
+  ]
+}

@@ -1,5 +1,9 @@
 # vLLM-Apple: verified local startup
 
+Latest environment proof / 最新の環境証跡 / 最新环境证据: [2026-10-24 environment refresh and cache diagnostics](#2026-10-24-cache-diagnostics-and-environment-refresh).
+
+Current measured profile / 現在の検証済み設定 / 当前已验证配置: [4,096 total tokens, concurrency one](#2026-10-24-qualified-4096-context). Earlier dated entries and the 1,024 GUI fixture below are retained as history.
+
 ## 日本語
 
 SolitonはvLLM-Appleの互換性検査を無効にしません。通常のMLX-LM version matrixは維持し、範囲外の環境では、vLLM-Appleが既に実装しているidentity-bound evidenceを明示指定します。証跡はモデル・バックエンドの実ファイル・runtime source・対象環境変数・Mac/OSを照合し、7日で失効します。コンテキストと同時要求数も取得時の上限以内に制限されます。
@@ -90,3 +94,33 @@ For the measured Gemma 2 files and dependency versions, the counter directly use
 简体中文：当已验证Gemma 2的文件哈希及依赖版本匹配时，直接使用原始tokenizer和Jinja模板，避免加载推理库。其他情况保留原有离线AutoTokenizer路径。兼容性检查保持启用，并验证raw输入、Unicode、特殊token及多轮对话的完整token ID一致性。
 
 Qualified counter preparation / 検査後の先行計数準備 / 检查后的提前计数准备：After authenticated control readiness, Rust starts the same CPU-only counter during model loading, without synthetic input. It retains tokenizer memory before first chat; exact counting and all startup gates remain mandatory. 起動検査後のモデル読込中に、同じCPU計数プロセスを先行起動します。入力は作らず、初回チャット前からtokenizer分のメモリを保持します。正確な計数とすべての起動検査は維持します。确认启动检查后的控制就绪状态后，于模型加载期间启动同一CPU计数进程，不构造输入；首次聊天前即保留tokenizer内存，准确计数及全部启动检查保持启用。See [results](BENCHMARKS.md#qualified-startup-overlap--2026-10-23).
+
+## 2026-10-23 fingerprint requalification / 指紋計算改善後の再検証 / 指纹优化后的重新验证
+
+The complete-content fingerprint now uses native strict macOS path resolution and bounded POSIX containment, preserving all hashing/mutation/inventory checks. Three paired trials: 9.353→6.219 s median, identical digests on all six scans. Fresh qualification: 1800.076 s, 5223/5223 successes, zero failures, clean shutdown; normal native/headless settings now select `.soliton-runtime/gemma2-evidence-2026-10-23-fingerprint.json`. Evidence is valid only for this exact runtime/environment/model/Mac and context 1024/concurrency one, until 2026-10-30 20:50:58 JST. Environment flags must match the measured launch; do not force an old identity or edit an old report. [Evidence and limits](BENCHMARKS.md#full-content-fingerprint-optimization--2026-10-23), [reproducible patch](../patches/README.md).
+
+日本語: 全内容検査を維持した指紋計算を9.35→6.22秒へ短縮し、変更後の環境を30分・5223件成功・失敗0件で再検証しました。通常起動の証跡設定だけを更新し、履歴と他の設定は維持しています。環境変数やruntimeが変われば再検証が必要で、古い証跡の値は書き換えません。有効期限は同一条件で2026年10月30日20:50:58 JSTです。
+
+简体中文：保留完整内容检查的指纹计算9.35→6.22秒，修改后的环境通过30分钟、5223次全部成功、零失败的重新验证。仅更新正常启动证据设置，保留历史及其他设置。环境变量或runtime变化后必须重新验证，不修改旧证据值。同一条件下有效期至2026年10月30日20:50:58 JST。
+
+
+## 2026-10-24 qualified 4096 context
+
+日本語: このM4・Gemma 2 2B 4-bit環境では、入力＋出力予約の合計4,096、同時実行1へ更新しました。証跡は`.soliton-runtime/gemma2-context4096-20261024.json`で、環境が一致する場合の有効期限は2026-10-31 12:30:03 JSTです。30分の短文混合試験と約10分の長文試験を通し、ネイティブ／headless設定のcontextと証跡パスだけを更新しました。会話・他の設定は保持しています。出力を512予約する場合、入力はテンプレート込みで3,584以下が必要です。4,096を超える設定、旧証跡での拡大、期限切れ・環境変更は従来どおり拒否します。新規環境の既定値は1,024のままで、他モデル／Macの上限を自動拡大しません。
+
+English: Ordinary native/headless preferences now select the fresh 4,096-total-token/concurrency-one evidence for this exact M4/Gemma installation, expiring October 31, 2026, 12:30:03 JST if identity stays unchanged. Only context/evidence preferences changed, with original-byte backups. A 512-token output reservation leaves at most 3,584 input/template tokens. Full startup verification, exact CPU counting, failure latching and stop-before-switch stay mandatory. The 30-minute mixed short-text qualification and separate approximately ten-minute near-limit matrix are distinct measurements; 4,096 GUI interaction and other models/Macs are not certified by this headless expansion. New installations keep the conservative 1,024 default.
+
+简体中文：此M4／Gemma环境已配置为输入加输出预留总量4096、并发1。新证据为`.soliton-runtime/gemma2-context4096-20261024.json`，环境一致时有效至2026-10-31 12:30:03 JST。通过30分钟短文本混合验证及另行约10分钟长文本矩阵后，只更新原生／headless配置的context和证据路径，并备份原始数据。预留512输出token时，输入加模板最多3584。继续执行完整启动校验、准确CPU计数、故障拒绝及切换前停止；超范围、过期或环境变更仍会被拒绝。新环境默认1024，不自动扩大其他模型／Mac的范围。
+
+Requalification uses the earlier full command with `--max-model-len 4096`; do not shorten duration or skip checks. For the isolated long-context runner and guarded preference activation, see [procedure and results](BENCHMARKS.md#qualified-context-expansion--2026-10-24), [qualification](evaluation/soliton-vllm-apple-context4096-20261024.json) and [startup refusals](evaluation/context4096-startup-gates-20261024.json). The older GUI `test:real-model` fixture still requires 1,024 evidence; its earlier results do not certify GUI interactions at 4,096.
+
+
+## 2026-10-24 cache diagnostics and environment refresh
+
+日本語: 現在のログイン／実行環境では`PYTORCH_ENABLE_MPS_FALLBACK=1`が追加され、以前の証跡は環境不一致として正しく拒否されました。フラグを消して旧証跡を再利用せず、完全な30分再認証を実施しました。5,978件成功・失敗0件・正常終了を確認し、長文キャッシュ38件の正答、正確な上限判定、停止・復旧・排他切り替えも通過しました。通常のネイティブ／headless設定は証跡パスだけを`.soliton-runtime/gemma2-cache-memory-env-20261024.json`へ更新し、コンテキスト4,096・会話・他の設定を保持しました。有効期限は、同一環境で2026-10-31 18:31:45 JSTです。
+
+English: The current login/tool environment adds `PYTORCH_ENABLE_MPS_FALLBACK=1`; no other installation identity changed. Old proof remains rejected instead of deleting the flag to fit old approval. Fresh complete qualification passed 5978 requests over 1800.675 seconds with zero failures and clean shutdown. The separate serial long-history workload, exact boundary, shared telemetry and exclusive cleanup/recovery passed. Only ordinary native/headless evidence paths were refreshed; context remains 4,096. The new evidence expires October 31, 2026, 18:31:45 JST with unchanged identity. Cache diagnostics do not impose a byte cap or claim reduced memory; measured idle physical footprint remained approximately 7.91 GiB.
+
+简体中文：当前登录／工具环境增加`PYTORCH_ENABLE_MPS_FALLBACK=1`，其他安装身份未变。保留旧证据的拒绝结果，不通过删除变量绕过检查。完整30分钟再认证5978次成功、零失败、正常结束；长历史、精确边界、共享计测、互斥清理和恢复也通过。仅更新正常原生／headless证据路径，上下文仍为4096、会话和其他设置保持不变。新证据在身份不变时有效至2026-10-31 18:31:45 JST。内存诊断未设置字节上限，也不宣称降低内存；空闲后physical footprint仍约7.91 GiB。
+
+[Measured cache behavior and limits](BENCHMARKS.md#diverse-long-history-cache-memory--2026-10-24). The refresh tool requires existing valid 4,096 evidence with identical non-environment identity, a passing cache workload and startup-refusal reports, stopped preference owners and the original full verifier. Its cache path cannot increase context or approve model/backend/runtime changes; those require the full context matrix.

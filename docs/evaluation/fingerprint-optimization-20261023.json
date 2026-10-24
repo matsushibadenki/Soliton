@@ -1,0 +1,110 @@
+{
+  "schema": 1,
+  "passed": true,
+  "scope": "M4 / 32 GiB, Gemma 2 2B 4-bit, context 1024, concurrency 1",
+  "componentComparison": "docs/benchmarks/fingerprint-content-20261023.json",
+  "medianSeconds": {
+    "before": 9.352990625000075,
+    "after": 6.218508832999987
+  },
+  "reductionPercent": 33.51315015351106,
+  "allSixFullContentDigestsIdentical": true,
+  "changedQualificationBindings": [
+    "environment_sha256",
+    "runtime_sha256"
+  ],
+  "qualification": "docs/evaluation/soliton-vllm-apple-fingerprint-2026-10-23.json",
+  "soak": {
+    "certification_required": true,
+    "elapsed_seconds": 1800.076,
+    "errors": {},
+    "failures": 0,
+    "latency_ms": {
+      "max": 1862.386,
+      "mean": 344.635,
+      "p50_upper_bound": 500,
+      "p95_upper_bound": 1000
+    },
+    "passed": true,
+    "process_alive": true,
+    "requests": 5223,
+    "requests_per_second": 2.902,
+    "rss": {
+      "baseline_bytes": 2264121344,
+      "final_bytes": 2166915072,
+      "growth_bytes": 0,
+      "limit_bytes": 268435456,
+      "peak_bytes": 2276261888,
+      "peak_growth_bytes": 12140544
+    },
+    "stability_window_met": true,
+    "storage": {
+      "error_keys": 0,
+      "latency_buckets": 12
+    },
+    "successes": 5223
+  },
+  "shutdownClean": true,
+  "issuedJst": "2026-10-23T20:50:58.653491+09:00",
+  "expiresJst": "2026-10-30T20:50:58.653491+09:00",
+  "gateway": "docs/benchmarks/fingerprint-startup-after-20261023.json",
+  "gatewaySummary": {
+    "accepted": 24,
+    "rejected": 6,
+    "firstAcceptedMs": 477.502,
+    "warmMedianMs": 1078.092,
+    "warmMeanMs": 1259.5940434782608
+  },
+  "gatewayChecks": {
+    "counterOverlapsModelLoadingAfterQualification": true,
+    "exactContextBoundary": true,
+    "counterFailureClosedAndLatched": true,
+    "stopReapsCounter": true,
+    "stopReapsWholeTree": true,
+    "noCounterWithStrata": true,
+    "stateAndEvidencePreserved": true,
+    "headlessSignalReapsTree": true,
+    "restartAfterCounterFailure": true
+  },
+  "startupAfter": {
+    "controlReadyObservedMs": 10097,
+    "counterSpawnedMs": 10097,
+    "inferenceReadyObservedMs": 13390,
+    "modelLoadingObservedMs": 3293
+  },
+  "afterColdStream": {
+    "firstContentMs": 705.993833999999,
+    "completedMs": 785.540708999999,
+    "engineStartToFirstContentMs": 14142.418125999999,
+    "exact": true
+  },
+  "afterVerifiedPhaseMs": {
+    "imports": 159.21741700003622,
+    "hardware": 35.18683299989789,
+    "modelMetadata": 1.3616659998660907,
+    "build_model_integrity_manifest": 1428.1995830001506,
+    "fingerprint_backend": 4785.797000000002,
+    "fullEvidenceVerification": 6229.468292000092
+  },
+  "settingsUpdate": [
+    {
+      "state": "native",
+      "onlyEvidenceChanged": true,
+      "backupSha256": "c6fb5395d87eb67e3cb3850551bcfb4867aef0991582bde1e1da2fb1396dc24b"
+    },
+    {
+      "state": "headless",
+      "onlyEvidenceChanged": true,
+      "backupSha256": "74e2fcaf7cff8a82cb918d260bf3d4c2cf70d6b4022ca1c92806a4bf9a929bcb"
+    }
+  ],
+  "tests": {
+    "rust": 69,
+    "compatibilityEvidenceFingerprint": 35
+  },
+  "limitations": [
+    "Pre-change inference refused due to environment identity mismatch; no valid before/after end-to-end startup claim.",
+    "CPU component trials retained OS caches and ran during qualification; ordinary desktop load.",
+    "Strata switch used its mock; qualification covers this model/backend/environment/Mac only."
+  ]
+}

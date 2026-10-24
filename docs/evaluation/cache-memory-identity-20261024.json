@@ -1,0 +1,30 @@
+{
+  "passed": true,
+  "changedKeys": [
+    "environment_sha256"
+  ],
+  "currentRelevantFlags": {
+    "PYTORCH_ENABLE_MPS_FALLBACK": "1"
+  },
+  "before": {
+    "backend": "mlx_lm",
+    "backend_sha256": "d1ba8a3ee8e3e6ffc708bda03e6cfc9725db9bdb2669061d60ece400b628c485",
+    "config_sha256": "9279e9a8c58d7656782dc02f787feaa45118f37109281acb88144b6a44093401",
+    "environment_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "hardware_sha256": "a33ec4e83ea8e3f7f8fe663c481b738c94851b02008e4c5c19318057eed7a2eb",
+    "model_root_sha256": "4f69654cb373cc4392fd048acf60d51d39d67e8176648a3e52a7936b0776cd14",
+    "runtime_sha256": "bc8f7d165f4e18ea2dc5a6ea6894a3b6b6c939110d83b58de34e73f6f692c242"
+  },
+  "after": {
+    "config_sha256": "9279e9a8c58d7656782dc02f787feaa45118f37109281acb88144b6a44093401",
+    "model_root_sha256": "4f69654cb373cc4392fd048acf60d51d39d67e8176648a3e52a7936b0776cd14",
+    "backend": "mlx_lm",
+    "backend_sha256": "d1ba8a3ee8e3e6ffc708bda03e6cfc9725db9bdb2669061d60ece400b628c485",
+    "environment_sha256": "49a127823b72aaa0a3112724b9dc2305892b1ead77d75466df4bbaf545eb3fbd",
+    "hardware_sha256": "a33ec4e83ea8e3f7f8fe663c481b738c94851b02008e4c5c19318057eed7a2eb",
+    "runtime_sha256": "bc8f7d165f4e18ea2dc5a6ea6894a3b6b6c939110d83b58de34e73f6f692c242"
+  },
+  "oldEvidenceRemainsRejected": true,
+  "checksDisabled": false,
+  "loginFallbackFlagMatches": true
+}

@@ -1,0 +1,85 @@
+{
+  "schema": 1,
+  "passed": true,
+  "trials": [
+    {
+      "trial": 0,
+      "label": "before",
+      "elapsedSeconds": 12.729574083999978,
+      "digest": "d1ba8a3ee8e3e6ffc708bda03e6cfc9725db9bdb2669061d60ece400b628c485",
+      "loadAverageAtStart": [
+        4.08837890625,
+        4.92236328125,
+        5.95361328125
+      ]
+    },
+    {
+      "trial": 0,
+      "label": "after",
+      "elapsedSeconds": 6.104159457999913,
+      "digest": "d1ba8a3ee8e3e6ffc708bda03e6cfc9725db9bdb2669061d60ece400b628c485",
+      "loadAverageAtStart": [
+        4.154296875,
+        4.908203125,
+        5.93603515625
+      ]
+    },
+    {
+      "trial": 1,
+      "label": "before",
+      "elapsedSeconds": 8.654719375000013,
+      "digest": "d1ba8a3ee8e3e6ffc708bda03e6cfc9725db9bdb2669061d60ece400b628c485",
+      "loadAverageAtStart": [
+        4.1416015625,
+        4.89306640625,
+        5.92431640625
+      ]
+    },
+    {
+      "trial": 1,
+      "label": "after",
+      "elapsedSeconds": 6.218508832999987,
+      "digest": "d1ba8a3ee8e3e6ffc708bda03e6cfc9725db9bdb2669061d60ece400b628c485",
+      "loadAverageAtStart": [
+        4.0390625,
+        4.8466796875,
+        5.8955078125
+      ]
+    },
+    {
+      "trial": 2,
+      "label": "before",
+      "elapsedSeconds": 9.352990625000075,
+      "digest": "d1ba8a3ee8e3e6ffc708bda03e6cfc9725db9bdb2669061d60ece400b628c485",
+      "loadAverageAtStart": [
+        3.87548828125,
+        4.79931640625,
+        5.87255859375
+      ]
+    },
+    {
+      "trial": 2,
+      "label": "after",
+      "elapsedSeconds": 6.589356416999863,
+      "digest": "d1ba8a3ee8e3e6ffc708bda03e6cfc9725db9bdb2669061d60ece400b628c485",
+      "loadAverageAtStart": [
+        4.12158203125,
+        4.82177734375,
+        5.86767578125
+      ]
+    }
+  ],
+  "sources": {
+    "before": "2580f5a0db8cf866e070de891efe0255715396a190c854eabbcc3eff1de024d7",
+    "after": "4d5186dfe83692ece6df1da36dde07afc24c1cab7c2af5cac41f914734f50fd9"
+  },
+  "medianSeconds": {
+    "before": 9.352990625000075,
+    "after": 6.218508832999987
+  },
+  "reductionPercent": 33.51315015351106,
+  "limitations": [
+    "Complete content reread on every trial; OS caches retained, ordinary desktop load.",
+    "These are CPU fingerprint trials, not end-to-end engine startup measurements."
+  ]
+}

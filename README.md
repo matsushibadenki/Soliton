@@ -131,3 +131,5 @@ Validated against the Strata 0.2.1 line at `9de04cd4` (source version 0.1.46.3).
 [vLLM-Apple qualification and real-model testing](docs/VLLM_APPLE.md)。
 
 Verified local Gemma 2 2B inference is available through the existing identity-bound evidence gate; see the linked procedure for the exact environment and seven-day renewal.
+
+Current Strata source: v0.2.4; Tauri 2.12.5. See [dependency update and validation limits](docs/DEPENDENCY_UPDATE_20261024.md). Historical 0.2.1 real-inference evidence does not certify the new engine.
