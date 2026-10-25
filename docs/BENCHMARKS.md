@@ -305,3 +305,72 @@ Ordinary native/headless preferences now use `.soliton-runtime/gemma2-cache-memo
 日本語: 38件の長文要求はすべて正答し、2巡とも再利用数が3,934→8→3,934へ変化しました。ただしphysical footprintは最大7.96 GiB、10秒アイドル後も7.91 GiBを保持しており、追い出しだけでは物理メモリの解放を意味しません。停止後は所有プロセスとエンジン計測が消えました。現在の環境変数を含む30分再認証は5,978件成功・失敗0件で合格し、通常設定は証跡パスだけ更新、コンテキスト4,096・会話・他の設定・排他稼働を維持しました。次は保持KVのバイト上限とアロケータを分けて検証します。
 
 简体中文：38次长文本请求全部准确，两轮复用数均为3934→8→3934。但physical footprint最高7.96 GiB，空闲10秒后仍保持7.91 GiB；复用下降不表示物理内存已经释放。停止后所属进程和引擎内存样本均消失。包含当前环境变量的完整30分钟再认证5978次成功、零失败。正常配置只更新证据路径，保留4096上下文、会话、其他设置和引擎互斥。下一步分别验证保留KV的字节上限和分配器缓存。
+
+
+## Retained KV budget — 2026-10-25
+
+The measured M4 / Gemma 2 2B IT 4-bit profile now uses `kvCacheMiB: 1024`, total context 4,096 and concurrency one. New settings default to zero (original backend policy); other budgets/models require matching fresh qualification. [Consolidated report](evaluation/kv-budget-20261025.json), [raw after workload](benchmarks/kv-budget-after-20261025.json), [full context matrix](benchmarks/kv-budget-context-20261025.json), [startup gates](evaluation/kv-budget-gates-20261025.json).
+
+| Matched primary workload | Before, 2026-10-24 | After, 2026-10-25 |
+| --- | ---: | ---: |
+| Exact answers / histories | 38 / 16 | 38 / 16 |
+| Engine physical footprint peak | 7.961 GiB | 4.582 GiB |
+| Physical footprint after 10 idle seconds | 7.914 GiB | 3.303 GiB |
+| Primary workload duration | 375.261 s | 438.617 s |
+| Recent-history cached tokens, both rounds | 3,934 | 7 |
+| Recent-history response time | 0.474 / 0.451 s | 13.180 / 10.866 s |
+
+Accounting clarification (2026-10-25): the duration row includes three additional seeded requests only in the after run. It is not a matched latency comparison; the physical-memory comparison uses the matched 38 requests / 42 primary samples. The allocator comparison below includes the same three seeded requests in both runs.
+
+The observed peak decreases 42.4% and idle footprint 58.3%. This is a temporal comparison on a loaded desktop, not controlled latency evidence. The valid baseline is [the previous passing run](benchmarks/cache-memory-verified-20261024.json). Today's [baseline attempt](benchmarks/kv-budget-before-20261025.json) failed because one transient descendant exited between enumeration and RSS sampling; it is excluded. Its binary, evidence and settings hashes exactly equal the passing baseline. The sampler now retries unstable/missing membership and still fails persistent errors rather than substituting zero. Reuse losses are expected with the smaller capacity: exact answers/counts remain mandatory; recent-hit assertions apply only to the original policy. Main anchor reheat still requires reuse.
+
+An official `--prompt-cache-bytes` flag alone trims before batched work and does not bound completed retention on the seeded sequential path in this installed version. An initial qualification was interrupted for that reason and issued no evidence. The final adjacent-Python isolated wrapper checks MLX-LM 0.32.0 and exact server/cache source SHA-256, sets the original LRU's `max_bytes`, and synchronizes original insertion/eviction/fetch operations. It changes no installed files or attention/sampling/tokenization logic. Source or dependency changes fail closed. The independent checkout patch is in [patches](../patches/README.md).
+
+The separate read-only scalar endpoint samples retained logical LRU bytes, entry count and non-atomic MLX allocator active/cache/peak values. Across 153 samples (108 matrix, 42 primary cache and three extra seeded requests), retained KV never exceeds 1,024 MiB; maximum 1011.461 MiB. Logical tensor bytes are not unique physical allocation accounting. Active KV, weights, allocator cache, backing allocations and temporary buffers remain separate: this is not a 1 GiB total-process cap. The raw workload's legacy `observations` sentence says no inventory; the actual `kvCache` sample fields and this report supersede that sentence. Forced OS pressure remains untested. The real installed LRU also passes a five-insertion logical-byte fixture (2,000→800 MiB), which allocates no model weights and is not a RAM benchmark.
+
+Full fresh qualification: 1800.298 seconds, 5,505/5,505 successes, zero failures, 18.203 MiB peak RSS growth, clean shutdown. Identity is bound to the changed runtime plus `PYTORCH_ENABLE_MPS_FALLBACK=1` and `VLLM_APPLE_KV_CACHE_MIB=1024`; original full checks run at activation and every startup. Evidence created 2026-10-25 15:29:12 JST; seven-day expiry 2026-11-01 15:29:12 JST.
+
+Real shared Rust API validation: 108 exact-limit answers and 108 one-token-over refusals, 3,970–4,033 input tokens; EN/JA/ZH × single/13-message history × start/middle/end × JSON/SSE × three rounds. Additional 38 exact diverse-history answers plus three seeded exact answers exercise both backend paths. Complete token-ID parity passes 211 raw, 844 chat and all 16 actual long-history fixtures; three invalid conversations reject and six fallback guards pass. Wrong budgets (zero/512) reject by evidence identity; 4,097 rejects by certified limit before model/counter launch. Counter failure latch/recovery, bounded shared telemetry, Strata-mock exclusive switching and whole-tree stop/signal cleanup pass. Preferences activation changes only evidence and KV budget in native/headless documents, with backups and original full verification; history and all other preferences match.
+
+Validation: 70 Rust tests, 64 backend/compatibility/fingerprint/evidence tests, 30 Node workload/sampler tests and two activation refresh guards; production UI and unsigned native app rebuilt. Playwright/Chrome fixture QA checks visible Soliton identity, nonblank page, no blocking overlay, 320/390/1,440 px, EN/JA/ZH, budget edit/disabled states/persistence/reset, switching and restart recovery. Only expected unauthorized/connection messages during deliberate private-server restart are allowed; successful authenticated reconnect is required. Browser plugin skill/runtime was unavailable, so the repository Playwright fallback was used. Actual model inference uses shared Rust API; native GUI GPU inference is not newly certified.
+
+日本語: 保持KVを1 GiBに制限し、物理メモリの観測値は減少しました。ただし一部履歴の再計算で応答が遅くなります。正確な計数・互換性検査・排他稼働は維持し、実モデルの長文・履歴・境界・seed指定経路を検証しました。これは総メモリ上限ではありません。
+
+简体中文：保留KV限制为1 GiB，观测到的物理内存下降；部分历史需要重新计算，响应变慢。准确计数、兼容性检查和引擎互斥保持不变，已用真实模型验证长文本、历史、边界及指定seed路径。这不是总内存上限。
+
+
+## Allocator free-cache budget — 2026-10-25
+
+The measured M4 / 32 GiB / Gemma 2 2B IT 4-bit profile now uses `allocatorCacheMiB: 256`, alongside retained KV 1,024 MiB, total context 4,096 and concurrency one. Generic default zero preserves the original allocator policy; other values require matching fresh evidence. [Consolidated report](evaluation/allocator-20261025.json), [before](benchmarks/allocator-before-20261025.json), [after](benchmarks/allocator-after-20261025.json), [context matrix](benchmarks/allocator-context-20261025.json), [startup gates](evaluation/allocator-gates-20261025.json).
+
+| Same-day matched workload | Before: backend default | After: 256 MiB free cache |
+| --- | ---: | ---: |
+| Exact history answers / extra seeded answers | 38 / 3 | 38 / 3 |
+| Physical footprint peak, 42 primary samples | 4.582 GiB | 3.630 GiB |
+| Physical footprint peak, all 45 cache samples | 4.582 GiB | 4.188 GiB |
+| Physical footprint after 10 idle seconds | 3.313 GiB | 3.316 GiB |
+| Allocator free-cache peak, all 45 samples | 1853.923 MiB | 259.599 MiB |
+| First stream content, after engine ready | 642.601 ms | 274.817 ms |
+| Engine start to first stream content | 15.222 s | 14.032 s |
+| Short-request warm median, 29 requests | 897.387 ms | 1131.755 ms |
+| Long-history HTTP median, primary 38 | 10.045 s | 12.265 s |
+| Long-history HTTP sum, primary 38 | 367.446 s | 451.121 s |
+| Entire cache workload, including checks/waits/samples | 415.702 s | 513.046 s |
+
+Host one-minute load was 2.16→2.80 before and 4.58→11.07 after. Warm short/long medians are slower in this pair, first stream is faster, and idle physical footprint is essentially unchanged. The measurements do not isolate the cause of these timing changes.
+
+Both runs use the same 38 history requests, three seeded requests, two boundary checks (one acceptance/one refusal), idle waits and native measurement protocol. Their prompt counts match exactly. Request latency excludes memory-sampling overhead; whole-workload duration includes it and the waits. The physical peak across all 153 after-validation samples (matrix plus cache/seeded) is 4.188 GiB, a separate cohort from the paired cache comparison. Timings are a single sequential same-day observation on a loaded desktop; they do not establish a controlled statistical speedup. All measured changes, including regressions, are retained in the table and raw files.
+
+The installed MLX `set_cache_limit` API is called once before weights load, retaining a stricter existing limit. No new per-request flush, attention/sampling/template/token change or second resident model is introduced. Full installed-engine fingerprints and exact reviewed server/cache source guards remain in force. The policy limits reusable free allocations; active weights/KV/temporaries, GPU-driver backing allocations and process physical RAM remain separate. MLX reclaims excess on later allocation, so observed free-cache bytes can momentarily exceed the nominal limit. Configured/effective limits and non-atomic active/cache/peak values are reported separately. Retained logical KV stays within 1,024 MiB across 153 samples, maximum 1011.461 MiB. Periodic sampling can miss brief peaks; no forced OS-pressure test or unique physical KV ownership claim is made.
+
+Fresh full qualification passed 1800.094 seconds, 4,186/4,186 successes, zero failures, 11.203 MiB peak RSS growth, clean shutdown and identical before/after identity. Installed engine/model/hardware identities match the prior profile; runtime and environment identity intentionally change. Explicit flags are `PYTORCH_ENABLE_MPS_FALLBACK=1`, `VLLM_APPLE_KV_CACHE_MIB=1024`, `VLLM_APPLE_ALLOCATOR_CACHE_MIB=256`. Evidence created 2026-10-25 17:44:04 JST, expires 2026-11-01 17:44:04 JST. [Raw certificate](evaluation/soliton-vllm-apple-allocator-20261025.json).
+
+Real Soliton shared Rust API validation passes 108 exact-limit answers / 108 one-token-over refusals (3,970–4,033 input tokens), EN/JA/ZH × single/13-message history × start/middle/end × JSON/SSE × three rounds. All 38 history and three seeded answers are exact. Complete token-ID parity passes 211 raw + 844 chat + 16 actual long-history fixtures, three invalid-conversation refusals and six fallback guards. Allocator zero/128 with the new evidence refuse by identity; allocator 256/context 4,097 refuses by scope, with no inference/counter launch. Failure latch/recovery, exclusive Strata-mock switch, bounded shared telemetry, full owned-tree cleanup, unchanged documents/evidence and restart pass. [Token parity](evaluation/allocator-token-parity-20261025.json).
+
+The guarded activation consumes the full matrix, matched measurements (requiring lower measured physical/cache peaks), 153 policy samples and startup gates, then calls the original complete startup verifier for each native/headless preference file. Only allocator budget/evidence change; context, KV budget, documents, history and other preferences match original-byte backups. Startup still performs full verification. Reproducible changes in the independent backend checkout are retained as an [ordered patch](../patches/README.md).
+
+Regression validation: 71 Rust, 69 backend/evidence/fingerprint, 30 Node workload/sampler and two activation refresh-guard tests pass; production UI and unsigned native app rebuilt. Chrome/repository Playwright fixture QA at localhost:18080 covers visible Soliton identity, nonblank page, no overlay/unexpected console error, EN/JA/ZH at 320/390/1,440 px, allocator edit/persistence/reset, engine lifecycle and authenticated restart recovery. Browser skill was unavailable, so the existing Playwright workflow was used. Real model testing uses the shared Rust API; native GUI GPU inference is not newly certified. Screenshot evidence remains outside the repository at `/tmp/soliton-allocator-policy-control.png` and `/tmp/soliton-allocator-policy-日本語.png`.
+
+日本語: 空きアロケータの保持上限を256 MiBに設定し、メモリと応答時間の観測値を上表へ記録しました。正確な計数・互換性検査・排他稼働は維持し、既存履歴も保持しています。総RAM上限や統計的な速度向上を保証するものではありません。
+
+简体中文：空闲分配器缓存上限设为256 MiB，内存和响应时间观测值记录于上表。准确计数、兼容性检查、引擎互斥及现有历史保持不变；这不是总RAM上限，也不代表统计上已证实的加速。

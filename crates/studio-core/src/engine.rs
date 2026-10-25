@@ -28,6 +28,11 @@ pub struct VllmSettings {
     pub executable: String,
     pub evidence: String,
     pub context: u32,
+    /// Zero preserves the backend default; nonzero requires qualified MLX evidence.
+    #[serde(rename = "kvCacheMiB")]
+    pub kv_cache_mib: u32,
+    #[serde(rename = "allocatorCacheMiB")]
+    pub allocator_cache_mib: u32,
 }
 impl Default for VllmSettings {
     fn default() -> Self {
@@ -39,6 +44,8 @@ impl Default for VllmSettings {
             executable: String::new(),
             evidence: String::new(),
             context: 1024,
+            kv_cache_mib: 0,
+            allocator_cache_mib: 0,
         }
     }
 }
@@ -46,6 +53,15 @@ impl VllmSettings {
     pub fn valid(&self) -> bool {
         matches!(self.backend.as_str(), "mlx_lm" | "vllm_metal")
             && (1..=131072).contains(&self.context)
+            && (self.kv_cache_mib == 0
+                || ((64..=4096).contains(&self.kv_cache_mib)
+                    && self.backend == "mlx_lm"
+                    && !self.evidence.is_empty()))
+            && (self.allocator_cache_mib == 0
+                || ((64..=4096).contains(&self.allocator_cache_mib)
+                    && self.kv_cache_mib != 0
+                    && self.backend == "mlx_lm"
+                    && !self.evidence.is_empty()))
             && [
                 &self.root,
                 &self.python,
@@ -80,6 +96,20 @@ impl VllmSettings {
         }
         Ok(())
     }
+    fn cache_environment(&self, command: &mut Command) {
+        // Bind explicit policy to both inspection and launch; never inherit a hidden cap.
+        command.env_remove("VLLM_APPLE_KV_CACHE_MIB");
+        command.env_remove("VLLM_APPLE_ALLOCATOR_CACHE_MIB");
+        if self.allocator_cache_mib != 0 {
+            command.env(
+                "VLLM_APPLE_ALLOCATOR_CACHE_MIB",
+                self.allocator_cache_mib.to_string(),
+            );
+        }
+        if self.kv_cache_mib != 0 {
+            command.env("VLLM_APPLE_KV_CACHE_MIB", self.kv_cache_mib.to_string());
+        }
+    }
     pub fn inspection_command(&self) -> Result<Command, String> {
         self.validate_paths()?;
         let mut cmd = Command::new(&self.python);
@@ -101,6 +131,7 @@ impl VllmSettings {
         if !self.evidence.is_empty() {
             cmd.args(["--architecture-evidence", &self.evidence]);
         }
+        self.cache_environment(&mut cmd);
         Ok(cmd)
     }
     pub fn command(&self, port: u16, backend_port: u16, key: &str) -> Result<Command, String> {
@@ -122,6 +153,7 @@ impl VllmSettings {
                 "--disable-metal-tuning",
             ]);
         }
+        self.cache_environment(&mut cmd);
         Ok(cmd)
     }
 }

@@ -5,6 +5,7 @@ import { mkdtemp, readFile, writeFile, rm } from "node:fs/promises";
 import { tmpdir, loadavg } from "node:os";
 import { join, resolve } from "node:path";
 import { createHash } from "node:crypto";
+import { stableOwnedRss } from "./owned-memory-sample.mjs";
 import { makeCases, options } from "./benchmark-inference.mjs";
 const [label, binary, output] = process.argv.slice(2);
 assert(
@@ -44,6 +45,7 @@ const engineRows = () =>
     .filter(
       (l) =>
         l.includes("/mlx_lm.server --model ") ||
+        (l.includes("/mlx_kv_budget.py") && l.includes(" --model ")) ||
         (l.includes("from vllm_apple.cli import main;") &&
           l.includes(" serve ")),
     );
@@ -61,6 +63,8 @@ const report = {
   startedAt: new Date().toISOString(),
   evidenceSha256: hash(evidence),
   context: seed.settings.vllm.context,
+  kvCacheMiB: seed.settings.vllm.kvCacheMiB ?? 0,
+  allocatorCacheMiB: seed.settings.vllm.allocatorCacheMiB ?? 0,
   settingsFingerprint: hash(JSON.stringify(seed.settings.vllm)),
   cases: [],
   checks: {},
@@ -185,6 +189,17 @@ try {
     report.checks.counterOverlapsModelLoadingAfterQualification = true;
   }
   report.engineStartupMs = performance.now() - engineStarted;
+  if (report.kvCacheMiB) {
+    const rows = execFileSync(
+      "/bin/ps",
+      ["-p", descendants().join(","), "-o", "command="],
+      { encoding: "utf8" },
+    );
+    assert(
+      rows.includes(`--prompt-cache-bytes ${report.kvCacheMiB * 1024 ** 2}`),
+    );
+    report.checks.backendKvBudgetArgument = true;
+  }
   if (process.env.SOLITON_FIRST_STREAM === "1") {
     const started = performance.now();
     const response = await fetch(base + "/v1/chat/completions", {
@@ -324,28 +339,63 @@ try {
     report.checks.exactContextBoundary = true;
   }
   const sampleMemory = async () => {
-    const ids = descendants();
-    assert(ids.length > 0, "owned process tree disappeared");
-    const rows = execFileSync(
-      "/bin/ps",
-      ["-p", ids.join(","), "-o", "pid=,rss="],
-      { encoding: "utf8" },
-    )
-      .trim()
-      .split("\n")
-      .map((line) => line.trim().split(/\s+/).map(Number));
-    assert.equal(rows.length, ids.length, "owned memory sample lost a process");
-    assert(
-      rows.every(
-        ([pid, rss]) => ids.includes(pid) && Number.isFinite(rss) && rss > 0,
-      ),
-    );
+    const rss = await stableOwnedRss({
+      descendants,
+      readRows: (ids) =>
+        execFileSync("/bin/ps", ["-p", ids.join(","), "-o", "pid=,rss="], {
+          encoding: "utf8",
+        })
+          .trim()
+          .split("\n")
+          .map((line) => line.trim().split(/\s+/).map(Number)),
+    });
+    let kvCache = null;
+    if (report.kvCacheMiB) {
+      const commandRows = execFileSync(
+        "/bin/ps",
+        ["-p", descendants().join(","), "-o", "command="],
+        { encoding: "utf8" },
+      ).split("\n");
+      const backends = commandRows.filter(
+        (line) =>
+          line.includes("/mlx_kv_budget.py") && line.includes(" --model "),
+      );
+      assert.equal(backends.length, 1, "owned KV wrapper missing or ambiguous");
+      const match = backends[0].match(/--host 127\.0\.0\.1 --port (\d+) /);
+      assert(match, "owned backend loopback port missing");
+      const response = await fetch(
+        `http://127.0.0.1:${match[1]}/vllm-apple/kv-cache`,
+        { signal: AbortSignal.timeout(5000) },
+      );
+      assert.equal(response.status, 200);
+      assert(Number(response.headers.get("content-length")) <= 4096);
+      const raw = await response.text();
+      assert(raw.length <= 4096);
+      kvCache = JSON.parse(raw);
+      assert.equal(kvCache.max_bytes, report.kvCacheMiB * 1024 ** 2);
+      if (report.allocatorCacheMiB) {
+        assert.equal(
+          kvCache.allocator.configured_limit_bytes,
+          report.allocatorCacheMiB * 1024 ** 2,
+        );
+        assert(
+          kvCache.allocator.effective_limit_bytes <=
+            kvCache.allocator.configured_limit_bytes,
+        );
+        report.checks.backendAllocatorBudget = true;
+      }
+      assert(
+        Number.isSafeInteger(kvCache.retained_bytes) &&
+          kvCache.retained_bytes >= 0 &&
+          kvCache.retained_bytes <= kvCache.max_bytes,
+      );
+    }
     const snapshot = await state();
     assert.equal(snapshot.status, "ready");
     return {
       elapsedMs: performance.now() - engineStarted,
-      ownedProcessCount: rows.length,
-      ownedRssKiB: rows.reduce((sum, [, rss]) => sum + rss, 0),
+      ...rss,
+      kvCache,
       enginePhysicalFootprint: snapshot.memoryUsage?.engine?.current ?? null,
       systemAvailableBytes:
         snapshot.memoryUsage?.current?.availableBytes ?? null,
@@ -367,6 +417,8 @@ try {
       headers,
       context: report.context,
       sampleMemory,
+      recentReuseRequired: !report.kvCacheMiB,
+      verifySeeded: report.kvCacheMiB > 0,
     });
   }
   if (report.contextMatrix || report.cacheMemory) {

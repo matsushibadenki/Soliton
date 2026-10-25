@@ -77,6 +77,8 @@ type Settings = {
     executable: string;
     evidence: string;
     context: number;
+    kvCacheMiB: number;
+    allocatorCacheMiB: number;
   };
   strataRoot: string;
   python: string;
@@ -127,6 +129,8 @@ const defaults: Settings = {
     executable: "",
     evidence: "",
     context: 1024,
+    kvCacheMiB: 0,
+    allocatorCacheMiB: 0,
   },
   strataRoot: "",
   python: "python3",
@@ -767,6 +771,14 @@ function App() {
                     update("vllm", {
                       ...settings.vllm,
                       backend: e.target.value as Settings["vllm"]["backend"],
+                      allocatorCacheMiB:
+                        e.target.value === "mlx_lm"
+                          ? settings.vllm.allocatorCacheMiB
+                          : 0,
+                      kvCacheMiB:
+                        e.target.value === "mlx_lm"
+                          ? settings.vllm.kvCacheMiB
+                          : 0,
                     });
                     void run(persist);
                   }}
@@ -806,6 +818,9 @@ function App() {
                         update("vllm", {
                           ...draftRef.current.vllm,
                           [key]: e.target.value,
+                          ...(key === "evidence" && !e.target.value.trim()
+                            ? { kvCacheMiB: 0, allocatorCacheMiB: 0 }
+                            : {}),
                         })
                       }
                       onBlur={() => {
@@ -854,6 +869,76 @@ function App() {
                     update("vllm", {
                       ...draftRef.current.vllm,
                       context: e.target.valueAsNumber,
+                    })
+                  }
+                  onBlur={() => {
+                    void persist().catch((e: Error) => setError(e.message));
+                  }}
+                />
+              </label>
+              <label>
+                {t.vllmKvCache}
+                <span title={t.vllmKvCacheHelp} tabIndex={0}>
+                  <Info size={13} />
+                </span>
+                <input
+                  type="number"
+                  aria-label={t.vllmKvCache}
+                  min={0}
+                  max={4096}
+                  step={1}
+                  value={
+                    Number.isFinite(settings.vllm.kvCacheMiB)
+                      ? settings.vllm.kvCacheMiB
+                      : ""
+                  }
+                  disabled={
+                    status !== "offline" ||
+                    pending ||
+                    !settings.vllm.evidence ||
+                    settings.vllm.backend !== "mlx_lm"
+                  }
+                  onChange={(e) =>
+                    update("vllm", {
+                      ...draftRef.current.vllm,
+                      kvCacheMiB: e.target.valueAsNumber,
+                      ...(e.target.valueAsNumber === 0
+                        ? { allocatorCacheMiB: 0 }
+                        : {}),
+                    })
+                  }
+                  onBlur={() => {
+                    void persist().catch((e: Error) => setError(e.message));
+                  }}
+                />
+              </label>
+              <label>
+                {t.vllmAllocatorCache}
+                <span title={t.vllmAllocatorCacheHelp} tabIndex={0}>
+                  <Info size={13} />
+                </span>
+                <input
+                  type="number"
+                  aria-label={t.vllmAllocatorCache}
+                  min={0}
+                  max={4096}
+                  step={1}
+                  value={
+                    Number.isFinite(settings.vllm.allocatorCacheMiB)
+                      ? settings.vllm.allocatorCacheMiB
+                      : ""
+                  }
+                  disabled={
+                    status !== "offline" ||
+                    pending ||
+                    !settings.vllm.evidence ||
+                    !settings.vllm.kvCacheMiB ||
+                    settings.vllm.backend !== "mlx_lm"
+                  }
+                  onChange={(e) =>
+                    update("vllm", {
+                      ...draftRef.current.vllm,
+                      allocatorCacheMiB: e.target.valueAsNumber,
                     })
                   }
                   onBlur={() => {

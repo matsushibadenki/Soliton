@@ -17,6 +17,12 @@ const browser = await chromium.launch({
 });
 const page = await browser.newPage({ viewport: { width: 1440, height: 960 } });
 const errors = [];
+const consoleMessages = [];
+let restarting = false;
+page.on("console", (m) => {
+  if (["error", "warning"].includes(m.type()))
+    consoleMessages.push({ type: m.type(), text: m.text(), restarting });
+});
 page.on("pageerror", (e) => errors.push(e.message));
 let server;
 let headers;
@@ -101,6 +107,9 @@ try {
   });
   await page.goto(base);
   assert.equal(await page.title(), "Soliton");
+  assert((await page.locator("body").innerText()).includes("Soliton"));
+  assert.equal(await page.locator("vite-error-overlay").count(), 0);
+  await page.screenshot({ path: "/tmp/soliton-kv-initial.png" });
   await preferences(page, "engine");
   await page.getByRole("button", { name: "Start", exact: true }).click();
   await waitFor(
@@ -130,6 +139,75 @@ try {
   }, "stop then select Apple");
   assert.equal((await state()).document.messages.length, 2);
   await page.getByRole("textbox", { name: "Local model directory" }).waitFor();
+  const kv = page.getByRole("spinbutton", {
+    name: "Retained KV (MiB)",
+    exact: true,
+  });
+  assert(await kv.isDisabled(), "KV policy needs evidence before editing");
+  const allocator = page.getByRole("spinbutton", {
+    name: "Allocator cache (MiB)",
+    exact: true,
+  });
+  assert(await allocator.isDisabled());
+  const proof = join(fixture, "evidence.json");
+  await writeFile(proof, "{}", { mode: 0o600 });
+  const beforeKv = (await state()).settings;
+  await act("settings", {
+    settings: { ...beforeKv, vllm: { ...beforeKv.vllm, evidence: proof } },
+  });
+  await waitFor(
+    async () => !(await kv.isDisabled()),
+    "evidence enables KV editor",
+  );
+  await kv.fill("1024");
+  await kv.blur();
+  await waitFor(
+    async () => (await state()).settings.vllm.kvCacheMiB === 1024,
+    "KV policy persists in shared Rust state",
+  );
+  await waitFor(
+    async () => !(await allocator.isDisabled()),
+    "KV enables allocator editor",
+  );
+  await allocator.fill("256");
+  await allocator.blur();
+  await waitFor(
+    async () => (await state()).settings.vllm.allocatorCacheMiB === 256,
+    "allocator persists in Rust",
+  );
+  await allocator.scrollIntoViewIfNeeded();
+  await allocator
+    .locator("..")
+    .screenshot({ path: "/tmp/soliton-allocator-policy-control.png" });
+  await kv.scrollIntoViewIfNeeded();
+  await page.screenshot({ path: "/tmp/soliton-kv-policy-desktop.png" });
+  await kv
+    .locator("..")
+    .screenshot({ path: "/tmp/soliton-kv-policy-control.png" });
+  await page
+    .getByRole("textbox", { name: "Qualification evidence JSON", exact: true })
+    .fill("");
+  await page
+    .getByRole("textbox", { name: "Qualification evidence JSON", exact: true })
+    .blur();
+  await waitFor(async () => {
+    const s = await state();
+    return (
+      s.settings.vllm.kvCacheMiB === 0 &&
+      s.settings.vllm.allocatorCacheMiB === 0 &&
+      s.settings.vllm.evidence === ""
+    );
+  }, "clearing evidence clears inapplicable KV policy");
+  await page.reload();
+  await preferences(page, "engine");
+  await waitFor(
+    async () =>
+      (await page
+        .getByRole("spinbutton", { name: "Retained KV (MiB)", exact: true })
+        .inputValue()) === "0",
+    "KV reset renders before fixture inference",
+  );
+
   assert.equal(
     await page.getByRole("textbox", { name: "Strata directory" }).count(),
     0,
@@ -218,6 +296,36 @@ try {
     await preferences(page, "engine");
     await page.getByRole("combobox", { name: selector, exact: true }).waitFor();
     await page.setViewportSize({ width: 320, height: 960 });
+    const allocatorLabel = {
+      日本語: "アロケータ保持上限（MiB）",
+      简体中文: "分配器缓存上限（MiB）",
+      English: "Allocator cache (MiB)",
+    }[label];
+    await page
+      .getByRole("spinbutton", { name: allocatorLabel, exact: true })
+      .scrollIntoViewIfNeeded();
+    assert(
+      await page
+        .getByRole("spinbutton", { name: allocatorLabel, exact: true })
+        .isDisabled(),
+    );
+    await page.screenshot({
+      path: `/tmp/soliton-allocator-policy-${label}.png`,
+    });
+    const kvLabel = {
+      日本語: "KV保持上限（MiB）",
+      简体中文: "KV保留上限（MiB）",
+      English: "Retained KV (MiB)",
+    }[label];
+    await page
+      .getByRole("spinbutton", { name: kvLabel, exact: true })
+      .scrollIntoViewIfNeeded();
+    assert(
+      await page
+        .getByRole("spinbutton", { name: kvLabel, exact: true })
+        .isDisabled(),
+    );
+    await page.screenshot({ path: `/tmp/soliton-kv-policy-${label}.png` });
     await page.locator('[data-inspection-status="unverified"]').waitFor();
     assert.equal(
       await page.evaluate(
@@ -256,14 +364,34 @@ try {
   await closePreferences(page);
   await page.setViewportSize({ width: 1440, height: 960 });
   await page.screenshot({ path: "/tmp/soliton-shared-chat.png" });
+  restarting = true;
   await stopServer();
   await startServer();
+  await page.waitForResponse(
+    (response) =>
+      response.url() === base + "/studio/state" && response.status() === 200,
+  );
+  await page.locator('.notice[role="status"]').waitFor({ state: "hidden" });
+  restarting = false;
   s = await state();
   assert.equal(s.settings.engine, "vllmApple");
   assert.equal(s.status, "offline");
   assert.equal(s.document.messages.length, 4);
   assert.equal(s.document.messages[3].inference.metrics.engine, "vLLM-Apple");
   assert.equal(errors.length, 0, errors.join("\n"));
+  await writeFile(
+    "/tmp/soliton-kv-console.json",
+    JSON.stringify(consoleMessages),
+  );
+  const unexpectedConsole = consoleMessages.filter(
+    (m) =>
+      !(
+        m.restarting &&
+        (/401 \(Unauthorized\)/.test(m.text) ||
+          m.text.includes("ERR_CONNECTION_REFUSED"))
+      ),
+  );
+  assert.equal(unexpectedConsole.length, 0, JSON.stringify(unexpectedConsole));
   console.log(
     "PASS: Soliton branding, Strata→Apple→Strata stop/switch, readiness, shared chat/history/logs/metrics, private auth, shared metadata diagnostics and cache invalidation, active API stream lock, worker cleanup, EN/JA/ZH, 390/1440px, restart persistence",
   );

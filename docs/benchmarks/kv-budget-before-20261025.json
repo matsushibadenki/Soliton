@@ -1,0 +1,574 @@
+{
+  "schema": 1,
+  "passed": false,
+  "environment": {
+    "architecture": "arm64",
+    "loadAverageAtStart": [
+      4.43017578125,
+      4.02099609375,
+      5.36474609375
+    ],
+    "loadAverageAtEnd": [
+      115.3935546875,
+      100.4013671875,
+      60.84375
+    ]
+  },
+  "binarySha256": "d6702d47e080763e73cd78a4171c75f23c2d056e79fae944ea9ba4056346ef08",
+  "label": "after",
+  "runtime": "shared Rust headless core",
+  "startedAt": "2026-10-25T05:20:00.430Z",
+  "evidenceSha256": "20eab6ae9314557f5234ca60c7446792726c7dee629cdd2c3382a6e41fbcec12",
+  "context": 4096,
+  "settingsFingerprint": "13a4d26eef58af7cb9ab7b5deef4cce87a98e42b4cc4d4771f5bdba3113b5f5a",
+  "cases": [
+    {
+      "round": 0,
+      "language": "en",
+      "kind": "retrieval",
+      "rows": 0,
+      "status": 200,
+      "elapsedMs": 2920.245,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 32,
+        "completion_tokens": 10,
+        "total_tokens": 42,
+        "prompt_tokens_details": {
+          "cached_tokens": 4
+        }
+      }
+    },
+    {
+      "round": 0,
+      "language": "en",
+      "kind": "retrieval",
+      "rows": 32,
+      "status": 200,
+      "elapsedMs": 5373.651,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 535,
+        "completion_tokens": 10,
+        "total_tokens": 545,
+        "prompt_tokens_details": {
+          "cached_tokens": 4
+        }
+      }
+    },
+    {
+      "round": 0,
+      "language": "en",
+      "kind": "retrieval",
+      "rows": 58,
+      "status": 200,
+      "elapsedMs": 5561.775,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 951,
+        "completion_tokens": 10,
+        "total_tokens": 961,
+        "prompt_tokens_details": {
+          "cached_tokens": 251
+        }
+      }
+    },
+    {
+      "round": 0,
+      "language": "en",
+      "kind": "retrieval",
+      "rows": 64,
+      "status": 200,
+      "elapsedMs": 5719.136,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 1047,
+        "completion_tokens": 10,
+        "total_tokens": 1057,
+        "prompt_tokens_details": {
+          "cached_tokens": 459
+        }
+      }
+    },
+    {
+      "round": 0,
+      "language": "en",
+      "kind": "multi-turn",
+      "rows": null,
+      "status": 200,
+      "elapsedMs": 5306.273,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 54,
+        "completion_tokens": 11,
+        "total_tokens": 65,
+        "prompt_tokens_details": {
+          "cached_tokens": 4
+        }
+      }
+    },
+    {
+      "round": 0,
+      "language": "ja",
+      "kind": "retrieval",
+      "rows": 0,
+      "status": 200,
+      "elapsedMs": 3893.595,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 34,
+        "completion_tokens": 10,
+        "total_tokens": 44,
+        "prompt_tokens_details": {
+          "cached_tokens": 4
+        }
+      }
+    },
+    {
+      "round": 0,
+      "language": "ja",
+      "kind": "retrieval",
+      "rows": 32,
+      "status": 200,
+      "elapsedMs": 4945.974,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 537,
+        "completion_tokens": 10,
+        "total_tokens": 547,
+        "prompt_tokens_details": {
+          "cached_tokens": 251
+        }
+      }
+    },
+    {
+      "round": 0,
+      "language": "ja",
+      "kind": "retrieval",
+      "rows": 58,
+      "status": 200,
+      "elapsedMs": 5235.893,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 953,
+        "completion_tokens": 10,
+        "total_tokens": 963,
+        "prompt_tokens_details": {
+          "cached_tokens": 459
+        }
+      }
+    },
+    {
+      "round": 0,
+      "language": "ja",
+      "kind": "retrieval",
+      "rows": 64,
+      "status": 200,
+      "elapsedMs": 5143.661,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 1049,
+        "completion_tokens": 10,
+        "total_tokens": 1059,
+        "prompt_tokens_details": {
+          "cached_tokens": 507
+        }
+      }
+    },
+    {
+      "round": 0,
+      "language": "ja",
+      "kind": "multi-turn",
+      "rows": null,
+      "status": 200,
+      "elapsedMs": 4523.097,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 53,
+        "completion_tokens": 11,
+        "total_tokens": 64,
+        "prompt_tokens_details": {
+          "cached_tokens": 6
+        }
+      }
+    },
+    {
+      "round": 0,
+      "language": "zh",
+      "kind": "retrieval",
+      "rows": 0,
+      "status": 200,
+      "elapsedMs": 7223.375,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 27,
+        "completion_tokens": 10,
+        "total_tokens": 37,
+        "prompt_tokens_details": {
+          "cached_tokens": 4
+        }
+      }
+    },
+    {
+      "round": 0,
+      "language": "zh",
+      "kind": "retrieval",
+      "rows": 32,
+      "status": 200,
+      "elapsedMs": 8584.258,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 530,
+        "completion_tokens": 10,
+        "total_tokens": 540,
+        "prompt_tokens_details": {
+          "cached_tokens": 251
+        }
+      }
+    },
+    {
+      "round": 0,
+      "language": "zh",
+      "kind": "retrieval",
+      "rows": 58,
+      "status": 200,
+      "elapsedMs": 7001.807,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 946,
+        "completion_tokens": 10,
+        "total_tokens": 956,
+        "prompt_tokens_details": {
+          "cached_tokens": 459
+        }
+      }
+    },
+    {
+      "round": 0,
+      "language": "zh",
+      "kind": "retrieval",
+      "rows": 64,
+      "status": 200,
+      "elapsedMs": 6668.229,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 1042,
+        "completion_tokens": 10,
+        "total_tokens": 1052,
+        "prompt_tokens_details": {
+          "cached_tokens": 507
+        }
+      }
+    },
+    {
+      "round": 0,
+      "language": "zh",
+      "kind": "multi-turn",
+      "rows": null,
+      "status": 200,
+      "elapsedMs": 4002.197,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 48,
+        "completion_tokens": 11,
+        "total_tokens": 59,
+        "prompt_tokens_details": {
+          "cached_tokens": 4
+        }
+      }
+    },
+    {
+      "round": 1,
+      "language": "en",
+      "kind": "retrieval",
+      "rows": 0,
+      "status": 200,
+      "elapsedMs": 3694.604,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 32,
+        "completion_tokens": 10,
+        "total_tokens": 42,
+        "prompt_tokens_details": {
+          "cached_tokens": 4
+        }
+      }
+    },
+    {
+      "round": 1,
+      "language": "en",
+      "kind": "retrieval",
+      "rows": 32,
+      "status": 200,
+      "elapsedMs": 3953.68,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 535,
+        "completion_tokens": 10,
+        "total_tokens": 545,
+        "prompt_tokens_details": {
+          "cached_tokens": 251
+        }
+      }
+    },
+    {
+      "round": 1,
+      "language": "en",
+      "kind": "retrieval",
+      "rows": 58,
+      "status": 200,
+      "elapsedMs": 4622.027,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 951,
+        "completion_tokens": 10,
+        "total_tokens": 961,
+        "prompt_tokens_details": {
+          "cached_tokens": 459
+        }
+      }
+    },
+    {
+      "round": 1,
+      "language": "en",
+      "kind": "retrieval",
+      "rows": 64,
+      "status": 200,
+      "elapsedMs": 4905.135,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 1047,
+        "completion_tokens": 10,
+        "total_tokens": 1057,
+        "prompt_tokens_details": {
+          "cached_tokens": 507
+        }
+      }
+    },
+    {
+      "round": 1,
+      "language": "en",
+      "kind": "multi-turn",
+      "rows": null,
+      "status": 200,
+      "elapsedMs": 2114.564,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 54,
+        "completion_tokens": 11,
+        "total_tokens": 65,
+        "prompt_tokens_details": {
+          "cached_tokens": 4
+        }
+      }
+    },
+    {
+      "round": 1,
+      "language": "ja",
+      "kind": "retrieval",
+      "rows": 0,
+      "status": 200,
+      "elapsedMs": 2370.516,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 34,
+        "completion_tokens": 10,
+        "total_tokens": 44,
+        "prompt_tokens_details": {
+          "cached_tokens": 4
+        }
+      }
+    },
+    {
+      "round": 1,
+      "language": "ja",
+      "kind": "retrieval",
+      "rows": 32,
+      "status": 200,
+      "elapsedMs": 2803.132,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 537,
+        "completion_tokens": 10,
+        "total_tokens": 547,
+        "prompt_tokens_details": {
+          "cached_tokens": 251
+        }
+      }
+    },
+    {
+      "round": 1,
+      "language": "ja",
+      "kind": "retrieval",
+      "rows": 58,
+      "status": 200,
+      "elapsedMs": 3678.458,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 953,
+        "completion_tokens": 10,
+        "total_tokens": 963,
+        "prompt_tokens_details": {
+          "cached_tokens": 459
+        }
+      }
+    },
+    {
+      "round": 1,
+      "language": "ja",
+      "kind": "retrieval",
+      "rows": 64,
+      "status": 200,
+      "elapsedMs": 3624.367,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 1049,
+        "completion_tokens": 10,
+        "total_tokens": 1059,
+        "prompt_tokens_details": {
+          "cached_tokens": 507
+        }
+      }
+    },
+    {
+      "round": 1,
+      "language": "ja",
+      "kind": "multi-turn",
+      "rows": null,
+      "status": 200,
+      "elapsedMs": 2091.218,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 53,
+        "completion_tokens": 11,
+        "total_tokens": 64,
+        "prompt_tokens_details": {
+          "cached_tokens": 6
+        }
+      }
+    },
+    {
+      "round": 1,
+      "language": "zh",
+      "kind": "retrieval",
+      "rows": 0,
+      "status": 200,
+      "elapsedMs": 3594.959,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 27,
+        "completion_tokens": 10,
+        "total_tokens": 37,
+        "prompt_tokens_details": {
+          "cached_tokens": 4
+        }
+      }
+    },
+    {
+      "round": 1,
+      "language": "zh",
+      "kind": "retrieval",
+      "rows": 32,
+      "status": 200,
+      "elapsedMs": 5362.736,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 530,
+        "completion_tokens": 10,
+        "total_tokens": 540,
+        "prompt_tokens_details": {
+          "cached_tokens": 251
+        }
+      }
+    },
+    {
+      "round": 1,
+      "language": "zh",
+      "kind": "retrieval",
+      "rows": 58,
+      "status": 200,
+      "elapsedMs": 4635.645,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 946,
+        "completion_tokens": 10,
+        "total_tokens": 956,
+        "prompt_tokens_details": {
+          "cached_tokens": 459
+        }
+      }
+    },
+    {
+      "round": 1,
+      "language": "zh",
+      "kind": "retrieval",
+      "rows": 64,
+      "status": 200,
+      "elapsedMs": 3844.969,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 1042,
+        "completion_tokens": 10,
+        "total_tokens": 1052,
+        "prompt_tokens_details": {
+          "cached_tokens": 507
+        }
+      }
+    },
+    {
+      "round": 1,
+      "language": "zh",
+      "kind": "multi-turn",
+      "rows": null,
+      "status": 200,
+      "elapsedMs": 1929.158,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 48,
+        "completion_tokens": 11,
+        "total_tokens": 59,
+        "prompt_tokens_details": {
+          "cached_tokens": 4
+        }
+      }
+    }
+  ],
+  "checks": {
+    "counterOverlapsModelLoadingAfterQualification": true
+  },
+  "startupObservations": [
+    {
+      "elapsedMs": 66.835917,
+      "phase": "starting/false",
+      "counterProcesses": 0
+    },
+    {
+      "elapsedMs": 38800.831374999994,
+      "phase": "starting/true",
+      "counterProcesses": 1
+    },
+    {
+      "elapsedMs": 59035.553084,
+      "phase": "ready/true",
+      "counterProcesses": 1
+    }
+  ],
+  "startup": {
+    "controlReadyObservedMs": 38723,
+    "counterSpawnedMs": 38723,
+    "inferenceReadyObservedMs": 58428,
+    "modelLoadingObservedMs": 19705
+  },
+  "engineStartupMs": 59286.656666999996,
+  "coldStream": {
+    "firstContentMs": 10872.726290999992,
+    "completedMs": 11029.898207999991,
+    "engineStartToFirstContentMs": 70159.38295799999,
+    "exact": true
+  },
+  "applicationExit": {
+    "code": 0,
+    "signal": null
+  },
+  "finishedAt": "2026-10-25T05:35:09.642Z"
+}

@@ -1,0 +1,124 @@
+diff --git a/vllm_apple/backend.py b/vllm_apple/backend.py
+--- a/vllm_apple/backend.py
++++ b/vllm_apple/backend.py
+@@ -83,6 +83,7 @@
+     backend_kind: str = "vllm_metal"
+     python_module: str | None = None
+     kv_cache_bytes: int | None = field(init=False, default=None)
++    allocator_cache_bytes: int | None = field(init=False, default=None)
+ 
+     def __post_init__(self) -> None:
+         if not self.model.strip():
+@@ -113,6 +114,13 @@
+             if self.python_module is not None or not (self.executable.parent / "python").is_file():
+                 raise BackendConfigurationError("KV budget requires the backend-adjacent Python without another wrapper")
+             object.__setattr__(self, "kv_cache_bytes", int(raw_budget) * 1024**2)
++        raw_allocator = os.environ.get("VLLM_APPLE_ALLOCATOR_CACHE_MIB")
++        if raw_allocator is not None:
++            if (self.kv_cache_bytes is None or not 1 <= len(raw_allocator) <= 4
++                    or not raw_allocator.isascii() or not raw_allocator.isdecimal()
++                    or not 64 <= int(raw_allocator) <= 4096):
++                raise BackendConfigurationError("allocator cache MiB requires qualified KV launcher and an integer between 64 and 4096")
++            object.__setattr__(self, "allocator_cache_bytes", int(raw_allocator) * 1024**2)
+         reserved = {
+             "--host",
+             "--port",
+diff --git a/vllm_apple/mlx_kv_budget.py b/vllm_apple/mlx_kv_budget.py
+--- a/vllm_apple/mlx_kv_budget.py
++++ b/vllm_apple/mlx_kv_budget.py
+@@ -44,6 +44,25 @@
+     cache_class._soliton_budget = budget
+ 
+ 
++def configure_allocator(mx, raw):
++    """Limit reusable free allocations once, preserving any stricter existing cap.
++
++    This is not an active-memory limit. MLX reclaims excess on allocation; no
++    per-request flush or mutation of live KV/weights is introduced.
++    """
++    if raw is None:
++        return dict(configured_limit_bytes=None, effective_limit_bytes=None)
++    if (not 1 <= len(raw) <= 4 or not raw.isascii() or not raw.isdecimal()
++            or not 64 <= int(raw) <= 4096):
++        raise ValueError('allocator cache MiB must be between 64 and 4096')
++    configured = int(raw) * 1024**2
++    previous = mx.set_cache_limit(configured)
++    effective = min(previous, configured)
++    if effective != configured:
++        mx.set_cache_limit(effective)
++    return dict(configured_limit_bytes=configured, effective_limit_bytes=effective)
++
++
+ def main():
+     raw = os.environ.get('VLLM_APPLE_KV_CACHE_MIB', '')
+     if (not 1 <= len(raw) <= 4 or not raw.isascii() or not raw.isdecimal()
+@@ -56,6 +75,8 @@
+     if (hashlib.sha256(Path(server.__file__).read_bytes()).hexdigest() != SERVER_SHA256
+             or hashlib.sha256(Path(cache.__file__).read_bytes()).hexdigest() != CACHE_SHA256):
+         raise ValueError('review retained KV wrapper after server/cache source changes')
++    import mlx.core as mx
++    allocator_policy = configure_allocator(mx, os.environ.get('VLLM_APPLE_ALLOCATOR_CACHE_MIB'))
+     install_budget(cache.LRUPromptCache, int(raw) * 1024**2)
+     original_get = server.APIHandler.do_GET
+ 
+@@ -68,7 +89,7 @@
+             snapshot = dict(retained_bytes=lru.nbytes, max_bytes=lru.max_bytes,
+                             entries=len(lru), accounting='LRU tensor bytes, not unique physical memory')
+         snapshot['allocator'] = dict(active_bytes=mx.get_active_memory(),
+-            cache_bytes=mx.get_cache_memory(), peak_bytes=mx.get_peak_memory(), consistency='non_atomic')
++            cache_bytes=mx.get_cache_memory(), peak_bytes=mx.get_peak_memory(), consistency='non_atomic', **allocator_policy)
+         encoded = json.dumps(snapshot).encode()
+         self.send_response(200)
+         self.send_header('Content-Type', 'application/json')
+diff --git a/tests/test_allocator_budget.py b/tests/test_allocator_budget.py
+new file mode 100644
+--- /dev/null
++++ b/tests/test_allocator_budget.py
+@@ -0,0 +1,47 @@
++"""Allocator policy guards. Synthetic fixtures load no GPU weights."""
++import os
++from pathlib import Path
++import tempfile
++from types import SimpleNamespace
++import unittest
++from unittest.mock import Mock, patch
++from vllm_apple.backend import BackendConfig, BackendConfigurationError
++
++class AllocatorBudgetTests(unittest.TestCase):
++    def test_disabled_policy_never_calls_allocator(self):
++        from vllm_apple.mlx_kv_budget import configure_allocator
++        mx=SimpleNamespace(set_cache_limit=Mock())
++        self.assertEqual(configure_allocator(mx,None), dict(configured_limit_bytes=None,effective_limit_bytes=None))
++        mx.set_cache_limit.assert_not_called()
++
++    def test_policy_sets_bytes_and_keeps_stricter_existing_limit(self):
++        from vllm_apple.mlx_kv_budget import configure_allocator
++        for previous in [0,64*1024**2,4*1024**3]:
++            with self.subTest(previous=previous):
++                mx=SimpleNamespace(set_cache_limit=Mock(return_value=previous))
++                result=configure_allocator(mx,'256')
++                self.assertEqual(result['configured_limit_bytes'],256*1024**2)
++                self.assertEqual(result['effective_limit_bytes'],min(previous,256*1024**2))
++                self.assertEqual(mx.set_cache_limit.call_args.args,(min(previous,256*1024**2),))
++
++    def test_invalid_values_never_touch_allocator(self):
++        from vllm_apple.mlx_kv_budget import configure_allocator
++        mx=SimpleNamespace(set_cache_limit=Mock())
++        for raw in ['', '0','1','63','4097','+256',' 256','256.0','٢٥٦']:
++            with self.subTest(raw=raw), self.assertRaises(ValueError):configure_allocator(mx,raw)
++        mx.set_cache_limit.assert_not_called()
++
++    def test_requires_reviewed_kv_launcher_and_snapshots_policy(self):
++        with tempfile.TemporaryDirectory() as d:
++            exe=Path(d)/'mlx_lm.server';(Path(d)/'python').touch()
++            with patch.dict(os.environ,{'VLLM_APPLE_ALLOCATOR_CACHE_MIB':'256'},clear=True), self.assertRaises(BackendConfigurationError):
++                BackendConfig('local',exe,backend_kind='mlx_lm')
++            with patch.dict(os.environ,{'VLLM_APPLE_ALLOCATOR_CACHE_MIB':'256','VLLM_APPLE_KV_CACHE_MIB':'1024'},clear=True):
++                config=BackendConfig('local',exe,backend_kind='mlx_lm')
++            self.assertEqual(config.allocator_cache_bytes,256*1024**2)
++            self.assertTrue(any(x.endswith('mlx_kv_budget.py') for x in config.command()))
++
++    def test_invalid_policy_rejected_before_launch(self):
++        for raw in ['0','63','4097','256.0','+256']:
++            with self.subTest(raw=raw), patch.dict(os.environ,{'VLLM_APPLE_ALLOCATOR_CACHE_MIB':raw,'VLLM_APPLE_KV_CACHE_MIB':'1024'},clear=True), self.assertRaises(BackendConfigurationError):
++                BackendConfig('local',Path('/backend'),backend_kind='mlx_lm')

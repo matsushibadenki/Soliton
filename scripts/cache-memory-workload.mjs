@@ -16,6 +16,8 @@ export async function verifyCacheMemory({
   headers,
   context,
   sampleMemory,
+  recentReuseRequired = true,
+  verifySeeded = false,
 }) {
   assert.equal(context, 4096);
   const started = performance.now(),
@@ -119,7 +121,8 @@ export async function verifyCacheMemory({
     const reheated = await request(0, `reheat-${round}`);
     assert(reheated.cachedTokens >= reheated.promptTokens - 64);
     const recent = await request(15, `recent-${round}`);
-    assert(recent.cachedTokens >= recent.promptTokens - 64);
+    if (recentReuseRequired)
+      assert(recent.cachedTokens >= recent.promptTokens - 64);
   }
   for (const seconds of [0, 5, 10]) {
     if (seconds) await new Promise((resolve) => setTimeout(resolve, 5000));
@@ -129,18 +132,58 @@ export async function verifyCacheMemory({
       ...(await sampleMemory()),
     });
   }
+  const seededCases = [];
+  if (verifySeeded) {
+    for (const index of [1, 2, 3]) {
+      const { messages } = cacheHistory(index);
+      const response = await fetch(base + "/v1/chat/completions", {
+        method: "POST",
+        headers,
+        body: JSON.stringify({
+          model: "default_model",
+          messages,
+          max_tokens: 64,
+          temperature: 0,
+          seed: 42,
+        }),
+        signal: AbortSignal.timeout(180000),
+      });
+      assert.equal(response.status, 200);
+      const body = await response.json();
+      assert.equal(body.choices[0].message.content.trim(), "STRATA-7391");
+      assert.equal(
+        body.usage.prompt_tokens,
+        cases.find((c) => c.index === index).promptTokens,
+      );
+      const memory = await sampleMemory();
+      assert(
+        memory.kvCache &&
+          memory.kvCache.retained_bytes <= memory.kvCache.max_bytes,
+      );
+      seededCases.push({
+        index,
+        seed: 42,
+        exact: true,
+        promptTokens: body.usage.prompt_tokens,
+        memory,
+      });
+    }
+  }
   return {
     passed: true,
     elapsedMs: performance.now() - started,
     cases,
     samples,
+    recentReuseRequired,
+    seededCases,
     observedAnchorReuseLosses: 2,
     boundary: {
       passed: true,
       acceptedTotal: context,
       rejectedTotal: context + 1,
     },
-    observations:
-      "backend-reported reused token counts; anchor misses after churn are consistent with LRU eviction, not direct inventory proof; no direct KV-byte accounting or forced OS pressure",
+    observations: verifySeeded
+      ? "backend-reported reused tokens and sampled LRU logical bytes/allocator metrics; not unique physical KV ownership or forced OS pressure"
+      : "backend-reported reused token counts; anchor misses after churn are consistent with LRU eviction, not direct inventory proof; no direct KV-byte accounting or forced OS pressure",
   };
 }

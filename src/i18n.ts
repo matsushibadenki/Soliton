@@ -19,6 +19,12 @@ export const words = {
     vllmInspectFailed:
       "Inspection failed. Check the selected paths and environment.",
 
+    vllmAllocatorCache: "Allocator cache (MiB)",
+    vllmAllocatorCacheHelp:
+      "0 uses the backend default; 64–4096 limits reusable free GPU allocations. Requires retained KV and matching fresh evidence. Active memory is separate; allocation latency may increase.",
+    vllmKvCache: "Retained KV (MiB)",
+    vllmKvCacheHelp:
+      "0 uses the backend default; 64–4096 limits retained KV only. Requires matching fresh evidence. Active inference and allocator memory are separate.",
     vllmEvidence: "Qualification evidence JSON",
     vllmEvidenceHelp:
       "Optional identity-bound evidence from a complete 30-minute qualification. The daemon verifies expiry, model, backend, runtime, Mac and context limits; no compatibility checks are skipped.",
@@ -288,6 +294,12 @@ export const words = {
     vllmInspectFailed:
       "診断に失敗しました。選択したパスと環境を確認してください。",
 
+    vllmAllocatorCache: "アロケータ保持上限（MiB）",
+    vllmAllocatorCacheHelp:
+      "0はバックエンド既定値、64〜4096は再利用する空きGPUメモリの上限です。KV保持上限と一致する新しい証跡が必要です。使用中メモリは対象外で、再確保に時間がかかる場合があります。",
+    vllmKvCache: "KV保持上限（MiB）",
+    vllmKvCacheHelp:
+      "0はバックエンド既定、64〜4096は再利用用KVの保持上限です。値に一致する新しい証跡が必要です。推論中のKV・アロケータのメモリは別です。",
     vllmEvidence: "検証証跡JSON",
     vllmEvidenceHelp:
       "30分の検証で発行した証跡を任意指定します。daemonが期限・モデル・バックエンド・実装・Mac・コンテキスト上限を照合します。互換性検査は無効化しません。",
@@ -556,6 +568,12 @@ export const words = {
     vllmBudget: "模型预计内存超出可用预算。",
     vllmInspectFailed: "诊断失败，请检查所选路径及环境。",
 
+    vllmAllocatorCache: "分配器缓存上限（MiB）",
+    vllmAllocatorCacheHelp:
+      "0使用后端默认值，64–4096限制可复用的空闲GPU内存。需要KV保留上限及匹配的新证据。不限制使用中内存，重新分配可能增加延迟。",
+    vllmKvCache: "KV保留上限（MiB）",
+    vllmKvCacheHelp:
+      "0使用后端默认值；64–4096仅限制保留KV。需要匹配的新证据。推理中的KV和分配器内存另计。",
     vllmEvidence: "验证证据JSON",
     vllmEvidenceHelp:
       "可选：完整30分钟验证生成的证据。daemon核对有效期、模型、后端、运行时、Mac和上下文上限，不跳过兼容性检查。",

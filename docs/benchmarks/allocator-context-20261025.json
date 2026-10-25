@@ -1,0 +1,6037 @@
+{
+  "schema": 1,
+  "passed": true,
+  "environment": {
+    "architecture": "arm64",
+    "loadAverageAtStart": [
+      11.068359375,
+      7.61865234375,
+      6.365234375
+    ],
+    "loadAverageAtEnd": [
+      5.56640625,
+      6.1650390625,
+      6.6845703125
+    ]
+  },
+  "binarySha256": "b4fb222329cd1d4abd215c7f4af3f6cfc248b9169a30e91bd6c798a7c0d420a8",
+  "label": "after",
+  "runtime": "shared Rust headless core",
+  "startedAt": "2026-10-25T08:54:14.820Z",
+  "evidenceSha256": "b28598ad2b702cf9b20aec27bd6bc2d3e2d4c00c857b1fdb3d4320d35baf1806",
+  "context": 4096,
+  "kvCacheMiB": 1024,
+  "allocatorCacheMiB": 256,
+  "settingsFingerprint": "295d9b58d19e14ca5b3c669e199823c645212a8f3e48afa53480292bd925662f",
+  "cases": [
+    {
+      "round": 0,
+      "language": "en",
+      "kind": "retrieval",
+      "rows": 0,
+      "status": 200,
+      "elapsedMs": 564.714,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 32,
+        "completion_tokens": 10,
+        "total_tokens": 42,
+        "prompt_tokens_details": {
+          "cached_tokens": 4
+        }
+      }
+    },
+    {
+      "round": 0,
+      "language": "en",
+      "kind": "retrieval",
+      "rows": 32,
+      "status": 200,
+      "elapsedMs": 2694.231,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 535,
+        "completion_tokens": 10,
+        "total_tokens": 545,
+        "prompt_tokens_details": {
+          "cached_tokens": 4
+        }
+      }
+    },
+    {
+      "round": 0,
+      "language": "en",
+      "kind": "retrieval",
+      "rows": 58,
+      "status": 200,
+      "elapsedMs": 3115.107,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 951,
+        "completion_tokens": 10,
+        "total_tokens": 961,
+        "prompt_tokens_details": {
+          "cached_tokens": 251
+        }
+      }
+    },
+    {
+      "round": 0,
+      "language": "en",
+      "kind": "retrieval",
+      "rows": 64,
+      "status": 200,
+      "elapsedMs": 2867.967,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 1047,
+        "completion_tokens": 10,
+        "total_tokens": 1057,
+        "prompt_tokens_details": {
+          "cached_tokens": 459
+        }
+      }
+    },
+    {
+      "round": 0,
+      "language": "en",
+      "kind": "multi-turn",
+      "rows": null,
+      "status": 200,
+      "elapsedMs": 801.641,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 54,
+        "completion_tokens": 11,
+        "total_tokens": 65,
+        "prompt_tokens_details": {
+          "cached_tokens": 4
+        }
+      }
+    },
+    {
+      "round": 0,
+      "language": "ja",
+      "kind": "retrieval",
+      "rows": 0,
+      "status": 200,
+      "elapsedMs": 740.209,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 34,
+        "completion_tokens": 10,
+        "total_tokens": 44,
+        "prompt_tokens_details": {
+          "cached_tokens": 4
+        }
+      }
+    },
+    {
+      "round": 0,
+      "language": "ja",
+      "kind": "retrieval",
+      "rows": 32,
+      "status": 200,
+      "elapsedMs": 1484.625,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 537,
+        "completion_tokens": 10,
+        "total_tokens": 547,
+        "prompt_tokens_details": {
+          "cached_tokens": 251
+        }
+      }
+    },
+    {
+      "round": 0,
+      "language": "ja",
+      "kind": "retrieval",
+      "rows": 58,
+      "status": 200,
+      "elapsedMs": 2557.77,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 953,
+        "completion_tokens": 10,
+        "total_tokens": 963,
+        "prompt_tokens_details": {
+          "cached_tokens": 459
+        }
+      }
+    },
+    {
+      "round": 0,
+      "language": "ja",
+      "kind": "retrieval",
+      "rows": 64,
+      "status": 200,
+      "elapsedMs": 2581.031,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 1049,
+        "completion_tokens": 10,
+        "total_tokens": 1059,
+        "prompt_tokens_details": {
+          "cached_tokens": 507
+        }
+      }
+    },
+    {
+      "round": 0,
+      "language": "ja",
+      "kind": "multi-turn",
+      "rows": null,
+      "status": 200,
+      "elapsedMs": 841.515,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 53,
+        "completion_tokens": 11,
+        "total_tokens": 64,
+        "prompt_tokens_details": {
+          "cached_tokens": 6
+        }
+      }
+    },
+    {
+      "round": 0,
+      "language": "zh",
+      "kind": "retrieval",
+      "rows": 0,
+      "status": 200,
+      "elapsedMs": 695.915,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 27,
+        "completion_tokens": 10,
+        "total_tokens": 37,
+        "prompt_tokens_details": {
+          "cached_tokens": 4
+        }
+      }
+    },
+    {
+      "round": 0,
+      "language": "zh",
+      "kind": "retrieval",
+      "rows": 32,
+      "status": 200,
+      "elapsedMs": 1500.883,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 530,
+        "completion_tokens": 10,
+        "total_tokens": 540,
+        "prompt_tokens_details": {
+          "cached_tokens": 251
+        }
+      }
+    },
+    {
+      "round": 0,
+      "language": "zh",
+      "kind": "retrieval",
+      "rows": 58,
+      "status": 200,
+      "elapsedMs": 2551.32,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 946,
+        "completion_tokens": 10,
+        "total_tokens": 956,
+        "prompt_tokens_details": {
+          "cached_tokens": 459
+        }
+      }
+    },
+    {
+      "round": 0,
+      "language": "zh",
+      "kind": "retrieval",
+      "rows": 64,
+      "status": 200,
+      "elapsedMs": 2575.271,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 1042,
+        "completion_tokens": 10,
+        "total_tokens": 1052,
+        "prompt_tokens_details": {
+          "cached_tokens": 507
+        }
+      }
+    },
+    {
+      "round": 0,
+      "language": "zh",
+      "kind": "multi-turn",
+      "rows": null,
+      "status": 200,
+      "elapsedMs": 803.361,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 48,
+        "completion_tokens": 11,
+        "total_tokens": 59,
+        "prompt_tokens_details": {
+          "cached_tokens": 4
+        }
+      }
+    },
+    {
+      "round": 1,
+      "language": "en",
+      "kind": "retrieval",
+      "rows": 0,
+      "status": 200,
+      "elapsedMs": 923.643,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 32,
+        "completion_tokens": 10,
+        "total_tokens": 42,
+        "prompt_tokens_details": {
+          "cached_tokens": 4
+        }
+      }
+    },
+    {
+      "round": 1,
+      "language": "en",
+      "kind": "retrieval",
+      "rows": 32,
+      "status": 200,
+      "elapsedMs": 1455.625,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 535,
+        "completion_tokens": 10,
+        "total_tokens": 545,
+        "prompt_tokens_details": {
+          "cached_tokens": 251
+        }
+      }
+    },
+    {
+      "round": 1,
+      "language": "en",
+      "kind": "retrieval",
+      "rows": 58,
+      "status": 200,
+      "elapsedMs": 2528.668,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 951,
+        "completion_tokens": 10,
+        "total_tokens": 961,
+        "prompt_tokens_details": {
+          "cached_tokens": 459
+        }
+      }
+    },
+    {
+      "round": 1,
+      "language": "en",
+      "kind": "retrieval",
+      "rows": 64,
+      "status": 200,
+      "elapsedMs": 2631.667,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 1047,
+        "completion_tokens": 10,
+        "total_tokens": 1057,
+        "prompt_tokens_details": {
+          "cached_tokens": 507
+        }
+      }
+    },
+    {
+      "round": 1,
+      "language": "en",
+      "kind": "multi-turn",
+      "rows": null,
+      "status": 200,
+      "elapsedMs": 831.925,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 54,
+        "completion_tokens": 11,
+        "total_tokens": 65,
+        "prompt_tokens_details": {
+          "cached_tokens": 4
+        }
+      }
+    },
+    {
+      "round": 1,
+      "language": "ja",
+      "kind": "retrieval",
+      "rows": 0,
+      "status": 200,
+      "elapsedMs": 708.895,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 34,
+        "completion_tokens": 10,
+        "total_tokens": 44,
+        "prompt_tokens_details": {
+          "cached_tokens": 4
+        }
+      }
+    },
+    {
+      "round": 1,
+      "language": "ja",
+      "kind": "retrieval",
+      "rows": 32,
+      "status": 200,
+      "elapsedMs": 1500.176,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 537,
+        "completion_tokens": 10,
+        "total_tokens": 547,
+        "prompt_tokens_details": {
+          "cached_tokens": 251
+        }
+      }
+    },
+    {
+      "round": 1,
+      "language": "ja",
+      "kind": "retrieval",
+      "rows": 58,
+      "status": 200,
+      "elapsedMs": 2510.309,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 953,
+        "completion_tokens": 10,
+        "total_tokens": 963,
+        "prompt_tokens_details": {
+          "cached_tokens": 459
+        }
+      }
+    },
+    {
+      "round": 1,
+      "language": "ja",
+      "kind": "retrieval",
+      "rows": 64,
+      "status": 200,
+      "elapsedMs": 2627.815,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 1049,
+        "completion_tokens": 10,
+        "total_tokens": 1059,
+        "prompt_tokens_details": {
+          "cached_tokens": 507
+        }
+      }
+    },
+    {
+      "round": 1,
+      "language": "ja",
+      "kind": "multi-turn",
+      "rows": null,
+      "status": 200,
+      "elapsedMs": 834.786,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 53,
+        "completion_tokens": 11,
+        "total_tokens": 64,
+        "prompt_tokens_details": {
+          "cached_tokens": 6
+        }
+      }
+    },
+    {
+      "round": 1,
+      "language": "zh",
+      "kind": "retrieval",
+      "rows": 0,
+      "status": 200,
+      "elapsedMs": 706.568,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 27,
+        "completion_tokens": 10,
+        "total_tokens": 37,
+        "prompt_tokens_details": {
+          "cached_tokens": 4
+        }
+      }
+    },
+    {
+      "round": 1,
+      "language": "zh",
+      "kind": "retrieval",
+      "rows": 32,
+      "status": 200,
+      "elapsedMs": 1485.876,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 530,
+        "completion_tokens": 10,
+        "total_tokens": 540,
+        "prompt_tokens_details": {
+          "cached_tokens": 251
+        }
+      }
+    },
+    {
+      "round": 1,
+      "language": "zh",
+      "kind": "retrieval",
+      "rows": 58,
+      "status": 200,
+      "elapsedMs": 2533.052,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 946,
+        "completion_tokens": 10,
+        "total_tokens": 956,
+        "prompt_tokens_details": {
+          "cached_tokens": 459
+        }
+      }
+    },
+    {
+      "round": 1,
+      "language": "zh",
+      "kind": "retrieval",
+      "rows": 64,
+      "status": 200,
+      "elapsedMs": 2632.576,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 1042,
+        "completion_tokens": 10,
+        "total_tokens": 1052,
+        "prompt_tokens_details": {
+          "cached_tokens": 507
+        }
+      }
+    },
+    {
+      "round": 1,
+      "language": "zh",
+      "kind": "multi-turn",
+      "rows": null,
+      "status": 200,
+      "elapsedMs": 869.139,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 48,
+        "completion_tokens": 11,
+        "total_tokens": 59,
+        "prompt_tokens_details": {
+          "cached_tokens": 4
+        }
+      }
+    }
+  ],
+  "checks": {
+    "counterOverlapsModelLoadingAfterQualification": true,
+    "backendKvBudgetArgument": true,
+    "backendAllocatorBudget": true,
+    "exactContextBoundary": true,
+    "counterFailureClosedAndLatched": true,
+    "stopReapsCounter": true,
+    "stopReapsWholeTree": true,
+    "noCounterWithStrata": true,
+    "stateAndEvidencePreserved": true,
+    "headlessSignalReapsTree": true,
+    "restartAfterCounterFailure": true
+  },
+  "startupObservations": [
+    {
+      "elapsedMs": 32.13625000000002,
+      "phase": "starting/false",
+      "counterProcesses": 0
+    },
+    {
+      "elapsedMs": 11762.646917,
+      "phase": "starting/true",
+      "counterProcesses": 1
+    },
+    {
+      "elapsedMs": 15433.544167,
+      "phase": "ready/true",
+      "counterProcesses": 1
+    }
+  ],
+  "startup": {
+    "controlReadyObservedMs": 11730,
+    "counterSpawnedMs": 11730,
+    "inferenceReadyObservedMs": 15395,
+    "modelLoadingObservedMs": 3665
+  },
+  "engineStartupMs": 15462.948875,
+  "coldStream": {
+    "firstContentMs": 1173.7763749999976,
+    "completedMs": 1259.8521660000006,
+    "engineStartToFirstContentMs": 16636.725249999996,
+    "exact": true
+  },
+  "contextMatrix": {
+    "passed": true,
+    "startedAt": "2026-10-25T08:55:23.168Z",
+    "elapsedMs": 849715.2786249999,
+    "rounds": 3,
+    "reservationCeiling": 128,
+    "probes": [
+      {
+        "language": "en",
+        "history": false,
+        "position": "start",
+        "rows": 246,
+        "status": 422
+      },
+      {
+        "language": "en",
+        "history": false,
+        "position": "start",
+        "rows": 122,
+        "status": 200
+      },
+      {
+        "language": "en",
+        "history": false,
+        "position": "start",
+        "rows": 184,
+        "status": 200
+      },
+      {
+        "language": "en",
+        "history": false,
+        "position": "start",
+        "rows": 215,
+        "status": 200
+      },
+      {
+        "language": "en",
+        "history": false,
+        "position": "start",
+        "rows": 230,
+        "status": 200
+      },
+      {
+        "language": "en",
+        "history": false,
+        "position": "start",
+        "rows": 238,
+        "status": 200
+      },
+      {
+        "language": "en",
+        "history": false,
+        "position": "middle",
+        "rows": 246,
+        "status": 422
+      },
+      {
+        "language": "en",
+        "history": false,
+        "position": "middle",
+        "rows": 122,
+        "status": 200
+      },
+      {
+        "language": "en",
+        "history": false,
+        "position": "middle",
+        "rows": 184,
+        "status": 200
+      },
+      {
+        "language": "en",
+        "history": false,
+        "position": "middle",
+        "rows": 215,
+        "status": 200
+      },
+      {
+        "language": "en",
+        "history": false,
+        "position": "middle",
+        "rows": 230,
+        "status": 200
+      },
+      {
+        "language": "en",
+        "history": false,
+        "position": "middle",
+        "rows": 238,
+        "status": 200
+      },
+      {
+        "language": "en",
+        "history": false,
+        "position": "end",
+        "rows": 246,
+        "status": 422
+      },
+      {
+        "language": "en",
+        "history": false,
+        "position": "end",
+        "rows": 122,
+        "status": 200
+      },
+      {
+        "language": "en",
+        "history": false,
+        "position": "end",
+        "rows": 184,
+        "status": 200
+      },
+      {
+        "language": "en",
+        "history": false,
+        "position": "end",
+        "rows": 215,
+        "status": 200
+      },
+      {
+        "language": "en",
+        "history": false,
+        "position": "end",
+        "rows": 230,
+        "status": 200
+      },
+      {
+        "language": "en",
+        "history": false,
+        "position": "end",
+        "rows": 238,
+        "status": 200
+      },
+      {
+        "language": "en",
+        "history": true,
+        "position": "start",
+        "rows": 246,
+        "status": 422
+      },
+      {
+        "language": "en",
+        "history": true,
+        "position": "start",
+        "rows": 122,
+        "status": 200
+      },
+      {
+        "language": "en",
+        "history": true,
+        "position": "start",
+        "rows": 184,
+        "status": 200
+      },
+      {
+        "language": "en",
+        "history": true,
+        "position": "start",
+        "rows": 215,
+        "status": 200
+      },
+      {
+        "language": "en",
+        "history": true,
+        "position": "start",
+        "rows": 230,
+        "status": 200
+      },
+      {
+        "language": "en",
+        "history": true,
+        "position": "start",
+        "rows": 238,
+        "status": 200
+      },
+      {
+        "language": "en",
+        "history": true,
+        "position": "middle",
+        "rows": 246,
+        "status": 422
+      },
+      {
+        "language": "en",
+        "history": true,
+        "position": "middle",
+        "rows": 122,
+        "status": 200
+      },
+      {
+        "language": "en",
+        "history": true,
+        "position": "middle",
+        "rows": 184,
+        "status": 200
+      },
+      {
+        "language": "en",
+        "history": true,
+        "position": "middle",
+        "rows": 215,
+        "status": 200
+      },
+      {
+        "language": "en",
+        "history": true,
+        "position": "middle",
+        "rows": 230,
+        "status": 200
+      },
+      {
+        "language": "en",
+        "history": true,
+        "position": "middle",
+        "rows": 238,
+        "status": 200
+      },
+      {
+        "language": "en",
+        "history": true,
+        "position": "end",
+        "rows": 246,
+        "status": 422
+      },
+      {
+        "language": "en",
+        "history": true,
+        "position": "end",
+        "rows": 122,
+        "status": 200
+      },
+      {
+        "language": "en",
+        "history": true,
+        "position": "end",
+        "rows": 184,
+        "status": 200
+      },
+      {
+        "language": "en",
+        "history": true,
+        "position": "end",
+        "rows": 215,
+        "status": 200
+      },
+      {
+        "language": "en",
+        "history": true,
+        "position": "end",
+        "rows": 230,
+        "status": 200
+      },
+      {
+        "language": "en",
+        "history": true,
+        "position": "end",
+        "rows": 238,
+        "status": 200
+      },
+      {
+        "language": "ja",
+        "history": false,
+        "position": "start",
+        "rows": 246,
+        "status": 422
+      },
+      {
+        "language": "ja",
+        "history": false,
+        "position": "start",
+        "rows": 122,
+        "status": 200
+      },
+      {
+        "language": "ja",
+        "history": false,
+        "position": "start",
+        "rows": 184,
+        "status": 200
+      },
+      {
+        "language": "ja",
+        "history": false,
+        "position": "start",
+        "rows": 215,
+        "status": 200
+      },
+      {
+        "language": "ja",
+        "history": false,
+        "position": "start",
+        "rows": 230,
+        "status": 200
+      },
+      {
+        "language": "ja",
+        "history": false,
+        "position": "start",
+        "rows": 238,
+        "status": 200
+      },
+      {
+        "language": "ja",
+        "history": false,
+        "position": "middle",
+        "rows": 246,
+        "status": 422
+      },
+      {
+        "language": "ja",
+        "history": false,
+        "position": "middle",
+        "rows": 122,
+        "status": 200
+      },
+      {
+        "language": "ja",
+        "history": false,
+        "position": "middle",
+        "rows": 184,
+        "status": 200
+      },
+      {
+        "language": "ja",
+        "history": false,
+        "position": "middle",
+        "rows": 215,
+        "status": 200
+      },
+      {
+        "language": "ja",
+        "history": false,
+        "position": "middle",
+        "rows": 230,
+        "status": 200
+      },
+      {
+        "language": "ja",
+        "history": false,
+        "position": "middle",
+        "rows": 238,
+        "status": 200
+      },
+      {
+        "language": "ja",
+        "history": false,
+        "position": "end",
+        "rows": 246,
+        "status": 422
+      },
+      {
+        "language": "ja",
+        "history": false,
+        "position": "end",
+        "rows": 122,
+        "status": 200
+      },
+      {
+        "language": "ja",
+        "history": false,
+        "position": "end",
+        "rows": 184,
+        "status": 200
+      },
+      {
+        "language": "ja",
+        "history": false,
+        "position": "end",
+        "rows": 215,
+        "status": 200
+      },
+      {
+        "language": "ja",
+        "history": false,
+        "position": "end",
+        "rows": 230,
+        "status": 200
+      },
+      {
+        "language": "ja",
+        "history": false,
+        "position": "end",
+        "rows": 238,
+        "status": 200
+      },
+      {
+        "language": "ja",
+        "history": true,
+        "position": "start",
+        "rows": 246,
+        "status": 422
+      },
+      {
+        "language": "ja",
+        "history": true,
+        "position": "start",
+        "rows": 122,
+        "status": 200
+      },
+      {
+        "language": "ja",
+        "history": true,
+        "position": "start",
+        "rows": 184,
+        "status": 200
+      },
+      {
+        "language": "ja",
+        "history": true,
+        "position": "start",
+        "rows": 215,
+        "status": 200
+      },
+      {
+        "language": "ja",
+        "history": true,
+        "position": "start",
+        "rows": 230,
+        "status": 200
+      },
+      {
+        "language": "ja",
+        "history": true,
+        "position": "start",
+        "rows": 238,
+        "status": 200
+      },
+      {
+        "language": "ja",
+        "history": true,
+        "position": "middle",
+        "rows": 246,
+        "status": 422
+      },
+      {
+        "language": "ja",
+        "history": true,
+        "position": "middle",
+        "rows": 122,
+        "status": 200
+      },
+      {
+        "language": "ja",
+        "history": true,
+        "position": "middle",
+        "rows": 184,
+        "status": 200
+      },
+      {
+        "language": "ja",
+        "history": true,
+        "position": "middle",
+        "rows": 215,
+        "status": 200
+      },
+      {
+        "language": "ja",
+        "history": true,
+        "position": "middle",
+        "rows": 230,
+        "status": 200
+      },
+      {
+        "language": "ja",
+        "history": true,
+        "position": "middle",
+        "rows": 238,
+        "status": 200
+      },
+      {
+        "language": "ja",
+        "history": true,
+        "position": "end",
+        "rows": 246,
+        "status": 422
+      },
+      {
+        "language": "ja",
+        "history": true,
+        "position": "end",
+        "rows": 122,
+        "status": 200
+      },
+      {
+        "language": "ja",
+        "history": true,
+        "position": "end",
+        "rows": 184,
+        "status": 200
+      },
+      {
+        "language": "ja",
+        "history": true,
+        "position": "end",
+        "rows": 215,
+        "status": 200
+      },
+      {
+        "language": "ja",
+        "history": true,
+        "position": "end",
+        "rows": 230,
+        "status": 200
+      },
+      {
+        "language": "ja",
+        "history": true,
+        "position": "end",
+        "rows": 238,
+        "status": 200
+      },
+      {
+        "language": "zh",
+        "history": false,
+        "position": "start",
+        "rows": 246,
+        "status": 422
+      },
+      {
+        "language": "zh",
+        "history": false,
+        "position": "start",
+        "rows": 122,
+        "status": 200
+      },
+      {
+        "language": "zh",
+        "history": false,
+        "position": "start",
+        "rows": 184,
+        "status": 200
+      },
+      {
+        "language": "zh",
+        "history": false,
+        "position": "start",
+        "rows": 215,
+        "status": 200
+      },
+      {
+        "language": "zh",
+        "history": false,
+        "position": "start",
+        "rows": 230,
+        "status": 200
+      },
+      {
+        "language": "zh",
+        "history": false,
+        "position": "start",
+        "rows": 238,
+        "status": 200
+      },
+      {
+        "language": "zh",
+        "history": false,
+        "position": "start",
+        "rows": 242,
+        "status": 200
+      },
+      {
+        "language": "zh",
+        "history": false,
+        "position": "middle",
+        "rows": 246,
+        "status": 422
+      },
+      {
+        "language": "zh",
+        "history": false,
+        "position": "middle",
+        "rows": 122,
+        "status": 200
+      },
+      {
+        "language": "zh",
+        "history": false,
+        "position": "middle",
+        "rows": 184,
+        "status": 200
+      },
+      {
+        "language": "zh",
+        "history": false,
+        "position": "middle",
+        "rows": 215,
+        "status": 200
+      },
+      {
+        "language": "zh",
+        "history": false,
+        "position": "middle",
+        "rows": 230,
+        "status": 200
+      },
+      {
+        "language": "zh",
+        "history": false,
+        "position": "middle",
+        "rows": 238,
+        "status": 200
+      },
+      {
+        "language": "zh",
+        "history": false,
+        "position": "middle",
+        "rows": 242,
+        "status": 200
+      },
+      {
+        "language": "zh",
+        "history": false,
+        "position": "end",
+        "rows": 246,
+        "status": 422
+      },
+      {
+        "language": "zh",
+        "history": false,
+        "position": "end",
+        "rows": 122,
+        "status": 200
+      },
+      {
+        "language": "zh",
+        "history": false,
+        "position": "end",
+        "rows": 184,
+        "status": 200
+      },
+      {
+        "language": "zh",
+        "history": false,
+        "position": "end",
+        "rows": 215,
+        "status": 200
+      },
+      {
+        "language": "zh",
+        "history": false,
+        "position": "end",
+        "rows": 230,
+        "status": 200
+      },
+      {
+        "language": "zh",
+        "history": false,
+        "position": "end",
+        "rows": 238,
+        "status": 200
+      },
+      {
+        "language": "zh",
+        "history": false,
+        "position": "end",
+        "rows": 242,
+        "status": 200
+      },
+      {
+        "language": "zh",
+        "history": true,
+        "position": "start",
+        "rows": 246,
+        "status": 422
+      },
+      {
+        "language": "zh",
+        "history": true,
+        "position": "start",
+        "rows": 122,
+        "status": 200
+      },
+      {
+        "language": "zh",
+        "history": true,
+        "position": "start",
+        "rows": 184,
+        "status": 200
+      },
+      {
+        "language": "zh",
+        "history": true,
+        "position": "start",
+        "rows": 215,
+        "status": 200
+      },
+      {
+        "language": "zh",
+        "history": true,
+        "position": "start",
+        "rows": 230,
+        "status": 200
+      },
+      {
+        "language": "zh",
+        "history": true,
+        "position": "start",
+        "rows": 238,
+        "status": 200
+      },
+      {
+        "language": "zh",
+        "history": true,
+        "position": "middle",
+        "rows": 246,
+        "status": 422
+      },
+      {
+        "language": "zh",
+        "history": true,
+        "position": "middle",
+        "rows": 122,
+        "status": 200
+      },
+      {
+        "language": "zh",
+        "history": true,
+        "position": "middle",
+        "rows": 184,
+        "status": 200
+      },
+      {
+        "language": "zh",
+        "history": true,
+        "position": "middle",
+        "rows": 215,
+        "status": 200
+      },
+      {
+        "language": "zh",
+        "history": true,
+        "position": "middle",
+        "rows": 230,
+        "status": 200
+      },
+      {
+        "language": "zh",
+        "history": true,
+        "position": "middle",
+        "rows": 238,
+        "status": 200
+      },
+      {
+        "language": "zh",
+        "history": true,
+        "position": "end",
+        "rows": 246,
+        "status": 422
+      },
+      {
+        "language": "zh",
+        "history": true,
+        "position": "end",
+        "rows": 122,
+        "status": 200
+      },
+      {
+        "language": "zh",
+        "history": true,
+        "position": "end",
+        "rows": 184,
+        "status": 200
+      },
+      {
+        "language": "zh",
+        "history": true,
+        "position": "end",
+        "rows": 215,
+        "status": 200
+      },
+      {
+        "language": "zh",
+        "history": true,
+        "position": "end",
+        "rows": 230,
+        "status": 200
+      },
+      {
+        "language": "zh",
+        "history": true,
+        "position": "end",
+        "rows": 238,
+        "status": 200
+      }
+    ],
+    "memory": [
+      {
+        "elapsedMs": 89027.310459,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2459328,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 423854080,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1924260382,
+            "cache_bytes": 271504236,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 60211920,
+          "sampledAt": 1792918544269,
+          "usedBytes": 3013430704
+        },
+        "systemAvailableBytes": 6871367680
+      },
+      {
+        "elapsedMs": 90026.036042,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2455856,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 423854080,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1924260382,
+            "cache_bytes": 272620004,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 60211920,
+          "sampledAt": 1792918545269,
+          "usedBytes": 3157560752
+        },
+        "systemAvailableBytes": 6748438528
+      },
+      {
+        "elapsedMs": 90850.031084,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2460112,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 423854080,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1924260382,
+            "cache_bytes": 274688030,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 60211920,
+          "sampledAt": 1792918546093,
+          "usedBytes": 3008892336
+        },
+        "systemAvailableBytes": 6928367616
+      },
+      {
+        "elapsedMs": 91694.444875,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2456032,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 423854080,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1924260382,
+            "cache_bytes": 271869944,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 60179152,
+          "sampledAt": 1792918546832,
+          "usedBytes": 3156807088
+        },
+        "systemAvailableBytes": 6779158528
+      },
+      {
+        "elapsedMs": 92562.66791700001,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2460256,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 423854080,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1924260382,
+            "cache_bytes": 271872034,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 60211920,
+          "sampledAt": 1792918547805,
+          "usedBytes": 3006238128
+        },
+        "systemAvailableBytes": 6923517952
+      },
+      {
+        "elapsedMs": 93450.2685,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2457008,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 423854080,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1924260382,
+            "cache_bytes": 270821352,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 60211920,
+          "sampledAt": 1792918548692,
+          "usedBytes": 3001978288
+        },
+        "systemAvailableBytes": 6925369344
+      },
+      {
+        "elapsedMs": 140650.334584,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2437712,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 423854080,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1924260382,
+            "cache_bytes": 274751894,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37225144,
+          "sampledAt": 1792918595834,
+          "usedBytes": 3141012888
+        },
+        "systemAvailableBytes": 7254294528
+      },
+      {
+        "elapsedMs": 141505.963709,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2437760,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 423854080,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1924260382,
+            "cache_bytes": 274868740,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37225144,
+          "sampledAt": 1792918596748,
+          "usedBytes": 2986134936
+        },
+        "systemAvailableBytes": 7410778112
+      },
+      {
+        "elapsedMs": 142309.017917,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2438944,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 423854080,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1924260382,
+            "cache_bytes": 270293912,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37225144,
+          "sampledAt": 1792918597551,
+          "usedBytes": 3137605016
+        },
+        "systemAvailableBytes": 7259324416
+      },
+      {
+        "elapsedMs": 143126.367084,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2438912,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 423854080,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1924260382,
+            "cache_bytes": 271868966,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37225144,
+          "sampledAt": 1792918598368,
+          "usedBytes": 3139177880
+        },
+        "systemAvailableBytes": 7257309184
+      },
+      {
+        "elapsedMs": 143957.387792,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2437840,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 423854080,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1924260382,
+            "cache_bytes": 273987896,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37225144,
+          "sampledAt": 1792918599200,
+          "usedBytes": 2985266584
+        },
+        "systemAvailableBytes": 7411269632
+      },
+      {
+        "elapsedMs": 144792.097542,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2437216,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 423854080,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1924260382,
+            "cache_bytes": 272393244,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37225144,
+          "sampledAt": 1792918600034,
+          "usedBytes": 3138719128
+        },
+        "systemAvailableBytes": 7255097344
+      },
+      {
+        "elapsedMs": 157503.45683399998,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2437792,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 423854080,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1924260382,
+            "cache_bytes": 269479732,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37225144,
+          "sampledAt": 1792918612745,
+          "usedBytes": 2980793752
+        },
+        "systemAvailableBytes": 7404077056
+      },
+      {
+        "elapsedMs": 158327.589167,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2438784,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 423854080,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1924260382,
+            "cache_bytes": 272559606,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37225144,
+          "sampledAt": 1792918613569,
+          "usedBytes": 3139898776
+        },
+        "systemAvailableBytes": 7245856768
+      },
+      {
+        "elapsedMs": 159166.84283399998,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2437808,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 423854080,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1924260382,
+            "cache_bytes": 276344416,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37225144,
+          "sampledAt": 1792918614408,
+          "usedBytes": 2987609496
+        },
+        "systemAvailableBytes": 7400095744
+      },
+      {
+        "elapsedMs": 159962.529334,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2437936,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 423854080,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1924260382,
+            "cache_bytes": 271873062,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37225144,
+          "sampledAt": 1792918615204,
+          "usedBytes": 2983169432
+        },
+        "systemAvailableBytes": 7405076480
+      },
+      {
+        "elapsedMs": 160807.190917,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2438992,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 423854080,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1924260382,
+            "cache_bytes": 271873074,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37225144,
+          "sampledAt": 1792918616048,
+          "usedBytes": 3139210648
+        },
+        "systemAvailableBytes": 7248855040
+      },
+      {
+        "elapsedMs": 161656.62529199998,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2438960,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 423854080,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1924260382,
+            "cache_bytes": 272396306,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37192376,
+          "sampledAt": 1792918616832,
+          "usedBytes": 3139702168
+        },
+        "systemAvailableBytes": 7246266368
+      },
+      {
+        "elapsedMs": 225989.719125,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2441344,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 430243840,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1930224158,
+            "cache_bytes": 270383036,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37257912,
+          "sampledAt": 1792918681224,
+          "usedBytes": 3148582296
+        },
+        "systemAvailableBytes": 6787891200
+      },
+      {
+        "elapsedMs": 227103.915875,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2440048,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 430243840,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1930224158,
+            "cache_bytes": 270758860,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37257912,
+          "sampledAt": 1792918682342,
+          "usedBytes": 2990116248
+        },
+        "systemAvailableBytes": 6893535232
+      },
+      {
+        "elapsedMs": 228228.75112499998,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2441152,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 430243840,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1930224158,
+            "cache_bytes": 270284312,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37257912,
+          "sampledAt": 1792918683464,
+          "usedBytes": 2990722456
+        },
+        "systemAvailableBytes": 6956531712
+      },
+      {
+        "elapsedMs": 229339.581334,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2440128,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 430243840,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1930224158,
+            "cache_bytes": 271688252,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37257912,
+          "sampledAt": 1792918684576,
+          "usedBytes": 2991115672
+        },
+        "systemAvailableBytes": 6954942464
+      },
+      {
+        "elapsedMs": 230510.75916699998,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2441184,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 430243840,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1930224158,
+            "cache_bytes": 271038076,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37257912,
+          "sampledAt": 1792918685747,
+          "usedBytes": 3148680600
+        },
+        "systemAvailableBytes": 6796722176
+      },
+      {
+        "elapsedMs": 231649.471709,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2440128,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 430243840,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1930224158,
+            "cache_bytes": 272803276,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37225144,
+          "sampledAt": 1792918686833,
+          "usedBytes": 2992164248
+        },
+        "systemAvailableBytes": 6951682048
+      },
+      {
+        "elapsedMs": 292524.529584,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2440320,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 430243840,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1930224158,
+            "cache_bytes": 269397034,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37274296,
+          "sampledAt": 1792918747766,
+          "usedBytes": 3149270424
+        },
+        "systemAvailableBytes": 7217233920
+      },
+      {
+        "elapsedMs": 293253.058084,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2440480,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 430243840,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1930224158,
+            "cache_bytes": 269430988,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37274296,
+          "sampledAt": 1792918748493,
+          "usedBytes": 3149335960
+        },
+        "systemAvailableBytes": 7214481408
+      },
+      {
+        "elapsedMs": 294037.904292,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2440480,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 430243840,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1930224158,
+            "cache_bytes": 271759644,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37274296,
+          "sampledAt": 1792918749277,
+          "usedBytes": 3151662488
+        },
+        "systemAvailableBytes": 7209189376
+      },
+      {
+        "elapsedMs": 294844.926459,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2439632,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 430243840,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1930224158,
+            "cache_bytes": 274907382,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37274296,
+          "sampledAt": 1792918750084,
+          "usedBytes": 2996587928
+        },
+        "systemAvailableBytes": 7363887104
+      },
+      {
+        "elapsedMs": 295667.477334,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2440720,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 430243840,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1930224158,
+            "cache_bytes": 274908918,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37274296,
+          "sampledAt": 1792918750833,
+          "usedBytes": 2997636504
+        },
+        "systemAvailableBytes": 7361626112
+      },
+      {
+        "elapsedMs": 296467.994917,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2441680,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 430243840,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1930224158,
+            "cache_bytes": 274908918,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37274296,
+          "sampledAt": 1792918751707,
+          "usedBytes": 3155824024
+        },
+        "systemAvailableBytes": 7203586048
+      },
+      {
+        "elapsedMs": 353384.280667,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2441648,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 430243840,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1930224158,
+            "cache_bytes": 270476284,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37274296,
+          "sampledAt": 1792918808621,
+          "usedBytes": 3151449496
+        },
+        "systemAvailableBytes": 6867533824
+      },
+      {
+        "elapsedMs": 354356.40125,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2440608,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 430243840,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1930224158,
+            "cache_bytes": 270316576,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37274296,
+          "sampledAt": 1792918809593,
+          "usedBytes": 2993048984
+        },
+        "systemAvailableBytes": 6873448448
+      },
+      {
+        "elapsedMs": 355308.415459,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2440736,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 430243840,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1930224158,
+            "cache_bytes": 271593082,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37274296,
+          "sampledAt": 1792918810543,
+          "usedBytes": 2994425240
+        },
+        "systemAvailableBytes": 6762070016
+      },
+      {
+        "elapsedMs": 356192.25687499996,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2441712,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 430243840,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1930224158,
+            "cache_bytes": 274906742,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37274296,
+          "sampledAt": 1792918811431,
+          "usedBytes": 3155889560
+        },
+        "systemAvailableBytes": 7033356288
+      },
+      {
+        "elapsedMs": 357007.809375,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2441776,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 430243840,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1930224158,
+            "cache_bytes": 274906236,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37274296,
+          "sampledAt": 1792918812246,
+          "usedBytes": 2998685080
+        },
+        "systemAvailableBytes": 7190183936
+      },
+      {
+        "elapsedMs": 357821.93587499997,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2441760,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 430243840,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1930224158,
+            "cache_bytes": 274907766,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37274296,
+          "sampledAt": 1792918813060,
+          "usedBytes": 2998816152
+        },
+        "systemAvailableBytes": 7182942208
+      },
+      {
+        "elapsedMs": 377370.74041699996,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2441584,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 424067072,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1924260382,
+            "cache_bytes": 273947984,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37274296,
+          "sampledAt": 1792918832610,
+          "usedBytes": 2991820184
+        },
+        "systemAvailableBytes": 7047249920
+      },
+      {
+        "elapsedMs": 378124.042709,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2441136,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 424067072,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1924260382,
+            "cache_bytes": 271362182,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37274296,
+          "sampledAt": 1792918833363,
+          "usedBytes": 2989182360
+        },
+        "systemAvailableBytes": 7049625600
+      },
+      {
+        "elapsedMs": 378870.24975,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2441488,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 424067072,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1924260382,
+            "cache_bytes": 271869694,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37274296,
+          "sampledAt": 1792918834109,
+          "usedBytes": 2989690264
+        },
+        "systemAvailableBytes": 7051558912
+      },
+      {
+        "elapsedMs": 379630.681459,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2441536,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 424067072,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1924260382,
+            "cache_bytes": 271871742,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37241528,
+          "sampledAt": 1792918834834,
+          "usedBytes": 2989657496
+        },
+        "systemAvailableBytes": 7015956480
+      },
+      {
+        "elapsedMs": 380457.63354199997,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2441632,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 424067072,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1924260382,
+            "cache_bytes": 271873790,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37274296,
+          "sampledAt": 1792918835696,
+          "usedBytes": 3144715672
+        },
+        "systemAvailableBytes": 6851772416
+      },
+      {
+        "elapsedMs": 381326.591917,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2441632,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 424067072,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1924260382,
+            "cache_bytes": 271875838,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37274296,
+          "sampledAt": 1792918836562,
+          "usedBytes": 2989886872
+        },
+        "systemAvailableBytes": 7005569024
+      },
+      {
+        "elapsedMs": 422343.08625,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2441200,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 424067072,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1924260382,
+            "cache_bytes": 276259840,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37290680,
+          "sampledAt": 1792918877574,
+          "usedBytes": 2994097560
+        },
+        "systemAvailableBytes": 6637699072
+      },
+      {
+        "elapsedMs": 423760.073875,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2227024,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 424067072,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1924260382,
+            "cache_bytes": 276257868,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37257912,
+          "sampledAt": 1792918878833,
+          "usedBytes": 3151138200
+        },
+        "systemAvailableBytes": 6328254464
+      },
+      {
+        "elapsedMs": 425745.57075,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2227248,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 424067072,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1924260382,
+            "cache_bytes": 276243944,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37290680,
+          "sampledAt": 1792918880839,
+          "usedBytes": 2996391320
+        },
+        "systemAvailableBytes": 7612579840
+      },
+      {
+        "elapsedMs": 427386.216375,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2227232,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 424067072,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1924260382,
+            "cache_bytes": 268823154,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37290680,
+          "sampledAt": 1792918882616,
+          "usedBytes": 2988723608
+        },
+        "systemAvailableBytes": 7420395520
+      },
+      {
+        "elapsedMs": 429425.856667,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2227280,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 424067072,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1924260382,
+            "cache_bytes": 269331078,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37290680,
+          "sampledAt": 1792918884650,
+          "usedBytes": 2985037208
+        },
+        "systemAvailableBytes": 7496974336
+      },
+      {
+        "elapsedMs": 430590.645667,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2227376,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 424067072,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1924260382,
+            "cache_bytes": 270818796,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37290680,
+          "sampledAt": 1792918885823,
+          "usedBytes": 3141553560
+        },
+        "systemAvailableBytes": 7274774528
+      },
+      {
+        "elapsedMs": 445156.06058399996,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 1766000,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 424067072,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1924260382,
+            "cache_bytes": 270017516,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37438136,
+          "sampledAt": 1792918900384,
+          "usedBytes": 2992835992
+        },
+        "systemAvailableBytes": 7037730816
+      },
+      {
+        "elapsedMs": 446422.996959,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 1766208,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 424067072,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1924260382,
+            "cache_bytes": 272408592,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37438136,
+          "sampledAt": 1792918901656,
+          "usedBytes": 2995228056
+        },
+        "systemAvailableBytes": 7769604096
+      },
+      {
+        "elapsedMs": 447504.43225,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 1766304,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 424067072,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1924260382,
+            "cache_bytes": 275673724,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37438136,
+          "sampledAt": 1792918902739,
+          "usedBytes": 3153497496
+        },
+        "systemAvailableBytes": 7618002944
+      },
+      {
+        "elapsedMs": 448713.734084,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 1766480,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 424067072,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1924260382,
+            "cache_bytes": 270821910,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37405368,
+          "sampledAt": 1792918903834,
+          "usedBytes": 2993720728
+        },
+        "systemAvailableBytes": 7737753600
+      },
+      {
+        "elapsedMs": 449925.959667,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 1766528,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 424067072,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1924260382,
+            "cache_bytes": 271344682,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37438136,
+          "sampledAt": 1792918905161,
+          "usedBytes": 2994146712
+        },
+        "systemAvailableBytes": 8554201088
+      },
+      {
+        "elapsedMs": 450854.312709,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 1766496,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 424067072,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1924260382,
+            "cache_bytes": 271868990,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37438136,
+          "sampledAt": 1792918906088,
+          "usedBytes": 2994703768
+        },
+        "systemAvailableBytes": 8472952832
+      },
+      {
+        "elapsedMs": 506810.918334,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 1767024,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 430456832,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1930224158,
+            "cache_bytes": 269364758,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37438136,
+          "sampledAt": 1792918962048,
+          "usedBytes": 2998177176
+        },
+        "systemAvailableBytes": 7479246848
+      },
+      {
+        "elapsedMs": 507643.773834,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 1767168,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 430456832,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1930224158,
+            "cache_bytes": 269612194,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37405368,
+          "sampledAt": 1792918962833,
+          "usedBytes": 3155905944
+        },
+        "systemAvailableBytes": 7318732800
+      },
+      {
+        "elapsedMs": 508576.12087499996,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 1767232,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 430456832,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1930224158,
+            "cache_bytes": 272626872,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 3,
+          "rootBytes": 37438136,
+          "sampledAt": 1792918963810,
+          "usedBytes": 3003502312
+        },
+        "systemAvailableBytes": 7472103424
+      },
+      {
+        "elapsedMs": 509457.372084,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 1767344,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 430456832,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1930224158,
+            "cache_bytes": 272819376,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37438136,
+          "sampledAt": 1792918964692,
+          "usedBytes": 3159149976
+        },
+        "systemAvailableBytes": 7316226048
+      },
+      {
+        "elapsedMs": 510312.937709,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 1767408,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 430456832,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1930224158,
+            "cache_bytes": 274920152,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37438136,
+          "sampledAt": 1792918965548,
+          "usedBytes": 3003731352
+        },
+        "systemAvailableBytes": 7502675968
+      },
+      {
+        "elapsedMs": 511114.1955,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 1767376,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 430456832,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1930224158,
+            "cache_bytes": 274919634,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37438136,
+          "sampledAt": 1792918966351,
+          "usedBytes": 3161247128
+        },
+        "systemAvailableBytes": 7341686784
+      },
+      {
+        "elapsedMs": 569724.55825,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2032640,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 430456832,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1930224158,
+            "cache_bytes": 269413888,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37438136,
+          "sampledAt": 1792919024962,
+          "usedBytes": 2999274904
+        },
+        "systemAvailableBytes": 7992049664
+      },
+      {
+        "elapsedMs": 570492.943542,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2031744,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 430456832,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1930224158,
+            "cache_bytes": 269447822,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37438136,
+          "sampledAt": 1792919025729,
+          "usedBytes": 2998259096
+        },
+        "systemAvailableBytes": 8023441408
+      },
+      {
+        "elapsedMs": 571284.093042,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2031824,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 430456832,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1930224158,
+            "cache_bytes": 271776518,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37438136,
+          "sampledAt": 1792919026520,
+          "usedBytes": 3000585624
+        },
+        "systemAvailableBytes": 8021082112
+      },
+      {
+        "elapsedMs": 572047.091875,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2031840,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 430456832,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1930224158,
+            "cache_bytes": 274924238,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37438136,
+          "sampledAt": 1792919027283,
+          "usedBytes": 3152956824
+        },
+        "systemAvailableBytes": 7868743680
+      },
+      {
+        "elapsedMs": 572852.966334,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2031888,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 430456832,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1930224158,
+            "cache_bytes": 274925792,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37438136,
+          "sampledAt": 1792919028089,
+          "usedBytes": 3161247128
+        },
+        "systemAvailableBytes": 7868760064
+      },
+      {
+        "elapsedMs": 573628.559125,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2031856,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 430456832,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1930224158,
+            "cache_bytes": 274925774,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37405368,
+          "sampledAt": 1792919028833,
+          "usedBytes": 3161214360
+        },
+        "systemAvailableBytes": 7866859520
+      },
+      {
+        "elapsedMs": 631090.176167,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2031840,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 430456832,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1930224158,
+            "cache_bytes": 269413524,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37438136,
+          "sampledAt": 1792919086327,
+          "usedBytes": 3155742104
+        },
+        "systemAvailableBytes": 7823966208
+      },
+      {
+        "elapsedMs": 631851.86525,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2031872,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 430456832,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1930224158,
+            "cache_bytes": 269284100,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37438136,
+          "sampledAt": 1792919087088,
+          "usedBytes": 3155611032
+        },
+        "systemAvailableBytes": 7824211968
+      },
+      {
+        "elapsedMs": 632646.098792,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2031904,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 430456832,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1930224158,
+            "cache_bytes": 271612256,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37438136,
+          "sampledAt": 1792919087834,
+          "usedBytes": 3157937560
+        },
+        "systemAvailableBytes": 7819640832
+      },
+      {
+        "elapsedMs": 633437.291084,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2032016,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 430456832,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1930224158,
+            "cache_bytes": 274923342,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37438136,
+          "sampledAt": 1792919088673,
+          "usedBytes": 3003731352
+        },
+        "systemAvailableBytes": 7975976960
+      },
+      {
+        "elapsedMs": 634224.72575,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2031984,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 430456832,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1930224158,
+            "cache_bytes": 274924366,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37438136,
+          "sampledAt": 1792919089461,
+          "usedBytes": 3003731352
+        },
+        "systemAvailableBytes": 8005582848
+      },
+      {
+        "elapsedMs": 635009.152042,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2031952,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 430456832,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1930224158,
+            "cache_bytes": 274925390,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37438136,
+          "sampledAt": 1792919090245,
+          "usedBytes": 3003731352
+        },
+        "systemAvailableBytes": 8005664768
+      },
+      {
+        "elapsedMs": 654441.552834,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2033808,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 430563328,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1930224158,
+            "cache_bytes": 269806256,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37438136,
+          "sampledAt": 1792919109679,
+          "usedBytes": 2998668696
+        },
+        "systemAvailableBytes": 7954923520
+      },
+      {
+        "elapsedMs": 655202.162417,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2033840,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 430563328,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1930224158,
+            "cache_bytes": 270003468,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37438136,
+          "sampledAt": 1792919110439,
+          "usedBytes": 2998865304
+        },
+        "systemAvailableBytes": 7952187392
+      },
+      {
+        "elapsedMs": 655932.743584,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2033888,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 430563328,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1930224158,
+            "cache_bytes": 271627176,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37438136,
+          "sampledAt": 1792919111170,
+          "usedBytes": 3000487320
+        },
+        "systemAvailableBytes": 7950745600
+      },
+      {
+        "elapsedMs": 656648.441959,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2034016,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 430563328,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1930224158,
+            "cache_bytes": 274922362,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37405368,
+          "sampledAt": 1792919111833,
+          "usedBytes": 3161263512
+        },
+        "systemAvailableBytes": 7787692032
+      },
+      {
+        "elapsedMs": 657380.34825,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2034048,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 430563328,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1930224158,
+            "cache_bytes": 274923898,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37438136,
+          "sampledAt": 1792919112618,
+          "usedBytes": 3161296280
+        },
+        "systemAvailableBytes": 7789658112
+      },
+      {
+        "elapsedMs": 658082.397417,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2034016,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 430563328,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1930224158,
+            "cache_bytes": 274925434,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37438136,
+          "sampledAt": 1792919113320,
+          "usedBytes": 3161296280
+        },
+        "systemAvailableBytes": 7788003328
+      },
+      {
+        "elapsedMs": 710574.572125,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2033856,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 430563328,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1930224158,
+            "cache_bytes": 270591640,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37438136,
+          "sampledAt": 1792919165812,
+          "usedBytes": 3156970904
+        },
+        "systemAvailableBytes": 7844937728
+      },
+      {
+        "elapsedMs": 711330.289709,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2033888,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 430563328,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1930224158,
+            "cache_bytes": 270593784,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37438136,
+          "sampledAt": 1792919166568,
+          "usedBytes": 3156970904
+        },
+        "systemAvailableBytes": 7843102720
+      },
+      {
+        "elapsedMs": 712099.1224999999,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2033968,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 430563328,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1930224158,
+            "cache_bytes": 271120290,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37438136,
+          "sampledAt": 1792919167335,
+          "usedBytes": 3157527960
+        },
+        "systemAvailableBytes": 7842250752
+      },
+      {
+        "elapsedMs": 712891.817417,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2034080,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 430563328,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1930224158,
+            "cache_bytes": 274923386,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37438136,
+          "sampledAt": 1792919168128,
+          "usedBytes": 3003813272
+        },
+        "systemAvailableBytes": 7995981824
+      },
+      {
+        "elapsedMs": 713645.314084,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2034176,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 430563328,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1930224158,
+            "cache_bytes": 274924922,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37438136,
+          "sampledAt": 1792919168834,
+          "usedBytes": 3161492888
+        },
+        "systemAvailableBytes": 7836499968
+      },
+      {
+        "elapsedMs": 714430.59525,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2034144,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 430563328,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1930224158,
+            "cache_bytes": 274924922,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37438136,
+          "sampledAt": 1792919169666,
+          "usedBytes": 3003977112
+        },
+        "systemAvailableBytes": 7993622528
+      },
+      {
+        "elapsedMs": 727203.544,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2033936,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 430563328,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1930224158,
+            "cache_bytes": 276426568,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37438136,
+          "sampledAt": 1792919182439,
+          "usedBytes": 3171110296
+        },
+        "systemAvailableBytes": 7760183296
+      },
+      {
+        "elapsedMs": 728005.505375,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2033952,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 430563328,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1930224158,
+            "cache_bytes": 270120328,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37438136,
+          "sampledAt": 1792919183241,
+          "usedBytes": 3156512152
+        },
+        "systemAvailableBytes": 7774208000
+      },
+      {
+        "elapsedMs": 728795.4575,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2033984,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 430563328,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1930224158,
+            "cache_bytes": 271580178,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37438136,
+          "sampledAt": 1792919184031,
+          "usedBytes": 3008744856
+        },
+        "systemAvailableBytes": 7915569152
+      },
+      {
+        "elapsedMs": 729576.044417,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2034032,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 430563328,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1930224158,
+            "cache_bytes": 274908154,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37438136,
+          "sampledAt": 1792919184812,
+          "usedBytes": 3003780504
+        },
+        "systemAvailableBytes": 7928250368
+      },
+      {
+        "elapsedMs": 730353.537209,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2034064,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 430563328,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1930224158,
+            "cache_bytes": 274909690,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37438136,
+          "sampledAt": 1792919185589,
+          "usedBytes": 3003780504
+        },
+        "systemAvailableBytes": 7929135104
+      },
+      {
+        "elapsedMs": 731144.522125,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2034032,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 430563328,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1930224158,
+            "cache_bytes": 274910714,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37438136,
+          "sampledAt": 1792919186380,
+          "usedBytes": 3003780504
+        },
+        "systemAvailableBytes": 7928692736
+      },
+      {
+        "elapsedMs": 789362.375375,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 1997680,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 429711360,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1929372190,
+            "cache_bytes": 269401462,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37438136,
+          "sampledAt": 1792919244595,
+          "usedBytes": 2998439320
+        },
+        "systemAvailableBytes": 7460421632
+      },
+      {
+        "elapsedMs": 790335.207417,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 1997744,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 429711360,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1929372190,
+            "cache_bytes": 273366818,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37438136,
+          "sampledAt": 1792919245571,
+          "usedBytes": 3159625112
+        },
+        "systemAvailableBytes": 7242874880
+      },
+      {
+        "elapsedMs": 791133.149959,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 1997776,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 429711360,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1929372190,
+            "cache_bytes": 274415002,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37438136,
+          "sampledAt": 1792919246369,
+          "usedBytes": 3160837528
+        },
+        "systemAvailableBytes": 7292289024
+      },
+      {
+        "elapsedMs": 791969.977917,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 1997776,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 429711360,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1929372190,
+            "cache_bytes": 272838586,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37438136,
+          "sampledAt": 1792919247206,
+          "usedBytes": 3002092952
+        },
+        "systemAvailableBytes": 7438368768
+      },
+      {
+        "elapsedMs": 792887.466292,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 1997808,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 429711360,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1929372190,
+            "cache_bytes": 274411426,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37438136,
+          "sampledAt": 1792919248123,
+          "usedBytes": 3160706456
+        },
+        "systemAvailableBytes": 7069188096
+      },
+      {
+        "elapsedMs": 793696.43575,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 1997776,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 429711360,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1929372190,
+            "cache_bytes": 274411418,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37405368,
+          "sampledAt": 1792919248833,
+          "usedBytes": 3160640920
+        },
+        "systemAvailableBytes": 7102939136
+      },
+      {
+        "elapsedMs": 852375.759709,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 1997728,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 429711360,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1929372190,
+            "cache_bytes": 269299418,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37454520,
+          "sampledAt": 1792919307612,
+          "usedBytes": 3155578264
+        },
+        "systemAvailableBytes": 7503396864
+      },
+      {
+        "elapsedMs": 853193.377375,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 1997744,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 429711360,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1929372190,
+            "cache_bytes": 269267818,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37454520,
+          "sampledAt": 1792919308427,
+          "usedBytes": 3155545496
+        },
+        "systemAvailableBytes": 7498350592
+      },
+      {
+        "elapsedMs": 854108.405417,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 1997776,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 429711360,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1929372190,
+            "cache_bytes": 271118786,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37454520,
+          "sampledAt": 1792919309340,
+          "usedBytes": 3000192408
+        },
+        "systemAvailableBytes": 7578238976
+      },
+      {
+        "elapsedMs": 855045.684584,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 1997904,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 429711360,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1929372190,
+            "cache_bytes": 273886928,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37454520,
+          "sampledAt": 1792919310278,
+          "usedBytes": 3002961304
+        },
+        "systemAvailableBytes": 7451213824
+      },
+      {
+        "elapsedMs": 856006.454709,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 1997856,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 429711360,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1929372190,
+            "cache_bytes": 273887036,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37454520,
+          "sampledAt": 1792919311238,
+          "usedBytes": 3002961304
+        },
+        "systemAvailableBytes": 7350321152
+      },
+      {
+        "elapsedMs": 856975.821875,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 1997824,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 429711360,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1929372190,
+            "cache_bytes": 274409366,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37454520,
+          "sampledAt": 1792919312208,
+          "usedBytes": 3160690072
+        },
+        "systemAvailableBytes": 7157284864
+      },
+      {
+        "elapsedMs": 913740.127292,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 1997840,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 429711360,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1929372190,
+            "cache_bytes": 269298902,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37454520,
+          "sampledAt": 1792919368976,
+          "usedBytes": 2998406552
+        },
+        "systemAvailableBytes": 7679655936
+      },
+      {
+        "elapsedMs": 914536.194792,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 1997808,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 429711360,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1929372190,
+            "cache_bytes": 269119860,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37454520,
+          "sampledAt": 1792919369772,
+          "usedBytes": 3155430808
+        },
+        "systemAvailableBytes": 7522533376
+      },
+      {
+        "elapsedMs": 915329.7441669999,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 1997840,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 429711360,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1929372190,
+            "cache_bytes": 270738268,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37454520,
+          "sampledAt": 1792919370566,
+          "usedBytes": 3157020056
+        },
+        "systemAvailableBytes": 7520813056
+      },
+      {
+        "elapsedMs": 916091.713334,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 1997808,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 429711360,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1929372190,
+            "cache_bytes": 274410394,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37454520,
+          "sampledAt": 1792919371329,
+          "usedBytes": 3160853912
+        },
+        "systemAvailableBytes": 7516946432
+      },
+      {
+        "elapsedMs": 916850.2045839999,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 1997840,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 429711360,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1929372190,
+            "cache_bytes": 274412442,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37454520,
+          "sampledAt": 1792919372086,
+          "usedBytes": 3160853912
+        },
+        "systemAvailableBytes": 7517929472
+      },
+      {
+        "elapsedMs": 917636.122292,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 1997808,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 429711360,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1929372190,
+            "cache_bytes": 274414490,
+            "peak_bytes": 3236182966,
+            "consistency": "non_atomic",
+            "configured_limit_bytes": 268435456,
+            "effective_limit_bytes": 268435456
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 46629,
+          "processCount": 2,
+          "rootBytes": 37421752,
+          "sampledAt": 1792919372834,
+          "usedBytes": 3160657304
+        },
+        "systemAvailableBytes": 7516766208
+      }
+    ],
+    "cases": [
+      {
+        "language": "en",
+        "history": false,
+        "messageCount": 1,
+        "position": "start",
+        "rows": 238,
+        "round": 0,
+        "stream": false,
+        "promptTokens": 3970,
+        "reservedOutputTokens": 126,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 862.0068750000064
+      },
+      {
+        "language": "en",
+        "history": false,
+        "messageCount": 1,
+        "position": "start",
+        "rows": 238,
+        "round": 0,
+        "stream": true,
+        "promptTokens": 3970,
+        "reservedOutputTokens": 126,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 848.6372080000001
+      },
+      {
+        "language": "en",
+        "history": false,
+        "messageCount": 1,
+        "position": "start",
+        "rows": 238,
+        "round": 1,
+        "stream": false,
+        "promptTokens": 3970,
+        "reservedOutputTokens": 126,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 671.6465840000019
+      },
+      {
+        "language": "en",
+        "history": false,
+        "messageCount": 1,
+        "position": "start",
+        "rows": 238,
+        "round": 1,
+        "stream": true,
+        "promptTokens": 3970,
+        "reservedOutputTokens": 126,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 697.2156250000116
+      },
+      {
+        "language": "en",
+        "history": false,
+        "messageCount": 1,
+        "position": "start",
+        "rows": 238,
+        "round": 2,
+        "stream": false,
+        "promptTokens": 3970,
+        "reservedOutputTokens": 126,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 706.051541000008
+      },
+      {
+        "language": "en",
+        "history": false,
+        "messageCount": 1,
+        "position": "start",
+        "rows": 238,
+        "round": 2,
+        "stream": true,
+        "promptTokens": 3970,
+        "reservedOutputTokens": 126,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 716.2591669999965
+      },
+      {
+        "language": "en",
+        "history": false,
+        "messageCount": 1,
+        "position": "middle",
+        "rows": 238,
+        "round": 0,
+        "stream": false,
+        "promptTokens": 3970,
+        "reservedOutputTokens": 126,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 690.1102499999979
+      },
+      {
+        "language": "en",
+        "history": false,
+        "messageCount": 1,
+        "position": "middle",
+        "rows": 238,
+        "round": 0,
+        "stream": true,
+        "promptTokens": 3970,
+        "reservedOutputTokens": 126,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 712.8905419999792
+      },
+      {
+        "language": "en",
+        "history": false,
+        "messageCount": 1,
+        "position": "middle",
+        "rows": 238,
+        "round": 1,
+        "stream": false,
+        "promptTokens": 3970,
+        "reservedOutputTokens": 126,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 668.4914580000041
+      },
+      {
+        "language": "en",
+        "history": false,
+        "messageCount": 1,
+        "position": "middle",
+        "rows": 238,
+        "round": 1,
+        "stream": true,
+        "promptTokens": 3970,
+        "reservedOutputTokens": 126,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 678.4961250000051
+      },
+      {
+        "language": "en",
+        "history": false,
+        "messageCount": 1,
+        "position": "middle",
+        "rows": 238,
+        "round": 2,
+        "stream": false,
+        "promptTokens": 3970,
+        "reservedOutputTokens": 126,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 690.1935840000224
+      },
+      {
+        "language": "en",
+        "history": false,
+        "messageCount": 1,
+        "position": "middle",
+        "rows": 238,
+        "round": 2,
+        "stream": true,
+        "promptTokens": 3970,
+        "reservedOutputTokens": 126,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 694.6537919999973
+      },
+      {
+        "language": "en",
+        "history": false,
+        "messageCount": 1,
+        "position": "end",
+        "rows": 238,
+        "round": 0,
+        "stream": false,
+        "promptTokens": 3970,
+        "reservedOutputTokens": 126,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 684.4803339999926
+      },
+      {
+        "language": "en",
+        "history": false,
+        "messageCount": 1,
+        "position": "end",
+        "rows": 238,
+        "round": 0,
+        "stream": true,
+        "promptTokens": 3970,
+        "reservedOutputTokens": 126,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 680.4850000000151
+      },
+      {
+        "language": "en",
+        "history": false,
+        "messageCount": 1,
+        "position": "end",
+        "rows": 238,
+        "round": 1,
+        "stream": false,
+        "promptTokens": 3970,
+        "reservedOutputTokens": 126,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 698.402207999985
+      },
+      {
+        "language": "en",
+        "history": false,
+        "messageCount": 1,
+        "position": "end",
+        "rows": 238,
+        "round": 1,
+        "stream": true,
+        "promptTokens": 3970,
+        "reservedOutputTokens": 126,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 655.0475420000148
+      },
+      {
+        "language": "en",
+        "history": false,
+        "messageCount": 1,
+        "position": "end",
+        "rows": 238,
+        "round": 2,
+        "stream": false,
+        "promptTokens": 3970,
+        "reservedOutputTokens": 126,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 703.884458000015
+      },
+      {
+        "language": "en",
+        "history": false,
+        "messageCount": 1,
+        "position": "end",
+        "rows": 238,
+        "round": 2,
+        "stream": true,
+        "promptTokens": 3970,
+        "reservedOutputTokens": 126,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 709.8931250000023
+      },
+      {
+        "language": "en",
+        "history": true,
+        "messageCount": 13,
+        "position": "start",
+        "rows": 238,
+        "round": 0,
+        "stream": false,
+        "promptTokens": 4030,
+        "reservedOutputTokens": 66,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 984.5905409999832
+      },
+      {
+        "language": "en",
+        "history": true,
+        "messageCount": 13,
+        "position": "start",
+        "rows": 238,
+        "round": 0,
+        "stream": true,
+        "promptTokens": 4030,
+        "reservedOutputTokens": 66,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 856.7753749999974
+      },
+      {
+        "language": "en",
+        "history": true,
+        "messageCount": 13,
+        "position": "start",
+        "rows": 238,
+        "round": 1,
+        "stream": false,
+        "promptTokens": 4030,
+        "reservedOutputTokens": 66,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 877.4065830000036
+      },
+      {
+        "language": "en",
+        "history": true,
+        "messageCount": 13,
+        "position": "start",
+        "rows": 238,
+        "round": 1,
+        "stream": true,
+        "promptTokens": 4030,
+        "reservedOutputTokens": 66,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 869.3175829999964
+      },
+      {
+        "language": "en",
+        "history": true,
+        "messageCount": 13,
+        "position": "start",
+        "rows": 238,
+        "round": 2,
+        "stream": false,
+        "promptTokens": 4030,
+        "reservedOutputTokens": 66,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 932.1917499999981
+      },
+      {
+        "language": "en",
+        "history": true,
+        "messageCount": 13,
+        "position": "start",
+        "rows": 238,
+        "round": 2,
+        "stream": true,
+        "promptTokens": 4030,
+        "reservedOutputTokens": 66,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 897.5810420000053
+      },
+      {
+        "language": "en",
+        "history": true,
+        "messageCount": 13,
+        "position": "middle",
+        "rows": 238,
+        "round": 0,
+        "stream": false,
+        "promptTokens": 4030,
+        "reservedOutputTokens": 66,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 571.3899589999928
+      },
+      {
+        "language": "en",
+        "history": true,
+        "messageCount": 13,
+        "position": "middle",
+        "rows": 238,
+        "round": 0,
+        "stream": true,
+        "promptTokens": 4030,
+        "reservedOutputTokens": 66,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 595.2872079999652
+      },
+      {
+        "language": "en",
+        "history": true,
+        "messageCount": 13,
+        "position": "middle",
+        "rows": 238,
+        "round": 1,
+        "stream": false,
+        "promptTokens": 4030,
+        "reservedOutputTokens": 66,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 651.3807910000323
+      },
+      {
+        "language": "en",
+        "history": true,
+        "messageCount": 13,
+        "position": "middle",
+        "rows": 238,
+        "round": 1,
+        "stream": true,
+        "promptTokens": 4030,
+        "reservedOutputTokens": 66,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 667.8187080000062
+      },
+      {
+        "language": "en",
+        "history": true,
+        "messageCount": 13,
+        "position": "middle",
+        "rows": 238,
+        "round": 2,
+        "stream": false,
+        "promptTokens": 4030,
+        "reservedOutputTokens": 66,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 689.860875000013
+      },
+      {
+        "language": "en",
+        "history": true,
+        "messageCount": 13,
+        "position": "middle",
+        "rows": 238,
+        "round": 2,
+        "stream": true,
+        "promptTokens": 4030,
+        "reservedOutputTokens": 66,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 663.551959000004
+      },
+      {
+        "language": "en",
+        "history": true,
+        "messageCount": 13,
+        "position": "end",
+        "rows": 238,
+        "round": 0,
+        "stream": false,
+        "promptTokens": 4030,
+        "reservedOutputTokens": 66,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 828.2966250000172
+      },
+      {
+        "language": "en",
+        "history": true,
+        "messageCount": 13,
+        "position": "end",
+        "rows": 238,
+        "round": 0,
+        "stream": true,
+        "promptTokens": 4030,
+        "reservedOutputTokens": 66,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 809.7674170000246
+      },
+      {
+        "language": "en",
+        "history": true,
+        "messageCount": 13,
+        "position": "end",
+        "rows": 238,
+        "round": 1,
+        "stream": false,
+        "promptTokens": 4030,
+        "reservedOutputTokens": 66,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 762.1004590000375
+      },
+      {
+        "language": "en",
+        "history": true,
+        "messageCount": 13,
+        "position": "end",
+        "rows": 238,
+        "round": 1,
+        "stream": true,
+        "promptTokens": 4030,
+        "reservedOutputTokens": 66,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 743.5513749999809
+      },
+      {
+        "language": "en",
+        "history": true,
+        "messageCount": 13,
+        "position": "end",
+        "rows": 238,
+        "round": 2,
+        "stream": false,
+        "promptTokens": 4030,
+        "reservedOutputTokens": 66,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 676.7900840000366
+      },
+      {
+        "language": "en",
+        "history": true,
+        "messageCount": 13,
+        "position": "end",
+        "rows": 238,
+        "round": 2,
+        "stream": true,
+        "promptTokens": 4030,
+        "reservedOutputTokens": 66,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 674.3894580000197
+      },
+      {
+        "language": "ja",
+        "history": false,
+        "messageCount": 1,
+        "position": "start",
+        "rows": 238,
+        "round": 0,
+        "stream": false,
+        "promptTokens": 3972,
+        "reservedOutputTokens": 124,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 657.0591659999918
+      },
+      {
+        "language": "ja",
+        "history": false,
+        "messageCount": 1,
+        "position": "start",
+        "rows": 238,
+        "round": 0,
+        "stream": true,
+        "promptTokens": 3972,
+        "reservedOutputTokens": 124,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 630.6189579999773
+      },
+      {
+        "language": "ja",
+        "history": false,
+        "messageCount": 1,
+        "position": "start",
+        "rows": 238,
+        "round": 1,
+        "stream": false,
+        "promptTokens": 3972,
+        "reservedOutputTokens": 124,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 624.2509160000482
+      },
+      {
+        "language": "ja",
+        "history": false,
+        "messageCount": 1,
+        "position": "start",
+        "rows": 238,
+        "round": 1,
+        "stream": true,
+        "promptTokens": 3972,
+        "reservedOutputTokens": 124,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 617.0179999999818
+      },
+      {
+        "language": "ja",
+        "history": false,
+        "messageCount": 1,
+        "position": "start",
+        "rows": 238,
+        "round": 2,
+        "stream": false,
+        "promptTokens": 3972,
+        "reservedOutputTokens": 124,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 683.2870830000029
+      },
+      {
+        "language": "ja",
+        "history": false,
+        "messageCount": 1,
+        "position": "start",
+        "rows": 238,
+        "round": 2,
+        "stream": true,
+        "promptTokens": 3972,
+        "reservedOutputTokens": 124,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 698.0950839999714
+      },
+      {
+        "language": "ja",
+        "history": false,
+        "messageCount": 1,
+        "position": "middle",
+        "rows": 238,
+        "round": 0,
+        "stream": false,
+        "promptTokens": 3972,
+        "reservedOutputTokens": 124,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 1257.7241659999709
+      },
+      {
+        "language": "ja",
+        "history": false,
+        "messageCount": 1,
+        "position": "middle",
+        "rows": 238,
+        "round": 0,
+        "stream": true,
+        "promptTokens": 3972,
+        "reservedOutputTokens": 124,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 1147.3711669999757
+      },
+      {
+        "language": "ja",
+        "history": false,
+        "messageCount": 1,
+        "position": "middle",
+        "rows": 238,
+        "round": 1,
+        "stream": false,
+        "promptTokens": 3972,
+        "reservedOutputTokens": 124,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 1729.047166000004
+      },
+      {
+        "language": "ja",
+        "history": false,
+        "messageCount": 1,
+        "position": "middle",
+        "rows": 238,
+        "round": 1,
+        "stream": true,
+        "promptTokens": 3972,
+        "reservedOutputTokens": 124,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 1378.9141250000102
+      },
+      {
+        "language": "ja",
+        "history": false,
+        "messageCount": 1,
+        "position": "middle",
+        "rows": 238,
+        "round": 2,
+        "stream": false,
+        "promptTokens": 3972,
+        "reservedOutputTokens": 124,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 1754.7163329999894
+      },
+      {
+        "language": "ja",
+        "history": false,
+        "messageCount": 1,
+        "position": "middle",
+        "rows": 238,
+        "round": 2,
+        "stream": true,
+        "promptTokens": 3972,
+        "reservedOutputTokens": 124,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 935.9307919999701
+      },
+      {
+        "language": "ja",
+        "history": false,
+        "messageCount": 1,
+        "position": "end",
+        "rows": 238,
+        "round": 0,
+        "stream": false,
+        "promptTokens": 3972,
+        "reservedOutputTokens": 124,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 1459.6110830000252
+      },
+      {
+        "language": "ja",
+        "history": false,
+        "messageCount": 1,
+        "position": "end",
+        "rows": 238,
+        "round": 0,
+        "stream": true,
+        "promptTokens": 3972,
+        "reservedOutputTokens": 124,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 993.5680000000284
+      },
+      {
+        "language": "ja",
+        "history": false,
+        "messageCount": 1,
+        "position": "end",
+        "rows": 238,
+        "round": 1,
+        "stream": false,
+        "promptTokens": 3972,
+        "reservedOutputTokens": 124,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 870.8537500000093
+      },
+      {
+        "language": "ja",
+        "history": false,
+        "messageCount": 1,
+        "position": "end",
+        "rows": 238,
+        "round": 1,
+        "stream": true,
+        "promptTokens": 3972,
+        "reservedOutputTokens": 124,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 929.80016600003
+      },
+      {
+        "language": "ja",
+        "history": false,
+        "messageCount": 1,
+        "position": "end",
+        "rows": 238,
+        "round": 2,
+        "stream": false,
+        "promptTokens": 3972,
+        "reservedOutputTokens": 124,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 1037.7932080000173
+      },
+      {
+        "language": "ja",
+        "history": false,
+        "messageCount": 1,
+        "position": "end",
+        "rows": 238,
+        "round": 2,
+        "stream": true,
+        "promptTokens": 3972,
+        "reservedOutputTokens": 124,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 727.3619999999646
+      },
+      {
+        "language": "ja",
+        "history": true,
+        "messageCount": 13,
+        "position": "start",
+        "rows": 238,
+        "round": 0,
+        "stream": false,
+        "promptTokens": 4032,
+        "reservedOutputTokens": 64,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 660.3999169999734
+      },
+      {
+        "language": "ja",
+        "history": true,
+        "messageCount": 13,
+        "position": "start",
+        "rows": 238,
+        "round": 0,
+        "stream": true,
+        "promptTokens": 4032,
+        "reservedOutputTokens": 64,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 679.6261670000385
+      },
+      {
+        "language": "ja",
+        "history": true,
+        "messageCount": 13,
+        "position": "start",
+        "rows": 238,
+        "round": 1,
+        "stream": false,
+        "promptTokens": 4032,
+        "reservedOutputTokens": 64,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 761.3362910000142
+      },
+      {
+        "language": "ja",
+        "history": true,
+        "messageCount": 13,
+        "position": "start",
+        "rows": 238,
+        "round": 1,
+        "stream": true,
+        "promptTokens": 4032,
+        "reservedOutputTokens": 64,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 719.5677499999874
+      },
+      {
+        "language": "ja",
+        "history": true,
+        "messageCount": 13,
+        "position": "start",
+        "rows": 238,
+        "round": 2,
+        "stream": false,
+        "promptTokens": 4032,
+        "reservedOutputTokens": 64,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 695.0961670000106
+      },
+      {
+        "language": "ja",
+        "history": true,
+        "messageCount": 13,
+        "position": "start",
+        "rows": 238,
+        "round": 2,
+        "stream": true,
+        "promptTokens": 4032,
+        "reservedOutputTokens": 64,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 656.1953329999815
+      },
+      {
+        "language": "ja",
+        "history": true,
+        "messageCount": 13,
+        "position": "middle",
+        "rows": 238,
+        "round": 0,
+        "stream": false,
+        "promptTokens": 4032,
+        "reservedOutputTokens": 64,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 624.233041999978
+      },
+      {
+        "language": "ja",
+        "history": true,
+        "messageCount": 13,
+        "position": "middle",
+        "rows": 238,
+        "round": 0,
+        "stream": true,
+        "promptTokens": 4032,
+        "reservedOutputTokens": 64,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 632.0313750000205
+      },
+      {
+        "language": "ja",
+        "history": true,
+        "messageCount": 13,
+        "position": "middle",
+        "rows": 238,
+        "round": 1,
+        "stream": false,
+        "promptTokens": 4032,
+        "reservedOutputTokens": 64,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 655.746291999938
+      },
+      {
+        "language": "ja",
+        "history": true,
+        "messageCount": 13,
+        "position": "middle",
+        "rows": 238,
+        "round": 1,
+        "stream": true,
+        "promptTokens": 4032,
+        "reservedOutputTokens": 64,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 627.2489579999819
+      },
+      {
+        "language": "ja",
+        "history": true,
+        "messageCount": 13,
+        "position": "middle",
+        "rows": 238,
+        "round": 2,
+        "stream": false,
+        "promptTokens": 4032,
+        "reservedOutputTokens": 64,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 671.1037919999799
+      },
+      {
+        "language": "ja",
+        "history": true,
+        "messageCount": 13,
+        "position": "middle",
+        "rows": 238,
+        "round": 2,
+        "stream": true,
+        "promptTokens": 4032,
+        "reservedOutputTokens": 64,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 638.6837910000468
+      },
+      {
+        "language": "ja",
+        "history": true,
+        "messageCount": 13,
+        "position": "end",
+        "rows": 238,
+        "round": 0,
+        "stream": false,
+        "promptTokens": 4032,
+        "reservedOutputTokens": 64,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 594.5055000000866
+      },
+      {
+        "language": "ja",
+        "history": true,
+        "messageCount": 13,
+        "position": "end",
+        "rows": 238,
+        "round": 0,
+        "stream": true,
+        "promptTokens": 4032,
+        "reservedOutputTokens": 64,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 624.6125830000965
+      },
+      {
+        "language": "ja",
+        "history": true,
+        "messageCount": 13,
+        "position": "end",
+        "rows": 238,
+        "round": 1,
+        "stream": false,
+        "promptTokens": 4032,
+        "reservedOutputTokens": 64,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 659.4306670000078
+      },
+      {
+        "language": "ja",
+        "history": true,
+        "messageCount": 13,
+        "position": "end",
+        "rows": 238,
+        "round": 1,
+        "stream": true,
+        "promptTokens": 4032,
+        "reservedOutputTokens": 64,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 655.4009170000209
+      },
+      {
+        "language": "ja",
+        "history": true,
+        "messageCount": 13,
+        "position": "end",
+        "rows": 238,
+        "round": 2,
+        "stream": false,
+        "promptTokens": 4032,
+        "reservedOutputTokens": 64,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 651.906500000041
+      },
+      {
+        "language": "ja",
+        "history": true,
+        "messageCount": 13,
+        "position": "end",
+        "rows": 238,
+        "round": 2,
+        "stream": true,
+        "promptTokens": 4032,
+        "reservedOutputTokens": 64,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 652.3073750000913
+      },
+      {
+        "language": "zh",
+        "history": false,
+        "messageCount": 1,
+        "position": "start",
+        "rows": 242,
+        "round": 0,
+        "stream": false,
+        "promptTokens": 4033,
+        "reservedOutputTokens": 63,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 658.3190830000676
+      },
+      {
+        "language": "zh",
+        "history": false,
+        "messageCount": 1,
+        "position": "start",
+        "rows": 242,
+        "round": 0,
+        "stream": true,
+        "promptTokens": 4033,
+        "reservedOutputTokens": 63,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 638.1017500000307
+      },
+      {
+        "language": "zh",
+        "history": false,
+        "messageCount": 1,
+        "position": "start",
+        "rows": 242,
+        "round": 1,
+        "stream": false,
+        "promptTokens": 4033,
+        "reservedOutputTokens": 63,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 610.0725830000592
+      },
+      {
+        "language": "zh",
+        "history": false,
+        "messageCount": 1,
+        "position": "start",
+        "rows": 242,
+        "round": 1,
+        "stream": true,
+        "promptTokens": 4033,
+        "reservedOutputTokens": 63,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 595.014332999941
+      },
+      {
+        "language": "zh",
+        "history": false,
+        "messageCount": 1,
+        "position": "start",
+        "rows": 242,
+        "round": 2,
+        "stream": false,
+        "promptTokens": 4033,
+        "reservedOutputTokens": 63,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 611.5489169999491
+      },
+      {
+        "language": "zh",
+        "history": false,
+        "messageCount": 1,
+        "position": "start",
+        "rows": 242,
+        "round": 2,
+        "stream": true,
+        "promptTokens": 4033,
+        "reservedOutputTokens": 63,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 582.534915999975
+      },
+      {
+        "language": "zh",
+        "history": false,
+        "messageCount": 1,
+        "position": "middle",
+        "rows": 242,
+        "round": 0,
+        "stream": false,
+        "promptTokens": 4033,
+        "reservedOutputTokens": 63,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 668.8500420000637
+      },
+      {
+        "language": "zh",
+        "history": false,
+        "messageCount": 1,
+        "position": "middle",
+        "rows": 242,
+        "round": 0,
+        "stream": true,
+        "promptTokens": 4033,
+        "reservedOutputTokens": 63,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 630.5507499999367
+      },
+      {
+        "language": "zh",
+        "history": false,
+        "messageCount": 1,
+        "position": "middle",
+        "rows": 242,
+        "round": 1,
+        "stream": false,
+        "promptTokens": 4033,
+        "reservedOutputTokens": 63,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 633.5230000000447
+      },
+      {
+        "language": "zh",
+        "history": false,
+        "messageCount": 1,
+        "position": "middle",
+        "rows": 242,
+        "round": 1,
+        "stream": true,
+        "promptTokens": 4033,
+        "reservedOutputTokens": 63,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 662.2871670000022
+      },
+      {
+        "language": "zh",
+        "history": false,
+        "messageCount": 1,
+        "position": "middle",
+        "rows": 242,
+        "round": 2,
+        "stream": false,
+        "promptTokens": 4033,
+        "reservedOutputTokens": 63,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 619.782790999976
+      },
+      {
+        "language": "zh",
+        "history": false,
+        "messageCount": 1,
+        "position": "middle",
+        "rows": 242,
+        "round": 2,
+        "stream": true,
+        "promptTokens": 4033,
+        "reservedOutputTokens": 63,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 648.6828749999404
+      },
+      {
+        "language": "zh",
+        "history": false,
+        "messageCount": 1,
+        "position": "end",
+        "rows": 242,
+        "round": 0,
+        "stream": false,
+        "promptTokens": 4033,
+        "reservedOutputTokens": 63,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 684.0522089999868
+      },
+      {
+        "language": "zh",
+        "history": false,
+        "messageCount": 1,
+        "position": "end",
+        "rows": 242,
+        "round": 0,
+        "stream": true,
+        "promptTokens": 4033,
+        "reservedOutputTokens": 63,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 663.7727090000408
+      },
+      {
+        "language": "zh",
+        "history": false,
+        "messageCount": 1,
+        "position": "end",
+        "rows": 242,
+        "round": 1,
+        "stream": false,
+        "promptTokens": 4033,
+        "reservedOutputTokens": 63,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 656.4607920000562
+      },
+      {
+        "language": "zh",
+        "history": false,
+        "messageCount": 1,
+        "position": "end",
+        "rows": 242,
+        "round": 1,
+        "stream": true,
+        "promptTokens": 4033,
+        "reservedOutputTokens": 63,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 647.594124999945
+      },
+      {
+        "language": "zh",
+        "history": false,
+        "messageCount": 1,
+        "position": "end",
+        "rows": 242,
+        "round": 2,
+        "stream": false,
+        "promptTokens": 4033,
+        "reservedOutputTokens": 63,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 642.5179590000771
+      },
+      {
+        "language": "zh",
+        "history": false,
+        "messageCount": 1,
+        "position": "end",
+        "rows": 242,
+        "round": 2,
+        "stream": true,
+        "promptTokens": 4033,
+        "reservedOutputTokens": 63,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 654.2796249999665
+      },
+      {
+        "language": "zh",
+        "history": true,
+        "messageCount": 13,
+        "position": "start",
+        "rows": 238,
+        "round": 0,
+        "stream": false,
+        "promptTokens": 4025,
+        "reservedOutputTokens": 71,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 728.1197500000708
+      },
+      {
+        "language": "zh",
+        "history": true,
+        "messageCount": 13,
+        "position": "start",
+        "rows": 238,
+        "round": 0,
+        "stream": true,
+        "promptTokens": 4025,
+        "reservedOutputTokens": 71,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 829.262374999933
+      },
+      {
+        "language": "zh",
+        "history": true,
+        "messageCount": 13,
+        "position": "start",
+        "rows": 238,
+        "round": 1,
+        "stream": false,
+        "promptTokens": 4025,
+        "reservedOutputTokens": 71,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 659.7624170000199
+      },
+      {
+        "language": "zh",
+        "history": true,
+        "messageCount": 13,
+        "position": "start",
+        "rows": 238,
+        "round": 1,
+        "stream": true,
+        "promptTokens": 4025,
+        "reservedOutputTokens": 71,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 665.047499999986
+      },
+      {
+        "language": "zh",
+        "history": true,
+        "messageCount": 13,
+        "position": "start",
+        "rows": 238,
+        "round": 2,
+        "stream": false,
+        "promptTokens": 4025,
+        "reservedOutputTokens": 71,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 773.4260829999112
+      },
+      {
+        "language": "zh",
+        "history": true,
+        "messageCount": 13,
+        "position": "start",
+        "rows": 238,
+        "round": 2,
+        "stream": true,
+        "promptTokens": 4025,
+        "reservedOutputTokens": 71,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 660.5604169999715
+      },
+      {
+        "language": "zh",
+        "history": true,
+        "messageCount": 13,
+        "position": "middle",
+        "rows": 238,
+        "round": 0,
+        "stream": false,
+        "promptTokens": 4025,
+        "reservedOutputTokens": 71,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 624.7125419999938
+      },
+      {
+        "language": "zh",
+        "history": true,
+        "messageCount": 13,
+        "position": "middle",
+        "rows": 238,
+        "round": 0,
+        "stream": true,
+        "promptTokens": 4025,
+        "reservedOutputTokens": 71,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 665.9666250000009
+      },
+      {
+        "language": "zh",
+        "history": true,
+        "messageCount": 13,
+        "position": "middle",
+        "rows": 238,
+        "round": 1,
+        "stream": false,
+        "promptTokens": 4025,
+        "reservedOutputTokens": 71,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 723.936374999932
+      },
+      {
+        "language": "zh",
+        "history": true,
+        "messageCount": 13,
+        "position": "middle",
+        "rows": 238,
+        "round": 1,
+        "stream": true,
+        "promptTokens": 4025,
+        "reservedOutputTokens": 71,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 722.6809579998953
+      },
+      {
+        "language": "zh",
+        "history": true,
+        "messageCount": 13,
+        "position": "middle",
+        "rows": 238,
+        "round": 2,
+        "stream": false,
+        "promptTokens": 4025,
+        "reservedOutputTokens": 71,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 770.0079579999438
+      },
+      {
+        "language": "zh",
+        "history": true,
+        "messageCount": 13,
+        "position": "middle",
+        "rows": 238,
+        "round": 2,
+        "stream": true,
+        "promptTokens": 4025,
+        "reservedOutputTokens": 71,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 779.46308399993
+      },
+      {
+        "language": "zh",
+        "history": true,
+        "messageCount": 13,
+        "position": "end",
+        "rows": 238,
+        "round": 0,
+        "stream": false,
+        "promptTokens": 4025,
+        "reservedOutputTokens": 71,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 657.0450829999754
+      },
+      {
+        "language": "zh",
+        "history": true,
+        "messageCount": 13,
+        "position": "end",
+        "rows": 238,
+        "round": 0,
+        "stream": true,
+        "promptTokens": 4025,
+        "reservedOutputTokens": 71,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 661.6480829999782
+      },
+      {
+        "language": "zh",
+        "history": true,
+        "messageCount": 13,
+        "position": "end",
+        "rows": 238,
+        "round": 1,
+        "stream": false,
+        "promptTokens": 4025,
+        "reservedOutputTokens": 71,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 659.639124999987
+      },
+      {
+        "language": "zh",
+        "history": true,
+        "messageCount": 13,
+        "position": "end",
+        "rows": 238,
+        "round": 1,
+        "stream": true,
+        "promptTokens": 4025,
+        "reservedOutputTokens": 71,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 634.8086250000633
+      },
+      {
+        "language": "zh",
+        "history": true,
+        "messageCount": 13,
+        "position": "end",
+        "rows": 238,
+        "round": 2,
+        "stream": false,
+        "promptTokens": 4025,
+        "reservedOutputTokens": 71,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 622.1694579999894
+      },
+      {
+        "language": "zh",
+        "history": true,
+        "messageCount": 13,
+        "position": "end",
+        "rows": 238,
+        "round": 2,
+        "stream": true,
+        "promptTokens": 4025,
+        "reservedOutputTokens": 71,
+        "acceptedTotal": 4096,
+        "rejectedTotal": 4097,
+        "exact": true,
+        "elapsedMs": 652.6975409999723
+      }
+    ]
+  },
+  "sharedRequestMetrics": {
+    "retained": 100,
+    "longPromptUsageRecords": 54,
+    "engine": "vLLM-Apple",
+    "bounded": true
+  },
+  "counterProcessesAfterRequests": 1,
+  "counterRssKiB": [
+    28912
+  ],
+  "applicationExit": {
+    "code": 0,
+    "signal": null
+  },
+  "summary": {
+    "accepted": 30,
+    "rejected": 0,
+    "firstAcceptedMs": 564.714,
+    "warmMedianMs": 1500.176,
+    "warmMeanMs": 1744.5367586206899
+  },
+  "finishedAt": "2026-10-25T09:09:58.244Z"
+}

@@ -1,8 +1,8 @@
 # vLLM-Apple: verified local startup
 
-Latest environment proof / 最新の環境証跡 / 最新环境证据: [2026-10-24 environment refresh and cache diagnostics](#2026-10-24-cache-diagnostics-and-environment-refresh).
+Latest environment proof / 最新の環境証跡 / 最新环境证据: [2026-10-25 allocator profile](#2026-10-25-qualified-allocator-profile).
 
-Current measured profile / 現在の検証済み設定 / 当前已验证配置: [4,096 total tokens, concurrency one](#2026-10-24-qualified-4096-context). Earlier dated entries and the 1,024 GUI fixture below are retained as history.
+Current measured profile / 現在の検証済み設定 / 当前已验证配置: [4,096 tokens, retained KV 1,024 MiB, allocator free cache 256 MiB, concurrency one](#2026-10-25-qualified-allocator-profile). Earlier dated entries and the 1,024 GUI fixture below are retained as history.
 
 ## 日本語
 
@@ -124,3 +124,48 @@ English: The current login/tool environment adds `PYTORCH_ENABLE_MPS_FALLBACK=1`
 简体中文：当前登录／工具环境增加`PYTORCH_ENABLE_MPS_FALLBACK=1`，其他安装身份未变。保留旧证据的拒绝结果，不通过删除变量绕过检查。完整30分钟再认证5978次成功、零失败、正常结束；长历史、精确边界、共享计测、互斥清理和恢复也通过。仅更新正常原生／headless证据路径，上下文仍为4096、会话和其他设置保持不变。新证据在身份不变时有效至2026-10-31 18:31:45 JST。内存诊断未设置字节上限，也不宣称降低内存；空闲后physical footprint仍约7.91 GiB。
 
 [Measured cache behavior and limits](BENCHMARKS.md#diverse-long-history-cache-memory--2026-10-24). The refresh tool requires existing valid 4,096 evidence with identical non-environment identity, a passing cache workload and startup-refusal reports, stopped preference owners and the original full verifier. Its cache path cannot increase context or approve model/backend/runtime changes; those require the full context matrix.
+
+## Retained KV byte-budget control
+
+The shared Rust `vllm.kvCacheMiB` setting is `0` by default (backend behavior unchanged), or 64–4096 MiB for a qualified MLX profile. Inspection and startup inject the same explicit `VLLM_APPLE_KV_CACHE_MIB` value; zero removes inherited policy so configuration cannot silently differ from the saved setting. Nonzero values require evidence and MLX. Editing is blocked while running; clearing evidence or selecting an incompatible backend resets the inapplicable UI policy to zero. Budget edits invalidate shared diagnostics and counter-session settings through the normal settings equality/lifecycle rules.
+
+The isolated backend-adjacent Python launcher checks MLX-LM 0.32.0 and exact server/cache source hashes before model loading. It sets the original LRU's `max_bytes` and preserves the original insertion/eviction algorithm for both batch and seeded sequential paths; it does not edit installed files, attention, sampling or context contents. The upstream CLI's pre-batch trim alone does not guarantee the completed retained-cache bound, so the wrapper additionally enforces the LRU accounting bound after insertion. Its locked read-only snapshot contains only retained-byte/entry counts and separate non-atomic allocator counters; no prompt or KV tensors are sent to JavaScript. The complete wrapper source and policy environment are included in normal evidence identity checks. Old approvals cannot approve this changed runtime or another budget.
+
+A budget is a bound on retained LRU tensor-byte accounting, not total process/Metal memory: weights, active inference, temporary workspace, shared backing allocations and allocator retention are distinct. A smaller budget may reduce prefix reuse and increase recomputation. The actual memory and latency workload must be compared before adopting a profile. The reproducible independent-checkout patch and source guards are documented in [patches](../patches/README.md).
+
+日本語: 「KV保持上限（MiB）」は0で従来のバックエンド既定、64〜4096で再利用用KVの計上バイト数を制限します。MLXと値に一致する新しい証跡が必要です。診断・起動には同じ値を渡し、実行中は変更できません。会話やコンテキストを削らず、保持しないKVは次の要求で再計算します。重み・推論中のKV・作業領域・アロケータを含むアプリ全体のメモリ上限ではありません。説明は情報アイコンに表示します。
+
+简体中文：“KV保留上限（MiB）”为0时保持后端默认值，64–4096限制用于复用的KV计账字节。需要MLX及与该值匹配的新证据，诊断与启动使用同一设置，运行中不可修改。不删除会话或截断上下文；未保留的KV在下次请求时重新计算。该值不限制包含权重、活动KV、临时工作区及分配器缓存的进程总内存。说明置于信息图标提示中。
+
+
+## 2026-10-25 qualified retained KV profile
+
+The measured local M4/Gemma profile keeps context 4,096 and adds `kvCacheMiB: 1024`. Native/headless preferences now reference `.soliton-runtime/gemma2-kv-budget-20261025.json`. Both `PYTORCH_ENABLE_MPS_FALLBACK=1` and explicit `VLLM_APPLE_KV_CACHE_MIB=1024` are included in the fresh environment identity. Zero or 512 with this evidence refuses startup; 4,097 refuses by the context scope. The default remains zero for other installations. Full startup verification is mandatory on every launch.
+
+Evidence created 2026-10-25 15:29:12 JST, expires 2026-11-01 15:29:12 JST. Refresh by full qualification; do not edit the report. [Raw qualification](evaluation/soliton-vllm-apple-kv-budget-20261025.json), [measurements and reuse tradeoff](BENCHMARKS.md#retained-kv-budget--2026-10-25).
+
+日本語: この環境の検証済み設定のみ保持KVを1 GiBに設定しました。総メモリ制限ではなく、履歴再計算の遅延が発生します。予算・runtime・環境の変更や期限切れには再検証が必要です。
+
+简体中文：仅此环境的已验证配置启用1 GiB保留KV预算；不限制总内存，历史重新计算会增加延迟。预算、runtime、环境变化或证据过期均需重新验证。
+
+
+## Allocator free-cache control
+
+`allocatorCacheMiB` is an explicit Rust-owned preference: zero leaves the original backend default, while 64–4,096 MiB requires a nonzero retained-KV budget, MLX-LM and matching qualification evidence. Both metadata inspection and daemon startup remove an inherited hidden allocator flag and inject the selected `VLLM_APPLE_ALLOCATOR_CACHE_MIB`. Existing identity verification includes this environment variable and all wrapper sources. Never remove the flag to fit a different report.
+
+The reviewed wrapper uses installed MLX `set_cache_limit` once before loading weights, keeping any stricter existing limit. MLX reclaims excess reusable free blocks on allocation; this does not cap active inference, model weights, KV, temporary buffers or total physical RAM. It does not add per-request `clear_cache`, change tokens/templates/sampling, or keep another engine resident. The read-only scalar inventory reports configured/effective cache limits separately from allocator active/cache/peak values, which are non-atomic observations.
+
+日本語: アロケータ保持上限は再利用する空きGPUメモリに適用します。使用中メモリや総RAMの上限ではありません。変更した設定・runtimeには完全な再認証が必要です。
+
+简体中文：分配器缓存上限仅作用于可复用空闲GPU内存，不是使用中内存或总RAM上限。配置及runtime变化后必须重新完整认证。
+
+
+## 2026-10-25 qualified allocator profile
+
+Current measured local M4/Gemma preferences select `.soliton-runtime/gemma2-allocator-256-20261025.json`, total context 4,096, retained KV 1,024 MiB and allocator free cache 256 MiB, concurrency one. All three explicit environment flags above are identity-bound. Full startup checks remain mandatory; allocator zero/128 with this evidence and context 4,097 are refused. Generic defaults remain zero; changing budgets, dependencies, wrapper or hardware requires fresh qualification.
+
+Evidence created 2026-10-25 17:44:04 JST, expires 2026-11-01 17:44:04 JST. Native/headless documents retain all other settings/history; original-byte backups are referenced in the [consolidated report](evaluation/allocator-20261025.json). [Memory/latency results and limits](BENCHMARKS.md#allocator-free-cache-budget--2026-10-25).
+
+日本語: 現在の検証済み設定はアロケータ保持256 MiBです。総メモリ上限ではありません。設定や環境の不一致・期限切れは拒否し、証跡の書き換えや検査緩和は行いません。
+
+简体中文：当前实测配置为256 MiB分配器缓存，不限制总内存。配置或环境不匹配、证据过期时拒绝启动，不改写证据、不放宽检查。

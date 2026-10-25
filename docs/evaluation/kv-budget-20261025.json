@@ -1,0 +1,150 @@
+{
+  "passed": true,
+  "date": "2026-10-25",
+  "model": "Gemma 2 2B IT 4-bit",
+  "hardware": "Apple M4",
+  "context": 4096,
+  "concurrency": 1,
+  "kvCacheMiB": 1024,
+  "qualification": {
+    "certification_required": true,
+    "elapsed_seconds": 1800.298,
+    "errors": {},
+    "failures": 0,
+    "latency_ms": {
+      "max": 835.24,
+      "mean": 327.021,
+      "p50_upper_bound": 500,
+      "p95_upper_bound": 500
+    },
+    "passed": true,
+    "process_alive": true,
+    "requests": 5505,
+    "requests_per_second": 3.058,
+    "rss": {
+      "baseline_bytes": 2260860928,
+      "final_bytes": 2279063552,
+      "growth_bytes": 18202624,
+      "limit_bytes": 268435456,
+      "peak_bytes": 2279948288,
+      "peak_growth_bytes": 19087360
+    },
+    "stability_window_met": true,
+    "storage": {
+      "error_keys": 0,
+      "latency_buckets": 12
+    },
+    "successes": 5505
+  },
+  "shutdownClean": true,
+  "createdJst": "2026-10-25T15:29:12.159236+09:00",
+  "expiresJst": "2026-11-01T15:29:12.159236+09:00",
+  "before": {
+    "physicalPeakGiB": 7.960589945316315,
+    "physicalIdle10GiB": 7.91356235742569,
+    "workloadSeconds": 375.260508,
+    "recent": [
+      {
+        "cachedTokens": 3934,
+        "elapsedMs": 474.4963329999882
+      },
+      {
+        "cachedTokens": 3934,
+        "elapsedMs": 451.25875000003725
+      }
+    ]
+  },
+  "after": {
+    "physicalPeakGiB": 4.582004085183144,
+    "physicalIdle10GiB": 3.3034243285655975,
+    "workloadSeconds": 438.617113958,
+    "recent": [
+      {
+        "cachedTokens": 7,
+        "elapsedMs": 13179.84937500002
+      },
+      {
+        "cachedTokens": 7,
+        "elapsedMs": 10865.77883299999
+      }
+    ]
+  },
+  "peakReductionPercent": 42.44140049093965,
+  "idleReductionPercent": 58.25616606829629,
+  "kvSamples": 153,
+  "maxRetainedMiB": 1011.4609375,
+  "exactContextCases": 108,
+  "overLimitRefusals": 108,
+  "exactCacheCases": 38,
+  "seededCases": 3,
+  "tokenParity": {
+    "passed": true,
+    "counts": {
+      "raw": 211,
+      "chat": 844,
+      "rejected": 3,
+      "longChat": 16,
+      "longMinTokens": 3930,
+      "longMaxTokens": 3937
+    },
+    "tokenIdsSha256": "994c6f7c94a0ed5512f21b6cceea20ced1634e196b0f2add4d661cdf658c409b",
+    "heavyImportsInFastPath": false,
+    "fallbackGuards": 6
+  },
+  "activation": {
+    "passed": true,
+    "context": 4096,
+    "evidenceSha256": "2eee26cfe856e0c7ca6e302bd09310aabd4afea4f448d027c875dea6b79f312f",
+    "states": [
+      {
+        "path": "/Users/Shared/Program/Tauri/Soliton/.studio-state.json",
+        "beforeSha256": "9784734cf051b970e80a52d6a3d9ef6690586684da737edadbb387a8e35ecca9",
+        "afterSha256": "136d0d225678e1e419eda504f31bc2d2843a13f343f01440d901ad83b5511778",
+        "onlyContextAndEvidenceChanged": false,
+        "onlyKvPolicyAndEvidenceChanged": true,
+        "backup": "/Users/Shared/Program/Tauri/Soliton/.soliton-runtime/kv-budget-activation-20261025-backup-0.json"
+      },
+      {
+        "path": "/Users/littlebuddha/Library/Application Support/dev.soliton.desktop/studio.json",
+        "beforeSha256": "531fc976234d58a3d658c0d5961463227e852d9ef2ff90e89299fa4adc2d313c",
+        "afterSha256": "80109fc1944a7fb74bee1f9bcddafe5babd598cb7fc052a5c2c53b2ceddd7c66",
+        "onlyContextAndEvidenceChanged": false,
+        "onlyKvPolicyAndEvidenceChanged": true,
+        "backup": "/Users/Shared/Program/Tauri/Soliton/.soliton-runtime/kv-budget-activation-20261025-backup-1.json"
+      }
+    ]
+  },
+  "limitations": [
+    "Temporal loaded-desktop comparison against passing 2026-10-24 run; no controlled latency claim.",
+    "2026-10-25 baseline failed on transient descendant sampling, excluded; binary/evidence/settings exactly match valid baseline.",
+    "Raw cache observations text predates scalar inventory; actual kvCache samples provide logical LRU byte accounting, not unique physical ownership.",
+    "Retained KV budget does not cap active KV, weights, temporary buffers, backing allocations or allocator memory.",
+    "38 primary requests/42 samples are matched; three seeded requests are additional. No forced OS pressure.",
+    "Browser UI uses fake backend; real model uses shared Rust API, not native GUI.",
+    "Duration accounting clarification: after.workloadSeconds includes three extra seeded requests absent in before.workloadSeconds; these duration values are not a matched latency comparison. Primary physical-memory comparison still uses matched 42 samples."
+  ],
+  "checks": {
+    "counterOverlapsModelLoadingAfterQualification": true,
+    "backendKvBudgetArgument": true,
+    "exactContextBoundary": true,
+    "counterFailureClosedAndLatched": true,
+    "stopReapsCounter": true,
+    "stopReapsWholeTree": true,
+    "noCounterWithStrata": true,
+    "stateAndEvidencePreserved": true,
+    "headlessSignalReapsTree": true,
+    "restartAfterCounterFailure": true
+  },
+  "sha256": {
+    "docs/benchmarks/cache-memory-verified-20261024.json": "4d02ba4218178957d3fa035d23ba32b292380ab253caccaa198eb436d458011f",
+    "docs/benchmarks/kv-budget-before-20261025.json": "b19794a025eeb943dafdbc9a83692126f4e7772a2ffb0b268c3d3f0aa4fe031b",
+    "docs/benchmarks/kv-budget-after-20261025.json": "f2c83232d1fc31c2b0d1c5f60c5952eaa8b50b330653c1535f0613250d2789a5",
+    "docs/benchmarks/kv-budget-context-20261025.json": "6804ed88f5e3f9ac88e1f446587e62a381dd8c4f229880fd716be0ca33a35bc3",
+    "docs/evaluation/soliton-vllm-apple-kv-budget-20261025.json": "2eee26cfe856e0c7ca6e302bd09310aabd4afea4f448d027c875dea6b79f312f",
+    "docs/evaluation/kv-budget-gates-20261025.json": "4d08ac7b7b83b2089240d9133e98d84d7b5c880874a95826d30eba158cf61fa6",
+    "docs/evaluation/kv-budget-activation-input-20261025.json": "12e9e2d603cf147dcdedb9e615258e73f1697bce3c3428673d5147ee14a784af",
+    "vLLM-apple/vllm_apple/mlx_kv_budget.py": "a459120dd4f22332547f4cc4d8503da79a1b57d70a742a4851255d10ca0d5eff",
+    "vLLM-apple/vllm_apple/backend.py": "3cd5223ab2b92d066b04709ace81fdcd404877507cab5becb4e82777cf90066c",
+    "patches/vllm-apple-kv-budget.patch": "237440f6c92202bf0078058b36ffc79e9e84f8ab80d90cf30862a8f2a438d19e"
+  }
+}

@@ -21,6 +21,7 @@ const forbidden = () =>
     .filter(
       (line) =>
         line.includes("/mlx_lm.server --model ") ||
+        (line.includes("/mlx_kv_budget.py") && line.includes(" --model ")) ||
         line.includes("--soliton-token-counter"),
     );
 assert.equal(
@@ -84,21 +85,99 @@ try {
     "x-studio-token": session.token,
   };
   const before = await state();
-  for (const [context, path] of [
-    [4096, oldEvidence],
-    [4097, newEvidence],
-  ]) {
+  const trials =
+    process.env.SOLITON_ALLOCATOR_GATES === "1"
+      ? [
+          [
+            4096,
+            newEvidence,
+            1024,
+            "evidence_identity_mismatch",
+            "identity mismatch",
+            0,
+          ],
+          [
+            4096,
+            newEvidence,
+            1024,
+            "evidence_identity_mismatch",
+            "identity mismatch",
+            128,
+          ],
+          [
+            4097,
+            newEvidence,
+            1024,
+            "evidence_limit_exceeded",
+            "workload exceeds qualified bounds",
+            256,
+          ],
+        ]
+      : process.env.SOLITON_KV_GATES === "1"
+        ? [
+            [
+              4096,
+              newEvidence,
+              0,
+              "evidence_identity_mismatch",
+              "identity mismatch",
+            ],
+            [
+              4096,
+              newEvidence,
+              512,
+              "evidence_identity_mismatch",
+              "identity mismatch",
+            ],
+            [
+              4097,
+              newEvidence,
+              1024,
+              "evidence_limit_exceeded",
+              "workload exceeds qualified bounds",
+            ],
+          ]
+        : [
+            [
+              4096,
+              oldEvidence,
+              undefined,
+              "evidence_limit_exceeded",
+              "workload exceeds qualified bounds",
+            ],
+            [
+              4097,
+              newEvidence,
+              undefined,
+              "evidence_limit_exceeded",
+              "workload exceeds qualified bounds",
+            ],
+          ];
+  for (const [
+    context,
+    path,
+    kvCacheMiB,
+    reason,
+    logReason,
+    allocatorCacheMiB,
+  ] of trials) {
     const snapshot = await state();
     await act("settings", {
       settings: {
         ...snapshot.settings,
-        vllm: { ...snapshot.settings.vllm, context, evidence: resolve(path) },
+        vllm: {
+          ...snapshot.settings.vllm,
+          context,
+          evidence: resolve(path),
+          ...(kvCacheMiB === undefined ? {} : { kvCacheMiB }),
+          ...(allocatorCacheMiB === undefined ? {} : { allocatorCacheMiB }),
+        },
       },
     });
     await act("inspectVllm");
     const diagnostic = (await state()).vllmInspection;
     assert.equal(diagnostic.status, "blocked");
-    assert.equal(diagnostic.reason, "evidence_limit_exceeded");
+    assert.equal(diagnostic.reason, reason);
     await act("clearLogs");
     await act("start");
     await wait(async () => {
@@ -110,16 +189,16 @@ try {
       const snapshot = await state();
       return (
         snapshot.status === "offline" &&
-        snapshot.logs.some((line) =>
-          line.includes("workload exceeds qualified bounds"),
-        )
+        snapshot.logs.some((line) => line.includes(logReason))
       );
     });
     await act("stop");
     assert.deepEqual((await state()).document, before.document);
     report.checks.push({
       context,
-      diagnostic: "evidence_limit_exceeded",
+      diagnostic: reason,
+      ...(kvCacheMiB === undefined ? {} : { kvCacheMiB }),
+      ...(allocatorCacheMiB === undefined ? {} : { allocatorCacheMiB }),
       startupRefused: true,
       noInferenceOrCounter: true,
       historyPreserved: true,

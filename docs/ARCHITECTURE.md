@@ -147,3 +147,17 @@ The 2026-10-24 measured M4/Gemma profile raises the selected total context to 4,
 
 
 The cache-memory workload samples backend-reported `prompt_tokens_details.cached_tokens` and native owned-tree RSS/engine physical footprint without changing backend cache policy. Missing accounting fails the measurement. Reuse loss after prefix churn is an observation consistent with eviction; it is not direct KV inventory or proof of physical memory release. Normal counter reuse still caches no request/answer/count data. The 2026-10-24 current environment adds `PYTORCH_ENABLE_MPS_FALLBACK=1`, so complete qualification was rerun rather than bypassing identity checks. An environment-only refresh at an existing certified 4,096 bound requires the prior valid identity, passing cache/lifecycle/boundary reports and the original full startup verifier; other identity changes require the full matrix. Documents and other preferences remain unchanged. [Results](BENCHMARKS.md#diverse-long-history-cache-memory--2026-10-24).
+
+
+The explicit `settings.vllm.kvCacheMiB` lives in shared Rust state (legacy default zero). Inspection and launch both remove any inherited hidden budget and inject the selected nonzero value; changing it invalidates metadata/counter settings and is blocked while running. Qualified MLX only, 64–4,096 MiB, matching evidence required. The adjacent-Python isolated wrapper checks exact installed server/cache source and dependency version, applies the original LRU maximum to every insertion including seeded sequential generation, and exposes bounded scalar cache/allocator snapshots for measurement. No model tensors enter JavaScript. Full evidence/token admission and stop-before-switch remain unchanged. The measured 1,024 MiB profile was activated only after fresh qualification, full multilingual context and history workloads, seeded requests and startup-refusal gates; activation changes only evidence and budget with original-byte backups. See [results](BENCHMARKS.md#retained-kv-budget--2026-10-25).
+
+日本語: KV予算はRust共有設定に保持し、診断と起動へ同じ値を渡します。元のLRU排出を全挿入経路で適用し、GPUデータは渡さずスカラーのみ観測します。検査と排他稼働を維持します。
+
+简体中文：KV预算由Rust共享状态持有，诊断与启动使用相同值。所有插入路径均使用原有LRU淘汰逻辑，仅观测标量，不传输GPU数据。完整检查与引擎互斥保持不变。
+
+
+The optional `settings.vllm.allocatorCacheMiB` shares the same Rust state, configuration equality and lifecycle lock as the KV policy. Zero preserves the original allocator policy; 64–4,096 requires the qualified MLX KV launcher and evidence. Inspection and launch both remove a hidden inherited `VLLM_APPLE_ALLOCATOR_CACHE_MIB` and inject the explicit nonzero setting, binding it to the original full environment verifier. The reviewed adjacent-Python wrapper calls MLX `set_cache_limit` before model loading, retaining any stricter prior limit. There is no per-request flush, GPU tensor transfer, token/template change or second model. The API governs reusable free allocations, not active weights/KV/temporary buffers or a total RAM cap; MLX reclaims excess on subsequent allocation. Scalar diagnostics record configured/effective limit separately from non-atomic active/cache/peak observations.
+
+日本語: アロケータの保持上限もRust共有設定で管理します。診断・起動で同じ明示値を証跡照合し、使用中メモリや正確な計数、排他稼働は変更しません。
+
+简体中文：分配器缓存上限同样由Rust共享状态管理。诊断和启动使用相同的显式值并验证证据，不改变使用中内存、准确计数和引擎互斥。

@@ -1,0 +1,2277 @@
+{
+  "schema": 1,
+  "passed": true,
+  "environment": {
+    "architecture": "arm64",
+    "loadAverageAtStart": [
+      2.1552734375,
+      3.1416015625,
+      3.75830078125
+    ],
+    "loadAverageAtEnd": [
+      2.80126953125,
+      3.1904296875,
+      3.62353515625
+    ]
+  },
+  "binarySha256": "1863bc2f5ed3e98d94f46790b4da93d5fc81e0c51c3b325f518d4da836bf90e1",
+  "label": "before",
+  "runtime": "shared Rust headless core",
+  "startedAt": "2026-10-25T08:04:37.007Z",
+  "evidenceSha256": "2eee26cfe856e0c7ca6e302bd09310aabd4afea4f448d027c875dea6b79f312f",
+  "context": 4096,
+  "kvCacheMiB": 1024,
+  "settingsFingerprint": "220f7922ac894ca8b678d25db8614fec4a561b3395b1524e3cff2626cc05966d",
+  "cases": [
+    {
+      "round": 0,
+      "language": "en",
+      "kind": "retrieval",
+      "rows": 0,
+      "status": 200,
+      "elapsedMs": 444.175,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 32,
+        "completion_tokens": 10,
+        "total_tokens": 42,
+        "prompt_tokens_details": {
+          "cached_tokens": 4
+        }
+      }
+    },
+    {
+      "round": 0,
+      "language": "en",
+      "kind": "retrieval",
+      "rows": 32,
+      "status": 200,
+      "elapsedMs": 1246.977,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 535,
+        "completion_tokens": 10,
+        "total_tokens": 545,
+        "prompt_tokens_details": {
+          "cached_tokens": 4
+        }
+      }
+    },
+    {
+      "round": 0,
+      "language": "en",
+      "kind": "retrieval",
+      "rows": 58,
+      "status": 200,
+      "elapsedMs": 1557.324,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 951,
+        "completion_tokens": 10,
+        "total_tokens": 961,
+        "prompt_tokens_details": {
+          "cached_tokens": 251
+        }
+      }
+    },
+    {
+      "round": 0,
+      "language": "en",
+      "kind": "retrieval",
+      "rows": 64,
+      "status": 200,
+      "elapsedMs": 1400.778,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 1047,
+        "completion_tokens": 10,
+        "total_tokens": 1057,
+        "prompt_tokens_details": {
+          "cached_tokens": 459
+        }
+      }
+    },
+    {
+      "round": 0,
+      "language": "en",
+      "kind": "multi-turn",
+      "rows": null,
+      "status": 200,
+      "elapsedMs": 496.626,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 54,
+        "completion_tokens": 11,
+        "total_tokens": 65,
+        "prompt_tokens_details": {
+          "cached_tokens": 4
+        }
+      }
+    },
+    {
+      "round": 0,
+      "language": "ja",
+      "kind": "retrieval",
+      "rows": 0,
+      "status": 200,
+      "elapsedMs": 443.13,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 34,
+        "completion_tokens": 10,
+        "total_tokens": 44,
+        "prompt_tokens_details": {
+          "cached_tokens": 4
+        }
+      }
+    },
+    {
+      "round": 0,
+      "language": "ja",
+      "kind": "retrieval",
+      "rows": 32,
+      "status": 200,
+      "elapsedMs": 872.674,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 537,
+        "completion_tokens": 10,
+        "total_tokens": 547,
+        "prompt_tokens_details": {
+          "cached_tokens": 251
+        }
+      }
+    },
+    {
+      "round": 0,
+      "language": "ja",
+      "kind": "retrieval",
+      "rows": 58,
+      "status": 200,
+      "elapsedMs": 1250.804,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 953,
+        "completion_tokens": 10,
+        "total_tokens": 963,
+        "prompt_tokens_details": {
+          "cached_tokens": 459
+        }
+      }
+    },
+    {
+      "round": 0,
+      "language": "ja",
+      "kind": "retrieval",
+      "rows": 64,
+      "status": 200,
+      "elapsedMs": 1316.489,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 1049,
+        "completion_tokens": 10,
+        "total_tokens": 1059,
+        "prompt_tokens_details": {
+          "cached_tokens": 507
+        }
+      }
+    },
+    {
+      "round": 0,
+      "language": "ja",
+      "kind": "multi-turn",
+      "rows": null,
+      "status": 200,
+      "elapsedMs": 510.896,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 53,
+        "completion_tokens": 11,
+        "total_tokens": 64,
+        "prompt_tokens_details": {
+          "cached_tokens": 6
+        }
+      }
+    },
+    {
+      "round": 0,
+      "language": "zh",
+      "kind": "retrieval",
+      "rows": 0,
+      "status": 200,
+      "elapsedMs": 458.786,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 27,
+        "completion_tokens": 10,
+        "total_tokens": 37,
+        "prompt_tokens_details": {
+          "cached_tokens": 4
+        }
+      }
+    },
+    {
+      "round": 0,
+      "language": "zh",
+      "kind": "retrieval",
+      "rows": 32,
+      "status": 200,
+      "elapsedMs": 867.321,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 530,
+        "completion_tokens": 10,
+        "total_tokens": 540,
+        "prompt_tokens_details": {
+          "cached_tokens": 251
+        }
+      }
+    },
+    {
+      "round": 0,
+      "language": "zh",
+      "kind": "retrieval",
+      "rows": 58,
+      "status": 200,
+      "elapsedMs": 1261.494,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 946,
+        "completion_tokens": 10,
+        "total_tokens": 956,
+        "prompt_tokens_details": {
+          "cached_tokens": 459
+        }
+      }
+    },
+    {
+      "round": 0,
+      "language": "zh",
+      "kind": "retrieval",
+      "rows": 64,
+      "status": 200,
+      "elapsedMs": 1356.607,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 1042,
+        "completion_tokens": 10,
+        "total_tokens": 1052,
+        "prompt_tokens_details": {
+          "cached_tokens": 507
+        }
+      }
+    },
+    {
+      "round": 0,
+      "language": "zh",
+      "kind": "multi-turn",
+      "rows": null,
+      "status": 200,
+      "elapsedMs": 558.425,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 48,
+        "completion_tokens": 11,
+        "total_tokens": 59,
+        "prompt_tokens_details": {
+          "cached_tokens": 4
+        }
+      }
+    },
+    {
+      "round": 1,
+      "language": "en",
+      "kind": "retrieval",
+      "rows": 0,
+      "status": 200,
+      "elapsedMs": 476.939,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 32,
+        "completion_tokens": 10,
+        "total_tokens": 42,
+        "prompt_tokens_details": {
+          "cached_tokens": 4
+        }
+      }
+    },
+    {
+      "round": 1,
+      "language": "en",
+      "kind": "retrieval",
+      "rows": 32,
+      "status": 200,
+      "elapsedMs": 906.991,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 535,
+        "completion_tokens": 10,
+        "total_tokens": 545,
+        "prompt_tokens_details": {
+          "cached_tokens": 251
+        }
+      }
+    },
+    {
+      "round": 1,
+      "language": "en",
+      "kind": "retrieval",
+      "rows": 58,
+      "status": 200,
+      "elapsedMs": 1251.359,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 951,
+        "completion_tokens": 10,
+        "total_tokens": 961,
+        "prompt_tokens_details": {
+          "cached_tokens": 459
+        }
+      }
+    },
+    {
+      "round": 1,
+      "language": "en",
+      "kind": "retrieval",
+      "rows": 64,
+      "status": 200,
+      "elapsedMs": 1318.981,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 1047,
+        "completion_tokens": 10,
+        "total_tokens": 1057,
+        "prompt_tokens_details": {
+          "cached_tokens": 507
+        }
+      }
+    },
+    {
+      "round": 1,
+      "language": "en",
+      "kind": "multi-turn",
+      "rows": null,
+      "status": 200,
+      "elapsedMs": 548.648,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 54,
+        "completion_tokens": 11,
+        "total_tokens": 65,
+        "prompt_tokens_details": {
+          "cached_tokens": 4
+        }
+      }
+    },
+    {
+      "round": 1,
+      "language": "ja",
+      "kind": "retrieval",
+      "rows": 0,
+      "status": 200,
+      "elapsedMs": 487.144,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 34,
+        "completion_tokens": 10,
+        "total_tokens": 44,
+        "prompt_tokens_details": {
+          "cached_tokens": 4
+        }
+      }
+    },
+    {
+      "round": 1,
+      "language": "ja",
+      "kind": "retrieval",
+      "rows": 32,
+      "status": 200,
+      "elapsedMs": 897.387,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 537,
+        "completion_tokens": 10,
+        "total_tokens": 547,
+        "prompt_tokens_details": {
+          "cached_tokens": 251
+        }
+      }
+    },
+    {
+      "round": 1,
+      "language": "ja",
+      "kind": "retrieval",
+      "rows": 58,
+      "status": 200,
+      "elapsedMs": 1299.556,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 953,
+        "completion_tokens": 10,
+        "total_tokens": 963,
+        "prompt_tokens_details": {
+          "cached_tokens": 459
+        }
+      }
+    },
+    {
+      "round": 1,
+      "language": "ja",
+      "kind": "retrieval",
+      "rows": 64,
+      "status": 200,
+      "elapsedMs": 1369.547,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 1049,
+        "completion_tokens": 10,
+        "total_tokens": 1059,
+        "prompt_tokens_details": {
+          "cached_tokens": 507
+        }
+      }
+    },
+    {
+      "round": 1,
+      "language": "ja",
+      "kind": "multi-turn",
+      "rows": null,
+      "status": 200,
+      "elapsedMs": 528.062,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 53,
+        "completion_tokens": 11,
+        "total_tokens": 64,
+        "prompt_tokens_details": {
+          "cached_tokens": 6
+        }
+      }
+    },
+    {
+      "round": 1,
+      "language": "zh",
+      "kind": "retrieval",
+      "rows": 0,
+      "status": 200,
+      "elapsedMs": 479.848,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 27,
+        "completion_tokens": 10,
+        "total_tokens": 37,
+        "prompt_tokens_details": {
+          "cached_tokens": 4
+        }
+      }
+    },
+    {
+      "round": 1,
+      "language": "zh",
+      "kind": "retrieval",
+      "rows": 32,
+      "status": 200,
+      "elapsedMs": 893.448,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 530,
+        "completion_tokens": 10,
+        "total_tokens": 540,
+        "prompt_tokens_details": {
+          "cached_tokens": 251
+        }
+      }
+    },
+    {
+      "round": 1,
+      "language": "zh",
+      "kind": "retrieval",
+      "rows": 58,
+      "status": 200,
+      "elapsedMs": 1311.811,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 946,
+        "completion_tokens": 10,
+        "total_tokens": 956,
+        "prompt_tokens_details": {
+          "cached_tokens": 459
+        }
+      }
+    },
+    {
+      "round": 1,
+      "language": "zh",
+      "kind": "retrieval",
+      "rows": 64,
+      "status": 200,
+      "elapsedMs": 1383.471,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 1042,
+        "completion_tokens": 10,
+        "total_tokens": 1052,
+        "prompt_tokens_details": {
+          "cached_tokens": 507
+        }
+      }
+    },
+    {
+      "round": 1,
+      "language": "zh",
+      "kind": "multi-turn",
+      "rows": null,
+      "status": 200,
+      "elapsedMs": 542.075,
+      "exact": true,
+      "usage": {
+        "prompt_tokens": 48,
+        "completion_tokens": 11,
+        "total_tokens": 59,
+        "prompt_tokens_details": {
+          "cached_tokens": 4
+        }
+      }
+    }
+  ],
+  "checks": {
+    "counterOverlapsModelLoadingAfterQualification": true,
+    "backendKvBudgetArgument": true,
+    "exactContextBoundary": true,
+    "stopReapsCounter": true,
+    "stopReapsWholeTree": true,
+    "noCounterWithStrata": true,
+    "stateAndEvidencePreserved": true
+  },
+  "startupObservations": [
+    {
+      "elapsedMs": 20.82129199999997,
+      "phase": "starting/false",
+      "counterProcesses": 0
+    },
+    {
+      "elapsedMs": 10906.206792,
+      "phase": "starting/true",
+      "counterProcesses": 1
+    },
+    {
+      "elapsedMs": 14557.79925,
+      "phase": "ready/true",
+      "counterProcesses": 1
+    }
+  ],
+  "startup": {
+    "controlReadyObservedMs": 10885,
+    "counterSpawnedMs": 10885,
+    "inferenceReadyObservedMs": 14528,
+    "modelLoadingObservedMs": 3643
+  },
+  "engineStartupMs": 14578.983042,
+  "coldStream": {
+    "firstContentMs": 642.6008750000001,
+    "completedMs": 724.2325830000009,
+    "engineStartToFirstContentMs": 15221.583917,
+    "exact": true
+  },
+  "cacheMemory": {
+    "passed": true,
+    "elapsedMs": 415702.423958,
+    "cases": [
+      {
+        "phase": "anchor-cold",
+        "index": 0,
+        "language": "en",
+        "messageCount": 13,
+        "promptTokens": 3935,
+        "cachedTokens": 4,
+        "exact": true,
+        "elapsedMs": 8381.5435
+      },
+      {
+        "phase": "anchor-hot",
+        "index": 0,
+        "language": "en",
+        "messageCount": 13,
+        "promptTokens": 3935,
+        "cachedTokens": 3934,
+        "exact": true,
+        "elapsedMs": 496.73766699999396
+      },
+      {
+        "phase": "churn-0",
+        "index": 1,
+        "language": "ja",
+        "messageCount": 13,
+        "promptTokens": 3937,
+        "cachedTokens": 8,
+        "exact": true,
+        "elapsedMs": 8410.358458000002
+      },
+      {
+        "phase": "churn-0",
+        "index": 2,
+        "language": "zh",
+        "messageCount": 13,
+        "promptTokens": 3930,
+        "cachedTokens": 8,
+        "exact": true,
+        "elapsedMs": 8326.234083000003
+      },
+      {
+        "phase": "churn-0",
+        "index": 3,
+        "language": "en",
+        "messageCount": 13,
+        "promptTokens": 3935,
+        "cachedTokens": 8,
+        "exact": true,
+        "elapsedMs": 9273.910875000001
+      },
+      {
+        "phase": "churn-0",
+        "index": 4,
+        "language": "ja",
+        "messageCount": 13,
+        "promptTokens": 3937,
+        "cachedTokens": 8,
+        "exact": true,
+        "elapsedMs": 9768.711041000002
+      },
+      {
+        "phase": "churn-0",
+        "index": 5,
+        "language": "zh",
+        "messageCount": 13,
+        "promptTokens": 3930,
+        "cachedTokens": 8,
+        "exact": true,
+        "elapsedMs": 10138.950541999991
+      },
+      {
+        "phase": "churn-0",
+        "index": 6,
+        "language": "en",
+        "messageCount": 13,
+        "promptTokens": 3935,
+        "cachedTokens": 8,
+        "exact": true,
+        "elapsedMs": 9084.695915999997
+      },
+      {
+        "phase": "churn-0",
+        "index": 7,
+        "language": "ja",
+        "messageCount": 13,
+        "promptTokens": 3937,
+        "cachedTokens": 8,
+        "exact": true,
+        "elapsedMs": 9016.289375000008
+      },
+      {
+        "phase": "churn-0",
+        "index": 8,
+        "language": "zh",
+        "messageCount": 13,
+        "promptTokens": 3930,
+        "cachedTokens": 8,
+        "exact": true,
+        "elapsedMs": 9479.931125000003
+      },
+      {
+        "phase": "churn-0",
+        "index": 9,
+        "language": "en",
+        "messageCount": 13,
+        "promptTokens": 3935,
+        "cachedTokens": 8,
+        "exact": true,
+        "elapsedMs": 9462.388833000005
+      },
+      {
+        "phase": "churn-0",
+        "index": 10,
+        "language": "ja",
+        "messageCount": 13,
+        "promptTokens": 3937,
+        "cachedTokens": 7,
+        "exact": true,
+        "elapsedMs": 9605.605792000017
+      },
+      {
+        "phase": "churn-0",
+        "index": 11,
+        "language": "zh",
+        "messageCount": 13,
+        "promptTokens": 3930,
+        "cachedTokens": 8,
+        "exact": true,
+        "elapsedMs": 12305.33812499998
+      },
+      {
+        "phase": "churn-0",
+        "index": 12,
+        "language": "en",
+        "messageCount": 13,
+        "promptTokens": 3935,
+        "cachedTokens": 8,
+        "exact": true,
+        "elapsedMs": 10449.243583000003
+      },
+      {
+        "phase": "churn-0",
+        "index": 13,
+        "language": "ja",
+        "messageCount": 13,
+        "promptTokens": 3937,
+        "cachedTokens": 8,
+        "exact": true,
+        "elapsedMs": 9949.59616700001
+      },
+      {
+        "phase": "churn-0",
+        "index": 14,
+        "language": "zh",
+        "messageCount": 13,
+        "promptTokens": 3930,
+        "cachedTokens": 8,
+        "exact": true,
+        "elapsedMs": 9852.833666999999
+      },
+      {
+        "phase": "churn-0",
+        "index": 15,
+        "language": "en",
+        "messageCount": 13,
+        "promptTokens": 3935,
+        "cachedTokens": 8,
+        "exact": true,
+        "elapsedMs": 10162.691209000011
+      },
+      {
+        "phase": "revisit-0",
+        "index": 0,
+        "language": "en",
+        "messageCount": 13,
+        "promptTokens": 3935,
+        "cachedTokens": 7,
+        "exact": true,
+        "elapsedMs": 9948.967250000016
+      },
+      {
+        "phase": "reheat-0",
+        "index": 0,
+        "language": "en",
+        "messageCount": 13,
+        "promptTokens": 3935,
+        "cachedTokens": 3934,
+        "exact": true,
+        "elapsedMs": 440.9712500000023
+      },
+      {
+        "phase": "recent-0",
+        "index": 15,
+        "language": "en",
+        "messageCount": 13,
+        "promptTokens": 3935,
+        "cachedTokens": 7,
+        "exact": true,
+        "elapsedMs": 11070.142749999999
+      },
+      {
+        "phase": "churn-1",
+        "index": 1,
+        "language": "ja",
+        "messageCount": 13,
+        "promptTokens": 3937,
+        "cachedTokens": 8,
+        "exact": true,
+        "elapsedMs": 9782.6495
+      },
+      {
+        "phase": "churn-1",
+        "index": 2,
+        "language": "zh",
+        "messageCount": 13,
+        "promptTokens": 3930,
+        "cachedTokens": 8,
+        "exact": true,
+        "elapsedMs": 9980.42070799999
+      },
+      {
+        "phase": "churn-1",
+        "index": 3,
+        "language": "en",
+        "messageCount": 13,
+        "promptTokens": 3935,
+        "cachedTokens": 8,
+        "exact": true,
+        "elapsedMs": 10358.8995
+      },
+      {
+        "phase": "churn-1",
+        "index": 4,
+        "language": "ja",
+        "messageCount": 13,
+        "promptTokens": 3937,
+        "cachedTokens": 8,
+        "exact": true,
+        "elapsedMs": 9990.613207999995
+      },
+      {
+        "phase": "churn-1",
+        "index": 5,
+        "language": "zh",
+        "messageCount": 13,
+        "promptTokens": 3930,
+        "cachedTokens": 8,
+        "exact": true,
+        "elapsedMs": 10394.188750000001
+      },
+      {
+        "phase": "churn-1",
+        "index": 6,
+        "language": "en",
+        "messageCount": 13,
+        "promptTokens": 3935,
+        "cachedTokens": 8,
+        "exact": true,
+        "elapsedMs": 10100.321249999979
+      },
+      {
+        "phase": "churn-1",
+        "index": 7,
+        "language": "ja",
+        "messageCount": 13,
+        "promptTokens": 3937,
+        "cachedTokens": 8,
+        "exact": true,
+        "elapsedMs": 10863.691749999998
+      },
+      {
+        "phase": "churn-1",
+        "index": 8,
+        "language": "zh",
+        "messageCount": 13,
+        "promptTokens": 3930,
+        "cachedTokens": 8,
+        "exact": true,
+        "elapsedMs": 10210.27012500004
+      },
+      {
+        "phase": "churn-1",
+        "index": 9,
+        "language": "en",
+        "messageCount": 13,
+        "promptTokens": 3935,
+        "cachedTokens": 8,
+        "exact": true,
+        "elapsedMs": 11985.331832999946
+      },
+      {
+        "phase": "churn-1",
+        "index": 10,
+        "language": "ja",
+        "messageCount": 13,
+        "promptTokens": 3937,
+        "cachedTokens": 7,
+        "exact": true,
+        "elapsedMs": 11014.770166000002
+      },
+      {
+        "phase": "churn-1",
+        "index": 11,
+        "language": "zh",
+        "messageCount": 13,
+        "promptTokens": 3930,
+        "cachedTokens": 8,
+        "exact": true,
+        "elapsedMs": 10748.846833000018
+      },
+      {
+        "phase": "churn-1",
+        "index": 12,
+        "language": "en",
+        "messageCount": 13,
+        "promptTokens": 3935,
+        "cachedTokens": 8,
+        "exact": true,
+        "elapsedMs": 11603.456000000006
+      },
+      {
+        "phase": "churn-1",
+        "index": 13,
+        "language": "ja",
+        "messageCount": 13,
+        "promptTokens": 3937,
+        "cachedTokens": 8,
+        "exact": true,
+        "elapsedMs": 13328.38274999999
+      },
+      {
+        "phase": "churn-1",
+        "index": 14,
+        "language": "zh",
+        "messageCount": 13,
+        "promptTokens": 3930,
+        "cachedTokens": 8,
+        "exact": true,
+        "elapsedMs": 13687.903584000014
+      },
+      {
+        "phase": "churn-1",
+        "index": 15,
+        "language": "en",
+        "messageCount": 13,
+        "promptTokens": 3935,
+        "cachedTokens": 8,
+        "exact": true,
+        "elapsedMs": 11753.799999999988
+      },
+      {
+        "phase": "revisit-1",
+        "index": 0,
+        "language": "en",
+        "messageCount": 13,
+        "promptTokens": 3935,
+        "cachedTokens": 7,
+        "exact": true,
+        "elapsedMs": 12167.602625
+      },
+      {
+        "phase": "reheat-1",
+        "index": 0,
+        "language": "en",
+        "messageCount": 13,
+        "promptTokens": 3935,
+        "cachedTokens": 3934,
+        "exact": true,
+        "elapsedMs": 602.1374159999541
+      },
+      {
+        "phase": "recent-1",
+        "index": 15,
+        "language": "en",
+        "messageCount": 13,
+        "promptTokens": 3935,
+        "cachedTokens": 7,
+        "exact": true,
+        "elapsedMs": 13247.723791999975
+      }
+    ],
+    "samples": [
+      {
+        "phase": "baseline",
+        "elapsedMs": 43126.750833,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2457968,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 566665216,
+          "max_bytes": 1073741824,
+          "entries": 10,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 2211701278,
+            "cache_bytes": 11723682,
+            "peak_bytes": 2947810454,
+            "consistency": "non_atomic"
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 27520,
+          "processCount": 2,
+          "rootBytes": 65422056,
+          "sampledAt": 1792915520544,
+          "usedBytes": 3030814224
+        },
+        "systemAvailableBytes": 8500494336
+      },
+      {
+        "phase": "anchor-cold",
+        "index": 0,
+        "elapsedMs": 51572.451792,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2465536,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 982106112,
+          "max_bytes": 1073741824,
+          "entries": 10,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 3052593694,
+            "cache_bytes": 46970188,
+            "peak_bytes": 3107560834,
+            "consistency": "non_atomic"
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 27520,
+          "processCount": 2,
+          "rootBytes": 65454824,
+          "sampledAt": 1792915528990,
+          "usedBytes": 3913682448
+        },
+        "systemAvailableBytes": 7620886528
+      },
+      {
+        "phase": "anchor-hot",
+        "index": 0,
+        "elapsedMs": 52120.324167,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2459216,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 640253952,
+          "max_bytes": 1073741824,
+          "entries": 4,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 2188370462,
+            "cache_bytes": 1923593660,
+            "peak_bytes": 3107560834,
+            "consistency": "non_atomic"
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 27520,
+          "processCount": 2,
+          "rootBytes": 65454824,
+          "sampledAt": 1792915529538,
+          "usedBytes": 4919528976
+        },
+        "systemAvailableBytes": 6680920064
+      },
+      {
+        "phase": "churn-0",
+        "index": 1,
+        "elapsedMs": 61082.721333,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2459072,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 1060593664,
+          "max_bytes": 1073741824,
+          "entries": 5,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 3036930590,
+            "cache_bytes": 41793968,
+            "peak_bytes": 3107560834,
+            "consistency": "non_atomic"
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 27520,
+          "processCount": 2,
+          "rootBytes": 65422056,
+          "sampledAt": 1792915538500,
+          "usedBytes": 3885977104
+        },
+        "systemAvailableBytes": 7308836864
+      },
+      {
+        "phase": "churn-0",
+        "index": 2,
+        "elapsedMs": 69470.14575,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2465232,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 839933952,
+          "max_bytes": 1073741824,
+          "entries": 2,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 2784748062,
+            "cache_bytes": 41758802,
+            "peak_bytes": 3107560834,
+            "consistency": "non_atomic"
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 27520,
+          "processCount": 2,
+          "rootBytes": 65405672,
+          "sampledAt": 1792915546887,
+          "usedBytes": 3640036880
+        },
+        "systemAvailableBytes": 6615089152
+      },
+      {
+        "phase": "churn-0",
+        "index": 3,
+        "elapsedMs": 78820.18575,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2455680,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 839720960,
+          "max_bytes": 1073741824,
+          "entries": 2,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 2767708702,
+            "cache_bytes": 41793366,
+            "peak_bytes": 3107560834,
+            "consistency": "non_atomic"
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 27520,
+          "processCount": 2,
+          "rootBytes": 56902376,
+          "sampledAt": 1792915556237,
+          "usedBytes": 3607907832
+        },
+        "systemAvailableBytes": 8280571904
+      },
+      {
+        "phase": "churn-0",
+        "index": 4,
+        "elapsedMs": 88666.854708,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2453552,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 840466432,
+          "max_bytes": 1073741824,
+          "entries": 2,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 2784748062,
+            "cache_bytes": 41791920,
+            "peak_bytes": 3107560834,
+            "consistency": "non_atomic"
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 27520,
+          "processCount": 2,
+          "rootBytes": 42500840,
+          "sampledAt": 1792915566022,
+          "usedBytes": 3618934264
+        },
+        "systemAvailableBytes": 8215789568
+      },
+      {
+        "phase": "churn-0",
+        "index": 5,
+        "elapsedMs": 98872.192583,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2418032,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 839933952,
+          "max_bytes": 1073741824,
+          "entries": 2,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 2784748062,
+            "cache_bytes": 41759310,
+            "peak_bytes": 3107560834,
+            "consistency": "non_atomic"
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 27520,
+          "processCount": 2,
+          "rootBytes": 42500840,
+          "sampledAt": 1792915576290,
+          "usedBytes": 3610545656
+        },
+        "systemAvailableBytes": 8787460096
+      },
+      {
+        "phase": "churn-0",
+        "index": 6,
+        "elapsedMs": 108021.628083,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2426240,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 839720960,
+          "max_bytes": 1073741824,
+          "entries": 2,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 2767708702,
+            "cache_bytes": 41793868,
+            "peak_bytes": 3107560834,
+            "consistency": "non_atomic"
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 27520,
+          "processCount": 2,
+          "rootBytes": 42517224,
+          "sampledAt": 1792915585439,
+          "usedBytes": 3601944056
+        },
+        "systemAvailableBytes": 8788180992
+      },
+      {
+        "phase": "churn-0",
+        "index": 7,
+        "elapsedMs": 117103.138375,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2418064,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 840466432,
+          "max_bytes": 1073741824,
+          "entries": 2,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 2784748062,
+            "cache_bytes": 41792432,
+            "peak_bytes": 3107560834,
+            "consistency": "non_atomic"
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 27520,
+          "processCount": 2,
+          "rootBytes": 42533608,
+          "sampledAt": 1792915594520,
+          "usedBytes": 3610611192
+        },
+        "systemAvailableBytes": 8801763328
+      },
+      {
+        "phase": "churn-0",
+        "index": 8,
+        "elapsedMs": 126647.992542,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2426272,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 839933952,
+          "max_bytes": 1073741824,
+          "entries": 2,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 2784748062,
+            "cache_bytes": 41760338,
+            "peak_bytes": 3107560834,
+            "consistency": "non_atomic"
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 27520,
+          "processCount": 2,
+          "rootBytes": 42533608,
+          "sampledAt": 1792915604021,
+          "usedBytes": 3618983416
+        },
+        "systemAvailableBytes": 8812183552
+      },
+      {
+        "phase": "churn-0",
+        "index": 9,
+        "elapsedMs": 136175.23720799998,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2420112,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 839720960,
+          "max_bytes": 1073741824,
+          "entries": 2,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 2767708702,
+            "cache_bytes": 41793356,
+            "peak_bytes": 3107560834,
+            "consistency": "non_atomic"
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 27520,
+          "processCount": 2,
+          "rootBytes": 42533608,
+          "sampledAt": 1792915613592,
+          "usedBytes": 3595668984
+        },
+        "systemAvailableBytes": 8793079808
+      },
+      {
+        "phase": "churn-0",
+        "index": 10,
+        "elapsedMs": 145847.698583,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2426384,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 840466432,
+          "max_bytes": 1073741824,
+          "entries": 2,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 2784748062,
+            "cache_bytes": 41862596,
+            "peak_bytes": 3107560834,
+            "consistency": "non_atomic"
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 27520,
+          "processCount": 2,
+          "rootBytes": 42533608,
+          "sampledAt": 1792915623265,
+          "usedBytes": 3619065336
+        },
+        "systemAvailableBytes": 8847900672
+      },
+      {
+        "phase": "churn-0",
+        "index": 11,
+        "elapsedMs": 158218.281875,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2420112,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 839933952,
+          "max_bytes": 1073741824,
+          "entries": 2,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 2768560670,
+            "cache_bytes": 41760846,
+            "peak_bytes": 3107560834,
+            "consistency": "non_atomic"
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 27520,
+          "processCount": 2,
+          "rootBytes": 42533608,
+          "sampledAt": 1792915635635,
+          "usedBytes": 3596488184
+        },
+        "systemAvailableBytes": 7855734784
+      },
+      {
+        "phase": "churn-0",
+        "index": 12,
+        "elapsedMs": 168734.26387499998,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2423408,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 839720960,
+          "max_bytes": 1073741824,
+          "entries": 2,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 2768560670,
+            "cache_bytes": 41793868,
+            "peak_bytes": 3107560834,
+            "consistency": "non_atomic"
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 27520,
+          "processCount": 2,
+          "rootBytes": 38273744,
+          "sampledAt": 1792915646151,
+          "usedBytes": 3599601120
+        },
+        "systemAvailableBytes": 7668006912
+      },
+      {
+        "phase": "churn-0",
+        "index": 13,
+        "elapsedMs": 178752.46895799998,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2416240,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 840466432,
+          "max_bytes": 1073741824,
+          "entries": 2,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 2784748062,
+            "cache_bytes": 41792452,
+            "peak_bytes": 3107560834,
+            "consistency": "non_atomic"
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 27520,
+          "processCount": 2,
+          "rootBytes": 38273744,
+          "sampledAt": 1792915656169,
+          "usedBytes": 3608448480
+        },
+        "systemAvailableBytes": 7686029312
+      },
+      {
+        "phase": "churn-0",
+        "index": 14,
+        "elapsedMs": 188662.064333,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2423408,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 839933952,
+          "max_bytes": 1073741824,
+          "entries": 2,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 2784748062,
+            "cache_bytes": 41760850,
+            "peak_bytes": 3107560834,
+            "consistency": "non_atomic"
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 27520,
+          "processCount": 2,
+          "rootBytes": 38273744,
+          "sampledAt": 1792915666079,
+          "usedBytes": 3615755744
+        },
+        "systemAvailableBytes": 7624196096
+      },
+      {
+        "phase": "churn-0",
+        "index": 15,
+        "elapsedMs": 198892.04775,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2416256,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 839720960,
+          "max_bytes": 1073741824,
+          "entries": 2,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 2767708702,
+            "cache_bytes": 41792860,
+            "peak_bytes": 3107560834,
+            "consistency": "non_atomic"
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 27520,
+          "processCount": 2,
+          "rootBytes": 38273744,
+          "sampledAt": 1792915676309,
+          "usedBytes": 3591425504
+        },
+        "systemAvailableBytes": 8113487872
+      },
+      {
+        "phase": "revisit-0",
+        "index": 0,
+        "elapsedMs": 208908.622167,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2423392,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 840253440,
+          "max_bytes": 1073741824,
+          "entries": 2,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 2784748062,
+            "cache_bytes": 41796956,
+            "peak_bytes": 3107560834,
+            "consistency": "non_atomic"
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 27520,
+          "processCount": 2,
+          "rootBytes": 38273744,
+          "sampledAt": 1792915686325,
+          "usedBytes": 3615772128
+        },
+        "systemAvailableBytes": 8161869824
+      },
+      {
+        "phase": "reheat-0",
+        "index": 0,
+        "elapsedMs": 209407.34574999998,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2416240,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 420126720,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1920000542,
+            "cache_bytes": 1943979468,
+            "peak_bytes": 3107560834,
+            "consistency": "non_atomic"
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 27520,
+          "processCount": 2,
+          "rootBytes": 38273744,
+          "sampledAt": 1792915686824,
+          "usedBytes": 4645883360
+        },
+        "systemAvailableBytes": 7131021312
+      },
+      {
+        "phase": "recent-0",
+        "index": 15,
+        "elapsedMs": 220542.28416699998,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2422640,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 840253440,
+          "max_bytes": 1073741824,
+          "entries": 2,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 2768560670,
+            "cache_bytes": 4728256,
+            "peak_bytes": 3107560834,
+            "consistency": "non_atomic"
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 27520,
+          "processCount": 2,
+          "rootBytes": 38273744,
+          "sampledAt": 1792915697959,
+          "usedBytes": 3561623008
+        },
+        "systemAvailableBytes": 8102084608
+      },
+      {
+        "phase": "churn-1",
+        "index": 1,
+        "elapsedMs": 230392.277667,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2416240,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 840466432,
+          "max_bytes": 1073741824,
+          "entries": 2,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 2784748062,
+            "cache_bytes": 41793302,
+            "peak_bytes": 3107560834,
+            "consistency": "non_atomic"
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 27520,
+          "processCount": 2,
+          "rootBytes": 38273744,
+          "sampledAt": 1792915707809,
+          "usedBytes": 3608448480
+        },
+        "systemAvailableBytes": 8081309696
+      },
+      {
+        "phase": "churn-1",
+        "index": 2,
+        "elapsedMs": 240439.142458,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2423328,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 839933952,
+          "max_bytes": 1073741824,
+          "entries": 2,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 2768560670,
+            "cache_bytes": 41759142,
+            "peak_bytes": 3107560834,
+            "consistency": "non_atomic"
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 27520,
+          "processCount": 2,
+          "rootBytes": 38290128,
+          "sampledAt": 1792915717855,
+          "usedBytes": 3599584736
+        },
+        "systemAvailableBytes": 8152219648
+      },
+      {
+        "phase": "churn-1",
+        "index": 3,
+        "elapsedMs": 250867.28791699998,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2416176,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 839720960,
+          "max_bytes": 1073741824,
+          "entries": 2,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 2768560670,
+            "cache_bytes": 41793700,
+            "peak_bytes": 3107560834,
+            "consistency": "non_atomic"
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 27520,
+          "processCount": 2,
+          "rootBytes": 38290128,
+          "sampledAt": 1792915728283,
+          "usedBytes": 3592277472
+        },
+        "systemAvailableBytes": 8164884480
+      },
+      {
+        "phase": "churn-1",
+        "index": 4,
+        "elapsedMs": 260923.394667,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2423424,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 840466432,
+          "max_bytes": 1073741824,
+          "entries": 2,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 2784748062,
+            "cache_bytes": 41792800,
+            "peak_bytes": 3107560834,
+            "consistency": "non_atomic"
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 27520,
+          "processCount": 2,
+          "rootBytes": 38290128,
+          "sampledAt": 1792915738340,
+          "usedBytes": 3615804896
+        },
+        "systemAvailableBytes": 8171225088
+      },
+      {
+        "phase": "churn-1",
+        "index": 5,
+        "elapsedMs": 271377.076375,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2420800,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 839933952,
+          "max_bytes": 1073741824,
+          "entries": 2,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 2784748062,
+            "cache_bytes": 41760150,
+            "peak_bytes": 3107560834,
+            "consistency": "non_atomic"
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 27520,
+          "processCount": 2,
+          "rootBytes": 38290128,
+          "sampledAt": 1792915748793,
+          "usedBytes": 3612626400
+        },
+        "systemAvailableBytes": 8191737856
+      },
+      {
+        "phase": "churn-1",
+        "index": 6,
+        "elapsedMs": 281533.908375,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2423840,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 839720960,
+          "max_bytes": 1073741824,
+          "entries": 2,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 2767708702,
+            "cache_bytes": 41792676,
+            "peak_bytes": 3107560834,
+            "consistency": "non_atomic"
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 27520,
+          "processCount": 2,
+          "rootBytes": 38290128,
+          "sampledAt": 1792915758950,
+          "usedBytes": 3598716384
+        },
+        "systemAvailableBytes": 8095875072
+      },
+      {
+        "phase": "churn-1",
+        "index": 7,
+        "elapsedMs": 292493.84774999996,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2420896,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 840466432,
+          "max_bytes": 1073741824,
+          "entries": 2,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 2784748062,
+            "cache_bytes": 41791780,
+            "peak_bytes": 3107560834,
+            "consistency": "non_atomic"
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 27520,
+          "processCount": 2,
+          "rootBytes": 38290128,
+          "sampledAt": 1792915769910,
+          "usedBytes": 3612659168
+        },
+        "systemAvailableBytes": 8130232320
+      },
+      {
+        "phase": "churn-1",
+        "index": 8,
+        "elapsedMs": 302776.653917,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2423840,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 839933952,
+          "max_bytes": 1073741824,
+          "entries": 2,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 2784748062,
+            "cache_bytes": 41760150,
+            "peak_bytes": 3107560834,
+            "consistency": "non_atomic"
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 27520,
+          "processCount": 2,
+          "rootBytes": 38290128,
+          "sampledAt": 1792915780192,
+          "usedBytes": 3615739360
+        },
+        "systemAvailableBytes": 8021655552
+      },
+      {
+        "phase": "churn-1",
+        "index": 9,
+        "elapsedMs": 314828.507083,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2422864,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 839720960,
+          "max_bytes": 1073741824,
+          "entries": 2,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 2767708702,
+            "cache_bytes": 41793188,
+            "peak_bytes": 3107560834,
+            "consistency": "non_atomic"
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 27520,
+          "processCount": 2,
+          "rootBytes": 38290128,
+          "sampledAt": 1792915792244,
+          "usedBytes": 3597716960
+        },
+        "systemAvailableBytes": 8022507520
+      },
+      {
+        "phase": "churn-1",
+        "index": 10,
+        "elapsedMs": 325912.739167,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2423920,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 840466432,
+          "max_bytes": 1073741824,
+          "entries": 2,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 2784748062,
+            "cache_bytes": 41859860,
+            "peak_bytes": 3107560834,
+            "consistency": "non_atomic"
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 27520,
+          "processCount": 2,
+          "rootBytes": 38290128,
+          "sampledAt": 1792915803328,
+          "usedBytes": 3615821280
+        },
+        "systemAvailableBytes": 8077967360
+      },
+      {
+        "phase": "churn-1",
+        "index": 11,
+        "elapsedMs": 336723.091792,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2423888,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 839933952,
+          "max_bytes": 1073741824,
+          "entries": 2,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 2768560670,
+            "cache_bytes": 41760662,
+            "peak_bytes": 3107560834,
+            "consistency": "non_atomic"
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 27520,
+          "processCount": 2,
+          "rootBytes": 38290128,
+          "sampledAt": 1792915814138,
+          "usedBytes": 3599601120
+        },
+        "systemAvailableBytes": 8057077760
+      },
+      {
+        "phase": "churn-1",
+        "index": 12,
+        "elapsedMs": 348394.31087499997,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2423872,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 839720960,
+          "max_bytes": 1073741824,
+          "entries": 2,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 2768560670,
+            "cache_bytes": 41794194,
+            "peak_bytes": 3107560834,
+            "consistency": "non_atomic"
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 27520,
+          "processCount": 2,
+          "rootBytes": 38290128,
+          "sampledAt": 1792915825809,
+          "usedBytes": 3599601120
+        },
+        "systemAvailableBytes": 7248707584
+      },
+      {
+        "phase": "churn-1",
+        "index": 13,
+        "elapsedMs": 361790.16562499997,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2423952,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 840466432,
+          "max_bytes": 1073741824,
+          "entries": 2,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 2784748062,
+            "cache_bytes": 41793824,
+            "peak_bytes": 3107560834,
+            "consistency": "non_atomic"
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 27520,
+          "processCount": 2,
+          "rootBytes": 38290128,
+          "sampledAt": 1792915839206,
+          "usedBytes": 3615788512
+        },
+        "systemAvailableBytes": 6863962112
+      },
+      {
+        "phase": "churn-1",
+        "index": 14,
+        "elapsedMs": 375634.845417,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2283248,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 839933952,
+          "max_bytes": 1073741824,
+          "entries": 2,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 2784748062,
+            "cache_bytes": 41757946,
+            "peak_bytes": 3107560834,
+            "consistency": "non_atomic"
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 27520,
+          "processCount": 2,
+          "rootBytes": 38290128,
+          "sampledAt": 1792915853021,
+          "usedBytes": 3623587296
+        },
+        "systemAvailableBytes": 6250594304
+      },
+      {
+        "phase": "churn-1",
+        "index": 15,
+        "elapsedMs": 387455.179458,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2282928,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 839720960,
+          "max_bytes": 1073741824,
+          "entries": 2,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 2767708702,
+            "cache_bytes": 41792676,
+            "peak_bytes": 3107560834,
+            "consistency": "non_atomic"
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 27520,
+          "processCount": 2,
+          "rootBytes": 38290128,
+          "sampledAt": 1792915864870,
+          "usedBytes": 3606547936
+        },
+        "systemAvailableBytes": 7790100480
+      },
+      {
+        "phase": "revisit-1",
+        "index": 0,
+        "elapsedMs": 399701.15304199996,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2282960,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 840253440,
+          "max_bytes": 1073741824,
+          "entries": 2,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 2784748062,
+            "cache_bytes": 41792172,
+            "peak_bytes": 3107560834,
+            "consistency": "non_atomic"
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 27520,
+          "processCount": 2,
+          "rootBytes": 38290128,
+          "sampledAt": 1792915877113,
+          "usedBytes": 3623587296
+        },
+        "systemAvailableBytes": 8338063360
+      },
+      {
+        "phase": "reheat-1",
+        "index": 0,
+        "elapsedMs": 400376.910208,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2283296,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 420126720,
+          "max_bytes": 1073741824,
+          "entries": 1,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 1920000542,
+            "cache_bytes": 1943974680,
+            "peak_bytes": 3107560834,
+            "consistency": "non_atomic"
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 27520,
+          "processCount": 2,
+          "rootBytes": 38290128,
+          "sampledAt": 1792915877790,
+          "usedBytes": 4661022176
+        },
+        "systemAvailableBytes": 7266975744
+      },
+      {
+        "phase": "recent-1",
+        "index": 15,
+        "elapsedMs": 413695.132125,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2283200,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 840253440,
+          "max_bytes": 1073741824,
+          "entries": 2,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 2768560670,
+            "cache_bytes": 41793700,
+            "peak_bytes": 3107560834,
+            "consistency": "non_atomic"
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 27520,
+          "processCount": 2,
+          "rootBytes": 38290128,
+          "sampledAt": 1792915891110,
+          "usedBytes": 3607399904
+        },
+        "systemAvailableBytes": 7744618496
+      },
+      {
+        "phase": "idle",
+        "idleSeconds": 0,
+        "elapsedMs": 413751.644292,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2283200,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 840253440,
+          "max_bytes": 1073741824,
+          "entries": 2,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 2768560670,
+            "cache_bytes": 41793700,
+            "peak_bytes": 3107560834,
+            "consistency": "non_atomic"
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 27520,
+          "processCount": 2,
+          "rootBytes": 38290128,
+          "sampledAt": 1792915891110,
+          "usedBytes": 3607399904
+        },
+        "systemAvailableBytes": 7744618496
+      },
+      {
+        "phase": "idle",
+        "idleSeconds": 5,
+        "elapsedMs": 418828.20695799997,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2283200,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 840253440,
+          "max_bytes": 1073741824,
+          "entries": 2,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 2768560670,
+            "cache_bytes": 41793700,
+            "peak_bytes": 3107560834,
+            "consistency": "non_atomic"
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 27520,
+          "processCount": 2,
+          "rootBytes": 38290128,
+          "sampledAt": 1792915896022,
+          "usedBytes": 3556904416
+        },
+        "systemAvailableBytes": 8167768064
+      },
+      {
+        "phase": "idle",
+        "idleSeconds": 10,
+        "elapsedMs": 423913.967833,
+        "ownedProcessCount": 3,
+        "ownedRssKiB": 2283200,
+        "sampleRetries": 0,
+        "kvCache": {
+          "retained_bytes": 840253440,
+          "max_bytes": 1073741824,
+          "entries": 2,
+          "accounting": "LRU tensor bytes, not unique physical memory",
+          "allocator": {
+            "active_bytes": 2768560670,
+            "cache_bytes": 41793700,
+            "peak_bytes": 3107560834,
+            "consistency": "non_atomic"
+          }
+        },
+        "enginePhysicalFootprint": {
+          "pid": 27520,
+          "processCount": 2,
+          "rootBytes": 38290128,
+          "sampledAt": 1792915901329,
+          "usedBytes": 3556904416
+        },
+        "systemAvailableBytes": 8159182848
+      }
+    ],
+    "recentReuseRequired": false,
+    "seededCases": [
+      {
+        "index": 1,
+        "seed": 42,
+        "exact": true,
+        "promptTokens": 3937,
+        "memory": {
+          "elapsedMs": 432372.05087499996,
+          "ownedProcessCount": 3,
+          "ownedRssKiB": 2283584,
+          "sampleRetries": 0,
+          "kvCache": {
+            "retained_bytes": 867516416,
+            "max_bytes": 1073741824,
+            "entries": 2,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 2795823652,
+              "cache_bytes": 859119508,
+              "peak_bytes": 3681651668,
+              "consistency": "non_atomic"
+            }
+          },
+          "enginePhysicalFootprint": {
+            "pid": 27520,
+            "processCount": 2,
+            "rootBytes": 38290128,
+            "sampledAt": 1792915909787,
+            "usedBytes": 4447849952
+          },
+          "systemAvailableBytes": 7282606080
+        }
+      },
+      {
+        "index": 2,
+        "seed": 42,
+        "exact": true,
+        "promptTokens": 3930,
+        "memory": {
+          "elapsedMs": 444337.769667,
+          "ownedProcessCount": 3,
+          "ownedRssKiB": 2283664,
+          "sampleRetries": 0,
+          "kvCache": {
+            "retained_bytes": 894779392,
+            "max_bytes": 1073741824,
+            "entries": 2,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 3243958820,
+              "cache_bytes": 5316432,
+              "peak_bytes": 3734588372,
+              "consistency": "non_atomic"
+            }
+          },
+          "enginePhysicalFootprint": {
+            "pid": 27520,
+            "processCount": 2,
+            "rootBytes": 38290128,
+            "sampledAt": 1792915921752,
+            "usedBytes": 4042231264
+          },
+          "systemAvailableBytes": 7284670464
+        }
+      },
+      {
+        "index": 3,
+        "seed": 42,
+        "exact": true,
+        "promptTokens": 3935,
+        "memory": {
+          "elapsedMs": 458768.82574999996,
+          "ownedProcessCount": 3,
+          "ownedRssKiB": 2283920,
+          "sampleRetries": 0,
+          "kvCache": {
+            "retained_bytes": 894779392,
+            "max_bytes": 1073741824,
+            "entries": 2,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 3243958820,
+              "cache_bytes": 453452112,
+              "peak_bytes": 4182723540,
+              "consistency": "non_atomic"
+            }
+          },
+          "enginePhysicalFootprint": {
+            "pid": 27520,
+            "processCount": 2,
+            "rootBytes": 38290128,
+            "sampledAt": 1792915936179,
+            "usedBytes": 4490579424
+          },
+          "systemAvailableBytes": 6795952128
+        }
+      }
+    ],
+    "observedAnchorReuseLosses": 2,
+    "boundary": {
+      "passed": true,
+      "acceptedTotal": 4096,
+      "rejectedTotal": 4097
+    },
+    "observations": "backend-reported reused tokens and sampled LRU logical bytes/allocator metrics; not unique physical KV ownership or forced OS pressure",
+    "sharedCachedTelemetry": {
+      "verified": true,
+      "min": 4,
+      "max": 3934
+    },
+    "afterStop": {
+      "enginePhysicalFootprint": null,
+      "ownedTreeGone": true,
+      "systemAvailableBytes": 10819223552
+    }
+  },
+  "sharedRequestMetrics": {
+    "retained": 73,
+    "longPromptUsageRecords": 42,
+    "engine": "vLLM-Apple",
+    "bounded": true
+  },
+  "counterProcessesAfterRequests": 1,
+  "counterRssKiB": [
+    83504
+  ],
+  "summary": {
+    "accepted": 30,
+    "rejected": 0,
+    "firstAcceptedMs": 444.175,
+    "warmMedianMs": 897.387,
+    "warmMeanMs": 941.1585517241381
+  },
+  "applicationExit": {
+    "code": 0,
+    "signal": null
+  },
+  "finishedAt": "2026-10-25T08:12:21.050Z"
+}

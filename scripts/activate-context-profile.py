@@ -33,7 +33,30 @@ assert matrix["passed"] is True and matrix["context"] == context
 assert matrix["evidenceSha256"] == hash_bytes(evidence_bytes)
 assert all(matrix["checks"].values())
 assert matrix["sharedRequestMetrics"]["bounded"] is True
+allocator_upgrade = matrix.get("allocatorCacheMiB", 0) == 256
+policy_upgrade = matrix.get("kvCacheMiB", 0) == 1024
 refresh_only = "cacheMemory" in matrix and "contextMatrix" not in matrix
+if policy_upgrade:
+    assert not refresh_only, "a new KV policy requires the complete context matrix"
+    assert matrix["cacheMemory"]["passed"] and len(matrix["cacheMemory"]["cases"]) == 38
+    assert matrix["cacheMemory"]["afterStop"]["ownedTreeGone"]
+    assert len(matrix["cacheMemory"]["seededCases"]) == 3
+    assert all(c["exact"] and c["memory"]["kvCache"]["retained_bytes"] <= 1024**3 for c in matrix["cacheMemory"]["seededCases"])
+    assert matrix["checks"].get("backendKvBudgetArgument") is True
+    if allocator_upgrade:
+        assert matrix["checks"].get("backendAllocatorBudget") is True
+        assert matrix["allocatorComparison"]["lowerPhysicalPeak"] is True
+        assert matrix["allocatorComparison"]["lowerAllocatorCachePeak"] is True
+        samples = matrix["contextMatrix"]["memory"] + matrix["cacheMemory"]["samples"] + [c["memory"] for c in matrix["cacheMemory"]["seededCases"]]
+        assert len(samples) == 153
+        assert all(s["kvCache"]["allocator"]["configured_limit_bytes"] == 256 * 1024**2 and 0 <= s["kvCache"]["allocator"]["effective_limit_bytes"] <= 256 * 1024**2 for s in samples)
+        assert {(c.get("allocatorCacheMiB"), c["context"]) for c in gates["checks"]} == {(0,4096),(128,4096),(256,4097)}
+        assert all(c["kvCacheMiB"] == 1024 for c in gates["checks"])
+        os.environ["VLLM_APPLE_ALLOCATOR_CACHE_MIB"] = "256"
+    else:
+        assert {(c.get("kvCacheMiB"), c["context"]) for c in gates["checks"]} == {(0,4096),(512,4096),(1024,4097)}
+    # Match the explicit setting that Rust will inject, keeping all other flags.
+    os.environ["VLLM_APPLE_KV_CACHE_MIB"] = "1024"
 if refresh_only:
     cache = matrix["cacheMemory"]
     assert cache["passed"] and cache["boundary"] == {"passed": True, "acceptedTotal": context, "rejectedTotal": context + 1}
@@ -78,6 +101,11 @@ for state_path in states:
         validate_evidence(previous, prior_identity, context_tokens=context, concurrency=1)
         current_identity = qualification["architecture_evidence"]["identity"]
         assert all(prior_identity[k] == current_identity[k] for k in prior_identity if k != "environment_sha256"), "non-environment changes require the full context matrix"
+    elif allocator_upgrade:
+        assert settings["context"] == context and settings["kvCacheMiB"] == 1024
+        assert settings.get("allocatorCacheMiB", 0) == 0
+    elif policy_upgrade:
+        assert settings["context"] == context and settings.get("kvCacheMiB", 0) == 0
     else:
         assert settings["context"] < context, "profile must increase the selected context"
     assert Path(settings["root"]).absolute() == root
@@ -86,9 +114,23 @@ for state_path in states:
         Path(settings["executable"]), settings["backend"], detect_hardware(), context_tokens=context, concurrency=1)
     changed = copy.deepcopy(document)
     changed["settings"]["vllm"].update(context=context, evidence=str(evidence))
+    if policy_upgrade:
+        changed["settings"]["vllm"]["kvCacheMiB"] = 1024
+    if allocator_upgrade:
+        changed["settings"]["vllm"]["allocatorCacheMiB"] = 256
     restored = copy.deepcopy(changed)
     restored["settings"]["vllm"]["context"] = settings["context"]
     restored["settings"]["vllm"]["evidence"] = settings["evidence"]
+    if policy_upgrade:
+        if "kvCacheMiB" in settings:
+            restored["settings"]["vllm"]["kvCacheMiB"] = settings["kvCacheMiB"]
+        else:
+            restored["settings"]["vllm"].pop("kvCacheMiB")
+    if allocator_upgrade:
+        if "allocatorCacheMiB" in settings:
+            restored["settings"]["vllm"]["allocatorCacheMiB"] = settings["allocatorCacheMiB"]
+        else:
+            restored["settings"]["vllm"].pop("allocatorCacheMiB")
     assert restored == document
     pending.append((state_path, original, changed))
 assert evidence.read_bytes() == evidence_bytes
@@ -112,7 +154,7 @@ for index, (path, original, changed) in enumerate(pending):
             os.unlink(temp)
     assert json.loads(path.read_bytes()) == changed
     report["states"].append({"path": str(path), "beforeSha256": hash_bytes(original),
-        "afterSha256": hash_bytes(encoded), "onlyContextAndEvidenceChanged": True, "backup": str(backup)})
+        "afterSha256": hash_bytes(encoded), "onlyContextAndEvidenceChanged": not policy_upgrade, "onlyKvPolicyAndEvidenceChanged": policy_upgrade and not allocator_upgrade, "onlyAllocatorPolicyAndEvidenceChanged": allocator_upgrade, "backup": str(backup)})
 report["passed"] = True
 with output.open("x") as file:
     os.chmod(output, 0o600)

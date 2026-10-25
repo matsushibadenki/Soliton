@@ -68,3 +68,25 @@ test("a cache large enough to retain the anchor cannot falsely pass eviction ver
   mock(t, { capacity: 32 });
   await assert.rejects(run(), /remained fully reused/);
 });
+
+test("bounded retention may evict the recent history but must preserve answers, reheat and seeded accounting", async (t) => {
+  mock(t, { capacity: 1 });
+  const report = await verifyCacheMemory({
+    base: "http://127.0.0.1:1",
+    context: 4096,
+    recentReuseRequired: false,
+    verifySeeded: true,
+    sampleMemory: async () => ({
+      enginePhysicalFootprint: { usedBytes: 3 * 1024 ** 3 },
+      systemAvailableBytes: 8 * 1024 ** 3,
+      kvCache: { retained_bytes: 800 * 1024 ** 2, max_bytes: 1024 ** 3 },
+    }),
+  });
+  assert.equal(report.cases.length, 38);
+  assert.equal(report.seededCases.length, 3);
+  assert(
+    report.cases
+      .filter((c) => c.phase.startsWith("recent"))
+      .every((c) => c.cachedTokens === 0),
+  );
+});

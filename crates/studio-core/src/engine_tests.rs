@@ -179,6 +179,51 @@ fn evidence_launch_preserves_checks_and_sets_explicit_context() {
     assert!(!inspection_args
         .iter()
         .any(|s| s.starts_with("--skip") || s == "serve"));
+    settings.kv_cache_mib = 1024;
+    settings.allocator_cache_mib = 256;
+    for cmd in [
+        settings.command(19201, 19202, "token").unwrap(),
+        settings.inspection_command().unwrap(),
+    ] {
+        let env = cmd
+            .as_std()
+            .get_envs()
+            .find(|(k, _)| *k == "VLLM_APPLE_KV_CACHE_MIB")
+            .unwrap();
+        assert_eq!(env.1, Some(std::ffi::OsStr::new("1024")));
+        assert_eq!(
+            cmd.as_std()
+                .get_envs()
+                .find(|(k, _)| *k == "VLLM_APPLE_ALLOCATOR_CACHE_MIB")
+                .unwrap()
+                .1,
+            Some(std::ffi::OsStr::new("256"))
+        );
+    }
+    settings.kv_cache_mib = 0;
+    settings.allocator_cache_mib = 0;
+    assert_eq!(
+        settings
+            .command(19201, 19202, "token")
+            .unwrap()
+            .as_std()
+            .get_envs()
+            .find(|(k, _)| *k == "VLLM_APPLE_KV_CACHE_MIB")
+            .unwrap()
+            .1,
+        None
+    );
+    assert_eq!(
+        settings
+            .inspection_command()
+            .unwrap()
+            .as_std()
+            .get_envs()
+            .find(|(k, _)| *k == "VLLM_APPLE_ALLOCATOR_CACHE_MIB")
+            .unwrap()
+            .1,
+        None
+    );
     settings.context = 0;
     assert!(!settings.valid());
     settings.context = 1024;
@@ -188,4 +233,43 @@ fn evidence_launch_preserves_checks_and_sets_explicit_context() {
     assert_eq!(legacy.context, 1024);
     assert!(legacy.evidence.is_empty());
     std::fs::remove_dir_all(dir).unwrap();
+}
+
+#[test]
+fn kv_cache_policy_is_explicit_qualified_and_backward_compatible() {
+    let mut s: VllmSettings = serde_json::from_value(serde_json::json!({})).unwrap();
+    assert_eq!(s.kv_cache_mib, 0);
+    assert!(s.valid());
+    s.kv_cache_mib = 1024;
+    assert!(!s.valid(), "a bounded policy requires evidence");
+    s.evidence = "/qualified.json".into();
+    assert!(s.valid());
+    assert_eq!(serde_json::to_value(&s).unwrap()["kvCacheMiB"], 1024);
+    s.backend = "vllm_metal".into();
+    assert!(!s.valid());
+    s.backend = "mlx_lm".into();
+    for value in [1, 63, 4097, u32::MAX] {
+        s.kv_cache_mib = value;
+        assert!(!s.valid());
+    }
+}
+
+#[test]
+fn allocator_policy_requires_qualified_kv_and_serializes_explicitly() {
+    let mut s: VllmSettings = serde_json::from_value(json!({})).unwrap();
+    assert_eq!(s.allocator_cache_mib, 0);
+    s.allocator_cache_mib = 256;
+    assert!(!s.valid());
+    s.evidence = "/qualified.json".into();
+    assert!(!s.valid());
+    s.kv_cache_mib = 1024;
+    assert!(s.valid());
+    assert_eq!(serde_json::to_value(&s).unwrap()["allocatorCacheMiB"], 256);
+    s.backend = "vllm_metal".into();
+    assert!(!s.valid());
+    s.backend = "mlx_lm".into();
+    for value in [1, 63, 4097, u32::MAX] {
+        s.allocator_cache_mib = value;
+        assert!(!s.valid());
+    }
 }
