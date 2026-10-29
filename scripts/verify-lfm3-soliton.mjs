@@ -5,6 +5,9 @@ import {readFile,writeFile,mkdtemp,rm} from 'node:fs/promises';
 import {tmpdir} from 'node:os';
 import {resolve,join} from 'node:path';
 import {createHash} from 'node:crypto';
+const binary=resolve('target/debug/studio-server');
+const binaryBytes=await readFile(binary);
+const validationOutput=resolve(process.env.SOLITON_OMNI_VALIDATION_OUTPUT||'docs/evaluation/lfm3-omni-soliton-20261029.json');
 const root=resolve('.'), proof=resolve('.soliton-runtime/lfm3-omni-media-text-20261029-attempt2.json');
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 for(let n=0;;n++){try{await readFile(proof);break;}catch{assert(n<540,'qualification not complete; no model launched');await sleep(10000);}}
@@ -17,7 +20,7 @@ seed.document.messages=[];seed.document.generating=false;
 await writeFile(statePath,JSON.stringify(seed),{mode:0o600});
 const base='http://127.0.0.1:19342';assert.equal(await fetch(base+'/health').then(()=>true).catch(()=>false),false,'test port occupied');
 const child=spawn(resolve('target/debug/studio-server'),[],{cwd:root,env:{...process.env,STUDIO_STATE_PATH:statePath,STUDIO_PORT:'19342'},stdio:['ignore','ignore','ignore']});
-const report={passed:false,certification:false,scope:'Soliton shared Rust media/text integration; not speech/realtime qualification',checks:{},cases:[],evidenceSha256:createHash('sha256').update(bytes).digest('hex')};let headers;
+const report={binarySha256:createHash('sha256').update(binaryBytes).digest('hex'),passed:false,certification:false,scope:'Soliton shared Rust media/text integration; not speech/realtime qualification',checks:{},cases:[],evidenceSha256:createHash('sha256').update(bytes).digest('hex')};let headers;
 const request=(path,body)=>fetch(base+path,{method:body===undefined?'GET':'POST',headers,body:body===undefined?undefined:JSON.stringify(body)});
 const state=()=>request('/studio/state').then(r=>r.json());
 const act=async(action,data={})=>{const r=await request('/studio/action',{action,...data});assert(r.ok,await r.text());};
@@ -43,9 +46,9 @@ try{
  }
  const history=(await state()).document.messages;await act('stop');await act('switchEngine',{engine:'strata'});assert.equal((await state()).status,'offline');assert.deepEqual((await state()).document.messages,history);await act('switchEngine',{engine:'lfm3Omni'});
  const settings=(await state()).settings;await act('settings',{settings:{...settings,omni:{...settings.omni,context:4095}}});const bad=await request('/studio/action',{action:'start'});assert(!bad.ok);assert.equal((await state()).status,'offline');assert.deepEqual((await state()).document.messages,history);await act('settings',{settings});
- report.checks={unauthorizedImportRefused:true,realMediaExactCounts:true,boundaryRefusedBeforeHistoryChange:true,exclusiveSwitchPreservesHistory:true,wrongIdentityStartupRefused:true,ordinarySettingsUnchanged:(await readFile(source)).equals(original),proofUnchanged:(await readFile(proof)).equals(bytes)};assert(Object.values(report.checks).every(Boolean));report.passed=true;
+ report.checks={unauthorizedImportRefused:true,realMediaExactCounts:true,boundaryRefusedBeforeHistoryChange:true,exclusiveSwitchPreservesHistory:true,wrongIdentityStartupRefused:true,binaryUnchanged:(await readFile(binary)).equals(binaryBytes),ordinarySettingsUnchanged:(await readFile(source)).equals(original),proofUnchanged:(await readFile(proof)).equals(bytes)};assert(Object.values(report.checks).every(Boolean));report.passed=true;
 }catch(e){report.error=String(e);}
 finally{
- if(headers)await act('stop').catch(()=>{});child.kill('SIGINT');await Promise.race([new Promise(r=>child.once('exit',r)),sleep(10000).then(()=>child.kill('SIGKILL'))]);await writeFile(resolve('docs/evaluation/lfm3-omni-soliton-20261029.json'),JSON.stringify(report,null,2)+'\n',{flag:'wx',mode:0o600});await rm(dir,{recursive:true,force:true});
+ if(headers)await act('stop').catch(()=>{});child.kill('SIGINT');await Promise.race([new Promise(r=>child.once('exit',r)),sleep(10000).then(()=>child.kill('SIGKILL'))]);await writeFile(validationOutput,JSON.stringify(report,null,2)+'\n',{flag:'wx',mode:0o600});await rm(dir,{recursive:true,force:true});
 }
 console.log(JSON.stringify(report));if(!report.passed)process.exitCode=1;
