@@ -396,6 +396,47 @@ async fn download_huggingface_file(
     )
     .await
 }
+fn install_bundled_python(
+    archive: &std::path::Path,
+    app_data: &std::path::Path,
+) -> Result<PathBuf, String> {
+    let root = app_data.join("python-3.12.15");
+    if root.join("bin/python3").is_file() {
+        return Ok(root);
+    }
+    std::fs::create_dir_all(app_data).map_err(|e| e.to_string())?;
+    let staging = app_data.join(format!(".python-install-{}", uuid::Uuid::new_v4()));
+    std::fs::create_dir(&staging).map_err(|e| e.to_string())?;
+    let result = (|| {
+        let status = std::process::Command::new("/usr/bin/tar")
+            .arg("-xzf")
+            .arg(archive)
+            .arg("-C")
+            .arg(&staging)
+            .status()
+            .map_err(|e| e.to_string())?;
+        if !status.success() {
+            return Err("Python extraction failed".into());
+        }
+        let status = std::process::Command::new(staging.join("bin/python3"))
+            .args([
+                "-I",
+                "-c",
+                "import ssl, numpy, jinja2, regex, PIL, requests, yaml, psutil",
+            ])
+            .status()
+            .map_err(|e| e.to_string())?;
+        if !status.success() {
+            return Err("Bundled Python dependency validation failed".into());
+        }
+        std::fs::rename(&staging, &root).map_err(|e| e.to_string())?;
+        Ok(root)
+    })();
+    if result.is_err() {
+        let _ = std::fs::remove_dir_all(staging);
+    }
+    result
+}
 // Install the immutable bundled source into a writable per-user directory.  A
 // partially extracted tree is never treated as an installation.
 fn install_bundled_engine(
@@ -451,7 +492,16 @@ fn main() {
                 .parent()
                 .unwrap_or(&app_data)
                 .join("dev.strata.studio/studio.json");
-            let studio = studio_core::Studio::new(root, 8080);
+            let mut studio = studio_core::Studio::new(root, 8080);
+            if !cfg!(debug_assertions) && std::env::var_os("STRATA_ROOT").is_none() {
+                let python = install_bundled_python(
+                    &app.path().resource_dir()?.join("python.tar.gz"),
+                    &app_data,
+                )
+                .map_err(std::io::Error::other)?;
+                studio.settings.get_mut().python =
+                    python.join("bin/python3").to_string_lossy().into();
+            }
             // Match the headless runtime's explicit state override for isolated native QA.
             let studio = Arc::new(if let Some(path) = std::env::var_os("STUDIO_STATE_PATH") {
                 studio.with_storage(PathBuf::from(path))

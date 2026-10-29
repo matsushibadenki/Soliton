@@ -4,9 +4,9 @@
   "version": "0.1.0",
   "identifier": "dev.soliton.desktop",
   "build": {
-    "beforeDevCommand": "npm run bundle:engine && npm run dev",
+    "beforeDevCommand": "npm run bundle:python && npm run bundle:engine && npm run dev",
     "devUrl": "http://127.0.0.1:5180",
-    "beforeBuildCommand": "npm run bundle:engine && npm run build",
+    "beforeBuildCommand": "npm run bundle:python && npm run bundle:engine && npm run build",
     "frontendDist": "../dist"
   },
   "app": {
@@ -35,7 +35,8 @@
       "minimumSystemVersion": "15.0"
     },
     "resources": {
-      "resources/strata.tar.gz": "strata.tar.gz"
+      "resources/strata.tar.gz": "strata.tar.gz",
+      "resources/python.tar.gz": "python.tar.gz"
     }
   }
 }
