@@ -61,7 +61,7 @@ with tarfile.open(archive, 'w:gz') as handle:
     handle.add(engine, arcname='build-metal/strata')
     handle.add(source / 'metal/kernels', arcname='build-metal/metal/kernels')
     handle.add(source / 'metal/src/engine/msl', arcname='build-metal/metal/engine-msl')
-    handle.add(llama / 'ggml/src/ggml-common.h', arcname='build-metal/metal/ggml-common.h')
+    handle.add(source / 'third_party/ggml/ggml-common.h', arcname='build-metal/metal/ggml-common.h')
     if (source / 'data').is_dir():
         handle.add(source / 'data', arcname='build-metal/metal/data')
     handle.add(marker, arcname='.bundled-metal.json')
