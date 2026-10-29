@@ -443,7 +443,7 @@ fn install_bundled_engine(
     archive: &std::path::Path,
     app_data: &std::path::Path,
 ) -> Result<PathBuf, String> {
-    let root = app_data.join("Strata");
+    let root = app_data.join("Strata-metal-v1");
     if root.join("serve/server.py").is_file() && root.join("metal/setup_mac.py").is_file() {
         return Ok(root);
     }

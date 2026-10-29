@@ -271,7 +271,7 @@ env = root / '.venv'
 py = env / 'bin/python'
 assert not env.is_symlink(), 'Strata .venv must be a dedicated directory'
 if not py.is_file():
-    venv.EnvBuilder(with_pip=True, symlinks=(os.name != "nt")).create(env)
+    venv.EnvBuilder(with_pip=True, symlinks=(os.name != "nt"), system_site_packages=(root / '.bundled-metal.json').is_file()).create(env)
 prefix = subprocess.check_output([str(py), '-c', "import sys; print(sys.prefix if sys.prefix != sys.base_prefix else '')"], text=True).strip()
 assert prefix and Path(prefix).resolve() == env.resolve(), 'Strata .venv is not isolated'
 os.execv(str(py), [str(py), '-u', str(root / 'metal/setup_mac.py'), '--yes', '--setup', '--no-start', '--no-browser', '--vision', 'no', '--model', sys.argv[1], '--context', sys.argv[2], '--data-dir', str(root.parent / 'Strata-data')])
