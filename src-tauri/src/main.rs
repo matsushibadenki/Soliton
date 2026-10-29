@@ -479,7 +479,15 @@ fn main() {
     tauri::Builder::default()
         .plugin(tauri_plugin_dialog::init())
         .setup(|app| {
-            let app_data = app.path().app_data_dir()?;
+            let app_data = if let Some(path) = std::env::var_os("SOLITON_DATA_DIR") {
+                let path = PathBuf::from(path);
+                if !path.is_absolute() {
+                    return Err("SOLITON_DATA_DIR must be absolute".into());
+                }
+                path
+            } else {
+                app.path().app_data_dir()?
+            };
             let root = if let Some(root) = std::env::var_os("STRATA_ROOT") {
                 PathBuf::from(root)
             } else if cfg!(debug_assertions) {

@@ -16,7 +16,7 @@ from pathlib import Path
 root=Path(sys.argv[3]); stage=Path(sys.argv[4]); data=Path(sys.argv[5]); wrapper=sys.argv[6]
 env=root/'.venv'; py=env/'bin/python'
 assert not env.is_symlink(), 'Strata .venv must be dedicated'
-if not py.is_file(): venv.EnvBuilder(with_pip=True, symlinks=(os.name != "nt")).create(env)
+if not py.is_file() or (root/'.bundled-metal.json').is_file(): venv.EnvBuilder(with_pip=True, symlinks=(os.name != "nt"), system_site_packages=(root/'.bundled-metal.json').is_file()).create(env)
 prefix=subprocess.check_output([str(py),'-c',"import sys; print(sys.prefix if sys.prefix != sys.base_prefix else '')"],text=True).strip()
 assert prefix and Path(prefix).resolve()==env.resolve(), 'Strata .venv is not isolated'
 os.execv(str(py),[str(py),'-u','-c',wrapper,str(root),str(stage),str(data),sys.argv[1],sys.argv[2]])
