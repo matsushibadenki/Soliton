@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { invoke } from "@tauri-apps/api/core";
+import { listen } from "@tauri-apps/api/event";
 import {
   CheckCircle2,
   Circle,
@@ -96,6 +97,22 @@ export function ModelLibraryDialog({
   const [busy, setBusy] = useState(true);
   const [failure, setFailure] = useState("");
   const [folder, setFolder] = useState("");
+  const [downloadUrl, setDownloadUrl] = useState("");
+  const [hubToken, setHubToken] = useState("");
+  const [downloading, setDownloading] = useState(false);
+  const [progress, setProgress] = useState<{ received: number; total: number | null } | null>(null);
+  useEffect(() => {
+    if (!desktop) return;
+    let dispose: (() => void) | undefined;
+    let alive = true;
+    void listen<{ received: number; total: number | null }>("model-download-progress", (event) => setProgress(event.payload)).then((unlisten) => { if (alive) dispose = unlisten; else unlisten(); });
+    return () => { alive = false; dispose?.(); };
+  }, []);
+  const downloadText = {
+    en: { cancel: "Stop", label: "Hugging Face URL", button: "Download", busy: "Downloading…", hint: "Repository or file URL. Submit the same URL to resume. Optional read token is not saved." },
+    ja: { cancel: "停止", label: "Hugging Face URL", button: "ダウンロード", busy: "ダウンロード中…", hint: "リポジトリまたはファイルURL。同じURLで再開できます。任意の読み取りトークンは保存しません。" },
+    zh: { cancel: "停止", label: "Hugging Face网址", button: "下载", busy: "正在下载…", hint: "输入仓库或文件网址。再次提交相同网址可继续下载。可选的读取令牌不会保存。" },
+  }[language];
   const [query, setQuery] = useState("");
   const [source, setSource] = useState<Source | "all">("all");
   const [limit, setLimit] = useState(50);
@@ -216,6 +233,29 @@ export function ModelLibraryDialog({
             ))}
           </div>
         </details>
+        {desktop && <section className="custom-model-folders">
+          <label htmlFor="hf-url">{downloadText.label}</label>
+          <form className="model-folder-form" onSubmit={async (e) => {
+            e.preventDefault();
+            setDownloading(true);
+            setProgress(null);
+            setFailure("");
+            try {
+              const path = await invoke<string>("download_huggingface_file", { url: downloadUrl.trim(), token: hubToken });
+              setDownloadUrl("");
+              if (!directories.includes(path)) await changeDirectories([...directories, path]);
+              else await rescan();
+            } catch (error) { setFailure(String(error)); }
+            finally { setHubToken(""); setDownloading(false); }
+          }}>
+            <input id="hf-url" type="url" value={downloadUrl} onChange={(e) => setDownloadUrl(e.target.value)} placeholder="https://huggingface.co/…/resolve/main/…" disabled={downloading || locked} />
+            <input type="password" autoComplete="off" aria-label="Hugging Face token" placeholder="HF token" value={hubToken} disabled={downloading} onChange={(e) => setHubToken(e.target.value)} />
+            <button disabled={downloading || locked || !downloadUrl.trim() || directories.length >= 32}>{downloading ? downloadText.busy : downloadText.button}</button>
+          </form>
+          {downloading && <button type="button" onClick={() => void invoke("cancel_model_download").catch((e) => setFailure(String(e)))}>{downloadText.cancel}</button>}
+          {downloading && progress && <progress aria-label={downloadText.busy} value={progress.total ? progress.received : undefined} max={progress.total || undefined} />}
+          <small>{downloadText.hint}</small>
+        </section>}
         <section className="custom-model-folders">
           <label htmlFor="model-folder">{t.customLocations}</label>
           <form

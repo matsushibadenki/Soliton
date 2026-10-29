@@ -4,9 +4,9 @@
   "version": "0.1.0",
   "identifier": "dev.soliton.desktop",
   "build": {
-    "beforeDevCommand": "npm run dev",
+    "beforeDevCommand": "npm run bundle:engine && npm run dev",
     "devUrl": "http://127.0.0.1:5180",
-    "beforeBuildCommand": "npm run build",
+    "beforeBuildCommand": "npm run bundle:engine && npm run build",
     "frontendDist": "../dist"
   },
   "app": {
@@ -27,7 +27,15 @@
   },
   "bundle": {
     "active": true,
-    "targets": ["app", "dmg"],
-    "macOS": { "minimumSystemVersion": "15.0" }
+    "targets": [
+      "app",
+      "dmg"
+    ],
+    "macOS": {
+      "minimumSystemVersion": "15.0"
+    },
+    "resources": {
+      "resources/strata.tar.gz": "strata.tar.gz"
+    }
   }
 }

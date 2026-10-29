@@ -1,8 +1,11 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
+mod hub;
 use std::{path::PathBuf, sync::Arc};
-use tauri::{Manager, State};
+use tauri::{Emitter, Manager, State};
 use tauri_plugin_dialog::DialogExt;
 struct Runtime {
+    download: tokio::sync::Mutex<()>,
+    cancel_download: std::sync::atomic::AtomicBool,
     studio: Arc<studio_core::Studio>,
     panels: tokio::sync::Mutex<()>,
     shutdown: std::sync::Mutex<Option<tokio::sync::oneshot::Sender<()>>>,
@@ -308,14 +311,142 @@ async fn export_conversation(
         Ok(None)
     }
 }
+#[tauri::command]
+async fn check_software_update() -> Result<serde_json::Value, String> {
+    let response = reqwest::Client::builder()
+        .user_agent("Soliton-update-check")
+        .timeout(std::time::Duration::from_secs(15))
+        .build()
+        .map_err(|e| e.to_string())?
+        .get("https://api.github.com/repos/matsushibadenki/Soliton/releases/latest")
+        .send()
+        .await
+        .map_err(|e| e.to_string())?;
+    if response.status() == reqwest::StatusCode::NOT_FOUND {
+        return Ok(serde_json::json!({"status":"noRelease", "current":env!("CARGO_PKG_VERSION")}));
+    }
+    let release: serde_json::Value = response
+        .error_for_status()
+        .map_err(|e| e.to_string())?
+        .json()
+        .await
+        .map_err(|e| e.to_string())?;
+    let tag = release["tag_name"]
+        .as_str()
+        .ok_or("Release has no version tag")?;
+    let latest = semver::Version::parse(tag.strip_prefix('v').unwrap_or(tag))
+        .map_err(|_| "Release tag is not a semantic version")?;
+    let current = semver::Version::parse(env!("CARGO_PKG_VERSION")).map_err(|e| e.to_string())?;
+    Ok(
+        serde_json::json!({"status":if latest > current {"available"} else {"current"}, "current":current.to_string(), "latest":latest.to_string()}),
+    )
+}
+
+#[tauri::command]
+fn open_releases_page() -> Result<(), String> {
+    let status = std::process::Command::new("/usr/bin/open")
+        .arg("https://github.com/matsushibadenki/Soliton/releases/latest")
+        .status()
+        .map_err(|e| e.to_string())?;
+    if status.success() {
+        Ok(())
+    } else {
+        Err("Unable to open releases page".into())
+    }
+}
+
+#[tauri::command]
+fn cancel_model_download(runtime: State<'_, Runtime>) {
+    runtime
+        .cancel_download
+        .store(true, std::sync::atomic::Ordering::SeqCst);
+}
+
+#[tauri::command]
+async fn download_huggingface_file(
+    app: tauri::AppHandle,
+    window: tauri::WebviewWindow,
+    runtime: State<'_, Runtime>,
+    url: String,
+    token: Option<String>,
+) -> Result<String, String> {
+    let _permit = runtime
+        .download
+        .try_lock()
+        .map_err(|_| "A model download is already running")?;
+    runtime
+        .cancel_download
+        .store(false, std::sync::atomic::Ordering::SeqCst);
+    let base = app
+        .path()
+        .app_data_dir()
+        .map_err(|e| e.to_string())?
+        .join("models");
+    hub::download(
+        &base,
+        &url,
+        &token.unwrap_or_default(),
+        &runtime.cancel_download,
+        |received, total| {
+            let _ = window.emit(
+                "model-download-progress",
+                serde_json::json!({"received":received,"total":total}),
+            );
+        },
+    )
+    .await
+}
+// Install the immutable bundled source into a writable per-user directory.  A
+// partially extracted tree is never treated as an installation.
+fn install_bundled_engine(
+    archive: &std::path::Path,
+    app_data: &std::path::Path,
+) -> Result<PathBuf, String> {
+    let root = app_data.join("Strata");
+    if root.join("serve/server.py").is_file() && root.join("metal/setup_mac.py").is_file() {
+        return Ok(root);
+    }
+    if root.exists() {
+        return Err(format!("Incomplete engine directory: {}", root.display()));
+    }
+    std::fs::create_dir_all(app_data).map_err(|e| e.to_string())?;
+    let staging = app_data.join(format!(".strata-install-{}", std::process::id()));
+    std::fs::create_dir(&staging).map_err(|e| e.to_string())?;
+    let result = (|| {
+        let status = std::process::Command::new("/usr/bin/tar")
+            .args(["-xzf"])
+            .arg(archive)
+            .arg("-C")
+            .arg(&staging)
+            .status()
+            .map_err(|e| e.to_string())?;
+        if !status.success()
+            || !staging.join("serve/server.py").is_file()
+            || !staging.join("metal/setup_mac.py").is_file()
+        {
+            return Err("Bundled Strata extraction failed".to_string());
+        }
+        std::fs::rename(&staging, &root).map_err(|e| e.to_string())?;
+        Ok(root)
+    })();
+    if result.is_err() {
+        let _ = std::fs::remove_dir_all(&staging);
+    }
+    result
+}
 fn main() {
     tauri::Builder::default()
         .plugin(tauri_plugin_dialog::init())
         .setup(|app| {
-            let root = std::env::var_os("STRATA_ROOT")
-                .map(PathBuf::from)
-                .unwrap_or_else(|| PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../Strata"));
             let app_data = app.path().app_data_dir()?;
+            let root = if let Some(root) = std::env::var_os("STRATA_ROOT") {
+                PathBuf::from(root)
+            } else if cfg!(debug_assertions) {
+                PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../Strata")
+            } else {
+                let archive = app.path().resource_dir()?.join("strata.tar.gz");
+                install_bundled_engine(&archive, &app_data).map_err(std::io::Error::other)?
+            };
             let legacy = app_data
                 .parent()
                 .unwrap_or(&app_data)
@@ -364,6 +495,8 @@ fn main() {
                 });
             }
             app.manage(Runtime {
+                download: tokio::sync::Mutex::new(()),
+                cancel_download: std::sync::atomic::AtomicBool::new(false),
                 studio,
                 panels: tokio::sync::Mutex::new(()),
                 shutdown: std::sync::Mutex::new(Some(tx)),
@@ -372,6 +505,10 @@ fn main() {
         })
         .invoke_handler(tauri::generate_handler![
             connection,
+            download_huggingface_file,
+            cancel_model_download,
+            check_software_update,
+            open_releases_page,
             quit_app,
             export_conversation,
             select_path,
@@ -392,4 +529,38 @@ fn main() {
                 };
             }
         });
+}
+
+#[cfg(test)]
+mod bundled_engine_tests {
+    use super::install_bundled_engine;
+    #[test]
+    fn install_is_atomic_and_preserves_existing_tree() {
+        let base =
+            std::env::temp_dir().join(format!("soliton-install-test-{}", uuid::Uuid::new_v4()));
+        let source = base.join("source");
+        let data = base.join("data");
+        std::fs::create_dir_all(source.join("serve")).unwrap();
+        std::fs::create_dir_all(source.join("metal")).unwrap();
+        std::fs::write(source.join("serve/server.py"), "original").unwrap();
+        std::fs::write(source.join("metal/setup_mac.py"), "setup").unwrap();
+        let archive = base.join("strata.tar.gz");
+        assert!(std::process::Command::new("/usr/bin/tar")
+            .arg("-czf")
+            .arg(&archive)
+            .arg("-C")
+            .arg(&source)
+            .arg(".")
+            .status()
+            .unwrap()
+            .success());
+        let root = install_bundled_engine(&archive, &data).unwrap();
+        std::fs::write(root.join("serve/server.py"), "user data").unwrap();
+        install_bundled_engine(&archive, &data).unwrap();
+        assert_eq!(
+            std::fs::read_to_string(root.join("serve/server.py")).unwrap(),
+            "user data"
+        );
+        std::fs::remove_dir_all(base).unwrap();
+    }
 }

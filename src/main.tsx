@@ -379,6 +379,13 @@ function App() {
     if (desktop)
       void getCurrentWindow().setTheme(settings.theme).catch(console.error);
   }, [settings.theme, settings.chatFontSize]);
+  const [updateInfo, setUpdateInfo] = useState<{ status: string; current: string; latest?: string } | null>(null);
+  const [updateBusy, setUpdateBusy] = useState(false);
+  const updateWords = {
+    en: { check: "Check for updates", checking: "Checking…", available: "Update available", current: "Up to date", noRelease: "No release available or repository inaccessible", open: "Open releases", error: "Could not check for updates" },
+    ja: { check: "アップデートを確認", checking: "確認中…", available: "アップデートがあります", current: "最新です", noRelease: "リリースがないか、リポジトリにアクセスできません", open: "リリースを開く", error: "アップデートを確認できません" },
+    zh: { check: "检查更新", checking: "正在检查…", available: "有可用更新", current: "已是最新版本", noRelease: "没有可用版本或无法访问仓库", open: "打开发布页面", error: "无法检查更新" },
+  }[language];
   async function saveAppearance(
     value: Partial<Pick<Settings, "theme" | "chatFontSize">>,
   ) {
@@ -1585,6 +1592,16 @@ function App() {
               >
                 {t.fontPreview}
               </p>
+              {desktop && <div className="software-update">
+                <button type="button" disabled={updateBusy} onClick={async () => {
+                  setUpdateBusy(true);
+                  try { setUpdateInfo(await invoke("check_software_update")); }
+                  catch { setUpdateInfo({ status: "error", current: "" }); }
+                  finally { setUpdateBusy(false); }
+                }}>{updateBusy ? updateWords.checking : updateWords.check}</button>
+                {updateInfo && <p role="status">{updateInfo.status === "available" ? updateWords.available : updateInfo.status === "current" ? updateWords.current : updateInfo.status === "noRelease" ? updateWords.noRelease : updateWords.error}{updateInfo.latest ? ` · ${updateInfo.latest}` : ""}</p>}
+                {updateInfo?.status === "available" && <button type="button" onClick={() => void invoke("open_releases_page")}>{updateWords.open}</button>}
+              </div>}
               <label>{t.language}</label>
               <nav className="language-options" aria-label={t.language}>
                 {(["ja", "en", "zh"] as const).map((l) => (

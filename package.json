@@ -27,7 +27,8 @@
     "benchmark:token-count": "node scripts/token-count-benchmark.mjs",
     "benchmark:token-count:compare": "node scripts/compare-token-count.mjs",
     "test:context-matrix": "node --test scripts/context-matrix.test.mjs",
-    "test:cache-memory": "node --test scripts/cache-memory-workload.test.mjs"
+    "test:cache-memory": "node --test scripts/cache-memory-workload.test.mjs",
+    "bundle:engine": "node scripts/bundle-strata.mjs"
   },
   "dependencies": {
     "@tauri-apps/api": "^2.12.4",
