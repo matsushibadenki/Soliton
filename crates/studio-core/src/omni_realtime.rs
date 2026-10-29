@@ -101,8 +101,9 @@ impl Output {
             .map_err(|e| e.to_string())
     }
 }
-/// A text-only certificate never authorizes an audio/Reatime bridge.
-pub fn verify_audio_scope(proof: &Value) -> Result<(), String> {
+/// A text-only certificate never authorizes an audio/Realtime bridge.
+pub fn verify_audio_scope(proof: &Value, identity: &Value, now: u64) -> Result<(), String> {
+    crate::omni_runtime::validate_full_qualification(proof, identity, now, "omni_realtime_30min")?;
     if proof["scope"] != "omni_realtime_30min" || proof["passed"] != true {
         return Err("Realtime requires separate qualification".into());
     }
@@ -131,9 +132,12 @@ mod tests {
     }
     #[test]
     fn text_certificate_never_enables_audio() {
-        assert!(
-            verify_audio_scope(&json!({"scope":"omni_media_text_30min","passed":true})).is_err()
-        );
+        assert!(verify_audio_scope(
+            &json!({"scope":"omni_media_text_30min","passed":true}),
+            &json!({}),
+            0
+        )
+        .is_err());
     }
     #[test]
     fn malformed_and_oversized_events_refused() {

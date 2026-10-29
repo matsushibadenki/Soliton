@@ -1,5 +1,5 @@
 {
-  "checkedAtJst": "2026-10-29T12:29:40.329556+09:00",
+  "checkedAtJst": "2026-10-29T14:41:03.858401+09:00",
   "implemented": [
     "exclusive shared lifecycle runtime adapter",
     "pinned runtime/weight/projector and hardware/decoder evidence gates",
@@ -10,7 +10,7 @@
     "authenticated exact-count preview",
     "alternate endpoint/output-mode refusal"
   ],
-  "coreTestsPassed": 85,
+  "coreTestsPassed": 90,
   "nativeParity": {
     "text": 28,
     "image": 100,
@@ -18,15 +18,29 @@
     "video": 109
   },
   "fullQualification": {
-    "status": "running attempt2; original1800-second soak after native JSON/SSE media checks",
+    "status": "passed",
     "session": 3963,
     "evidence": ".soliton-runtime/lfm3-omni-media-text-20261029-attempt2.json",
-    "log": ".soliton-runtime/lfm3-omni-qualification-attempt2-20261029.log"
+    "log": ".soliton-runtime/lfm3-omni-qualification-attempt2-20261029.log",
+    "elapsedSeconds": 1800.1202399169997,
+    "successes": 10072,
+    "failures": 0,
+    "shutdownClean": true
   },
   "solitonValidation": {
-    "status": "waiting for full qualification; no model started concurrently",
+    "status": "passed recorded binary; latest dependency rebuild revalidation queued after Realtime probe",
     "session": 1963,
-    "log": ".soliton-runtime/lfm3-omni-soliton-attempt2-20261029.log"
+    "log": ".soliton-runtime/lfm3-omni-soliton-attempt2-20261029.log",
+    "cases": 4,
+    "checks": {
+      "unauthorizedImportRefused": true,
+      "realMediaExactCounts": true,
+      "boundaryRefusedBeforeHistoryChange": true,
+      "exclusiveSwitchPreservesHistory": true,
+      "wrongIdentityStartupRefused": true,
+      "ordinarySettingsUnchanged": true,
+      "proofUnchanged": true
+    }
   },
   "ordinarySettingsChanged": false,
   "omniAdopted": false,
@@ -34,5 +48,12 @@
     "real shared API/history/boundary/lifecycle validation after qualification",
     "voice/realtime/interleaved output integration and correct output reservation",
     "full UI integration and broad multilingual media quality"
-  ]
+  ],
+  "speechRealtime": {
+    "status": "bounded Rust receiver implemented; native transport probe waiting for low load",
+    "session": 31051,
+    "log": ".soliton-runtime/lfm3-realtime-probe-20261029.log",
+    "enabled": false,
+    "qualified": false
+  }
 }

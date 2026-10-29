@@ -1,6 +1,6 @@
 # LFM3-Omni-2B integration
 
-Full requested scope: text/image/audio/video input; text/speech/interleaved output, including realtime voice. **Soliton support is unfinished and disabled.**
+Full requested scope: text/image/audio/video input; text/speech/interleaved output, including realtime voice. **Full Omni support is unfinished. Media-input/text-output has passed qualification and shared API tests; speech/Realtime and GUI enablement remain gated.**
 
 Official sources: [BF16 model](https://huggingface.co/LiquidAI/LFM3-Omni-2B), [GGUF runtime instructions](https://huggingface.co/LiquidAI/LFM3-Omni-2B-GGUF). Use the official GGUF path on Apple Silicon, rather than treating this as an existing MLX-LM text architecture. No auto-execution of Transformers remote code and no generic compatibility exception. The configuration advertises128000 text positions while the model card states32K for this checkpoint; neither is a locally qualified Soliton limit.
 
@@ -32,3 +32,16 @@ Speech, interleaved output and realtime remain explicitly refused by the shared 
 日本語: 排他ランタイム接続、Rust管理メディア、共通履歴への参照保存、実処理済み事前計数を実装しました。ネイティブの4入力で計数一致を確認済みですが、30分認証とSoliton実モデル検証は進行中です。音声出力・Realtime・UIは未完了で、通常設定は変更していません。
 
 简体中文：已实现排他运行时连接、Rust媒体存储、公共历史引用和实际处理后的预计数。原生4类输入的计数一致性已确认，30分钟认证及Soliton实模型验证仍在进行。语音输出、Realtime和UI尚未完成，普通配置保持不变。
+
+
+## Media/text qualification completed; speech transport started
+
+Full qualification passed1800.120239917 seconds,10072 successes,zero failures,clean shutdown and all native JSON/SSE media parity checks. [Byte-identical archived evidence](evaluation/lfm3-omni-media-text-qualification-20261029.json). The unchanged evidence hash matches the [real common-API report](evaluation/lfm3-omni-soliton-20261029.json): text/image/audio/video pre-counts25/94/60/103 each equal actual usage; exact4096 reservations accepted and4097 refused before history mutation. History attachments, exclusive switch, wrong-identity startup refusal and unchanged ordinary settings/evidence pass. Counts are workload-specific, not model constants; earlier28/100/52/109 probes use different prompts.
+
+Speech/Realtime is a distinct scope. `omni_realtime.rs` collects bounded native text/audio events and stores PCM16 as private24 kHz WAV files on the Rust side. It never serializes audio frame payloads to the WebView. A text-only certificate cannot authorize the new scope; the same identity/time/stability checks plus exact input count, output reservation, cancellation, history and sample-rate checks are required. A qualification-only Rust WebSocket client and Python owner controller now probe native text/audio/interleaved modes. They do not enable an application route.
+
+Native Realtime may render a different template and count audio codebooks differently. Chat pre-count equality is being measured, not presumed. Output reservation semantics must be proven before public admission, and realtime media history requires further work. The existing shared route continues to reject speech/realtime requests.90 core tests pass; new runtime dependencies are preserved alongside independent dependency updates, and a binary-hash-bound repeat of common API validation is queued after the speech probe stops. Normal user configuration and conversations are unchanged.
+
+日本語: メディア入力・テキスト応答の30分認証と共通API実モデル検証が合格しました。音声出力・Realtimeは別認証で扱い、Rustの有界受信・音声保存と実験クライアントを追加しました。出力予算と計数一致が未確認のため、公開経路は未有効化です。
+
+简体中文：媒体输入及文本输出的30分钟认证和公共API实模型验证已通过。语音输出及Realtime采用独立认证；已添加Rust有界接收、音频存储与实验客户端。输出预算及计数一致性仍待验证，公开路径尚未启用。

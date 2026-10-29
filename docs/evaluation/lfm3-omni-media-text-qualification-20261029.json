@@ -1,0 +1,56 @@
+{
+  "schema": 1,
+  "scope": "omni_media_text_30min",
+  "passed": true,
+  "identity": {
+    "runtimeSha256": "3d573493c4ff356474c6a6e874fb5e38799af62f4c05682e07a7c78d8e60ea2e",
+    "modelSha256": "9f8d30e9d4fd7a9349d586e077988229b3ca0a0e4ad730897563d1eccc9893e2",
+    "projectorSha256": "720ff4fc09df0e026c4ec641d0c698bf27b5bcd50561944c88eda5e3dffe1839",
+    "platform": "macos-aarch64",
+    "hardware": "Mac16,13\n34359738368\nApple M4",
+    "ffmpegSha256": "1d35c048f613d22cea937dba0e9806156bca032bc0c3a47995be77472cd1027c",
+    "ffprobeSha256": "5c013cf8429c6e3d647b2a83888eba3d286303120567aa612ee75947c319a995",
+    "osVersion": "27.2",
+    "context": 4096,
+    "parallel": 1,
+    "reasoning": false,
+    "admissionVersion": 1
+  },
+  "createdAt": 1793244386,
+  "elapsedSeconds": 1800.1202399169997,
+  "failures": 0,
+  "successes": 10072,
+  "shutdownClean": true,
+  "exactCountParity": {
+    "text": true,
+    "image": true,
+    "audio": true,
+    "video": true
+  },
+  "limitations": [
+    "Text-output scope only; speech/realtime output remains unqualified.",
+    "This report is not Soliton integration/boundary approval."
+  ],
+  "mediaChecks": {
+    "text": {
+      "json": true,
+      "sse": true,
+      "inputTokens": 25
+    },
+    "image": {
+      "json": true,
+      "sse": true,
+      "inputTokens": 94
+    },
+    "audio": {
+      "json": true,
+      "sse": true,
+      "inputTokens": 60
+    },
+    "video": {
+      "json": true,
+      "sse": true,
+      "inputTokens": 103
+    }
+  }
+}

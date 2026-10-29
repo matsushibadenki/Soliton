@@ -201,8 +201,19 @@ impl Settings {
     }
 }
 pub fn validate_evidence(v: &Value, identity: &Value, now: u64) -> Result<(), String> {
+    validate_full_qualification(v, identity, now, "omni_media_text_30min")
+}
+pub(crate) fn validate_full_qualification(
+    v: &Value,
+    identity: &Value,
+    now: u64,
+    scope: &str,
+) -> Result<(), String> {
+    if !matches!(scope, "omni_media_text_30min" | "omni_realtime_30min") {
+        return Err("Unreviewed Omni qualification scope".into());
+    }
     if v["schema"] != 1
-        || v["scope"] != "omni_media_text_30min"
+        || v["scope"] != scope
         || v["passed"] != true
         || v["shutdownClean"] != true
         || v["identity"] != *identity
