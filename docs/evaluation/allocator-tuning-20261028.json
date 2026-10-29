@@ -1,0 +1,47 @@
+{
+  "passed": true,
+  "scope": "512 MiB local M4/Gemma profile; headless common Rust integration",
+  "qualification": "soliton-vllm-apple-allocator-tuning-20261028.json",
+  "comparison": "allocator-tuning-comparison-20261028.json",
+  "integrationSources": {
+    "/Users/Shared/Program/Tauri/Soliton/docs/benchmarks/allocator-tuning-after-20261028.json": "ad0a83f358f2ea9e77e8973e5db741b9d072077be6c9f1d923b629e51f26ecc6",
+    "/Users/Shared/Program/Tauri/Soliton/docs/benchmarks/allocator-tuning-context-20261028.json": "38c08d8e4d4d3da290768e1daa3053717f8cc9fa19549df058f97c18e34dfd92"
+  },
+  "activation": {
+    "passed": true,
+    "context": 4096,
+    "evidenceSha256": "facd9ce670e783b6f3ec86092765ca796dc4c84c13505611ea920c169a4543e8",
+    "states": [
+      {
+        "path": "/Users/Shared/Program/Tauri/Soliton/.studio-state.json",
+        "beforeSha256": "fca64c5ac0b697b007f3a0ee32da32fadb37d1a3f807d78fbbe0e6629567eb0d",
+        "afterSha256": "ea8cd6a5c14fe0a44dd02b53e96a2d42afea31c943a270a27d9428e28f367d56",
+        "onlyContextAndEvidenceChanged": false,
+        "onlyKvPolicyAndEvidenceChanged": false,
+        "onlyAllocatorPolicyAndEvidenceChanged": true,
+        "backup": "/Users/Shared/Program/Tauri/Soliton/.soliton-runtime/allocator-tuning-activation-20261028-backup-0.json"
+      },
+      {
+        "path": "/Users/littlebuddha/Library/Application Support/dev.soliton.desktop/studio.json",
+        "beforeSha256": "ae70a178d382baff6dc97a39882a8ad236a7715dd9c79b1b2c43dd49425d198c",
+        "afterSha256": "2b54f46901dc351a348c6460b72ca1f4b1f78bdc79a7f122f6852a2b1bb5db01",
+        "onlyContextAndEvidenceChanged": false,
+        "onlyKvPolicyAndEvidenceChanged": false,
+        "onlyAllocatorPolicyAndEvidenceChanged": true,
+        "backup": "/Users/Shared/Program/Tauri/Soliton/.soliton-runtime/allocator-tuning-activation-20261028-backup-1.json"
+      }
+    ]
+  },
+  "metrics": {
+    "samples": 153,
+    "maxRetainedMiB": 1011.4609375,
+    "createdAtJst": "2026-10-28T14:19:43.258684+09:00",
+    "expiresAtJst": "2026-11-04T14:19:43.258684+09:00"
+  },
+  "limitations": [
+    "Pilot Python timings and Rust integration timings are different measurement paths.",
+    "Parallel desktop work was retained; residual host load and thermal variation remain.",
+    "Exclusive Strata switch used the existing mock Strata lifecycle; no second real model resident.",
+    "No global RAM cap or native GUI GPU certification claimed."
+  ]
+}

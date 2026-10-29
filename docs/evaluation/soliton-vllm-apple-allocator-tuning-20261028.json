@@ -1,0 +1,166 @@
+{
+  "architecture_evidence": {
+    "concurrency": 1,
+    "context_tokens": 4096,
+    "created_at": 1793164783.258684,
+    "identity": {
+      "backend": "mlx_lm",
+      "backend_sha256": "d1ba8a3ee8e3e6ffc708bda03e6cfc9725db9bdb2669061d60ece400b628c485",
+      "config_sha256": "9279e9a8c58d7656782dc02f787feaa45118f37109281acb88144b6a44093401",
+      "environment_sha256": "dd85ef85e863c42aa69d163e4dd701040d7c9d4178040999603a3f0c4d7693e6",
+      "hardware_sha256": "c8baa7d3ff988ba85885da228624da76c5a85818ef2f1daa3b1d3128e4b95d6c",
+      "model_root_sha256": "4f69654cb373cc4392fd048acf60d51d39d67e8176648a3e52a7936b0776cd14",
+      "runtime_sha256": "2ce63349d6c068d402dcf824a550a42b940f9a9c4dbdfe7635ba30523810d32a"
+    },
+    "report_sha256": "c245f7eba50768d5746f616b47395fa8f627ec946cc343b8595dfd54cc1944fb",
+    "schema_version": 1,
+    "scope": "text_smoke_30min"
+  },
+  "backend": "mlx_lm",
+  "backend_versions": {
+    "mlx_lm": "0.32.0"
+  },
+  "context_reevaluation": {
+    "capacity_context_tokens": null,
+    "configured_context_tokens": 4096,
+    "effective_context_tokens": 4096,
+    "enabled": false,
+    "kv_bytes_per_token": null,
+    "kv_capacity_bytes": null,
+    "passed": true,
+    "reevaluations": 0,
+    "source": null,
+    "status": "unavailable",
+    "weights_bytes": null
+  },
+  "load_seconds": 2.544,
+  "model": "/Users/Shared/Program/Tauri/Soliton/vLLM-apple/models/gemma-2-2b-it-4bit",
+  "model_memory_fit": {
+    "artifact_bytes": 1470988882,
+    "context_tokens": 4096,
+    "estimated_resident_bytes": 1907196498,
+    "fits": true,
+    "hard_ceiling_bytes": 8962454979
+  },
+  "passed": true,
+  "phase_profile": {
+    "backend": "mlx_lm",
+    "decode": {
+      "duration_ms": 585.887,
+      "output_tokens": 39,
+      "token_intervals": 36,
+      "tokens_per_second": 61.445,
+      "tpot": {
+        "max_ms": 16.406,
+        "mean_ms": 16.275,
+        "p50_upper_bound_ms": 25.0,
+        "p95_upper_bound_ms": 25.0
+      }
+    },
+    "hardware_fingerprint": "53c3e515f6947373255d06f3",
+    "model_id": "default_model",
+    "peak_memory_bytes": 2267430912,
+    "prefill": {
+      "prompt_tokens": 48,
+      "ttft": {
+        "max_ms": 232.938,
+        "mean_ms": 195.354,
+        "p50_upper_bound_ms": 250.0,
+        "p95_upper_bound_ms": 250.0
+      }
+    },
+    "profile_id": "972ee0f01b289d6d7932d6fc",
+    "sample_count": 3,
+    "schema_version": 1,
+    "storage": {
+      "latency_bucket_count": 52,
+      "raw_sample_count": 0
+    },
+    "transport": {
+      "end_to_end": {
+        "max_ms": 451.324,
+        "mean_ms": 412.203,
+        "p50_upper_bound_ms": 500.0,
+        "p95_upper_bound_ms": 500.0
+      },
+      "sample_count": 3,
+      "stream_tail": {
+        "max_ms": 21.609,
+        "mean_ms": 21.553,
+        "p50_upper_bound_ms": 25.0,
+        "p95_upper_bound_ms": 25.0
+      },
+      "unavailable_sample_count": 0
+    }
+  },
+  "promotion_probe": {
+    "checks": {
+      "greedy_repeat_equal": true,
+      "sampled_repeat_equal": true,
+      "sampled_stream_equal": true,
+      "stream_completed": true
+    },
+    "determinism_mode": "greedy_only",
+    "digests": {
+      "greedy": "a72f0215ec983589f7140253c77d742103fd5bf1210ece94febc2d1562d35e6d",
+      "sampled": "a72f0215ec983589f7140253c77d742103fd5bf1210ece94febc2d1562d35e6d",
+      "sampled_stream": "a72f0215ec983589f7140253c77d742103fd5bf1210ece94febc2d1562d35e6d"
+    },
+    "model": "default_model",
+    "passed": true,
+    "schema_version": 1,
+    "seed": 1729,
+    "temperature": 0
+  },
+  "qualification_limits": {
+    "concurrency": 1,
+    "context_tokens": 4096
+  },
+  "quality_smoke": {
+    "checks": {
+      "english": true,
+      "japanese": true,
+      "simplified_chinese": true
+    },
+    "match_policy": "trimmed_exact",
+    "passed": true,
+    "sample_count": 3,
+    "schema_version": 1,
+    "stores_generated_text": false
+  },
+  "requested_modes": [
+    "text"
+  ],
+  "schema_version": 1,
+  "shutdown_clean": true,
+  "soak": {
+    "certification_required": true,
+    "elapsed_seconds": 1800.235,
+    "errors": {},
+    "failures": 0,
+    "latency_ms": {
+      "max": 876.361,
+      "mean": 307.043,
+      "p50_upper_bound": 500,
+      "p95_upper_bound": 500
+    },
+    "passed": true,
+    "process_alive": true,
+    "requests": 5863,
+    "requests_per_second": 3.257,
+    "rss": {
+      "baseline_bytes": 2260992000,
+      "final_bytes": 1728397312,
+      "growth_bytes": 0,
+      "limit_bytes": 268435456,
+      "peak_bytes": 2279129088,
+      "peak_growth_bytes": 18137088
+    },
+    "stability_window_met": true,
+    "storage": {
+      "error_keys": 0,
+      "latency_buckets": 12
+    },
+    "successes": 5863
+  }
+}

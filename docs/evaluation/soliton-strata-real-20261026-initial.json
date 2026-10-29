@@ -1,0 +1,45 @@
+{
+  "upstream": "4b9e05a2a806a3fe24f7b2560d98626c37dade35",
+  "work": "/var/folders/yz/bsd6nq0941lc9tsfd9pxxhb40000gn/T/soliton-strata-026-4s1_kc99",
+  "started": 1792973317.469544,
+  "response": {
+    "id": "chatcmpl-757fa69de8104f9a91cd19fe",
+    "object": "chat.completion",
+    "created": 1792973344,
+    "model": "qwen3.8-flash-next-q2_0",
+    "choices": [
+      {
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": null,
+          "reasoning_content": "We need to respond to user: \"Reply with only this code: SOLITON26\". Need final only code? They say reply with only this code"
+        },
+        "finish_reason": "length"
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 63,
+      "completion_tokens": 32,
+      "total_tokens": 95,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "timings": {
+      "cache_n": 0,
+      "prompt_n": 63,
+      "prompt_ms": 56980.7,
+      "prompt_per_token_ms": 904.456,
+      "prompt_per_second": 1.1,
+      "predicted_n": 32,
+      "predicted_ms": 25756.7,
+      "predicted_per_token_ms": 804.897,
+      "predicted_per_second": 1.2,
+      "draft_n": 0,
+      "draft_n_accepted": 0
+    }
+  },
+  "passed": false,
+  "exitCode": 0
+}

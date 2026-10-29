@@ -33,7 +33,9 @@ assert matrix["passed"] is True and matrix["context"] == context
 assert matrix["evidenceSha256"] == hash_bytes(evidence_bytes)
 assert all(matrix["checks"].values())
 assert matrix["sharedRequestMetrics"]["bounded"] is True
-allocator_upgrade = matrix.get("allocatorCacheMiB", 0) == 256
+allocator_target = matrix.get("allocatorCacheMiB", 0)
+allocator_tuning = allocator_target in {512,768} and "allocatorTuning" in matrix
+allocator_upgrade = allocator_target == 256 or allocator_tuning
 policy_upgrade = matrix.get("kvCacheMiB", 0) == 1024
 refresh_only = "cacheMemory" in matrix and "contextMatrix" not in matrix
 if policy_upgrade:
@@ -45,14 +47,31 @@ if policy_upgrade:
     assert matrix["checks"].get("backendKvBudgetArgument") is True
     if allocator_upgrade:
         assert matrix["checks"].get("backendAllocatorBudget") is True
-        assert matrix["allocatorComparison"]["lowerPhysicalPeak"] is True
-        assert matrix["allocatorComparison"]["lowerAllocatorCachePeak"] is True
+        if allocator_tuning:
+            import importlib.util
+            comparison_path = Path(matrix["allocatorTuning"]["comparisonReport"])
+            comparison_bytes = comparison_path.read_bytes()
+            assert hash_bytes(comparison_bytes) == matrix["allocatorTuning"]["comparisonSha256"]
+            comparison = json.loads(comparison_bytes)
+            spec = importlib.util.spec_from_file_location("allocator_comparison", Path(__file__).with_name("compare-allocator-budgets.py"))
+            module = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(module)
+            paths = list(comparison["sha256"])
+            assert all(hash_bytes(Path(p).read_bytes()) == comparison["sha256"][p] for p in paths)
+            replay = module.compare(paths)
+            assert replay["selectionPassed"] and replay["selectedMiB"] == allocator_target
+            assert replay["groups"] == comparison["groups"]
+            trials = [json.loads(Path(p).read_bytes()) for p in paths]
+            assert all(t["identityBefore"] == qualification["architecture_evidence"]["identity"] for t in trials if t["allocatorCacheMiB"] == allocator_target)
+        else:
+            assert matrix["allocatorComparison"]["lowerPhysicalPeak"] is True
+            assert matrix["allocatorComparison"]["lowerAllocatorCachePeak"] is True
         samples = matrix["contextMatrix"]["memory"] + matrix["cacheMemory"]["samples"] + [c["memory"] for c in matrix["cacheMemory"]["seededCases"]]
         assert len(samples) == 153
-        assert all(s["kvCache"]["allocator"]["configured_limit_bytes"] == 256 * 1024**2 and 0 <= s["kvCache"]["allocator"]["effective_limit_bytes"] <= 256 * 1024**2 for s in samples)
-        assert {(c.get("allocatorCacheMiB"), c["context"]) for c in gates["checks"]} == {(0,4096),(128,4096),(256,4097)}
+        assert all(s["kvCache"]["allocator"]["configured_limit_bytes"] == allocator_target * 1024**2 and 0 <= s["kvCache"]["allocator"]["effective_limit_bytes"] <= allocator_target * 1024**2 for s in samples)
+        assert {(c.get("allocatorCacheMiB"), c["context"]) for c in gates["checks"]} == {(0,4096),(256 if allocator_tuning else 128,4096),(allocator_target,4097)}
         assert all(c["kvCacheMiB"] == 1024 for c in gates["checks"])
-        os.environ["VLLM_APPLE_ALLOCATOR_CACHE_MIB"] = "256"
+        os.environ["VLLM_APPLE_ALLOCATOR_CACHE_MIB"] = str(allocator_target)
     else:
         assert {(c.get("kvCacheMiB"), c["context"]) for c in gates["checks"]} == {(0,4096),(512,4096),(1024,4097)}
     # Match the explicit setting that Rust will inject, keeping all other flags.
@@ -103,7 +122,7 @@ for state_path in states:
         assert all(prior_identity[k] == current_identity[k] for k in prior_identity if k != "environment_sha256"), "non-environment changes require the full context matrix"
     elif allocator_upgrade:
         assert settings["context"] == context and settings["kvCacheMiB"] == 1024
-        assert settings.get("allocatorCacheMiB", 0) == 0
+        assert settings.get("allocatorCacheMiB", 0) == (256 if allocator_tuning else 0)
     elif policy_upgrade:
         assert settings["context"] == context and settings.get("kvCacheMiB", 0) == 0
     else:
@@ -117,7 +136,7 @@ for state_path in states:
     if policy_upgrade:
         changed["settings"]["vllm"]["kvCacheMiB"] = 1024
     if allocator_upgrade:
-        changed["settings"]["vllm"]["allocatorCacheMiB"] = 256
+        changed["settings"]["vllm"]["allocatorCacheMiB"] = allocator_target
     restored = copy.deepcopy(changed)
     restored["settings"]["vllm"]["context"] = settings["context"]
     restored["settings"]["vllm"]["evidence"] = settings["evidence"]

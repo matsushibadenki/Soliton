@@ -1,0 +1,71 @@
+{
+  "date": "2026-10-29",
+  "scope": "Soliton workspace direct Rust/npm dependencies and official Strata runtime/build requirements",
+  "npm": {
+    "@tauri-apps/api": "2.12.4",
+    "lucide-react": "1.63.0",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "@playwright/test": "1.64.1",
+    "@tauri-apps/cli": "2.12.4",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "prettier": "3.9.10",
+    "typescript": "7.0.2",
+    "vite": "8.3.5"
+  },
+  "rustDirect": {
+    "reqwest": {
+      "version": "0.13.5",
+      "default-features": false,
+      "features": [
+        "json",
+        "stream",
+        "rustls"
+      ]
+    },
+    "tower-http": {
+      "version": "0.7.1",
+      "features": [
+        "fs",
+        "cors"
+      ]
+    },
+    "rusqlite": {
+      "version": "0.41.1",
+      "features": [
+        "bundled"
+      ]
+    },
+    "sha2": "0.11.1"
+  },
+  "strataCommit": "46c152a1310f77cd2f0ce2c7cd213962df14fe83",
+  "strataTag": "v0.2.7.1",
+  "preservedPins": [
+    "Tauri 2 architecture",
+    "Omni qualified llama runtime/model/projector revisions",
+    "vLLM-Apple qualified environments"
+  ],
+  "validation": {
+    "workspaceCheck": true,
+    "rustCoreTestsPassed": 86,
+    "upstreamServerResponses": {
+      "total": 400,
+      "passed": 399,
+      "skipped": 1
+    },
+    "upstreamMacSpeedLifeline": {
+      "total": 42,
+      "passed": 41,
+      "skipped": 1
+    },
+    "benchmarkTests": 16,
+    "cacheTests": 5,
+    "npmOutdated": {},
+    "pythonPipCheck": true,
+    "metalBuild": true,
+    "strataRealInference": "pending: existing Omni GPU qualification remains active",
+    "unsignedAppleSiliconAppBuild": true,
+    "bundleMiB": 12.54
+  }
+}

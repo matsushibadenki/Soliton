@@ -1,0 +1,26 @@
+{
+  "runtimeSmokePassed": true,
+  "asrExactTranscriptPassed": false,
+  "asrScope": "runtime smoke checked number42 only; full transcription differs and is not quality approval",
+  "solitonIntegrationPassed": false,
+  "qualified": false,
+  "ready": false,
+  "unitTestsPassed": 77,
+  "implemented": [
+    "Rust Omni request contract",
+    "opaque media asset ID validation",
+    "fail-closed processed-token budget boundary/overflow checks",
+    "authenticated read-only capability endpoint",
+    "pinned runtime/model/projector preparation and smoke script"
+  ],
+  "remaining": [
+    "owned exclusive runtime adapter",
+    "processor-aware exact pre-admission count including audio/video",
+    "Rust media storage and Document/history integration",
+    "WebView attachment/microphone/playback UI",
+    "Realtime/interleaved streaming and cancellation",
+    "ASR/TTS quality EN/JA/ZH",
+    "full identity-bound qualification and lifecycle/boundary tests"
+  ],
+  "source": "lfm3-omni-runtime-smoke-20261029.json"
+}

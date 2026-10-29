@@ -1,0 +1,67 @@
+{
+  "passed": true,
+  "certification": false,
+  "scope": "official runtime smoke only; not Soliton integration or exact multimodal admission",
+  "checks": {
+    "text": true,
+    "image": true,
+    "audio": true,
+    "video": true,
+    "audioOutput": true
+  },
+  "responses": {
+    "text": {
+      "answer": "42",
+      "usage": {
+        "completion_tokens": 2,
+        "prompt_tokens": 28,
+        "total_tokens": 30,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "processedInputTokens": 28,
+      "exactCountParity": true
+    },
+    "image": {
+      "answer": "Red",
+      "usage": {
+        "completion_tokens": 2,
+        "prompt_tokens": 100,
+        "total_tokens": 102,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "processedInputTokens": 100,
+      "exactCountParity": true
+    },
+    "audio": {
+      "answer": "The secret number is 42.",
+      "usage": {
+        "completion_tokens": 8,
+        "prompt_tokens": 52,
+        "total_tokens": 60,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "processedInputTokens": 52,
+      "exactCountParity": true
+    },
+    "video": {
+      "answer": "Red",
+      "usage": {
+        "completion_tokens": 2,
+        "prompt_tokens": 109,
+        "total_tokens": 111,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "processedInputTokens": 109,
+      "exactCountParity": true
+    }
+  },
+  "ownedShutdownClean": true
+}

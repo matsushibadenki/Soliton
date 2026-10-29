@@ -1,0 +1,145 @@
+{
+  "backend": "mlx_lm",
+  "backend_versions": {
+    "mlx_lm": "0.32.0"
+  },
+  "context_reevaluation": {
+    "capacity_context_tokens": null,
+    "configured_context_tokens": 4096,
+    "effective_context_tokens": 4096,
+    "enabled": false,
+    "kv_bytes_per_token": null,
+    "kv_capacity_bytes": null,
+    "passed": true,
+    "reevaluations": 0,
+    "source": null,
+    "status": "unavailable",
+    "weights_bytes": null
+  },
+  "load_seconds": 2.502,
+  "model": "/Users/Shared/Program/Tauri/Soliton/vLLM-apple/models/gemma-2-2b-it-4bit",
+  "model_memory_fit": {
+    "artifact_bytes": 1470988882,
+    "context_tokens": 4096,
+    "estimated_resident_bytes": 1907196498,
+    "fits": true,
+    "hard_ceiling_bytes": 7523349955
+  },
+  "passed": true,
+  "phase_profile": {
+    "backend": "mlx_lm",
+    "decode": {
+      "duration_ms": 614.63,
+      "output_tokens": 39,
+      "token_intervals": 36,
+      "tokens_per_second": 58.572,
+      "tpot": {
+        "max_ms": 17.696,
+        "mean_ms": 17.073,
+        "p50_upper_bound_ms": 25.0,
+        "p95_upper_bound_ms": 25.0
+      }
+    },
+    "hardware_fingerprint": "53c3e515f6947373255d06f3",
+    "model_id": "default_model",
+    "peak_memory_bytes": 2266578944,
+    "prefill": {
+      "prompt_tokens": 48,
+      "ttft": {
+        "max_ms": 224.732,
+        "mean_ms": 197.305,
+        "p50_upper_bound_ms": 250.0,
+        "p95_upper_bound_ms": 250.0
+      }
+    },
+    "profile_id": "89231671cc6bc52e7491f413",
+    "sample_count": 3,
+    "schema_version": 1,
+    "storage": {
+      "latency_bucket_count": 52,
+      "raw_sample_count": 0
+    },
+    "transport": {
+      "end_to_end": {
+        "max_ms": 440.469,
+        "mean_ms": 424.449,
+        "p50_upper_bound_ms": 500.0,
+        "p95_upper_bound_ms": 500.0
+      },
+      "sample_count": 3,
+      "stream_tail": {
+        "max_ms": 22.686,
+        "mean_ms": 22.267,
+        "p50_upper_bound_ms": 25.0,
+        "p95_upper_bound_ms": 25.0
+      },
+      "unavailable_sample_count": 0
+    }
+  },
+  "promotion_probe": {
+    "checks": {
+      "greedy_repeat_equal": true,
+      "sampled_repeat_equal": true,
+      "sampled_stream_equal": true,
+      "stream_completed": true
+    },
+    "determinism_mode": "greedy_only",
+    "digests": {
+      "greedy": "a72f0215ec983589f7140253c77d742103fd5bf1210ece94febc2d1562d35e6d",
+      "sampled": "a72f0215ec983589f7140253c77d742103fd5bf1210ece94febc2d1562d35e6d",
+      "sampled_stream": "a72f0215ec983589f7140253c77d742103fd5bf1210ece94febc2d1562d35e6d"
+    },
+    "model": "default_model",
+    "passed": true,
+    "schema_version": 1,
+    "seed": 1729,
+    "temperature": 0
+  },
+  "quality_smoke": {
+    "checks": {
+      "english": true,
+      "japanese": true,
+      "simplified_chinese": true
+    },
+    "match_policy": "trimmed_exact",
+    "passed": true,
+    "sample_count": 3,
+    "schema_version": 1,
+    "stores_generated_text": false
+  },
+  "requested_modes": [
+    "text"
+  ],
+  "schema_version": 1,
+  "shutdown_clean": true,
+  "soak": {
+    "certification_required": false,
+    "elapsed_seconds": 2.063,
+    "errors": {},
+    "failures": 0,
+    "latency_ms": {
+      "max": 291.027,
+      "mean": 257.907,
+      "p50_upper_bound": 250,
+      "p95_upper_bound": 500
+    },
+    "passed": true,
+    "process_alive": true,
+    "requests": 8,
+    "requests_per_second": 3.877,
+    "rss": {
+      "baseline_bytes": 2258173952,
+      "final_bytes": 2261303296,
+      "growth_bytes": 3129344,
+      "limit_bytes": 268435456,
+      "peak_bytes": 2261336064,
+      "peak_growth_bytes": 3162112
+    },
+    "stability_window_met": false,
+    "storage": {
+      "error_keys": 0,
+      "latency_buckets": 12
+    },
+    "successes": 8
+  }
+}

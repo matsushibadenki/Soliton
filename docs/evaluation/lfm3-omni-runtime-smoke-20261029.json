@@ -1,0 +1,59 @@
+{
+  "passed": true,
+  "certification": false,
+  "scope": "official runtime smoke only; not Soliton integration or exact multimodal admission",
+  "checks": {
+    "text": true,
+    "image": true,
+    "audio": true,
+    "video": true,
+    "audioOutput": true
+  },
+  "responses": {
+    "text": {
+      "answer": "42",
+      "usage": {
+        "completion_tokens": 2,
+        "prompt_tokens": 28,
+        "total_tokens": 30,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      }
+    },
+    "image": {
+      "answer": "Red",
+      "usage": {
+        "completion_tokens": 2,
+        "prompt_tokens": 100,
+        "total_tokens": 102,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      }
+    },
+    "audio": {
+      "answer": "Zashie Gretle number 42.",
+      "usage": {
+        "completion_tokens": 11,
+        "prompt_tokens": 62,
+        "total_tokens": 73,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      }
+    },
+    "video": {
+      "answer": "Red",
+      "usage": {
+        "completion_tokens": 2,
+        "prompt_tokens": 109,
+        "total_tokens": 111,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      }
+    }
+  },
+  "ownedShutdownClean": true
+}

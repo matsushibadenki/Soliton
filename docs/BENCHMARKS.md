@@ -374,3 +374,79 @@ Regression validation: 71 Rust, 69 backend/evidence/fingerprint, 30 Node workloa
 日本語: 空きアロケータの保持上限を256 MiBに設定し、メモリと応答時間の観測値を上表へ記録しました。正確な計数・互換性検査・排他稼働は維持し、既存履歴も保持しています。総RAM上限や統計的な速度向上を保証するものではありません。
 
 简体中文：空闲分配器缓存上限设为256 MiB，内存和响应时间观测值记录于上表。准确计数、兼容性检查、引擎互斥及现有历史保持不变；这不是总RAM上限，也不代表统计上已证实的加速。
+
+
+## Intermediate allocator comparison protocol — 2026-10-28
+
+The current experiment compares intermediate allocator budgets against the 256 MiB profile without changing retained KV (1,024 MiB), exact admission, total context (4,096), concurrency (one), model/weights, attention or sampling. The existing startup evidence is correctly refused after runtime and OS identity changes (current measured host: Apple M4 / 32 GiB / macOS 27.2); old proof is preserved, never rewritten.
+
+`scripts/allocator-budget-trial.py` uses the original qualification-only exact candidate-version check, model/capability/memory/context checks, streaming/sampling promotion, three phase samples, multilingual quality smoke and a short non-certifying soak. Those reports contain no architecture-evidence binding and cannot authorize ordinary startup. Each actual comparison then runs a fresh original supervised backend, with the original complete model/backend/hardware/runtime/environment identity captured before/after. Every request uses the existing CPU tokenizer worker, verifies local/backend exact prompt counts and the exact answer. Sixty-five requests per trial comprise six priming requests (excluded from warm statistics), 18 warm-before, 20 diverse long-history requests, three seeded requests and 18 warm-after. Twenty-six samples measure owned-backend physical footprint/RSS through the same public Darwin `ri_phys_footprint` field as Rust, scalar logical KV bytes, separate allocator counters and idle retention. The backend-only tree excludes the Soliton control process; do not mix its absolute footprint/latency with shared Rust API measurements.
+
+An unrelated host-load episode overlapped Xcode/Simulator startup during initial trials. Functional results and raw samples are retained, but entire contaminated trials are excluded from latency comparisons. The revised runner waits for three consecutive 20-second readings at one-minute load ≤6 and rejects trials with load >10. No unrelated processes are stopped. Each candidate has two repeats bracketed by 256 MiB controls and backend-default references; comparison replays the exact workload/count/cache-reuse signatures and rejects non-environment identity changes. Selection requires both warm-short and long-miss medians lower than the paired 256 controls (at least one by 5%), primary physical peak at least 5% below the default reference, all-path/seeded physical peak still below that reference, and at least 25% lower free-cache peak. Primary and seeded/all-path peaks are reported separately. These are engineering selection rules for observed runs, not randomized statistical proof or a total-RAM limit.
+
+Adoption requires a fresh unchanged-source full ≥1,800-second qualification at the selected explicit environment, followed by the actual Soliton shared Rust API history/seeded workload, full 108-case multilingual context matrix/108 overflow refusals, failure latch/recovery, exclusive switching, owned-tree cleanup and wrong-budget/over-context startup gates. Guarded activation re-hashes raw pilots, recomputes selection, matches selected pilot identity to the full certificate and calls the original full startup verifier before changing only budget/evidence preferences. Documents/history and all other preferences must match the backups. Final measurements and adoption status follow below when complete.
+
+日本語: 予算ごとに同じ実モデル・入力・正確な計数で比較します。高負荷と重なった試行は生データを残して速度比較から除外します。短い比較結果は起動承認に使わず、採用候補に完全な30分認証とSoliton本体の長文・境界・排他試験を実施します。通常経路とseed指定経路のメモリを区別し、速度だけが改善する設定は採用しません。
+
+简体中文：每个预算使用相同真实模型、输入及准确计数。与主机高负载重叠的试验保留原始数据，但不用于延迟比较。短期比较不授权正常启动；候选配置仍需完整30分钟认证及Soliton长文本、边界、互斥测试。分别报告普通与指定seed路径的内存，不采用仅速度改善而丢失内存收益的配置。
+
+
+### Parallel-work protocol revision and current status
+
+The initial 65-request/26-sample experiments above proved functional but could not establish a clean latency comparison during repeated Xcode/Simulator load episodes. Their raw records remain immutable; they are not combined with the revised micro cohort. The revised symmetric order is backend-default → 256 → 512 → 768 → 768 → 512 → 256 → backend-default. Each fresh micro trial contains 52 exact-count requests (six excluded priming requests, 36 warm-short requests, seven long-history requests with four genuine long misses, and three seeded requests) and 13 native/scalar samples. It uses the same 3,930–3,937-token histories across EN/JA/ZH, with retained KV 1 GiB and context 4,096 unchanged. Full 16-history/38-request + three-seeded and 108-boundary Soliton validation is still required after complete qualification.
+
+One-minute load averages lag active work, so the new observer uses public Darwin CPU counters and owned-process CPU times, converting Mach absolute ticks with the actual timebase and checking the units against the process CPU clock. It separates inference's own CPU work from background activity; no unrelated process is stopped. Before a trial it requires three five-second background readings ≤40%; before measured requests it waits for background activity to settle. Request-average background CPU must be ≤50%, with no sustained ≥75% interval of one second. Peaks and wait times are recorded rather than hidden; resource waits are outside request latency, so this is not an end-to-end throughput test. Missing/stale/unchanged counter intervals are never treated as free CPU. Short kernel snapshot intervals are awaited after the response timer, and priming data is excluded from latency statistics. Source/fixture/observer hashes must match across complete trials; resumption never overwrites earlier raw data.
+
+As of the 2026-10-28 work session, repeated background activity still prevented a complete eligible comparison. No intermediate setting, full certificate, or production speedup has been issued. Native/headless preferences remain at 256 MiB and existing history/settings are unchanged. The prior certificate is preserved and correctly refuses the changed runtime/OS identity; it cannot be refreshed by modifying its body or removing flags. Next steps are a valid repeated comparison, an eligible measured selection, original full 30-minute certification, common Rust API validation and complete guarded startup verification before changing preferences.
+
+日本語: 並行作業を止めず、短い同条件の比較で有効な測定を待っています。過負荷・途中失敗のデータを速度改善の根拠には使わず、新しい設定は未採用です。現行の256 MiB設定を保持し、変更した環境には完全な再認証が必要です。
+
+简体中文：保留并行工作，通过相同条件的短周期试验等待有效测量。高负载或中断数据不用于声称加速，尚未采用新预算。保留256 MiB配置；环境变化后仍需完整重新认证。
+
+
+## Intermediate-budget pilot result — 2026-10-28
+
+All eight valid symmetric micro trials are complete: backend default,256,512,768,768,512,256,default. Each passed52 exact answers and13 native samples; source/fixture/observer hashes, token/cache signatures, identity and live background-load guards match. Failed or overloaded attempts remain preserved and excluded. The saved [comparison](evaluation/allocator-tuning-comparison-20261028.json) was recomputed from its immutable raw files and hash-checked.
+
+| Budget MiB | Warm short ms | Long miss ms | Primary physical peak GiB | All-path physical peak GiB | Free-cache peak MiB |
+|---|---:|---:|---:|---:|---:|
+| 0 | 393.553 | 8737.001 | 4.183 | 4.498 | 1683.921 |
+| 256 | 383.907 | 8861.579 | 3.609 | 4.075 | 261.276 |
+| 512 | 380.764 | 7754.717 | 3.608 | 4.229 | 516.978 |
+| 768 | 390.562 | 8727.191 | 3.676 | 4.493 | 774.883 |
+
+512 MiB meets the predeclared selection guards: versus256, short median decreases0.82% and long median12.49%; versus default, primary physical peak decreases13.76%, all-path peak5.99%, free-cache peak69.30%. Its all-path peak remains higher than256; this is a tradeoff, not an improvement in every metric. 768 MiB fails because short median increases1.73%. Timing aggregates are geometric means of two per-run medians; memory values are maximum observed peaks.
+
+The short difference is small and may reflect residual host/thermal variability below the guard. These are Python exact-counter plus direct-backend timings, not common Rust API latency or statistical certification. No throughput/global-RAM-cap claim is made. Prior statements that the cohort was incomplete describe earlier checkpoints. Original1800-second qualification of512 has started; common Rust API integration, boundary/fault/lifecycle gates and guarded preference activation remain unfinished. Preferences stay256 with the preserved old identity-mismatched proof refused.
+
+日本語: 有効8試行が揃い、512 MiBが事前の選択条件を満たしました。短文差は小さく、Rust共通APIの速度改善は未検証です。完全認証中で設定は未変更です。
+
+简体中文：8次有效试验已完成，512 MiB满足预设选择条件。短文本差异很小，Rust公共API的加速尚未验证。完整认证正在进行，配置保持不变。
+
+
+## 512 MiB adoption — 2026-10-28
+
+Original full qualification passed1,800.235 seconds,5,863 successes/zero failures with clean shutdown and fresh identity-bound evidence. Common Rust API validation passed38 long-history requests and three seeded requests;108 exact-limit answers and108 one-token-over refusals across EN/JA/ZH, single/history, position, JSON/SSE and three rounds. Counter failure closed/latched and recovered; stop/signal reaped model and counter; switching to the existing Strata mock kept exclusive ownership. This does not certify simultaneous real Strata inference. Wrong allocator0/256 refused by identity, and512/context4097 refused by evidence limits, without inference/counter startup or history mutation.
+
+The original activation guard replayed all eight pilot files, verified hashes/selected identity, checked153 retained-KV/allocator samples and ran full startup evidence verification for both preference documents. Native/headless now select allocator512 MiB, retained KV1024 MiB/context4096/concurrency1. Original-byte backups were saved; only allocator budget/evidence changed, preserving conversations/history and other preferences. Old proofs were not edited and no compatibility/count/exclusivity guard was bypassed. [Consolidated report](evaluation/allocator-tuning-20261028.json).
+
+Evidence created 2026-10-28 14:19:43 JST, expires 2026-11-04 14:19:43 JST. Maximum sampled retained KV 1011.461 MiB across153 samples.
+
+Python pilot improvements above remain separate from common Rust integration timings: the latter validate functionality under continuing desktop work and do not establish another causal speedup. Limits apply to reusable allocator cache, not active allocations or total RAM.
+
+日本語: 完全認証・長文履歴・境界判定・計数異常復旧・起動拒否・排他切替の検証を通過し、512 MiBを採用しました。会話と他の設定は保持しました。速度比較はPython経路、Soliton検証はRust共通APIで、数値は混同しません。
+
+简体中文：完整认证、长历史、边界、计数故障恢复、启动拒绝及排他切换均通过，已采用512 MiB。保留会话和其他设置。Python性能比较与Rust公共API验证分别报告。
+
+
+## Active/backing retention investigation — 2026-10-28
+
+With allocator512 MiB/retained KV1024 MiB/context4096, a new qualification-only current-runtime diagnostic passed52 exact answers and13 native samples. Observed physical peak4338.800 MiB, MLX active peak3049.821 MiB; idle physical3192.784 MiB, active2167.430 MiB, logical retained KV611 MiB and free allocator cache365.760 MiB. Active/logical-KV/free-cache observations are non-atomic and not disjoint physical ownership; do not sum them or call their differences leaked memory.
+
+Concurrent backend cancellation edits are preserved. Actual measured identities match the adopted512 certificate on this execution path; the presence of a dirty file alone does not establish a runtime identity change. Original model/quality/compatibility preflight and exact CPU/backend count checks remain on the experimental route. This baseline does not refresh startup approval.
+
+Testing original backend CLI prefill step2048 versus512 in symmetric2048/512/512/2048 order, without changing the KV/allocator budgets, model, sampling or token admission. Complete runs must retain identical source/identity/fixture hashes, exact counts/answers and background-load guards. Memory and latency comparison is pending; no speedup or reduced retention is claimed yet. All experimental failures are retained. Ordinary settings and backend/installed sources remain untouched by this investigation.
+
+日本語: 使用中メモリと保持KVを分けた基準測定を完了し、prefill分割の往復比較を開始しました。並行変更は保持し、実行経路のidentityは採用時と一致することを確認しました。候補の効果と採用は未確定です。
+
+简体中文：已完成区分活动内存与保留KV的基线测量，并开始prefill分块的对称比较。保留并行修改，已确认实际执行路径的identity与采用时一致。候选效果及采用仍待确认。

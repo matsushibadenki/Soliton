@@ -1,0 +1,53 @@
+{
+  "passed": true,
+  "certification": false,
+  "scope": "Soliton shared Rust media/text integration; not speech/realtime qualification",
+  "checks": {
+    "unauthorizedImportRefused": true,
+    "realMediaExactCounts": true,
+    "boundaryRefusedBeforeHistoryChange": true,
+    "exclusiveSwitchPreservesHistory": true,
+    "wrongIdentityStartupRefused": true,
+    "ordinarySettingsUnchanged": true,
+    "proofUnchanged": true
+  },
+  "cases": [
+    {
+      "mode": "text",
+      "exactAnswer": true,
+      "processedTokens": 25,
+      "usageParity": true,
+      "exactBoundary": true,
+      "oneTokenOverRefused": true,
+      "historyAttachmentPreserved": true
+    },
+    {
+      "mode": "image",
+      "exactAnswer": true,
+      "processedTokens": 94,
+      "usageParity": true,
+      "exactBoundary": true,
+      "oneTokenOverRefused": true,
+      "historyAttachmentPreserved": true
+    },
+    {
+      "mode": "audio",
+      "exactAnswer": true,
+      "processedTokens": 60,
+      "usageParity": true,
+      "exactBoundary": true,
+      "oneTokenOverRefused": true,
+      "historyAttachmentPreserved": true
+    },
+    {
+      "mode": "video",
+      "exactAnswer": true,
+      "processedTokens": 103,
+      "usageParity": true,
+      "exactBoundary": true,
+      "oneTokenOverRefused": true,
+      "historyAttachmentPreserved": true
+    }
+  ],
+  "evidenceSha256": "77b88681c5b8e02b8e323288dead2deaeb868c13b369963a4b410d1f355302d3"
+}

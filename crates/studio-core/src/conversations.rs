@@ -53,7 +53,8 @@ fn size(messages: &[Message]) -> usize {
     messages
         .iter()
         .map(|m| {
-            m.content.len()
+            m.attachments.iter().map(|a| a.id.len() + 32).sum::<usize>()
+                + m.content.len()
                 + m.inference
                     .as_ref()
                     .map(|i| {
@@ -164,6 +165,7 @@ mod tests {
     use super::*;
     fn message(text: &str) -> Message {
         Message {
+            attachments: Vec::new(),
             role: "user".into(),
             content: text.into(),
             ..Default::default()

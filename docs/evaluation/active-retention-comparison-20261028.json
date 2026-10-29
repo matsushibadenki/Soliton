@@ -1,0 +1,64 @@
+{
+  "passed": true,
+  "certification": false,
+  "scope": "diagnostic prefill comparison; no startup approval",
+  "runs": [
+    {
+      "path": "/Users/Shared/Program/Tauri/Soliton/docs/benchmarks/active-retention-prefill-20261028-0-2048-attempt3.json",
+      "sha256": "7d7a425fd19d2de6b71c2f1bda95ade12a299cdc4db08138d2f1300145928dbb",
+      "prefillStepSize": 2048,
+      "activePeakBytes": 3197968932,
+      "idleActiveBytes": 2272715304,
+      "warmMedianMs": 386.8894370025373,
+      "longMissMedianMs": 8206.383958498918,
+      "physicalPeakBytes": 4545219416,
+      "physicalPrimaryPeakBytes": 3873459032,
+      "cachePeakBytes": 542089636,
+      "idlePhysicalBytes": 3344812888
+    },
+    {
+      "path": "/Users/Shared/Program/Tauri/Soliton/docs/benchmarks/active-retention-prefill-20261028-1-512-attempt8.json",
+      "sha256": "26e3efd989a8f6a51df23170666488d2d74625b43088b88c5ab1073d571eeee0",
+      "prefillStepSize": 512,
+      "activePeakBytes": 3197968932,
+      "idleActiveBytes": 2272715304,
+      "warmMedianMs": 363.61810400001104,
+      "longMissMedianMs": 6938.641020999967,
+      "physicalPeakBytes": 4546055072,
+      "physicalPrimaryPeakBytes": 3878833080,
+      "cachePeakBytes": 542089124,
+      "idlePhysicalBytes": 3343535056
+    },
+    {
+      "path": "/Users/Shared/Program/Tauri/Soliton/docs/benchmarks/active-retention-prefill-20261028-2-512-attempt2.json",
+      "sha256": "50c6ab9375d6d281f68777534bf2ae34ab502289e66be94923aa9016eb2346ee",
+      "prefillStepSize": 512,
+      "activePeakBytes": 3197968932,
+      "idleActiveBytes": 2272715304,
+      "warmMedianMs": 376.77533349994974,
+      "longMissMedianMs": 7160.531999999989,
+      "physicalPeakBytes": 4546579312,
+      "physicalPrimaryPeakBytes": 3879553904,
+      "cachePeakBytes": 542089636,
+      "idlePhysicalBytes": 3343027080
+    },
+    {
+      "path": "/Users/Shared/Program/Tauri/Soliton/docs/benchmarks/active-retention-prefill-20261028-3-2048-attempt1.json",
+      "sha256": "5c538c1c4742d30bcfc6508cb6645850c8cae51febd359d32ecad1776c51891b",
+      "prefillStepSize": 2048,
+      "activePeakBytes": 3197968932,
+      "idleActiveBytes": 2272715304,
+      "warmMedianMs": 364.38237499999104,
+      "longMissMedianMs": 7306.225645999916,
+      "physicalPeakBytes": 4475636640,
+      "physicalPrimaryPeakBytes": 3873278904,
+      "cachePeakBytes": 542089124,
+      "idlePhysicalBytes": 3342470048
+    }
+  ],
+  "limitations": [
+    "Not shared Rust API latency.",
+    "Parallel desktop work remains running; thermal/load variation remains.",
+    "No adoption without fresh full qualification and Soliton integration."
+  ]
+}

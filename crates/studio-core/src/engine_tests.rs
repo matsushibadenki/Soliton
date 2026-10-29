@@ -11,6 +11,7 @@ fn studio() -> Arc<Studio> {
 async fn switching_preserves_history_metrics_and_rejects_active_requests() {
     let s = studio();
     s.document.write().await.messages.push(Message {
+        attachments: Vec::new(),
         role: "user".into(),
         content: "Keep this conversation".into(),
         ..Default::default()
@@ -272,4 +273,66 @@ fn allocator_policy_requires_qualified_kv_and_serializes_explicitly() {
         s.allocator_cache_mib = value;
         assert!(!s.valid());
     }
+}
+
+#[cfg(unix)]
+#[tokio::test]
+async fn omni_switch_uses_shared_ownership_and_missing_evidence_never_spawns() {
+    let s = studio();
+    s.document.write().await.messages.push(Message {
+        role: "user".into(),
+        content: "preserve media history".into(),
+        ..Default::default()
+    });
+    let child = Command::new("/bin/sleep")
+        .arg("60")
+        .process_group(0)
+        .spawn()
+        .unwrap();
+    let pid = child.id().unwrap();
+    {
+        let mut p = s.process.lock().await;
+        p.group = Some(pid);
+        p.child = Some(child);
+    }
+    let active = InferenceGuard::new(s.clone()).await;
+    assert!(s.switch_engine(Engine::Lfm3Omni).await.is_err());
+    drop(active);
+    s.switch_engine(Engine::Lfm3Omni).await.unwrap();
+    assert!(s.process.lock().await.child.is_none());
+    assert!(s.start().await.is_err());
+    assert!(s.process.lock().await.child.is_none());
+    assert_eq!(
+        s.document.read().await.messages[0].content,
+        "preserve media history"
+    );
+    s.switch_engine(Engine::Strata).await.unwrap();
+}
+
+#[tokio::test]
+async fn omni_bad_count_latches_before_retrying_or_mutating_history() {
+    use std::sync::atomic::AtomicUsize;
+    let calls = Arc::new(AtomicUsize::new(0));
+    let count_calls = calls.clone();
+    let router = Router::new().route(
+        "/v1/chat/completions/input_tokens",
+        post(move || {
+            let calls = count_calls.clone();
+            async move {
+                calls.fetch_add(1, Ordering::SeqCst);
+                Json(json!({"input_tokens":true}))
+            }
+        }),
+    );
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let port = listener.local_addr().unwrap().port();
+    let task = tokio::spawn(async move { axum::serve(listener, router).await.unwrap() });
+    let s = studio();
+    let body = json!({"messages":[{"role":"user","content":"fixture"}],"max_tokens":1});
+    assert!(s.check_omni(port, "key", &body, 4096).await.is_err());
+    assert!(s.omni_counter_failed.load(Ordering::SeqCst));
+    assert!(s.check_omni(port, "key", &body, 4096).await.is_err());
+    assert_eq!(calls.load(Ordering::SeqCst), 1);
+    assert!(s.document.read().await.messages.is_empty());
+    task.abort();
 }

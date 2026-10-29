@@ -9,12 +9,14 @@ pub enum Engine {
     #[default]
     Strata,
     VllmApple,
+    Lfm3Omni,
 }
 impl Engine {
     pub fn label(self) -> &'static str {
         match self {
             Self::Strata => "Strata",
             Self::VllmApple => "vLLM-Apple",
+            Self::Lfm3Omni => "LFM3-Omni",
         }
     }
 }

@@ -1,3 +1,11 @@
+# Current dependency update · 2026-10-29
+
+Strata v0.2.7.1 (`46c152a1`), source engine 0.1.53; [current checks and GPU qualification limits](DEPENDENCY_UPDATE_20261029.md). Earlier sections are historical snapshots.
+
+# Current source update · 2026-10-26
+
+Strata is now v0.2.6 (`4b9e05a2`), source engine 0.1.51. See [latest update, real-inference evidence and limits](DEPENDENCY_UPDATE_20261026.md). Earlier sections are historical validation snapshots.
+
 # Current source update · 2026-10-24
 
 Strata source is now v0.2.4 (`96ca4383`). See [current dependency update and validation limits](DEPENDENCY_UPDATE_20261024.md). Real inference results below apply only to the historical 0.2.1 installation.

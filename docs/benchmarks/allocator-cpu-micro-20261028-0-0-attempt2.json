@@ -1,0 +1,1903 @@
+{
+  "hostGuardMode": "liveCPU",
+  "hostGuardSha256": "69bec40b42d58cddf5a58680471d7770f54150acac350f5490f8e04dfaae72a8",
+  "workloadKind": "micro",
+  "workloadSha256": "b4056e6ee36fdf8f7406b2e9c6d4016a41e4b12f5bccfb8a2a47fa4b31dce3c9",
+  "fixturesSha256": "50dd132fcc6bfd13620b2c707dca3d445c93f75b4c6c7a1965852cc562fe9fec",
+  "passed": false,
+  "scope": "qualification-only pilot; not Soliton startup approval",
+  "certification": false,
+  "allocatorCacheMiB": 0,
+  "kvCacheMiB": 1024,
+  "context": 4096,
+  "startedAt": 1793157641.160424,
+  "loadAtStart": [
+    2.41650390625,
+    17.7900390625,
+    45.28955078125
+  ],
+  "cases": [
+    {
+      "cpuMaxPercent": 26.984126984126984,
+      "loadBefore": 2.93798828125,
+      "loadAfter": 2.93798828125,
+      "phase": "prime",
+      "index": 0,
+      "exact": true,
+      "promptTokens": 535,
+      "cachedTokens": 0,
+      "elapsedMs": 1236.5310000004683
+    },
+    {
+      "cpuMaxPercent": 18.51851851851852,
+      "loadBefore": 2.93798828125,
+      "loadAfter": 2.93798828125,
+      "phase": "prime",
+      "index": 1,
+      "exact": true,
+      "promptTokens": 54,
+      "cachedTokens": 4,
+      "elapsedMs": 467.3767909989692
+    },
+    {
+      "cpuMaxPercent": 18.51851851851852,
+      "loadBefore": 2.93798828125,
+      "loadAfter": 2.93798828125,
+      "phase": "prime",
+      "index": 2,
+      "exact": true,
+      "promptTokens": 537,
+      "cachedTokens": 251,
+      "elapsedMs": 848.0224579998321
+    },
+    {
+      "cpuMaxPercent": 17.6,
+      "loadBefore": 2.93798828125,
+      "loadAfter": 2.93798828125,
+      "phase": "prime",
+      "index": 3,
+      "exact": true,
+      "promptTokens": 53,
+      "cachedTokens": 4,
+      "elapsedMs": 487.85962500005553
+    },
+    {
+      "cpuMaxPercent": 19.2,
+      "loadBefore": 2.93798828125,
+      "loadAfter": 3.10302734375,
+      "phase": "prime",
+      "index": 4,
+      "exact": true,
+      "promptTokens": 530,
+      "cachedTokens": 251,
+      "elapsedMs": 798.2274999994843
+    },
+    {
+      "cpuMaxPercent": 19.2,
+      "loadBefore": 3.10302734375,
+      "loadAfter": 3.10302734375,
+      "phase": "prime",
+      "index": 5,
+      "exact": true,
+      "promptTokens": 48,
+      "cachedTokens": 4,
+      "elapsedMs": 465.6965410013072
+    },
+    {
+      "cpuMaxPercent": 18.278145695364238,
+      "loadBefore": 3.10302734375,
+      "loadAfter": 3.10302734375,
+      "phase": "warm-before",
+      "index": 0,
+      "exact": true,
+      "promptTokens": 535,
+      "cachedTokens": 534,
+      "elapsedMs": 380.00995900074486
+    },
+    {
+      "cpuMaxPercent": 18.97590361445783,
+      "loadBefore": 3.10302734375,
+      "loadAfter": 3.10302734375,
+      "phase": "warm-before",
+      "index": 1,
+      "exact": true,
+      "promptTokens": 54,
+      "cachedTokens": 53,
+      "elapsedMs": 364.4424579997576
+    },
+    {
+      "cpuMaxPercent": 27.36842105263158,
+      "loadBefore": 3.10302734375,
+      "loadAfter": 3.10302734375,
+      "phase": "warm-before",
+      "index": 2,
+      "exact": true,
+      "promptTokens": 537,
+      "cachedTokens": 536,
+      "elapsedMs": 386.80104200102505
+    },
+    {
+      "cpuMaxPercent": 31.511254019292604,
+      "loadBefore": 3.10302734375,
+      "loadAfter": 3.10302734375,
+      "phase": "warm-before",
+      "index": 3,
+      "exact": true,
+      "promptTokens": 53,
+      "cachedTokens": 52,
+      "elapsedMs": 409.1049580001709
+    },
+    {
+      "cpuMaxPercent": 22.04724409448819,
+      "loadBefore": 3.10302734375,
+      "loadAfter": 3.10302734375,
+      "phase": "warm-before",
+      "index": 4,
+      "exact": true,
+      "promptTokens": 530,
+      "cachedTokens": 529,
+      "elapsedMs": 349.30829199947766
+    },
+    {
+      "cpuMaxPercent": 22.04724409448819,
+      "loadBefore": 3.10302734375,
+      "loadAfter": 3.10302734375,
+      "phase": "warm-before",
+      "index": 5,
+      "exact": true,
+      "promptTokens": 48,
+      "cachedTokens": 47,
+      "elapsedMs": 357.8287909986102
+    },
+    {
+      "cpuMaxPercent": 23.11320754716981,
+      "loadBefore": 3.10302734375,
+      "loadAfter": 3.10302734375,
+      "phase": "warm-before",
+      "index": 0,
+      "exact": true,
+      "promptTokens": 535,
+      "cachedTokens": 534,
+      "elapsedMs": 360.5869580005674
+    },
+    {
+      "cpuMaxPercent": 21.428571428571427,
+      "loadBefore": 3.10302734375,
+      "loadAfter": 3.10302734375,
+      "phase": "warm-before",
+      "index": 1,
+      "exact": true,
+      "promptTokens": 54,
+      "cachedTokens": 53,
+      "elapsedMs": 383.5956670009182
+    },
+    {
+      "cpuMaxPercent": 20.463320463320464,
+      "loadBefore": 3.10302734375,
+      "loadAfter": 3.10302734375,
+      "phase": "warm-before",
+      "index": 2,
+      "exact": true,
+      "promptTokens": 537,
+      "cachedTokens": 536,
+      "elapsedMs": 369.77166699944064
+    },
+    {
+      "cpuMaxPercent": 20.463320463320464,
+      "loadBefore": 3.10302734375,
+      "loadAfter": 3.10302734375,
+      "phase": "warm-before",
+      "index": 3,
+      "exact": true,
+      "promptTokens": 53,
+      "cachedTokens": 52,
+      "elapsedMs": 354.3316249997588
+    },
+    {
+      "cpuMaxPercent": 20.149253731343283,
+      "loadBefore": 2.8544921875,
+      "loadAfter": 2.8544921875,
+      "phase": "warm-before",
+      "index": 4,
+      "exact": true,
+      "promptTokens": 530,
+      "cachedTokens": 529,
+      "elapsedMs": 371.27858299936634
+    },
+    {
+      "cpuMaxPercent": 21.9435736677116,
+      "loadBefore": 2.8544921875,
+      "loadAfter": 2.8544921875,
+      "phase": "warm-before",
+      "index": 5,
+      "exact": true,
+      "promptTokens": 48,
+      "cachedTokens": 47,
+      "elapsedMs": 373.3438330000354
+    },
+    {
+      "cpuMaxPercent": 17.408906882591094,
+      "loadBefore": 2.8544921875,
+      "loadAfter": 2.8544921875,
+      "phase": "warm-before",
+      "index": 0,
+      "exact": true,
+      "promptTokens": 535,
+      "cachedTokens": 534,
+      "elapsedMs": 344.1137500012701
+    },
+    {
+      "cpuMaxPercent": 19.26345609065156,
+      "loadBefore": 2.8544921875,
+      "loadAfter": 2.8544921875,
+      "phase": "warm-before",
+      "index": 1,
+      "exact": true,
+      "promptTokens": 54,
+      "cachedTokens": 53,
+      "elapsedMs": 356.3363749999553
+    },
+    {
+      "cpuMaxPercent": 17.964071856287426,
+      "loadBefore": 2.8544921875,
+      "loadAfter": 2.8544921875,
+      "phase": "warm-before",
+      "index": 2,
+      "exact": true,
+      "promptTokens": 537,
+      "cachedTokens": 536,
+      "elapsedMs": 353.30250000151864
+    },
+    {
+      "cpuMaxPercent": 17.695473251028808,
+      "loadBefore": 2.8544921875,
+      "loadAfter": 2.8544921875,
+      "phase": "warm-before",
+      "index": 3,
+      "exact": true,
+      "promptTokens": 53,
+      "cachedTokens": 52,
+      "elapsedMs": 363.14404199947603
+    },
+    {
+      "cpuMaxPercent": 17.391304347826086,
+      "loadBefore": 2.8544921875,
+      "loadAfter": 2.8544921875,
+      "phase": "warm-before",
+      "index": 4,
+      "exact": true,
+      "promptTokens": 530,
+      "cachedTokens": 529,
+      "elapsedMs": 362.03733299953456
+    },
+    {
+      "cpuMaxPercent": 20.03105590062112,
+      "loadBefore": 2.8544921875,
+      "loadAfter": 2.8544921875,
+      "phase": "warm-before",
+      "index": 5,
+      "exact": true,
+      "promptTokens": 48,
+      "cachedTokens": 47,
+      "elapsedMs": 384.05354199858266
+    },
+    {
+      "cpuMaxPercent": 31.57894736842105,
+      "loadBefore": 2.8544921875,
+      "loadAfter": 2.5751953125,
+      "phase": "anchor-cold",
+      "index": 0,
+      "exact": true,
+      "promptTokens": 3935,
+      "cachedTokens": 4,
+      "elapsedMs": 7227.542374999757
+    },
+    {
+      "cpuMaxPercent": 25.510204081632654,
+      "loadBefore": 2.5751953125,
+      "loadAfter": 2.5751953125,
+      "phase": "anchor-hot",
+      "index": 0,
+      "exact": true,
+      "promptTokens": 3935,
+      "cachedTokens": 3934,
+      "elapsedMs": 429.07354199996917
+    },
+    {
+      "cpuMaxPercent": 31.818181818181817,
+      "loadBefore": 2.5751953125,
+      "loadAfter": 2.44873046875,
+      "phase": "churn",
+      "index": 1,
+      "exact": true,
+      "promptTokens": 3937,
+      "cachedTokens": 8,
+      "elapsedMs": 7309.399708001365
+    },
+    {
+      "cpuMaxPercent": 21.428571428571427,
+      "loadBefore": 2.44873046875,
+      "loadAfter": 2.23193359375,
+      "phase": "churn",
+      "index": 2,
+      "exact": true,
+      "promptTokens": 3930,
+      "cachedTokens": 8,
+      "elapsedMs": 7504.214249998768
+    },
+    {
+      "cpuMaxPercent": 19.367588932806324,
+      "loadBefore": 2.23193359375,
+      "loadAfter": 2.453125,
+      "phase": "revisit",
+      "index": 0,
+      "exact": true,
+      "promptTokens": 3935,
+      "cachedTokens": 8,
+      "elapsedMs": 7590.185000000929
+    },
+    {
+      "cpuMaxPercent": 22.5,
+      "loadBefore": 2.453125,
+      "loadAfter": 2.453125,
+      "phase": "reheat",
+      "index": 0,
+      "exact": true,
+      "promptTokens": 3935,
+      "cachedTokens": 3934,
+      "elapsedMs": 488.86033300004783
+    },
+    {
+      "cpuMaxPercent": 32.432432432432435,
+      "loadBefore": 2.453125,
+      "loadAfter": 3.16455078125,
+      "phase": "recent",
+      "index": 2,
+      "exact": true,
+      "promptTokens": 3930,
+      "cachedTokens": 8,
+      "elapsedMs": 7530.753166998693
+    },
+    {
+      "cpuMaxPercent": 33.333333333333336,
+      "loadBefore": 3.16455078125,
+      "loadAfter": 2.9111328125,
+      "phase": "seeded",
+      "index": 1,
+      "exact": true,
+      "promptTokens": 3937,
+      "cachedTokens": 8,
+      "elapsedMs": 8061.895165999886
+    },
+    {
+      "cpuMaxPercent": 19.27710843373494,
+      "loadBefore": 2.837890625,
+      "loadAfter": 2.837890625,
+      "phase": "seeded",
+      "index": 2,
+      "exact": true,
+      "promptTokens": 3930,
+      "cachedTokens": 3929,
+      "elapsedMs": 384.8114579996036
+    }
+  ],
+  "samples": [
+    {
+      "cpuBusyPercent": 12.992125984251969,
+      "phase": "before-churn",
+      "physicalBytes": 2944912264,
+      "rssBytes": 2261876736,
+      "processCount": 1,
+      "kvCache": {
+        "retained_bytes": 193822720,
+        "max_bytes": 1073741824,
+        "entries": 6,
+        "accounting": "LRU tensor bytes, not unique physical memory",
+        "allocator": {
+          "active_bytes": 1825432094,
+          "cache_bytes": 384147326,
+          "peak_bytes": 2174047884,
+          "consistency": "non_atomic",
+          "configured_limit_bytes": null,
+          "effective_limit_bytes": null
+        }
+      },
+      "availableBytes": 8039071744,
+      "load": [
+        2.8544921875,
+        16.43603515625,
+        43.845703125
+      ],
+      "sampleRetries": 0
+    },
+    {
+      "cpuBusyPercent": 14.509803921568627,
+      "phase": "anchor-cold",
+      "physicalBytes": 3452849056,
+      "rssBytes": 2263384064,
+      "processCount": 1,
+      "kvCache": {
+        "retained_bytes": 613949440,
+        "max_bytes": 1073741824,
+        "entries": 7,
+        "accounting": "LRU tensor bytes, not unique physical memory",
+        "allocator": {
+          "active_bytes": 2674008606,
+          "cache_bytes": 41859260,
+          "peak_bytes": 2723867226,
+          "consistency": "non_atomic",
+          "configured_limit_bytes": null,
+          "effective_limit_bytes": null
+        }
+      },
+      "availableBytes": 8026603520,
+      "load": [
+        2.5751953125,
+        15.927734375,
+        43.34423828125
+      ],
+      "sampleRetries": 0
+    },
+    {
+      "cpuBusyPercent": 25.510204081632654,
+      "phase": "anchor-hot",
+      "physicalBytes": 4492118944,
+      "rssBytes": 2265219072,
+      "processCount": 1,
+      "kvCache": {
+        "retained_bytes": 613949440,
+        "max_bytes": 1073741824,
+        "entries": 7,
+        "accounting": "LRU tensor bytes, not unique physical memory",
+        "allocator": {
+          "active_bytes": 2246320670,
+          "cache_bytes": 1506982204,
+          "peak_bytes": 3009151981,
+          "consistency": "non_atomic",
+          "configured_limit_bytes": null,
+          "effective_limit_bytes": null
+        }
+      },
+      "availableBytes": 7305658368,
+      "load": [
+        2.5751953125,
+        15.927734375,
+        43.34423828125
+      ],
+      "sampleRetries": 0
+    },
+    {
+      "cpuBusyPercent": 14.52991452991453,
+      "phase": "churn-1",
+      "physicalBytes": 3874655136,
+      "rssBytes": 2264481792,
+      "processCount": 1,
+      "kvCache": {
+        "retained_bytes": 1034289152,
+        "max_bytes": 1073741824,
+        "entries": 8,
+        "accounting": "LRU tensor bytes, not unique physical memory",
+        "allocator": {
+          "active_bytes": 3094880798,
+          "cache_bytes": 41793312,
+          "peak_bytes": 3144165970,
+          "consistency": "non_atomic",
+          "configured_limit_bytes": null,
+          "effective_limit_bytes": null
+        }
+      },
+      "availableBytes": 8312684544,
+      "load": [
+        2.44873046875,
+        15.6796875,
+        43.095703125
+      ],
+      "sampleRetries": 0
+    },
+    {
+      "cpuBusyPercent": 14.908256880733944,
+      "phase": "churn-2",
+      "physicalBytes": 3565538208,
+      "rssBytes": 2265661440,
+      "processCount": 1,
+      "kvCache": {
+        "retained_bytes": 839933952,
+        "max_bytes": 1073741824,
+        "entries": 2,
+        "accounting": "LRU tensor bytes, not unique physical memory",
+        "allocator": {
+          "active_bytes": 2784748062,
+          "cache_bytes": 41760194,
+          "peak_bytes": 3144165970,
+          "consistency": "non_atomic",
+          "configured_limit_bytes": null,
+          "effective_limit_bytes": null
+        }
+      },
+      "availableBytes": 8645705728,
+      "load": [
+        2.23193359375,
+        15.19580078125,
+        42.60302734375
+      ],
+      "sampleRetries": 0
+    },
+    {
+      "cpuBusyPercent": 13.8,
+      "phase": "revisit",
+      "physicalBytes": 3548220320,
+      "rssBytes": 2265219072,
+      "processCount": 1,
+      "kvCache": {
+        "retained_bytes": 839720960,
+        "max_bytes": 1073741824,
+        "entries": 2,
+        "accounting": "LRU tensor bytes, not unique physical memory",
+        "allocator": {
+          "active_bytes": 2767708702,
+          "cache_bytes": 41794236,
+          "peak_bytes": 3144165970,
+          "consistency": "non_atomic",
+          "configured_limit_bytes": null,
+          "effective_limit_bytes": null
+        }
+      },
+      "availableBytes": 8614739968,
+      "load": [
+        2.453125,
+        15.0263671875,
+        42.38232421875
+      ],
+      "sampleRetries": 0
+    },
+    {
+      "cpuBusyPercent": 20.0,
+      "phase": "reheat",
+      "physicalBytes": 4427287456,
+      "rssBytes": 2268069888,
+      "processCount": 1,
+      "kvCache": {
+        "retained_bytes": 420126720,
+        "max_bytes": 1073741824,
+        "entries": 1,
+        "accounting": "LRU tensor bytes, not unique physical memory",
+        "allocator": {
+          "active_bytes": 1920000542,
+          "cache_bytes": 1765718856,
+          "peak_bytes": 3144165970,
+          "consistency": "non_atomic",
+          "configured_limit_bytes": null,
+          "effective_limit_bytes": null
+        }
+      },
+      "availableBytes": 7744569344,
+      "load": [
+        2.453125,
+        15.0263671875,
+        42.38232421875
+      ],
+      "sampleRetries": 0
+    },
+    {
+      "cpuBusyPercent": 17.2972972972973,
+      "phase": "recent",
+      "physicalBytes": 3547990944,
+      "rssBytes": 2264170496,
+      "processCount": 1,
+      "kvCache": {
+        "retained_bytes": 839720960,
+        "max_bytes": 1073741824,
+        "entries": 2,
+        "accounting": "LRU tensor bytes, not unique physical memory",
+        "allocator": {
+          "active_bytes": 2768560670,
+          "cache_bytes": 41760200,
+          "peak_bytes": 3144165970,
+          "consistency": "non_atomic",
+          "configured_limit_bytes": null,
+          "effective_limit_bytes": null
+        }
+      },
+      "availableBytes": 8578629632,
+      "load": [
+        3.16455078125,
+        14.76220703125,
+        41.96875
+      ],
+      "sampleRetries": 0
+    },
+    {
+      "cpuBusyPercent": 19.27710843373494,
+      "phase": "seeded-1",
+      "physicalBytes": 4375038880,
+      "rssBytes": 2265464832,
+      "processCount": 1,
+      "kvCache": {
+        "retained_bytes": 866451456,
+        "max_bytes": 1073741824,
+        "entries": 2,
+        "accounting": "LRU tensor bytes, not unique physical memory",
+        "allocator": {
+          "active_bytes": 2777932324,
+          "cache_bytes": 858268068,
+          "peak_bytes": 3671509952,
+          "consistency": "non_atomic",
+          "configured_limit_bytes": null,
+          "effective_limit_bytes": null
+        }
+      },
+      "availableBytes": 7603585024,
+      "load": [
+        2.837890625,
+        14.30908203125,
+        41.48974609375
+      ],
+      "sampleRetries": 0
+    },
+    {
+      "cpuBusyPercent": 18.89763779527559,
+      "phase": "seeded-2",
+      "physicalBytes": 3942239136,
+      "rssBytes": 2265645056,
+      "processCount": 1,
+      "kvCache": {
+        "retained_bytes": 866451456,
+        "max_bytes": 1073741824,
+        "entries": 2,
+        "accounting": "LRU tensor bytes, not unique physical memory",
+        "allocator": {
+          "active_bytes": 3197952548,
+          "cache_bytes": 5300700,
+          "peak_bytes": 3671509952,
+          "consistency": "non_atomic",
+          "configured_limit_bytes": null,
+          "effective_limit_bytes": null
+        }
+      },
+      "availableBytes": 8193327104,
+      "load": [
+        2.837890625,
+        14.30908203125,
+        41.48974609375
+      ],
+      "sampleRetries": 0
+    }
+  ],
+  "preflightSha256": "12fd796efe350683fcd980cf103849541aeaff67369ed37364ba1c58bedc03fb",
+  "shutdownClean": true,
+  "counterStopped": true,
+  "cpuTrace": [
+    {
+      "at": 15832.37929925,
+      "busyPercent": 16.69172932330827,
+      "load1m": 2.41650390625
+    },
+    {
+      "at": 15832.631049291,
+      "busyPercent": 37.5,
+      "load1m": 2.41650390625
+    },
+    {
+      "at": 15833.396240375,
+      "busyPercent": 21.645021645021647,
+      "load1m": 2.41650390625
+    },
+    {
+      "at": 15833.646391666,
+      "busyPercent": 19.35483870967742,
+      "load1m": 2.41650390625
+    },
+    {
+      "at": 15833.901475208,
+      "busyPercent": 25.925925925925927,
+      "load1m": 2.41650390625
+    },
+    {
+      "at": 15834.41159725,
+      "busyPercent": 23.590504451038576,
+      "load1m": 2.41650390625
+    },
+    {
+      "at": 15834.666663333,
+      "busyPercent": 27.888446215139442,
+      "load1m": 2.41650390625
+    },
+    {
+      "at": 15835.424446041,
+      "busyPercent": 34.979973297730304,
+      "load1m": 2.41650390625
+    },
+    {
+      "at": 15835.6795965,
+      "busyPercent": 42.30769230769231,
+      "load1m": 2.41650390625
+    },
+    {
+      "at": 15836.444813916,
+      "busyPercent": 17.89924973204716,
+      "load1m": 2.41650390625
+    },
+    {
+      "at": 15836.6994595,
+      "busyPercent": 22.529644268774703,
+      "load1m": 2.462890625
+    },
+    {
+      "at": 15836.95456725,
+      "busyPercent": 28.35820895522388,
+      "load1m": 2.462890625
+    },
+    {
+      "at": 15837.461231708,
+      "busyPercent": 25.22851919561243,
+      "load1m": 2.462890625
+    },
+    {
+      "at": 15838.4764265,
+      "busyPercent": 16.725043782837126,
+      "load1m": 2.462890625
+    },
+    {
+      "at": 15838.727759458,
+      "busyPercent": 27.027027027027028,
+      "load1m": 2.462890625
+    },
+    {
+      "at": 15839.483280666,
+      "busyPercent": 17.845484221980414,
+      "load1m": 2.462890625
+    },
+    {
+      "at": 15839.738346416,
+      "busyPercent": 9.195402298850574,
+      "load1m": 2.462890625
+    },
+    {
+      "at": 15840.49727675,
+      "busyPercent": 22.004357298474947,
+      "load1m": 2.462890625
+    },
+    {
+      "at": 15841.511197791,
+      "busyPercent": 17.78221778221778,
+      "load1m": 2.462890625
+    },
+    {
+      "at": 15841.766330791,
+      "busyPercent": 18.11023622047244,
+      "load1m": 2.666015625
+    },
+    {
+      "at": 15842.018444791,
+      "busyPercent": 20.647773279352226,
+      "load1m": 2.666015625
+    },
+    {
+      "at": 15842.272422583,
+      "busyPercent": 25.984251968503937,
+      "load1m": 2.666015625
+    },
+    {
+      "at": 15842.527493416,
+      "busyPercent": 22.8,
+      "load1m": 2.666015625
+    },
+    {
+      "at": 15842.782638916,
+      "busyPercent": 18.650793650793652,
+      "load1m": 2.666015625
+    },
+    {
+      "at": 15843.032812458,
+      "busyPercent": 16.666666666666668,
+      "load1m": 2.666015625
+    },
+    {
+      "at": 15843.285644041,
+      "busyPercent": 17.46031746031746,
+      "load1m": 2.666015625
+    },
+    {
+      "at": 15843.540744041,
+      "busyPercent": 24.302788844621514,
+      "load1m": 2.666015625
+    },
+    {
+      "at": 15843.795832958,
+      "busyPercent": 19.841269841269842,
+      "load1m": 2.666015625
+    },
+    {
+      "at": 15844.050921416,
+      "busyPercent": 23.41269841269841,
+      "load1m": 2.666015625
+    },
+    {
+      "at": 15844.306015375,
+      "busyPercent": 26.58730158730159,
+      "load1m": 2.666015625
+    },
+    {
+      "at": 15844.556300291,
+      "busyPercent": 19.67871485943775,
+      "load1m": 2.666015625
+    },
+    {
+      "at": 15844.8084665,
+      "busyPercent": 28.4,
+      "load1m": 2.666015625
+    },
+    {
+      "at": 15845.062814,
+      "busyPercent": 22.48995983935743,
+      "load1m": 2.666015625
+    },
+    {
+      "at": 15845.317883041,
+      "busyPercent": 25.19685039370079,
+      "load1m": 2.666015625
+    },
+    {
+      "at": 15845.572949833,
+      "busyPercent": 28.0,
+      "load1m": 2.666015625
+    },
+    {
+      "at": 15845.828006416,
+      "busyPercent": 19.841269841269842,
+      "load1m": 2.666015625
+    },
+    {
+      "at": 15846.078176208,
+      "busyPercent": 10.144927536231885,
+      "load1m": 2.666015625
+    },
+    {
+      "at": 15846.58832525,
+      "busyPercent": 20.0,
+      "load1m": 2.9326171875
+    },
+    {
+      "at": 15846.8433815,
+      "busyPercent": 21.91235059760956,
+      "load1m": 2.9326171875
+    },
+    {
+      "at": 15847.098431375,
+      "busyPercent": 17.647058823529413,
+      "load1m": 2.9326171875
+    },
+    {
+      "at": 15847.603592458,
+      "busyPercent": 27.982326951399116,
+      "load1m": 2.9326171875
+    },
+    {
+      "at": 15848.618780666,
+      "busyPercent": 23.833167825223438,
+      "load1m": 2.9326171875
+    },
+    {
+      "at": 15849.629292,
+      "busyPercent": 22.24448897795591,
+      "load1m": 2.9326171875
+    },
+    {
+      "at": 15849.884364791,
+      "busyPercent": 25.6,
+      "load1m": 2.9326171875
+    },
+    {
+      "at": 15850.139428958,
+      "busyPercent": 23.50597609561753,
+      "load1m": 2.9326171875
+    },
+    {
+      "at": 15850.394507666,
+      "busyPercent": 20.58823529411765,
+      "load1m": 2.9326171875
+    },
+    {
+      "at": 15850.647154625,
+      "busyPercent": 24.597701149425287,
+      "load1m": 2.9326171875
+    },
+    {
+      "at": 15850.902231125,
+      "busyPercent": 23.228346456692915,
+      "load1m": 2.9326171875
+    },
+    {
+      "at": 15851.153981125,
+      "busyPercent": 18.14516129032258,
+      "load1m": 2.9326171875
+    },
+    {
+      "at": 15851.408751375,
+      "busyPercent": 32.669322709163346,
+      "load1m": 2.9326171875
+    },
+    {
+      "at": 15851.663988291,
+      "busyPercent": 45.0199203187251,
+      "load1m": 2.93798828125
+    },
+    {
+      "at": 15851.919091916,
+      "busyPercent": 32.78688524590164,
+      "load1m": 2.93798828125
+    },
+    {
+      "at": 15852.678069583,
+      "busyPercent": 18.78980891719745,
+      "load1m": 2.93798828125
+    },
+    {
+      "at": 15852.933269875,
+      "busyPercent": 23.6,
+      "load1m": 2.93798828125
+    },
+    {
+      "at": 15853.188398625,
+      "busyPercent": 26.984126984126984,
+      "load1m": 2.93798828125
+    },
+    {
+      "at": 15853.693094708,
+      "busyPercent": 11.320754716981131,
+      "load1m": 2.93798828125
+    },
+    {
+      "at": 15853.948148666,
+      "busyPercent": 18.51851851851852,
+      "load1m": 2.93798828125
+    },
+    {
+      "at": 15854.705784458,
+      "busyPercent": 15.831134564643799,
+      "load1m": 2.93798828125
+    },
+    {
+      "at": 15855.7175825,
+      "busyPercent": 17.6,
+      "load1m": 2.93798828125
+    },
+    {
+      "at": 15855.971147416,
+      "busyPercent": 13.671875,
+      "load1m": 2.93798828125
+    },
+    {
+      "at": 15856.226285166,
+      "busyPercent": 19.2,
+      "load1m": 2.93798828125
+    },
+    {
+      "at": 15856.736453916,
+      "busyPercent": 14.8,
+      "load1m": 3.10302734375
+    },
+    {
+      "at": 15856.99156675,
+      "busyPercent": 9.58904109589041,
+      "load1m": 3.10302734375
+    },
+    {
+      "at": 15857.751908166,
+      "busyPercent": 18.278145695364238,
+      "load1m": 3.10302734375
+    },
+    {
+      "at": 15858.7684325,
+      "busyPercent": 22.04391891891892,
+      "load1m": 3.10302734375
+    },
+    {
+      "at": 15859.022990958,
+      "busyPercent": 29.6,
+      "load1m": 3.10302734375
+    },
+    {
+      "at": 15859.278103875,
+      "busyPercent": 22.04724409448819,
+      "load1m": 3.10302734375
+    },
+    {
+      "at": 15859.787202083,
+      "busyPercent": 17.83567134268537,
+      "load1m": 3.10302734375
+    },
+    {
+      "at": 15860.042311208,
+      "busyPercent": 17.96875,
+      "load1m": 3.10302734375
+    },
+    {
+      "at": 15860.297395625,
+      "busyPercent": 21.428571428571427,
+      "load1m": 3.10302734375
+    },
+    {
+      "at": 15860.802713791,
+      "busyPercent": 16.80161943319838,
+      "load1m": 3.10302734375
+    },
+    {
+      "at": 15861.057827625,
+      "busyPercent": 20.463320463320464,
+      "load1m": 3.10302734375
+    },
+    {
+      "at": 15861.312919583,
+      "busyPercent": 20.149253731343283,
+      "load1m": 3.10302734375
+    },
+    {
+      "at": 15861.818400916,
+      "busyPercent": 16.830065359477125,
+      "load1m": 2.8544921875
+    },
+    {
+      "at": 15862.072248375,
+      "busyPercent": 18.972332015810277,
+      "load1m": 2.8544921875
+    },
+    {
+      "at": 15862.322703875,
+      "busyPercent": 17.408906882591094,
+      "load1m": 2.8544921875
+    },
+    {
+      "at": 15862.8292875,
+      "busyPercent": 17.964071856287426,
+      "load1m": 2.8544921875
+    },
+    {
+      "at": 15863.0793975,
+      "busyPercent": 17.695473251028808,
+      "load1m": 2.8544921875
+    },
+    {
+      "at": 15863.840007375,
+      "busyPercent": 16.047745358090186,
+      "load1m": 2.8544921875
+    },
+    {
+      "at": 15864.093378125,
+      "busyPercent": 12.992125984251969,
+      "load1m": 2.8544921875
+    },
+    {
+      "at": 15864.85862675,
+      "busyPercent": 19.576719576719576,
+      "load1m": 2.8544921875
+    },
+    {
+      "at": 15865.113745,
+      "busyPercent": 17.857142857142858,
+      "load1m": 2.8544921875
+    },
+    {
+      "at": 15865.368853166,
+      "busyPercent": 13.54581673306773,
+      "load1m": 2.8544921875
+    },
+    {
+      "at": 15865.870312458,
+      "busyPercent": 9.879032258064516,
+      "load1m": 2.8544921875
+    },
+    {
+      "at": 15866.125437833,
+      "busyPercent": 15.079365079365079,
+      "load1m": 2.8544921875
+    },
+    {
+      "at": 15866.380531625,
+      "busyPercent": 13.72549019607843,
+      "load1m": 2.8544921875
+    },
+    {
+      "at": 15866.633337833,
+      "busyPercent": 14.112903225806452,
+      "load1m": 2.62548828125
+    },
+    {
+      "at": 15866.888430708,
+      "busyPercent": 14.741035856573705,
+      "load1m": 2.62548828125
+    },
+    {
+      "at": 15867.900416083,
+      "busyPercent": 16.235059760956176,
+      "load1m": 2.62548828125
+    },
+    {
+      "at": 15868.914132541,
+      "busyPercent": 22.45508982035928,
+      "load1m": 2.62548828125
+    },
+    {
+      "at": 15869.927187,
+      "busyPercent": 16.7,
+      "load1m": 2.62548828125
+    },
+    {
+      "at": 15870.177427458,
+      "busyPercent": 14.344262295081966,
+      "load1m": 2.62548828125
+    },
+    {
+      "at": 15870.432538916,
+      "busyPercent": 15.503875968992247,
+      "load1m": 2.62548828125
+    },
+    {
+      "at": 15870.683054958,
+      "busyPercent": 31.57894736842105,
+      "load1m": 2.62548828125
+    },
+    {
+      "at": 15870.938153625,
+      "busyPercent": 12.727272727272727,
+      "load1m": 2.62548828125
+    },
+    {
+      "at": 15871.193239958,
+      "busyPercent": 16.334661354581673,
+      "load1m": 2.62548828125
+    },
+    {
+      "at": 15871.448323,
+      "busyPercent": 14.0,
+      "load1m": 2.62548828125
+    },
+    {
+      "at": 15871.698408291,
+      "busyPercent": 10.931174089068826,
+      "load1m": 2.5751953125
+    },
+    {
+      "at": 15871.953527333,
+      "busyPercent": 14.509803921568627,
+      "load1m": 2.5751953125
+    },
+    {
+      "at": 15872.207612458,
+      "busyPercent": 25.510204081632654,
+      "load1m": 2.5751953125
+    },
+    {
+      "at": 15872.969824583,
+      "busyPercent": 17.4585635359116,
+      "load1m": 2.5751953125
+    },
+    {
+      "at": 15873.220081041,
+      "busyPercent": 21.370967741935484,
+      "load1m": 2.5751953125
+    },
+    {
+      "at": 15873.981160375,
+      "busyPercent": 13.049267643142477,
+      "load1m": 2.5751953125
+    },
+    {
+      "at": 15874.23230075,
+      "busyPercent": 14.634146341463415,
+      "load1m": 2.5751953125
+    },
+    {
+      "at": 15874.484090541,
+      "busyPercent": 15.810276679841897,
+      "load1m": 2.5751953125
+    },
+    {
+      "at": 15874.734285291,
+      "busyPercent": 19.10569105691057,
+      "load1m": 2.5751953125
+    },
+    {
+      "at": 15874.989418166,
+      "busyPercent": 8.333333333333334,
+      "load1m": 2.5751953125
+    },
+    {
+      "at": 15875.240888291,
+      "busyPercent": 18.14516129032258,
+      "load1m": 2.5751953125
+    },
+    {
+      "at": 15875.495967708,
+      "busyPercent": 15.079365079365079,
+      "load1m": 2.5751953125
+    },
+    {
+      "at": 15875.751048708,
+      "busyPercent": 15.6,
+      "load1m": 2.5751953125
+    },
+    {
+      "at": 15876.005182416,
+      "busyPercent": 16.93548387096774,
+      "load1m": 2.5751953125
+    },
+    {
+      "at": 15876.25529975,
+      "busyPercent": 14.084507042253522,
+      "load1m": 2.5751953125
+    },
+    {
+      "at": 15877.019898791,
+      "busyPercent": 14.300960512273212,
+      "load1m": 2.44873046875
+    },
+    {
+      "at": 15877.274674958,
+      "busyPercent": 13.944223107569721,
+      "load1m": 2.44873046875
+    },
+    {
+      "at": 15877.529780333,
+      "busyPercent": 17.254901960784313,
+      "load1m": 2.44873046875
+    },
+    {
+      "at": 15877.779946,
+      "busyPercent": 13.168724279835391,
+      "load1m": 2.44873046875
+    },
+    {
+      "at": 15878.0350405,
+      "busyPercent": 7.874015748031496,
+      "load1m": 2.44873046875
+    },
+    {
+      "at": 15878.288786875,
+      "busyPercent": 16.733067729083665,
+      "load1m": 2.44873046875
+    },
+    {
+      "at": 15878.543912458,
+      "busyPercent": 31.818181818181817,
+      "load1m": 2.44873046875
+    },
+    {
+      "at": 15879.054087666,
+      "busyPercent": 16.52173913043478,
+      "load1m": 2.44873046875
+    },
+    {
+      "at": 15879.309186291,
+      "busyPercent": 6.349206349206349,
+      "load1m": 2.44873046875
+    },
+    {
+      "at": 15880.064882458,
+      "busyPercent": 14.52991452991453,
+      "load1m": 2.44873046875
+    },
+    {
+      "at": 15880.3199865,
+      "busyPercent": 4.225352112676056,
+      "load1m": 2.44873046875
+    },
+    {
+      "at": 15881.080246541,
+      "busyPercent": 15.969989281886388,
+      "load1m": 2.44873046875
+    },
+    {
+      "at": 15881.335371083,
+      "busyPercent": 10.8,
+      "load1m": 2.44873046875
+    },
+    {
+      "at": 15881.585483958,
+      "busyPercent": 15.662650602409638,
+      "load1m": 2.44873046875
+    },
+    {
+      "at": 15881.840567291,
+      "busyPercent": 14.682539682539682,
+      "load1m": 2.25244140625
+    },
+    {
+      "at": 15882.095651333,
+      "busyPercent": 20.0,
+      "load1m": 2.25244140625
+    },
+    {
+      "at": 15882.350735541,
+      "busyPercent": 18.972332015810277,
+      "load1m": 2.25244140625
+    },
+    {
+      "at": 15882.601073333,
+      "busyPercent": 10.526315789473685,
+      "load1m": 2.25244140625
+    },
+    {
+      "at": 15882.85621775,
+      "busyPercent": 21.428571428571427,
+      "load1m": 2.25244140625
+    },
+    {
+      "at": 15883.107984458,
+      "busyPercent": 11.86046511627907,
+      "load1m": 2.25244140625
+    },
+    {
+      "at": 15884.120808291,
+      "busyPercent": 18.36327345309381,
+      "load1m": 2.25244140625
+    },
+    {
+      "at": 15884.375937625,
+      "busyPercent": 10.546875,
+      "load1m": 2.25244140625
+    },
+    {
+      "at": 15884.630819375,
+      "busyPercent": 15.261044176706827,
+      "load1m": 2.25244140625
+    },
+    {
+      "at": 15885.140997125,
+      "busyPercent": 15.662650602409638,
+      "load1m": 2.25244140625
+    },
+    {
+      "at": 15885.392223166,
+      "busyPercent": 20.717131474103585,
+      "load1m": 2.25244140625
+    },
+    {
+      "at": 15886.14471825,
+      "busyPercent": 13.440860215053764,
+      "load1m": 2.25244140625
+    },
+    {
+      "at": 15886.399818416,
+      "busyPercent": 14.229249011857707,
+      "load1m": 2.25244140625
+    },
+    {
+      "at": 15886.654908583,
+      "busyPercent": 15.354330708661417,
+      "load1m": 2.25244140625
+    },
+    {
+      "at": 15886.910035541,
+      "busyPercent": 6.557377049180328,
+      "load1m": 2.23193359375
+    },
+    {
+      "at": 15887.160246708,
+      "busyPercent": 14.908256880733944,
+      "load1m": 2.23193359375
+    },
+    {
+      "at": 15888.179628041,
+      "busyPercent": 18.08300395256917,
+      "load1m": 2.23193359375
+    },
+    {
+      "at": 15888.431735875,
+      "busyPercent": 6.521739130434782,
+      "load1m": 2.23193359375
+    },
+    {
+      "at": 15889.192131416,
+      "busyPercent": 15.279241306638568,
+      "load1m": 2.23193359375
+    },
+    {
+      "at": 15889.445955666,
+      "busyPercent": 19.367588932806324,
+      "load1m": 2.23193359375
+    },
+    {
+      "at": 15889.701077333,
+      "busyPercent": 6.122448979591836,
+      "load1m": 2.23193359375
+    },
+    {
+      "at": 15890.206300041,
+      "busyPercent": 16.83309557774608,
+      "load1m": 2.23193359375
+    },
+    {
+      "at": 15890.461421041,
+      "busyPercent": 8.333333333333334,
+      "load1m": 2.23193359375
+    },
+    {
+      "at": 15890.716568333,
+      "busyPercent": 15.019762845849803,
+      "load1m": 2.23193359375
+    },
+    {
+      "at": 15891.226350708,
+      "busyPercent": 14.711729622266402,
+      "load1m": 2.23193359375
+    },
+    {
+      "at": 15891.480629666,
+      "busyPercent": 15.6,
+      "load1m": 2.23193359375
+    },
+    {
+      "at": 15891.735751958,
+      "busyPercent": 15.0,
+      "load1m": 2.453125
+    },
+    {
+      "at": 15892.2409975,
+      "busyPercent": 11.549295774647888,
+      "load1m": 2.453125
+    },
+    {
+      "at": 15892.496121166,
+      "busyPercent": 16.862745098039216,
+      "load1m": 2.453125
+    },
+    {
+      "at": 15892.751215,
+      "busyPercent": 13.438735177865613,
+      "load1m": 2.453125
+    },
+    {
+      "at": 15893.006335625,
+      "busyPercent": 14.919354838709678,
+      "load1m": 2.453125
+    },
+    {
+      "at": 15893.259910625,
+      "busyPercent": 12.648221343873518,
+      "load1m": 2.453125
+    },
+    {
+      "at": 15893.510052208,
+      "busyPercent": 10.483870967741936,
+      "load1m": 2.453125
+    },
+    {
+      "at": 15894.275384416,
+      "busyPercent": 16.534391534391535,
+      "load1m": 2.453125
+    },
+    {
+      "at": 15895.286013208,
+      "busyPercent": 13.8,
+      "load1m": 2.453125
+    },
+    {
+      "at": 15895.540950166,
+      "busyPercent": 20.0,
+      "load1m": 2.453125
+    },
+    {
+      "at": 15896.306396333,
+      "busyPercent": 21.456953642384107,
+      "load1m": 2.453125
+    },
+    {
+      "at": 15896.556528416,
+      "busyPercent": 14.457831325301205,
+      "load1m": 2.453125
+    },
+    {
+      "at": 15896.811629916,
+      "busyPercent": 23.076923076923077,
+      "load1m": 2.65673828125
+    },
+    {
+      "at": 15897.321833041,
+      "busyPercent": 15.481171548117155,
+      "load1m": 2.65673828125
+    },
+    {
+      "at": 15897.576954458,
+      "busyPercent": 16.26984126984127,
+      "load1m": 2.65673828125
+    },
+    {
+      "at": 15897.827126333,
+      "busyPercent": 14.754098360655737,
+      "load1m": 2.65673828125
+    },
+    {
+      "at": 15898.077335041,
+      "busyPercent": 13.095238095238095,
+      "load1m": 2.65673828125
+    },
+    {
+      "at": 15898.332214083,
+      "busyPercent": 7.2,
+      "load1m": 2.65673828125
+    },
+    {
+      "at": 15898.587339208,
+      "busyPercent": 14.4,
+      "load1m": 2.65673828125
+    },
+    {
+      "at": 15898.837693708,
+      "busyPercent": 16.4,
+      "load1m": 2.65673828125
+    },
+    {
+      "at": 15899.092797791,
+      "busyPercent": 17.6,
+      "load1m": 2.65673828125
+    },
+    {
+      "at": 15899.343012375,
+      "busyPercent": 16.59919028340081,
+      "load1m": 2.65673828125
+    },
+    {
+      "at": 15899.593165291,
+      "busyPercent": 17.813765182186234,
+      "load1m": 2.65673828125
+    },
+    {
+      "at": 15899.847905125,
+      "busyPercent": 10.980392156862745,
+      "load1m": 2.65673828125
+    },
+    {
+      "at": 15900.103005916,
+      "busyPercent": 15.725806451612904,
+      "load1m": 2.65673828125
+    },
+    {
+      "at": 15900.353174083,
+      "busyPercent": 16.26984126984127,
+      "load1m": 2.65673828125
+    },
+    {
+      "at": 15900.608300041,
+      "busyPercent": 31.048387096774192,
+      "load1m": 2.65673828125
+    },
+    {
+      "at": 15901.368774375,
+      "busyPercent": 13.12997347480106,
+      "load1m": 2.65673828125
+    },
+    {
+      "at": 15901.623946041,
+      "busyPercent": 32.432432432432435,
+      "load1m": 2.65673828125
+    },
+    {
+      "at": 15902.387797791,
+      "busyPercent": 18.537590113285273,
+      "load1m": 3.16455078125
+    },
+    {
+      "at": 15902.642898916,
+      "busyPercent": 13.147410358565738,
+      "load1m": 3.16455078125
+    },
+    {
+      "at": 15902.894093541,
+      "busyPercent": 9.34959349593496,
+      "load1m": 3.16455078125
+    },
+    {
+      "at": 15903.404357875,
+      "busyPercent": 14.314115308151093,
+      "load1m": 3.16455078125
+    },
+    {
+      "at": 15903.65950375,
+      "busyPercent": 17.2972972972973,
+      "load1m": 3.16455078125
+    },
+    {
+      "at": 15904.414844208,
+      "busyPercent": 16.33906633906634,
+      "load1m": 3.16455078125
+    },
+    {
+      "at": 15904.670081208,
+      "busyPercent": 13.385826771653543,
+      "load1m": 3.16455078125
+    },
+    {
+      "at": 15904.922045458,
+      "busyPercent": 14.919354838709678,
+      "load1m": 3.16455078125
+    },
+    {
+      "at": 15905.177255791,
+      "busyPercent": 19.367588932806324,
+      "load1m": 3.16455078125
+    },
+    {
+      "at": 15905.432375,
+      "busyPercent": 20.8,
+      "load1m": 3.16455078125
+    },
+    {
+      "at": 15905.687493125,
+      "busyPercent": 14.901960784313726,
+      "load1m": 3.16455078125
+    },
+    {
+      "at": 15905.937561833,
+      "busyPercent": 9.387755102040817,
+      "load1m": 3.16455078125
+    },
+    {
+      "at": 15906.192690041,
+      "busyPercent": 10.671936758893281,
+      "load1m": 3.16455078125
+    },
+    {
+      "at": 15906.445199333,
+      "busyPercent": 15.32258064516129,
+      "load1m": 3.16455078125
+    },
+    {
+      "at": 15906.70030425,
+      "busyPercent": 14.624505928853756,
+      "load1m": 3.16455078125
+    },
+    {
+      "at": 15906.955406875,
+      "busyPercent": 15.019762845849803,
+      "load1m": 2.9111328125
+    },
+    {
+      "at": 15907.460785791,
+      "busyPercent": 13.026052104208416,
+      "load1m": 2.9111328125
+    },
+    {
+      "at": 15907.715901375,
+      "busyPercent": 10.714285714285714,
+      "load1m": 2.9111328125
+    },
+    {
+      "at": 15908.47715775,
+      "busyPercent": 15.496688741721854,
+      "load1m": 2.9111328125
+    },
+    {
+      "at": 15908.729529041,
+      "busyPercent": 13.765182186234817,
+      "load1m": 2.9111328125
+    },
+    {
+      "at": 15908.979906333,
+      "busyPercent": 12.5,
+      "load1m": 2.9111328125
+    },
+    {
+      "at": 15909.235038041,
+      "busyPercent": 29.62962962962963,
+      "load1m": 2.9111328125
+    },
+    {
+      "at": 15909.488195541,
+      "busyPercent": 14.225053078556263,
+      "load1m": 2.9111328125
+    },
+    {
+      "at": 15909.740539458,
+      "busyPercent": 14.566929133858268,
+      "load1m": 2.9111328125
+    },
+    {
+      "at": 15909.9956605,
+      "busyPercent": 16.06425702811245,
+      "load1m": 2.9111328125
+    },
+    {
+      "at": 15910.250187083,
+      "busyPercent": 14.509803921568627,
+      "load1m": 2.9111328125
+    },
+    {
+      "at": 15910.500321958,
+      "busyPercent": 14.754098360655737,
+      "load1m": 2.9111328125
+    },
+    {
+      "at": 15910.755437916,
+      "busyPercent": 6.349206349206349,
+      "load1m": 2.9111328125
+    },
+    {
+      "at": 15911.008347666,
+      "busyPercent": 33.333333333333336,
+      "load1m": 2.9111328125
+    },
+    {
+      "at": 15911.518551875,
+      "busyPercent": 15.332428765264586,
+      "load1m": 2.9111328125
+    },
+    {
+      "at": 15911.773823333,
+      "busyPercent": 19.27710843373494,
+      "load1m": 2.837890625
+    },
+    {
+      "at": 15912.02899275,
+      "busyPercent": 18.89763779527559,
+      "load1m": 2.837890625
+    },
+    {
+      "at": 15912.534233708,
+      "busyPercent": 15.169660678642714,
+      "load1m": 2.837890625
+    },
+    {
+      "at": 15912.789337625,
+      "busyPercent": 13.492063492063492,
+      "load1m": 2.837890625
+    },
+    {
+      "at": 15913.044430541,
+      "busyPercent": 14.682539682539682,
+      "load1m": 2.837890625
+    },
+    {
+      "at": 15913.551588666,
+      "busyPercent": 14.486921529175051,
+      "load1m": 2.837890625
+    },
+    {
+      "at": 15913.801899208,
+      "busyPercent": 9.126984126984127,
+      "load1m": 2.837890625
+    },
+    {
+      "at": 15914.057048625,
+      "busyPercent": 13.492063492063492,
+      "load1m": 2.837890625
+    },
+    {
+      "at": 15914.308807958,
+      "busyPercent": 0.0,
+      "load1m": 2.837890625
+    },
+    {
+      "at": 15914.563276208,
+      "busyPercent": 17.32776617954071,
+      "load1m": 2.837890625
+    },
+    {
+      "at": 15914.814819333,
+      "busyPercent": 17.269076305220885,
+      "load1m": 2.837890625
+    },
+    {
+      "at": 15915.574220541,
+      "busyPercent": 11.2,
+      "load1m": 2.837890625
+    },
+    {
+      "at": 15915.826848666,
+      "busyPercent": 16.4,
+      "load1m": 2.837890625
+    },
+    {
+      "at": 15916.081935541,
+      "busyPercent": 3.5714285714285716,
+      "load1m": 2.837890625
+    },
+    {
+      "at": 15916.5921115,
+      "busyPercent": 32.599724896836314,
+      "load1m": 2.837890625
+    },
+    {
+      "at": 15916.842353416,
+      "busyPercent": 16.129032258064516,
+      "load1m": 2.8505859375
+    },
+    {
+      "at": 15917.097163875,
+      "busyPercent": 82.6086956521739,
+      "load1m": 2.8505859375
+    },
+    {
+      "at": 15917.605931125,
+      "busyPercent": 62.24350205198358,
+      "load1m": 2.8505859375
+    },
+    {
+      "at": 15917.860935666,
+      "busyPercent": 59.12698412698413,
+      "load1m": 2.8505859375
+    },
+    {
+      "at": 15918.111748458,
+      "busyPercent": 59.274193548387096,
+      "load1m": 2.8505859375
+    },
+    {
+      "at": 15918.366329875,
+      "busyPercent": 48.59437751004016,
+      "load1m": 2.8505859375
+    },
+    {
+      "at": 15918.620840208,
+      "busyPercent": 44.66403162055336,
+      "load1m": 2.8505859375
+    },
+    {
+      "at": 15918.876524708,
+      "busyPercent": 68.62745098039215,
+      "load1m": 2.8505859375
+    },
+    {
+      "at": 15919.131640833,
+      "busyPercent": 50.0,
+      "load1m": 2.8505859375
+    },
+    {
+      "at": 15919.385922416,
+      "busyPercent": 62.244897959183675,
+      "load1m": 2.8505859375
+    },
+    {
+      "at": 15919.6380165,
+      "busyPercent": 61.38211382113821,
+      "load1m": 2.8505859375
+    },
+    {
+      "at": 15919.892558958,
+      "busyPercent": 64.72868217054264,
+      "load1m": 2.8505859375
+    },
+    {
+      "at": 15920.398410291,
+      "busyPercent": 48.902195608782435,
+      "load1m": 2.8505859375
+    },
+    {
+      "at": 15920.650107958,
+      "busyPercent": 52.868852459016395,
+      "load1m": 2.8505859375
+    },
+    {
+      "at": 15920.9037855,
+      "busyPercent": 51.98412698412698,
+      "load1m": 2.8505859375
+    },
+    {
+      "at": 15921.155451875,
+      "busyPercent": 35.294117647058826,
+      "load1m": 2.8505859375
+    },
+    {
+      "at": 15921.405670125,
+      "busyPercent": 51.680672268907564,
+      "load1m": 2.8505859375
+    },
+    {
+      "at": 15921.656472125,
+      "busyPercent": 72.06477732793522,
+      "load1m": 2.8505859375
+    },
+    {
+      "at": 15921.911536708,
+      "busyPercent": 61.41732283464567,
+      "load1m": 3.1826171875
+    }
+  ],
+  "finishedAt": 1793157731.0513039,
+  "loadAtEnd": [
+    3.1826171875,
+    14.00244140625,
+    41.06298828125
+  ],
+  "userStatePreserved": true
+}

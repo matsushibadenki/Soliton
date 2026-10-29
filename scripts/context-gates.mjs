@@ -85,6 +85,8 @@ try {
     "x-studio-token": session.token,
   };
   const before = await state();
+  const allocatorTarget = Number(process.env.SOLITON_ALLOCATOR_TARGET || 256);
+  assert([256, 512, 768].includes(allocatorTarget));
   const trials =
     process.env.SOLITON_ALLOCATOR_GATES === "1"
       ? [
@@ -102,7 +104,7 @@ try {
             1024,
             "evidence_identity_mismatch",
             "identity mismatch",
-            128,
+            allocatorTarget === 256 ? 128 : 256,
           ],
           [
             4097,
@@ -110,7 +112,7 @@ try {
             1024,
             "evidence_limit_exceeded",
             "workload exceeds qualified bounds",
-            256,
+            allocatorTarget,
           ],
         ]
       : process.env.SOLITON_KV_GATES === "1"

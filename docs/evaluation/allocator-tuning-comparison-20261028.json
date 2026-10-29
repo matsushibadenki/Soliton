@@ -1,0 +1,193 @@
+{
+  "workloadKind": "micro",
+  "selectionRules": {
+    "bothWarmAndLongMediansLower": true,
+    "atLeastOneLatencyReductionPercent": 5,
+    "primaryPhysicalReductionPercent": 5,
+    "allPathPhysicalMustRemainBelowDefault": true,
+    "freeCacheReductionPercent": 25,
+    "maximumOneMinuteHostLoad": null,
+    "maximumRequestAverageBackgroundCpuPercent": 50,
+    "sustainedBackgroundCpuThresholdPercent": 75,
+    "sustainedHighSeconds": 1
+  },
+  "passed": true,
+  "scope": "qualification pilot comparison; not startup evidence",
+  "selectedMiB": 512,
+  "selectionPassed": true,
+  "groups": {
+    "0": {
+      "repeats": 2,
+      "warmMedianMs": 393.55318421275024,
+      "longMissMedianMs": 8737.000696743113,
+      "physicalPeakBytes": 4830088096,
+      "physicalPrimaryPeakBytes": 4491889568,
+      "cachePeakBytes": 1765718860
+    },
+    "256": {
+      "repeats": 2,
+      "warmMedianMs": 383.9071790556781,
+      "longMissMedianMs": 8861.57948995095,
+      "physicalPeakBytes": 4375792544,
+      "physicalPrimaryPeakBytes": 3874720672,
+      "cachePeakBytes": 273967924
+    },
+    "512": {
+      "repeats": 2,
+      "warmMedianMs": 380.7641890931564,
+      "longMissMedianMs": 7754.717145086476,
+      "physicalPeakBytes": 4540959624,
+      "physicalPrimaryPeakBytes": 3873835960,
+      "cachePeakBytes": 542090660,
+      "pairedControl": {
+        "repeats": 2,
+        "warmMedianMs": 383.9071790556781,
+        "longMissMedianMs": 8861.57948995095,
+        "physicalPeakBytes": 4375792544,
+        "physicalPrimaryPeakBytes": 3874720672,
+        "cachePeakBytes": 273967924
+      },
+      "pairedDefault": {
+        "repeats": 2,
+        "warmMedianMs": 393.55318421275024,
+        "longMissMedianMs": 8737.000696743113,
+        "physicalPeakBytes": 4830088096,
+        "physicalPrimaryPeakBytes": 4491889568,
+        "cachePeakBytes": 1765718860
+      },
+      "warmReductionPercent": 0.8186848629016863,
+      "longReductionPercent": 12.490576269384679,
+      "physicalReductionVsDefaultPercent": 5.985987548331462,
+      "cacheReductionVsDefaultPercent": 69.29915218779506,
+      "primaryPhysicalReductionVsDefaultPercent": 13.759323301333659,
+      "eligible": true
+    },
+    "768": {
+      "repeats": 2,
+      "warmMedianMs": 390.56236244964396,
+      "longMissMedianMs": 8727.190603448886,
+      "physicalPeakBytes": 4823976888,
+      "physicalPrimaryPeakBytes": 3947547504,
+      "cachePeakBytes": 812523727,
+      "pairedControl": {
+        "repeats": 2,
+        "warmMedianMs": 383.9071790556781,
+        "longMissMedianMs": 8861.57948995095,
+        "physicalPeakBytes": 4375792544,
+        "physicalPrimaryPeakBytes": 3874720672,
+        "cachePeakBytes": 273967924
+      },
+      "pairedDefault": {
+        "repeats": 2,
+        "warmMedianMs": 393.55318421275024,
+        "longMissMedianMs": 8737.000696743113,
+        "physicalPeakBytes": 4830088096,
+        "physicalPrimaryPeakBytes": 4491889568,
+        "cachePeakBytes": 1765718860
+      },
+      "warmReductionPercent": -1.7335397088265037,
+      "longReductionPercent": 1.516534232463418,
+      "physicalReductionVsDefaultPercent": 0.12652373783950122,
+      "cacheReductionVsDefaultPercent": 53.98340328085979,
+      "primaryPhysicalReductionVsDefaultPercent": 12.118331400617377,
+      "eligible": false
+    }
+  },
+  "runs": [
+    {
+      "path": "/Users/Shared/Program/Tauri/Soliton/docs/benchmarks/allocator-average-background-micro-20261028-0-0-attempt4.json",
+      "budget": 0,
+      "warmMedianMs": 376.48812549923605,
+      "longMissMedianMs": 7365.287437498409,
+      "physicalPeakBytes": 4830088096,
+      "physicalPrimaryPeakBytes": 4491889568,
+      "cachePeakBytes": 1765718860,
+      "idlePhysicalBytes": 3351727032
+    },
+    {
+      "path": "/Users/Shared/Program/Tauri/Soliton/docs/benchmarks/allocator-average-background-micro-20261028-1-256-attempt2.json",
+      "budget": 256,
+      "warmMedianMs": 368.1541664991528,
+      "longMissMedianMs": 8668.30745849984,
+      "physicalPeakBytes": 4375792544,
+      "physicalPrimaryPeakBytes": 3874720672,
+      "cachePeakBytes": 273443124,
+      "idlePhysicalBytes": 3230632864
+    },
+    {
+      "path": "/Users/Shared/Program/Tauri/Soliton/docs/benchmarks/allocator-average-background-micro-20261028-2-512-attempt1.json",
+      "budget": 512,
+      "warmMedianMs": 377.3937500009197,
+      "longMissMedianMs": 8055.010083000525,
+      "physicalPeakBytes": 4540959624,
+      "physicalPrimaryPeakBytes": 3867249544,
+      "cachePeakBytes": 542090660,
+      "idlePhysicalBytes": 3341585288
+    },
+    {
+      "path": "/Users/Shared/Program/Tauri/Soliton/docs/benchmarks/allocator-average-background-micro-20261028-3-768-attempt1.json",
+      "budget": 768,
+      "warmMedianMs": 393.6161460005678,
+      "longMissMedianMs": 8467.801520999274,
+      "physicalPeakBytes": 4821535600,
+      "physicalPrimaryPeakBytes": 3947547504,
+      "cachePeakBytes": 812523727,
+      "idlePhysicalBytes": 3346713456
+    },
+    {
+      "path": "/Users/Shared/Program/Tauri/Soliton/docs/benchmarks/allocator-average-background-micro-20261028-4-768-attempt1.json",
+      "budget": 768,
+      "warmMedianMs": 387.5322710009641,
+      "longMissMedianMs": 8994.525396001336,
+      "physicalPeakBytes": 4823976888,
+      "physicalPrimaryPeakBytes": 3946449848,
+      "cachePeakBytes": 811869459,
+      "idlePhysicalBytes": 3348794296
+    },
+    {
+      "path": "/Users/Shared/Program/Tauri/Soliton/docs/benchmarks/allocator-average-background-micro-20261028-5-512-attempt4.json",
+      "budget": 512,
+      "warmMedianMs": 384.164729000986,
+      "longMissMedianMs": 7465.619208498538,
+      "physicalPeakBytes": 4485270432,
+      "physicalPrimaryPeakBytes": 3873835960,
+      "cachePeakBytes": 542088612,
+      "idlePhysicalBytes": 3353562040
+    },
+    {
+      "path": "/Users/Shared/Program/Tauri/Soliton/docs/benchmarks/allocator-average-background-micro-20261028-6-256-attempt3.json",
+      "budget": 256,
+      "warmMedianMs": 400.3342500018334,
+      "longMissMedianMs": 9059.1607915012,
+      "physicalPeakBytes": 4372401056,
+      "physicalPrimaryPeakBytes": 3872197536,
+      "cachePeakBytes": 273967924,
+      "idlePhysicalBytes": 3230092192
+    },
+    {
+      "path": "/Users/Shared/Program/Tauri/Soliton/docs/benchmarks/allocator-average-background-micro-20261028-7-0-attempt2.json",
+      "budget": 0,
+      "warmMedianMs": 411.39175000171235,
+      "longMissMedianMs": 10364.182229501239,
+      "physicalPeakBytes": 4820405176,
+      "physicalPrimaryPeakBytes": 4491021264,
+      "cachePeakBytes": 1765717320,
+      "idlePhysicalBytes": 3344518096
+    }
+  ],
+  "sha256": {
+    "/Users/Shared/Program/Tauri/Soliton/docs/benchmarks/allocator-average-background-micro-20261028-0-0-attempt4.json": "a0ae12b7109b67dc6b0454edafa08091174e4224a871cafc2eab35a1c1627394",
+    "/Users/Shared/Program/Tauri/Soliton/docs/benchmarks/allocator-average-background-micro-20261028-1-256-attempt2.json": "8c3847f8c3cb2b35563fe80aec7042ed95a6ee02988bae114bdb3f9ebfc4171a",
+    "/Users/Shared/Program/Tauri/Soliton/docs/benchmarks/allocator-average-background-micro-20261028-2-512-attempt1.json": "d4396bb194da8ec88f28217594d21b84895355d9f52c21e7b7250b0852ed697d",
+    "/Users/Shared/Program/Tauri/Soliton/docs/benchmarks/allocator-average-background-micro-20261028-3-768-attempt1.json": "540efc3e3b879e006b1b4693e079a0aa0af3a7f8e199685472a1f90b31cf0b0e",
+    "/Users/Shared/Program/Tauri/Soliton/docs/benchmarks/allocator-average-background-micro-20261028-4-768-attempt1.json": "d885e5a8689b6d360d49db7ead9ab190305056d81efb4ec47e95a5d43240ef06",
+    "/Users/Shared/Program/Tauri/Soliton/docs/benchmarks/allocator-average-background-micro-20261028-5-512-attempt4.json": "23f0b8e48db801a60a1e961141ea3cfabe5b76c744f42e61a70e9c9e9a1fbde7",
+    "/Users/Shared/Program/Tauri/Soliton/docs/benchmarks/allocator-average-background-micro-20261028-6-256-attempt3.json": "01d3857044e529ac89a5dd804f9545ad4aaa736c776e62c8bf28218d7e5c975e",
+    "/Users/Shared/Program/Tauri/Soliton/docs/benchmarks/allocator-average-background-micro-20261028-7-0-attempt2.json": "a08feffb5cbb94241c48561da047a34526067230d1b7e5be518f671d43ddb05a"
+  },
+  "limitations": [
+    "Two bracketed repeats per candidate, with per-block 256 MiB controls and backend-default references.",
+    "Python pilot exact counter + direct backend latency, not shared Rust API latency.",
+    "Host activity/thermal state can still vary below the load guard; this is not randomized statistical certification."
+  ]
+}

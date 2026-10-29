@@ -2,7 +2,7 @@
 import { chromium } from "@playwright/test";
 import assert from "node:assert/strict";
 const origin = process.env.SOLITON_TEST_URL || "http://127.0.0.1:5180",
-  api = "http://127.0.0.1:8081";
+  api = process.env.STUDIO_TEST_API || "http://127.0.0.1:8081";
 const session = await fetch(api + "/studio/session", {
   method: "POST",
   headers: { Origin: origin },

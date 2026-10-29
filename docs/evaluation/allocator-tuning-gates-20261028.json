@@ -1,0 +1,37 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "context": 4096,
+      "diagnostic": "evidence_identity_mismatch",
+      "kvCacheMiB": 1024,
+      "allocatorCacheMiB": 0,
+      "startupRefused": true,
+      "noInferenceOrCounter": true,
+      "historyPreserved": true
+    },
+    {
+      "context": 4096,
+      "diagnostic": "evidence_identity_mismatch",
+      "kvCacheMiB": 1024,
+      "allocatorCacheMiB": 256,
+      "startupRefused": true,
+      "noInferenceOrCounter": true,
+      "historyPreserved": true
+    },
+    {
+      "context": 4097,
+      "diagnostic": "evidence_limit_exceeded",
+      "kvCacheMiB": 1024,
+      "allocatorCacheMiB": 512,
+      "startupRefused": true,
+      "noInferenceOrCounter": true,
+      "historyPreserved": true
+    }
+  ],
+  "sourceSha256": "ea8cd6a5c14fe0a44dd02b53e96a2d42afea31c943a270a27d9428e28f367d56",
+  "evidenceSha256": [
+    "b28598ad2b702cf9b20aec27bd6bc2d3e2d4c00c857b1fdb3d4320d35baf1806",
+    "facd9ce670e783b6f3ec86092765ca796dc4c84c13505611ea920c169a4543e8"
+  ]
+}

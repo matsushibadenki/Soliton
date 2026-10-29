@@ -7,6 +7,9 @@ pub mod layout;
 pub mod local_model;
 pub mod memory_usage;
 pub mod metal_policy;
+pub mod omni;
+pub mod omni_runtime;
+pub mod omni_realtime;
 mod owned_process;
 pub mod preparation;
 mod token_budget;
@@ -53,6 +56,8 @@ pub struct Settings {
     pub engine: engine::Engine,
     #[serde(default)]
     pub vllm: engine::VllmSettings,
+    #[serde(default)]
+    pub omni: omni_runtime::Settings,
     pub strata_root: String,
     pub python: String,
     pub config: String,
@@ -74,6 +79,7 @@ impl Default for Settings {
         Self {
             engine: engine::Engine::default(),
             vllm: engine::VllmSettings::default(),
+            omni: omni_runtime::Settings::default(),
             strata_root: String::new(),
             python: "python3".into(),
             config: String::new(),
@@ -90,6 +96,8 @@ impl Default for Settings {
 }
 #[derive(Clone, Default, Serialize, Deserialize)]
 pub struct Message {
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub attachments: Vec<omni_runtime::Attachment>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub inference: Option<inference::Inference>,
     pub role: String,
@@ -157,6 +165,8 @@ pub struct Studio {
     catalog: Mutex<Option<catalog::CachedScan>>,
     vllm_inspection: Mutex<Option<vllm_inspect::Cached>>,
     token_counter: Mutex<token_budget::Counter>,
+    omni_assets: Mutex<()>,
+    omni_counter_failed: std::sync::atomic::AtomicBool,
     active_requests: AtomicUsize,
 }
 impl Studio {
@@ -221,6 +231,8 @@ impl Studio {
             catalog: Mutex::new(None),
             vllm_inspection: Mutex::new(None),
             token_counter: Mutex::new(token_budget::Counter::default()),
+            omni_assets: Mutex::new(()),
+            omni_counter_failed: std::sync::atomic::AtomicBool::new(false),
             active_requests: AtomicUsize::new(0),
             memory_usage: Mutex::new(memory_usage::Monitor::default()),
             requests: Mutex::new(VecDeque::new()),
@@ -399,6 +411,24 @@ impl Studio {
         .await;
         Ok(())
     }
+    async fn check_omni(
+        &self,
+        port: u16,
+        key: &str,
+        body: &Value,
+        context: u32,
+    ) -> Result<u64, omni_runtime::AdmissionError> {
+        if self.omni_counter_failed.load(Ordering::SeqCst) {
+            return Err(omni_runtime::AdmissionError::Counter(
+                "Omni processor counting failed; stop and restart the engine",
+            ));
+        }
+        let result = omni_runtime::check(&self.client, port, key, body, context).await;
+        if matches!(result, Err(omni_runtime::AdmissionError::Counter(_))) {
+            self.omni_counter_failed.store(true, Ordering::SeqCst);
+        }
+        result
+    }
     pub async fn start(&self) -> Result<(), String> {
         let _lifecycle = self.lifecycle.lock().await;
         self.start_inner().await
@@ -419,6 +449,44 @@ impl Studio {
         let mut p = self.process.lock().await;
         let s = self.settings.read().await.clone();
         p.startup = None;
+        if s.engine == engine::Engine::Lfm3Omni {
+            let reserve = std::net::TcpListener::bind("127.0.0.1:0").map_err(|e| e.to_string())?;
+            let port = reserve.local_addr().map_err(|e| e.to_string())?.port();
+            let key = uuid::Uuid::new_v4().to_string();
+            let config = s.omni.clone();
+            let command_key = key.clone();
+            let mut cmd = tokio::task::spawn_blocking(move || config.command(port, &command_key))
+                .await
+                .map_err(|e| e.to_string())??;
+            cmd.kill_on_drop(true)
+                .stdout(std::process::Stdio::piped())
+                .stderr(std::process::Stdio::piped());
+            #[cfg(unix)]
+            cmd.process_group(0);
+            drop(reserve);
+            let mut child = cmd
+                .spawn()
+                .map_err(|e| format!("Cannot launch Omni: {e}"))?;
+            if let Some(out) = child.stdout.take() {
+                pump(out, self.logs.clone());
+            }
+            if let Some(out) = child.stderr.take() {
+                pump(out, self.logs.clone());
+            }
+            p.startup = Some(Startup::new());
+            p.group = child.id();
+            p.child = Some(child);
+            p.port = port;
+            p.key = key;
+            p.memory = Some(json!({"engine":"lfm3Omni"}));
+            self.omni_counter_failed.store(false, Ordering::SeqCst);
+            push_log(
+                &self.logs,
+                "[soliton] Starting exclusive LFM3-Omni runtime".into(),
+            )
+            .await;
+            return Ok(());
+        }
         if s.engine == engine::Engine::VllmApple {
             let reserve = std::net::TcpListener::bind("127.0.0.1:0").map_err(|e| e.to_string())?;
             let backend_reserve =
@@ -748,7 +816,9 @@ impl Studio {
         let status = if !running {
             "offline"
         } else if health.as_ref().is_some_and(|h| {
-            settings.engine == engine::Engine::Strata || h["inference_ready"] == true
+            settings.engine == engine::Engine::Strata
+                || h["inference_ready"] == true
+                || (settings.engine == engine::Engine::Lfm3Omni && h["status"] == "ok")
         }) {
             "ready"
         } else {
@@ -773,7 +843,7 @@ impl Studio {
             .cloned()
             .collect::<Vec<_>>();
         let vllm_inspection = self.inspection_snapshot(&settings.vllm).await;
-        json!({"startup":startup,"vllmInspection":vllm_inspection,"dockingDiagnostics":*self.docking_diagnostics.lock().await,"requests":requests,"memoryUsage":memory_usage,"memoryTuning":memory_tuning,"preparation":self.preparation.lock().await.snapshot(),"status":status,"health":health,"settings":*self.settings.read().await,"document":document,"logs":*self.logs.lock().await,"architecture":std::env::consts::ARCH,"memoryBytes":self.memory_bytes,"selectedEngine":settings.engine,"backend":if settings.engine == engine::Engine::VllmApple {"vLLM-Apple"} else if cfg!(all(target_os="macos",target_arch="aarch64")){"Metal"}else{"Strata"},"endpoint":format!("http://127.0.0.1:{}/v1",self.port),"root":self.root})
+        json!({"omniCounterFailed":self.omni_counter_failed.load(Ordering::SeqCst),"startup":startup,"vllmInspection":vllm_inspection,"dockingDiagnostics":*self.docking_diagnostics.lock().await,"requests":requests,"memoryUsage":memory_usage,"memoryTuning":memory_tuning,"preparation":self.preparation.lock().await.snapshot(),"status":status,"health":health,"settings":*self.settings.read().await,"document":document,"logs":*self.logs.lock().await,"architecture":std::env::consts::ARCH,"memoryBytes":self.memory_bytes,"selectedEngine":settings.engine,"backend":if settings.engine == engine::Engine::Lfm3Omni {"LFM3-Omni"}else if settings.engine == engine::Engine::VllmApple {"vLLM-Apple"} else if cfg!(all(target_os="macos",target_arch="aarch64")){"Metal"}else{"Strata"},"endpoint":format!("http://127.0.0.1:{}/v1",self.port),"root":self.root})
     }
 }
 fn pump<T: tokio::io::AsyncRead + Unpin + Send + 'static>(
@@ -944,7 +1014,8 @@ async fn action(State(s): State<Arc<Studio>>, h: HeaderMap, Json(v): Json<Value>
                     && ["en", "ja", "zh"].contains(&settings.language.as_str())
                     && catalog::valid_directories(&settings.model_directories)
                     && settings.metal_memory.valid(s.memory_bytes)
-                    && settings.vllm.valid() =>
+                    && settings.vllm.valid()
+                    && (settings.engine != engine::Engine::Lfm3Omni || settings.omni.valid()) =>
             {
                 let _lifecycle = s.lifecycle.lock().await;
                 if s.preparation.lock().await.busy() {
@@ -957,7 +1028,7 @@ async fn action(State(s): State<Arc<Studio>>, h: HeaderMap, Json(v): Json<Value>
                 if settings.engine != current.engine {
                     return error(StatusCode::CONFLICT, "Use switchEngine to change engines");
                 }
-                if settings.vllm != current.vllm {
+                if settings.vllm != current.vllm || settings.omni != current.omni {
                     let mut process = s.process.lock().await;
                     if process
                         .child
@@ -1084,10 +1155,51 @@ async fn proxy(State(s): State<Arc<Studio>>, req: Request) -> Response {
         .path_and_query()
         .map(|x| x.as_str())
         .unwrap_or("/");
-    let body = match axum::body::to_bytes(body, 16 * 1024 * 1024).await {
+    let mut body = match axum::body::to_bytes(body, 16 * 1024 * 1024).await {
         Ok(b) => b,
         Err(_) => return error(StatusCode::PAYLOAD_TOO_LARGE, "Request exceeds 16 MiB"),
     };
+    let omni_config = s.settings.read().await.clone();
+    if omni_config.engine == engine::Engine::Lfm3Omni {
+        if s.active_requests.load(Ordering::SeqCst) != 0 {
+            return error(
+                StatusCode::CONFLICT,
+                "Omni inference or media processing is busy",
+            );
+        }
+        if path.split('?').next() != Some("/v1/chat/completions")
+            && path.split('?').next() != Some("/v1/models")
+        {
+            return error(
+                StatusCode::UNPROCESSABLE_ENTITY,
+                "Unqualified Omni API mode",
+            );
+        }
+        if path.split('?').next() == Some("/v1/chat/completions") {
+            let mut v: Value = match serde_json::from_slice(&body) {
+                Ok(v) => v,
+                Err(_) => return error(StatusCode::BAD_REQUEST, "Invalid Omni JSON"),
+            };
+            let messages: Vec<Message> = match serde_json::from_value(v["messages"].clone()) {
+                Ok(v) => v,
+                Err(_) => {
+                    return error(
+                        StatusCode::UNPROCESSABLE_ENTITY,
+                        "Use text and Rust-owned Omni attachment IDs",
+                    )
+                }
+            };
+            v["messages"] = match omni_runtime::messages(&messages, &omni_config.omni) {
+                Ok(v) => json!(v),
+                Err(e) => return error(StatusCode::UNPROCESSABLE_ENTITY, e),
+            };
+            v["temperature"] = json!(0);
+            if let Err(e) = s.check_omni(port, &key, &v, omni_config.omni.context).await {
+                return error(e.status(), e);
+            }
+            body = axum::body::Bytes::from(serde_json::to_vec(&v).unwrap());
+        }
+    }
     if matches!(
         path.split('?').next(),
         Some("/v1/chat/completions" | "/v1/completions")
@@ -1243,7 +1355,9 @@ async fn chat(State(s): State<Arc<Studio>>, h: HeaderMap, Json(mut body): Json<V
         .and_then(|v| serde_json::from_value::<Message>(v.clone()).ok());
     let user = match user {
         Some(m)
-            if m.role == "user" && !m.content.trim().is_empty() && m.content.len() <= 1_000_000 =>
+            if m.role == "user"
+                && (!m.content.trim().is_empty() || !m.attachments.is_empty())
+                && m.content.len() <= 1_000_000 =>
         {
             m
         }
@@ -1270,6 +1384,25 @@ async fn chat(State(s): State<Arc<Studio>>, h: HeaderMap, Json(mut body): Json<V
         });
         body["stream_options"] = json!({"include_usage":true});
     }
+    let is_omni = settings.engine == engine::Engine::Lfm3Omni;
+    let omni_settings = settings.omni.clone();
+    if is_omni {
+        if s.active_requests.load(Ordering::SeqCst) != 0 {
+            return error(
+                StatusCode::CONFLICT,
+                "Omni inference or media processing is busy",
+            );
+        }
+        body["model"] = json!(omni::MODEL_ID);
+        body["temperature"] = json!(0);
+        body["stream_options"] = json!({"include_usage":true});
+    }
+    if !is_omni && !user.attachments.is_empty() {
+        return error(
+            StatusCode::UNPROCESSABLE_ENTITY,
+            "Media requires the qualified Omni engine",
+        );
+    }
     let engine_label = settings.engine.label().to_string();
     drop(settings);
     let mut tracker = inference::Tracker::new("chat", body["model"].as_str().unwrap_or(""));
@@ -1291,36 +1424,51 @@ async fn chat(State(s): State<Arc<Studio>>, h: HeaderMap, Json(mut body): Json<V
         if d.messages.len() >= 1000 {
             return error(StatusCode::BAD_REQUEST, "Start a new conversation");
         }
-        let mut messages: Vec<Value> = d
+        let mut pending = d
             .messages
             .iter()
             .filter(|m| m.role != "assistant" || !m.content.is_empty())
-            .map(|m| json!({"role":m.role,"content":m.content}))
-            .collect();
-        messages.push(json!({"role":user.role,"content":user.content}));
-        body["messages"] = json!(messages);
-        if let Err(rejection) = s
-            .token_counter
-            .lock()
-            .await
-            .check(&s.settings.read().await.clone(), &body)
-            .await
-        {
-            return rejection.response();
+            .cloned()
+            .collect::<Vec<_>>();
+        pending.push(user.clone());
+        if is_omni {
+            let messages = match omni_runtime::messages(&pending, &omni_settings) {
+                Ok(v) => v,
+                Err(e) => return error(StatusCode::UNPROCESSABLE_ENTITY, e),
+            };
+            body["messages"] = json!(messages);
+            if let Err(e) = s.check_omni(port, &key, &body, omni_settings.context).await {
+                return error(e.status(), e);
+            }
+        } else {
+            if pending.iter().any(|m| !m.attachments.is_empty()) {
+                return error(
+                    StatusCode::UNPROCESSABLE_ENTITY,
+                    "Conversation contains Omni media; use Omni or a new conversation",
+                );
+            }
+            body["messages"] = json!(pending
+                .iter()
+                .map(|m| json!({"role":m.role,"content":m.content}))
+                .collect::<Vec<_>>());
+            if let Err(rejection) = s
+                .token_counter
+                .lock()
+                .await
+                .check(&s.settings.read().await.clone(), &body)
+                .await
+            {
+                return rejection.response();
+            }
         }
         d.generating = true;
         d.conversations.touch();
         let mut user = user;
         user.inference = None;
         d.messages.push(user);
-        body["messages"] = json!(d
-            .messages
-            .iter()
-            .filter(|m| m.role != "assistant" || !m.content.is_empty())
-            .map(|m| json!({"role":m.role,"content":m.content}))
-            .collect::<Vec<_>>());
         body["stream"] = json!(true);
         d.messages.push(Message {
+            attachments: Vec::new(),
             role: "assistant".into(),
             content: String::new(),
             inference: Some(tracker.info.clone()),
@@ -1411,12 +1559,113 @@ async fn chat(State(s): State<Arc<Studio>>, h: HeaderMap, Json(mut body): Json<V
         .insert("cache-control", "no-cache".parse().unwrap());
     r
 }
+async fn omni_count(
+    State(studio): State<Arc<Studio>>,
+    h: HeaderMap,
+    Json(mut body): Json<Value>,
+) -> Response {
+    if !authorized(&h, &studio) {
+        return error(StatusCode::UNAUTHORIZED, "Studio token required");
+    }
+    let _lifecycle = studio.lifecycle.lock().await;
+    let settings = studio.settings.read().await.clone();
+    if settings.engine != engine::Engine::Lfm3Omni
+        || studio.active_requests.load(Ordering::SeqCst) != 0
+    {
+        return error(StatusCode::CONFLICT, "Select an idle qualified Omni engine");
+    }
+    let (port, key) = {
+        let mut p = studio.process.lock().await;
+        if !p
+            .child
+            .as_mut()
+            .is_some_and(|c| matches!(c.try_wait(), Ok(None)))
+        {
+            return error(StatusCode::SERVICE_UNAVAILABLE, "Engine is offline");
+        }
+        (p.port, p.key.clone())
+    };
+    let user: Message = match body["messages"]
+        .as_array()
+        .and_then(|m| m.last())
+        .and_then(|m| serde_json::from_value::<Message>(m.clone()).ok())
+    {
+        Some(m) if m.role == "user" => m,
+        _ => return error(StatusCode::BAD_REQUEST, "Invalid Omni user message"),
+    };
+    let d = studio.document.read().await;
+    if d.generating
+        || body["conversationId"]
+            .as_str()
+            .is_some_and(|id| id != d.conversations.active_id)
+    {
+        return error(StatusCode::CONFLICT, "Conversation changed or generating");
+    }
+    let mut pending = d
+        .messages
+        .iter()
+        .filter(|m| m.role != "assistant" || !m.content.is_empty())
+        .cloned()
+        .collect::<Vec<_>>();
+    pending.push(user);
+    body["messages"] = match omni_runtime::messages(&pending, &settings.omni) {
+        Ok(m) => json!(m),
+        Err(e) => return error(StatusCode::UNPROCESSABLE_ENTITY, e),
+    };
+    body["model"] = json!(omni::MODEL_ID);
+    body["temperature"] = json!(0);
+    match studio
+        .check_omni(port, &key, &body, settings.omni.context)
+        .await
+    {
+        Ok(tokens) => {
+            Json(json!({"inputTokens":tokens,"context":settings.omni.context,"exact":true}))
+                .into_response()
+        }
+        Err(e) => error(e.status(), e),
+    }
+}
+#[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
+struct OmniImport {
+    path: String,
+    kind: omni::InputMode,
+}
+async fn omni_import(
+    State(studio): State<Arc<Studio>>,
+    h: HeaderMap,
+    Json(input): Json<OmniImport>,
+) -> Response {
+    if !authorized(&h, &studio) {
+        return error(StatusCode::UNAUTHORIZED, "Studio token required");
+    }
+    let root = studio.settings.read().await.omni.media_root.clone();
+    let _assets = studio.omni_assets.lock().await;
+    match tokio::task::spawn_blocking(move || {
+        omni_runtime::import_asset(&root, &input.path, input.kind)
+    })
+    .await
+    {
+        Ok(Ok(asset)) => Json(json!(asset)).into_response(),
+        Ok(Err(e)) => error(StatusCode::UNPROCESSABLE_ENTITY, e),
+        Err(e) => error(StatusCode::INTERNAL_SERVER_ERROR, e.to_string()),
+    }
+}
+async fn omni_capabilities(State(studio): State<Arc<Studio>>, h: HeaderMap) -> Response {
+    if !authorized(&h, &studio) {
+        return error(StatusCode::UNAUTHORIZED, "Studio token required");
+    }
+    Json(omni::capabilities()).into_response()
+}
 pub fn router(s: Arc<Studio>) -> Router {
     Router::new()
         .route("/studio/session", post(session))
         .route("/studio/state", get(snapshot))
         .route("/studio/inspect", get(inspect))
         .route("/studio/models", get(catalog::scan_handler))
+        .route("/studio/omni/capabilities", get(omni_capabilities))
+        .route("/studio/omni/assets/import", post(omni_import))
+        .route("/studio/omni/count", post(omni_count))
         .route("/studio/action", post(action))
         .route("/studio/chat", post(chat))
         .route(
@@ -1579,6 +1828,7 @@ mod tests {
         let mut headers = HeaderMap::new();
         headers.insert("x-studio-token", studio.token.parse().unwrap());
         studio.document.write().await.messages.push(Message {
+            attachments: Vec::new(),
             role: "user".into(),
             content: "keep".into(),
             inference: None,
@@ -1639,6 +1889,7 @@ mod tests {
         {
             let mut d = s.document.write().await;
             d.messages.push(Message {
+                attachments: Vec::new(),
                 role: "user".into(),
                 content: "保存する会話".into(),
                 inference: Some(inference::Tracker::new("chat", "test").info),

@@ -169,3 +169,27 @@ Evidence created 2026-10-25 17:44:04 JST, expires 2026-11-01 17:44:04 JST. Nativ
 日本語: 現在の検証済み設定はアロケータ保持256 MiBです。総メモリ上限ではありません。設定や環境の不一致・期限切れは拒否し、証跡の書き換えや検査緩和は行いません。
 
 简体中文：当前实测配置为256 MiB分配器缓存，不限制总内存。配置或环境不匹配、证据过期时拒绝启动，不改写证据、不放宽检查。
+
+
+## 2026-10-28 intermediate-budget candidate (not activated)
+
+The complete eight-trial pilot selects512 MiB using the predeclared latency and memory guards; [results and limitations](BENCHMARKS.md#intermediate-budget-pilot-result--2026-10-28). Original1800-second qualification is running. Common Rust API workloads,108 boundary answers/108 refusals, count-fault recovery, exclusive lifecycle, wrong-setting startup rejection and guarded activation remain required. The native/headless preferences still select256 MiB. Their preserved2026-10-25 certificate correctly refuses the changed runtime/macOS identity; it is not valid current startup approval. Do not edit it or remove environment flags.
+
+日本語: 512 MiBは比較で選ばれた候補です。完全認証とSoliton検証が終わるまで未採用で、既存証跡の環境不一致は拒否します。
+
+简体中文：512 MiB仅为比较选出的候选值。完整认证和Soliton验证完成前不启用；现有证据与环境不匹配时仍拒绝启动。
+
+
+## 512 MiB adoption — 2026-10-28
+
+Original full qualification passed1,800.235 seconds,5,863 successes/zero failures with clean shutdown and fresh identity-bound evidence. Common Rust API validation passed38 long-history requests and three seeded requests;108 exact-limit answers and108 one-token-over refusals across EN/JA/ZH, single/history, position, JSON/SSE and three rounds. Counter failure closed/latched and recovered; stop/signal reaped model and counter; switching to the existing Strata mock kept exclusive ownership. This does not certify simultaneous real Strata inference. Wrong allocator0/256 refused by identity, and512/context4097 refused by evidence limits, without inference/counter startup or history mutation.
+
+The original activation guard replayed all eight pilot files, verified hashes/selected identity, checked153 retained-KV/allocator samples and ran full startup evidence verification for both preference documents. Native/headless now select allocator512 MiB, retained KV1024 MiB/context4096/concurrency1. Original-byte backups were saved; only allocator budget/evidence changed, preserving conversations/history and other preferences. Old proofs were not edited and no compatibility/count/exclusivity guard was bypassed. [Consolidated report](evaluation/allocator-tuning-20261028.json).
+
+Evidence created 2026-10-28 14:19:43 JST, expires 2026-11-04 14:19:43 JST. Maximum sampled retained KV 1011.461 MiB across153 samples.
+
+Python pilot improvements above remain separate from common Rust integration timings: the latter validate functionality under continuing desktop work and do not establish another causal speedup. Limits apply to reusable allocator cache, not active allocations or total RAM.
+
+日本語: 完全認証・長文履歴・境界判定・計数異常復旧・起動拒否・排他切替の検証を通過し、512 MiBを採用しました。会話と他の設定は保持しました。速度比較はPython経路、Soliton検証はRust共通APIで、数値は混同しません。
+
+简体中文：完整认证、长历史、边界、计数故障恢复、启动拒绝及排他切换均通过，已采用512 MiB。保留会话和其他设置。Python性能比较与Rust公共API验证分别报告。

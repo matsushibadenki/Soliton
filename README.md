@@ -132,4 +132,8 @@ Validated against the Strata 0.2.1 line at `9de04cd4` (source version 0.1.46.3).
 
 Verified local Gemma 2 2B inference is available through the existing identity-bound evidence gate; see the linked procedure for the exact environment and seven-day renewal.
 
-Current Strata source: v0.2.4; Tauri 2.12.5. See [dependency update and validation limits](docs/DEPENDENCY_UPDATE_20261024.md). Historical 0.2.1 real-inference evidence does not certify the new engine.
+Current Strata source: v0.2.7.1; Tauri 2.12.5. See [dependency update and validation limits](docs/DEPENDENCY_UPDATE_20261026.md), including authenticated inference with a temporary config and remaining saved-path migration.
+
+Latest update: [2026-10-26 dependency migration and real-inference limits](docs/DEPENDENCY_UPDATE_20261026.md).
+
+Latest dependency check: [2026-10-29 versions, compatibility fixes and qualification limits](docs/DEPENDENCY_UPDATE_20261029.md).

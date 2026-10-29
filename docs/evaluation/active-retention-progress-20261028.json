@@ -1,0 +1,51 @@
+{
+  "passed": true,
+  "scope": "qualification-only current-runtime diagnostic; not startup approval",
+  "identityDifferencesFromAdopted512": [],
+  "activeComparisonSession": 5316,
+  "comparisonLog": ".soliton-runtime/active-retention-resume-20261029.log",
+  "sourceSha256": "268b80be40b93b386101aa6e954a2eb011bfc7a00e4d52bc0c891d18d07371ce",
+  "baseline": {
+    "physicalPeakMiB": 4338.799736022949,
+    "activePeakMiB": 3049.8208351135254,
+    "idlePhysicalMiB": 3192.784133911133,
+    "idleActiveMiB": 2167.4302139282227,
+    "idleLogicalKV_MiB": 611.0,
+    "idleFreeCacheMiB": 365.75965690612793
+  },
+  "newPolicyAdopted": false,
+  "validComparisonTrials": [
+    {
+      "file": "docs/benchmarks/active-retention-prefill-20261028-0-2048-attempt3.json",
+      "prefillStepSize": 2048,
+      "warmMedianMs": 386.8894370025373,
+      "longMissMedianMs": 8206.383958498918,
+      "physicalPeakBytes": 4545219416,
+      "physicalPrimaryPeakBytes": 3873459032,
+      "cachePeakBytes": 542089636,
+      "idlePhysicalBytes": 3344812888
+    }
+  ],
+  "plannedComparisonTrials": 4,
+  "checkedAtJst": "2026-10-29T09:03:50.636387+09:00",
+  "activeStep": "prefill512 attempt7 CPU-invalidated; controller cooling down before attempt8",
+  "completedValidTrialFiles": [
+    "docs/benchmarks/active-retention-prefill-20261028-0-2048-attempt3.json"
+  ],
+  "excludedTrialFiles": [
+    "docs/benchmarks/active-retention-prefill-20261028-0-2048-attempt2.json",
+    "docs/benchmarks/active-retention-prefill-20261028-1-512-attempt2.json",
+    "docs/benchmarks/active-retention-prefill-20261028-1-512-attempt1.json",
+    "docs/benchmarks/active-retention-prefill-20261028-0-2048-attempt1.json"
+  ],
+  "activeControllerPid": 7999,
+  "prelaunchGuard": {
+    "maximumBackgroundCpuPercent": 20,
+    "stableSamples": 6,
+    "sampleIntervalSeconds": 5,
+    "rejectionCooldownSeconds": 60
+  },
+  "coordinatorExclusiveLockVerified": true,
+  "completedValidTrialCount": 1,
+  "comparisonComplete": false
+}
