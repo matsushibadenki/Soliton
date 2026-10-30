@@ -9,12 +9,14 @@ export function Modal({
   children,
   onClose,
   className = "",
+  dismissible = true,
 }: {
   title: string;
   language: Language;
   children: ReactNode;
   onClose: () => void;
   className?: string;
+  dismissible?: boolean;
 }) {
   const ref = useRef<HTMLDialogElement>(null);
   const headingId = "dialog-" + className;
@@ -35,13 +37,13 @@ export function Modal({
     >
       <header className="dialog-header">
         <h2 id={headingId}>{title}</h2>
-        <button
+        {dismissible && <button
           className="icon-button"
           aria-label={words[language].close}
           onClick={onClose}
         >
           <X />
-        </button>
+        </button>}
       </header>
       {children}
     </dialog>

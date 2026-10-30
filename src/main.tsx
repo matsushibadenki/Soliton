@@ -58,6 +58,7 @@ import {
   PreferencesDialog,
   type PreferenceTab,
 } from "./PreferencesDialog";
+import { InstallationRepair } from "./InstallationRepair";
 import { ModelLibraryDialog } from "./ModelLibraryDialog";
 import {
   MemoryControls,
@@ -432,7 +433,9 @@ function App() {
     if (!desktop || panelView || !online || setupGuided.current) return;
     setupGuided.current = true;
     if (settings.engine === "strata" && !settings.config && !settings.mock) {
-      void inspectSetup().then(() => setSetupOpen(true)).catch((e) => setError(String(e)));
+      void invoke("installation_status").then((failure) => {
+        if (!failure) return inspectSetup().then(() => setSetupOpen(true));
+      }).catch((e) => setError(String(e)));
     }
   }, [online]);
   async function browse(kind: "root" | "config" | "python") {
@@ -1546,6 +1549,7 @@ function App() {
           />
         </main>
       )}
+      <InstallationRepair language={language} />
       {preferencesOpen && (
         <PreferencesDialog
           language={language}

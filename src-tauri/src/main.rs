@@ -1,14 +1,53 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 mod hub;
+mod installation;
 use std::{path::PathBuf, sync::Arc};
 use tauri::{Emitter, Manager, State};
 use tauri_plugin_dialog::DialogExt;
 struct Runtime {
+    installation: std::sync::Mutex<Option<serde_json::Value>>,
+    install_data: PathBuf,
+    resources: PathBuf,
+    install_lock: tokio::sync::Mutex<()>,
     download: tokio::sync::Mutex<()>,
     cancel_download: std::sync::atomic::AtomicBool,
     studio: Arc<studio_core::Studio>,
     panels: tokio::sync::Mutex<()>,
     shutdown: std::sync::Mutex<Option<tokio::sync::oneshot::Sender<()>>>,
+}
+fn provision(resources: &std::path::Path, data: &std::path::Path) -> Result<(), serde_json::Value> {
+    installation::preflight(data)?;
+    install_bundled_engine(&resources.join("strata.tar.gz"), data)
+        .map_err(|e| installation::failure(data, "installation", &e))?;
+    install_bundled_python(&resources.join("python.tar.gz"), data)
+        .map_err(|e| installation::failure(data, "installation", &e))?;
+    Ok(())
+}
+#[tauri::command]
+fn installation_status(runtime: State<Runtime>) -> Option<serde_json::Value> {
+    runtime.installation.lock().unwrap().clone()
+}
+#[tauri::command]
+async fn retry_installation(runtime: State<'_, Runtime>) -> Result<(), String> {
+    let _guard = runtime.install_lock.lock().await;
+    if runtime.installation.lock().unwrap().is_none() {
+        return Ok(());
+    }
+    let resources = runtime.resources.clone();
+    let data = runtime.install_data.clone();
+    let result = tauri::async_runtime::spawn_blocking(move || provision(&resources, &data))
+        .await
+        .map_err(|e| e.to_string())?;
+    match result {
+        Ok(()) => {
+            *runtime.installation.lock().unwrap() = None;
+            Ok(())
+        }
+        Err(error) => {
+            *runtime.installation.lock().unwrap() = Some(error);
+            Err("Installation failed".into())
+        }
+    }
 }
 #[tauri::command]
 fn connection(runtime: State<Runtime>) -> serde_json::Value {
@@ -515,27 +554,30 @@ fn main() {
             } else {
                 app.path().app_data_dir()?
             };
+            let resources = app.path().resource_dir()?;
+            let managed = !cfg!(debug_assertions) && std::env::var_os("STRATA_ROOT").is_none();
+            let install_error = if managed {
+                provision(&resources, &app_data).err()
+            } else {
+                None
+            };
             let root = if let Some(root) = std::env::var_os("STRATA_ROOT") {
                 PathBuf::from(root)
             } else if cfg!(debug_assertions) {
                 PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../Strata")
             } else {
-                let archive = app.path().resource_dir()?.join("strata.tar.gz");
-                install_bundled_engine(&archive, &app_data).map_err(std::io::Error::other)?
+                app_data.join("Strata-metal-v1")
             };
             let legacy = app_data
                 .parent()
                 .unwrap_or(&app_data)
                 .join("dev.strata.studio/studio.json");
             let mut studio = studio_core::Studio::new(root, 8080);
-            if !cfg!(debug_assertions) && std::env::var_os("STRATA_ROOT").is_none() {
-                let python = install_bundled_python(
-                    &app.path().resource_dir()?.join("python.tar.gz"),
-                    &app_data,
-                )
-                .map_err(std::io::Error::other)?;
-                studio.settings.get_mut().python =
-                    python.join("bin/python3").to_string_lossy().into();
+            if managed {
+                studio.settings.get_mut().python = app_data
+                    .join("python-3.12.15/bin/python3")
+                    .to_string_lossy()
+                    .into();
             }
             // Match the headless runtime's explicit state override for isolated native QA.
             let studio = Arc::new(if let Some(path) = std::env::var_os("STUDIO_STATE_PATH") {
@@ -580,6 +622,10 @@ fn main() {
                 });
             }
             app.manage(Runtime {
+                installation: std::sync::Mutex::new(install_error),
+                install_data: app_data,
+                resources,
+                install_lock: tokio::sync::Mutex::new(()),
                 download: tokio::sync::Mutex::new(()),
                 cancel_download: std::sync::atomic::AtomicBool::new(false),
                 studio,
@@ -590,6 +636,8 @@ fn main() {
         })
         .invoke_handler(tauri::generate_handler![
             connection,
+            installation_status,
+            retry_installation,
             download_huggingface_file,
             cancel_model_download,
             check_software_update,
