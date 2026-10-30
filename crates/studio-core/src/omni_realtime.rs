@@ -13,9 +13,20 @@ pub struct Output {
     pcm: Vec<u8>,
     usage: Option<Value>,
     done: bool,
+    cancelled: bool,
 }
 impl Output {
+    pub fn cancel(&mut self) {
+        if !self.done {
+            self.cancelled = true;
+            self.pcm.clear();
+            self.usage = None;
+        }
+    }
     pub fn ingest(&mut self, bytes: &[u8]) -> Result<(), String> {
+        if self.done || self.cancelled {
+            return Err("Realtime response is already terminal".into());
+        }
         if bytes.len() > EVENT_LIMIT {
             return Err("Realtime event too large".into());
         }
@@ -51,19 +62,29 @@ impl Output {
             }
             "response.done" => {
                 let r = &e["response"];
-                if r["status"].as_str().is_some_and(|s| s != "completed") {
+                if r["status"] != "completed" {
+                    self.cancel();
                     return Err("Realtime response incomplete".into());
+                }
+                if r["usage"]["input_tokens"].as_u64().is_none()
+                    || r["usage"]["output_tokens"].as_u64().is_none()
+                {
+                    self.cancel();
+                    return Err("Realtime usage is unavailable".into());
                 }
                 self.usage = r.get("usage").cloned();
                 self.done = true;
             }
-            "error" => return Err("Realtime runtime reported an error".into()),
+            "error" => {
+                self.cancel();
+                return Err("Realtime runtime reported an error".into());
+            }
             _ => (),
         }
         Ok(())
     }
     pub fn metadata(&self) -> Value {
-        json!({"done":self.done,"sampleRate":self.rate,"audioBytes":self.pcm.len(),"text":self.text,"usage":self.usage})
+        json!({"done":self.done,"cancelled":self.cancelled,"sampleRate":self.rate,"audioBytes":self.pcm.len(),"text":self.text,"usage":self.usage})
     }
     pub fn write_wav(&self, path: &Path) -> Result<(), String> {
         if !self.done || self.rate != Some(24000) || self.pcm.is_empty() || self.pcm.len() % 2 != 0
@@ -158,5 +179,37 @@ mod tests {
         assert_eq!(&b[..4], b"RIFF");
         assert_eq!(b.len(), 48);
         fs::remove_file(p).unwrap();
+    }
+    #[test]
+    fn cancelled_audio_is_discarded_and_never_saved() {
+        let mut o = Output::default();
+        o.ingest(br#"{"type":"session.created","session":{"audio":{"output":{"format":{"rate":24000}}}}}"#).unwrap();
+        o.ingest(br#"{"type":"response.output_audio.delta","delta":"AAAAAA=="}"#)
+            .unwrap();
+        o.cancel();
+        assert_eq!(o.metadata()["audioBytes"], 0);
+        assert_eq!(o.metadata()["cancelled"], true);
+        let p = std::env::temp_dir().join(uuid::Uuid::new_v4().to_string());
+        assert!(o.write_wav(&p).is_err());
+        assert!(!p.exists());
+        assert!(o.ingest(br#"{"type":"response.done","response":{"status":"completed","usage":{"input_tokens":1,"output_tokens":1}}}"#).is_err());
+    }
+    #[test]
+    fn unknown_completion_or_usage_cannot_be_success() {
+        for r in [
+            json!({"usage":{"input_tokens":1,"output_tokens":1}}),
+            json!({"status":"completed"}),
+            json!({"status":"cancelled"}),
+        ] {
+            let mut o = Output::default();
+            assert!(o
+                .ingest(
+                    serde_json::to_string(&json!({"type":"response.done","response":r}))
+                        .unwrap()
+                        .as_bytes()
+                )
+                .is_err());
+            assert_eq!(o.metadata()["done"], false);
+        }
     }
 }

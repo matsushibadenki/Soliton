@@ -1,5 +1,5 @@
 {
-  "checkedAtJst": "2026-10-29T14:41:03.858401+09:00",
+  "checkedAtJst": "2026-10-29T14:50:38.750688+09:00",
   "implemented": [
     "exclusive shared lifecycle runtime adapter",
     "pinned runtime/weight/projector and hardware/decoder evidence gates",
@@ -10,7 +10,7 @@
     "authenticated exact-count preview",
     "alternate endpoint/output-mode refusal"
   ],
-  "coreTestsPassed": 90,
+  "coreTestsPassed": 92,
   "nativeParity": {
     "text": 28,
     "image": 100,
@@ -50,10 +50,13 @@
     "full UI integration and broad multilingual media quality"
   ],
   "speechRealtime": {
-    "status": "bounded Rust receiver implemented; native transport probe waiting for low load",
+    "status": "waiting for six low-load readings; no runtime started; cancellation and incomplete-output guards unit-tested",
     "session": 31051,
     "log": ".soliton-runtime/lfm3-realtime-probe-20261029.log",
     "enabled": false,
-    "qualified": false
+    "qualified": false,
+    "publicRouteEnabled": false,
+    "realCancellationVerified": false,
+    "realOutputReservationVerified": false
   }
 }

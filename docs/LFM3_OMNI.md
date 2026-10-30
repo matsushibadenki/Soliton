@@ -45,3 +45,12 @@ Native Realtime may render a different template and count audio codebooks differ
 日本語: メディア入力・テキスト応答の30分認証と共通API実モデル検証が合格しました。音声出力・Realtimeは別認証で扱い、Rustの有界受信・音声保存と実験クライアントを追加しました。出力予算と計数一致が未確認のため、公開経路は未有効化です。
 
 简体中文：媒体输入及文本输出的30分钟认证和公共API实模型验证已通过。语音输出及Realtime采用独立认证；已添加Rust有界接收、音频存储与实验客户端。输出预算及计数一致性仍待验证，公开路径尚未启用。
+
+
+### Realtime cancellation guard — 2026-10-29
+
+The output collector now discards partial PCM on local cancellation and refuses all later events for that response. Cancelled/incomplete/missing-status completions and missing input/output usage cannot be saved as successful WAV output. Two new regression tests pass; all92 core tests and probe build pass. These are unit contracts only: real Realtime count/output-budget/history/cancellation/exclusivity verification remains pending. Native probe is still waiting for low load, and the latest-binary common-API repeat remains queued behind its cleanup. No public speech/Realtime route is enabled.
+
+日本語: キャンセル時の部分音声破棄と不明な完了・使用量の拒否を追加し、全92テストが通過しました。実モデルの音声検証は低負荷待ちで、公開経路は未有効化です。
+
+简体中文：已增加取消时丢弃部分音频及拒绝未知完成状态/用量的处理，92项测试通过。语音实模型验证仍等待低负载，公开路径尚未启用。
