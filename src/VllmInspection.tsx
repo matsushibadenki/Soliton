@@ -26,6 +26,11 @@ export function VllmInspectionView({
     backend_fingerprint_failed: t.vllmFingerprint,
     model_memory_budget: t.vllmBudget,
     inspection_failed: t.vllmInspectFailed,
+    architecture_unsupported: {
+      ja: "このエンジンではモデルのアーキテクチャが未対応です。対応済みのモデルを選択するか、エンジンの対応追加が必要です。",
+      en: "This model architecture is not supported by the engine. Choose a supported model or add engine support.",
+      zh: "此引擎尚不支持该模型架构。请选择受支持的模型，或为引擎添加相应支持。",
+    }[language],
   };
   const status =
     value.status === "verified"

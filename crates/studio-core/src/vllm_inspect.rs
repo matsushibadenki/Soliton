@@ -44,6 +44,8 @@ impl Inspection {
             "evidence_permissions"
         } else if detail.contains("fingerprint probe failed") {
             "backend_fingerprint_failed"
+        } else if v["compatibility_issue"] == "architecture_unknown" {
+            "architecture_unsupported"
         } else if v["fits_memory"] == false {
             "model_memory_budget"
         } else if (!success && !(v["schema_version"] == 2 && v["qualification"] == "unverified"))
@@ -174,6 +176,9 @@ mod tests {
             "unverified"
         );
         assert_eq!(Inspection::from_report(&json!({"schema_version":2,"qualification":"unverified","runnable":false,"fits_memory":true}), &settings, false).status, "unverified");
+        let unsupported = Inspection::from_report(&json!({"schema_version":2,"qualification":"unverified","runnable":false,"compatibility_issue":"architecture_unknown","architecture":"gemma3_text","fits_memory":true}), &settings, false);
+        assert_eq!(unsupported.status, "blocked");
+        assert_eq!(unsupported.reason, "architecture_unsupported");
         settings.evidence = "/private/evidence.json".into();
         assert_eq!(
             Inspection::from_report(&report, &settings, true).status,

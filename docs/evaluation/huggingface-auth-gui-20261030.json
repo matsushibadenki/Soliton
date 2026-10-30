@@ -1,0 +1,43 @@
+{
+  "date": "2026-10-30",
+  "result": "authenticated_download_verified_inference_blocked",
+  "surface": "native packaged Tauri GUI",
+  "repository": "google/gemma-3-1b-it",
+  "revision": "dcc83ea841ab6100d6b47a070329e1ba4cf78752",
+  "unauthenticatedFixedRevisionWeightGetStatus": 401,
+  "authenticatedGuiDownloadCompleted": true,
+  "file": {
+    "name": "model.safetensors",
+    "bytes": 1999811208,
+    "sha256": "3d4ef8d71c14db7e448a09ebe891cfb6bf32c57a9b44499ae0d1c098e48516b6",
+    "sizeAndSha256Verified": true
+  },
+  "credentials": {
+    "enteredByUserInGui": true,
+    "readByAgent": false,
+    "guiFieldClearedAfterTransfer": true,
+    "persistedCredentialFieldsFound": false
+  },
+  "engineInspection": {
+    "backend": "mlx_lm",
+    "architecture": "gemma3_text",
+    "compatibilityIssue": "architecture_unknown",
+    "runnable": false,
+    "fitsMemory": true,
+    "context": 512
+  },
+  "guiStartAttempt": "engine returned to stopped after compatibility rejection",
+  "chatVerified": false,
+  "limitations": [
+    "Gemma 3 engine support is not implemented in the current vLLM-Apple architecture registry",
+    "compatibility checks were not relaxed",
+    "download success does not establish inference support"
+  ],
+  "solitonBaseCommit": "e990bd08849a61705842f548ef6d9341fc4d0928",
+  "vllmAppleCommit": "578e0606993be1016d33ab4da617ee47720aba02",
+  "fixedGuiDiagnosis": {
+    "status": "blocked",
+    "reason": "architecture_unsupported",
+    "nativeGuiVerified": true
+  }
+}
