@@ -10,7 +10,7 @@
 
 在「偏好设置 → 引擎 → 推理引擎」选择Strata或vLLM-Apple。切换会先停止当前受管引擎和子进程，再保存选择；请随后点击「启动」。会话生成、API响应或模型准备期间禁止切换。受管引擎不会同时驻留。独立手动启动的进程不受Soliton管理，请预先停止。
 
-vLLM-Apple需要配置根目录中的`vLLM-apple/`、Python绝对路径、现有本地模型目录的绝对路径、MLX LM或vLLM-Metal，以及后端可执行文件的绝对路径。请先在vLLM-Apple准备兼容环境。Soliton不安装依赖或自动下载模型。移动虚拟环境后，可执行文件可能仍引用旧路径，必要时请修复或重建。MLX使用`default_model`，vLLM-Metal使用指定模型路径。仅在daemon报告`inference_ready`后启用聊天。
+vLLM-Apple需要配置根目录中的`vLLM-apple/`、Python绝对路径、现有本地模型目录的绝对路径、MLX LM或vLLM-Metal，以及后端可执行文件的绝对路径。请先在vLLM-Apple准备兼容环境。Strata发行包包含Python和运行依赖；vLLM-Apple仍使用独立的兼容环境。可在本地模型窗口通过Hugging Face网址下载文件，随后单独检查引擎兼容性。移动虚拟环境后，可执行文件可能仍引用旧路径，必要时请修复或重建。MLX使用`default_model`，vLLM-Metal使用指定模型路径。仅在daemon报告`inference_ready`后启用聊天。
 
 共用会话、历史、日志、内存历史和请求指标；新请求记录所用引擎。切换后会话作为新提示发送，不传递KV缓存。上下文、role和tools支持依模型而定。转发OpenAI API；仅Strata显示Anthropic `/v1/messages`，不为vLLM-Apple转换协议。
 
@@ -103,3 +103,7 @@ Release构建面向Apple Silicon。发布签名与公证需要Apple开发者凭�
 最新更新：[2026-10-26依赖迁移与真实推理验证范围](docs/DEPENDENCY_UPDATE_20261026.md)。
 
 最新依赖更新：[2026-10-29版本、兼容性修复及验证范围](docs/DEPENDENCY_UPDATE_20261029.md)。
+
+## Gemma 3文本推理（MLX）
+
+外部vLLM-Apple引擎已增加`gemma3_text`结构识别。开发Mac上的`google/gemma-3-1b-it`与MLX-LM 0.32.0通过了上下文512、并发1的验证。在偏好设置 → 引擎选择vLLM-Apple／MLX LM，指定下载的本地模型目录和匹配的验证证据JSON，然后诊断并启动。本次简短聊天在偏好设置 → API中将输出令牌上限设为64。其他Mac或实现更新后需要重新生成相应证据。参见[部署与验证记录](docs/DEPLOYMENT.ja.md)。

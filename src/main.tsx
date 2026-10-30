@@ -165,6 +165,14 @@ function App() {
   const [settings, setSettings] = useState<Settings>(defaults);
   const [language, setLanguage] = useState<Language>("ja");
   const [error, setError] = useState("");
+  const readableError = error.includes("Prompt plus requested output exceeds the qualified context")
+    ? {
+        ja: "入力と出力上限の合計が検証済みコンテキストを超えています。環境設定 → APIの出力トークン上限を下げるか、会話を短くしてください。",
+        en: "The prompt plus output limit exceeds the qualified context. Lower the output token limit in Preferences → API, or shorten the conversation.",
+        zh: "输入和输出上限之和超过了已验证的上下文限制。请在偏好设置 → API中降低输出令牌上限，或缩短对话。",
+      }[language]
+    : error;
+
   const [online, setOnline] = useState(false);
   const [connectionFailed, setConnectionFailed] = useState(false);
   const [pending, setPending] = useState(false);
@@ -1512,7 +1520,7 @@ function App() {
       ) : null}
       {error ? (
         <div className="notice error" role="alert">
-          {error}
+          {readableError}
           {button(<Square />, t.clear, () => setError(""))}
         </div>
       ) : null}
@@ -1556,7 +1564,7 @@ function App() {
           tab={preferenceTab}
           onTab={setPreferenceTab}
           onClose={closePreferences}
-          error={error}
+          error={readableError}
         >
           {preferenceTab === "general" ? (
             <section className="general-settings">

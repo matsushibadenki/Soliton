@@ -10,7 +10,7 @@ A Tauri 2 inference workbench and shared Rust API gateway for Strata and vLLM-Ap
 
 Preferences → Engine → Inference engine selects **Strata** or **vLLM-Apple**. Switching stops the previous managed engine and its workers, then saves the selection; click Start to load the selected engine. Active GUI/API requests and model preparation block switching. Only one managed engine runs at a time. Independently started processes are outside Soliton's lifecycle; stop those before using Soliton.
 
-For vLLM-Apple, set its source directory (`vLLM-apple/` beside `Strata/`), absolute Python path, existing absolute local model directory, backend (`MLX LM` or `vLLM-Metal`) and absolute backend executable path. Use a compatible environment already prepared by vLLM-Apple; Soliton does not install dependencies or download models. Moving a virtual environment may leave executable shebangs pointing to its previous directory; repair or recreate the selected environment when necessary. MLX uses model alias `default_model`; vLLM-Metal uses the configured model path. The daemon's `inference_ready` controls chat availability.
+For vLLM-Apple, set its source directory (`vLLM-apple/` beside `Strata/`), absolute Python path, existing absolute local model directory, backend (`MLX LM` or `vLLM-Metal`) and absolute backend executable path. Use a compatible environment already prepared by vLLM-Apple. The packaged Strata runtime includes Python and dependencies; vLLM-Apple keeps its separate environment. Local models can download files from a Hugging Face URL, but engine compatibility is checked separately. Moving a virtual environment may leave executable shebangs pointing to its previous directory; repair or recreate the selected environment when necessary. MLX uses model alias `default_model`; vLLM-Metal uses the configured model path. The daemon's `inference_ready` controls chat availability.
 
 Chat, saved history, logs, process-memory history and request metrics are shared. Each new request records its engine; older saved requests show an unavailable engine value. Switching keeps the conversation, but the next engine receives it as a new prompt: KV caches are not transferred. Backend-specific context, role and tool support still apply. OpenAI routes are proxied; Anthropic `/v1/messages` is advertised only for Strata and is not translated for vLLM-Apple.
 
@@ -137,3 +137,7 @@ Current Strata source: v0.2.7.1; Tauri 2.12.5. See [dependency update and valida
 Latest update: [2026-10-26 dependency migration and real-inference limits](docs/DEPENDENCY_UPDATE_20261026.md).
 
 Latest dependency check: [2026-10-29 versions, compatibility fixes and qualification limits](docs/DEPENDENCY_UPDATE_20261029.md).
+
+## Gemma 3 text with MLX
+
+The vLLM-Apple engine recognizes `gemma3_text`. `google/gemma-3-1b-it` was qualified on the development Mac with MLX-LM 0.32.0, context 512 and concurrency 1. In Preferences → Engine, select vLLM-Apple / MLX LM, the downloaded local model folder and the matching owner-only qualification JSON; run diagnostics and Start. Set the output limit to 64 in Preferences → API for the demonstrated short chat. Other Macs/builds need their own evidence. See [deployment and verification](docs/DEPLOYMENT.ja.md).

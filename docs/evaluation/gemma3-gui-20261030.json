@@ -1,0 +1,69 @@
+{
+  "date": "2026-10-30",
+  "result": "passed",
+  "model": "google/gemma-3-1b-it",
+  "revision": "dcc83ea841ab6100d6b47a070329e1ba4cf78752",
+  "architecture": "gemma3_text",
+  "backend": "mlx_lm",
+  "backendVersions": {
+    "mlx_lm": "0.32.0"
+  },
+  "qualification": {
+    "scope": "text_smoke_30min",
+    "limits": {
+      "concurrency": 1,
+      "context_tokens": 512
+    },
+    "qualityChecks": {
+      "english": true,
+      "japanese": true,
+      "simplified_chinese": true
+    },
+    "soakSeconds": 1800.017,
+    "requests": 6770,
+    "successes": 6770,
+    "errors": {},
+    "rss": {
+      "baseline_bytes": 2811478016,
+      "final_bytes": 2712207360,
+      "growth_bytes": 0,
+      "limit_bytes": 268435456,
+      "peak_bytes": 2823667712,
+      "peak_growth_bytes": 12189696
+    },
+    "shutdownClean": true
+  },
+  "gui": {
+    "diagnosis": "identity-bound evidence matched",
+    "modelStarted": true,
+    "maxTokens": 64,
+    "temperature": 0,
+    "messages": [
+      {
+        "role": "user",
+        "content": "1+1はいくつですか？数字だけで答えてください。"
+      },
+      {
+        "role": "assistant",
+        "content": "2"
+      }
+    ],
+    "displayedSeconds": 0.38,
+    "displayedTokens": 2,
+    "finalBuildEnglishChat": {
+      "prompt": "What is 1+1? Reply with only the digit.",
+      "response": "2",
+      "displayedSeconds": 0.41,
+      "displayedTokens": 3
+    },
+    "contextLimitRepairVerified": true,
+    "cleanAppExit": true
+  },
+  "limits": [
+    "one Apple M4 development Mac",
+    "text only; no Gemma multimodal wrapper support",
+    "context 512 and concurrency 1",
+    "external MLX environment; not bundled Strata execution"
+  ],
+  "engineCommit": "33043c01a379f885c8adc5b9a83b02415c16b60c"
+}
