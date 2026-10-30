@@ -26,6 +26,35 @@ fn candidate(path: &Path) -> Result<LocalInput, String> {
         .file_name()
         .and_then(|n| n.to_str())
         .ok_or("Invalid model path")?;
+    let folder = if path.is_dir() {
+        path
+    } else {
+        path.parent().ok_or("Invalid model folder")?
+    };
+    if (path.is_dir() || name == "model.safetensors")
+        && folder.join("config.json").is_file()
+        && folder.join("model.safetensors").is_file()
+    {
+        let names: Vec<String> = [
+            "config.json",
+            "model.safetensors",
+            "tokenizer.model",
+            "tokenizer_config.json",
+            "special_tokens_map.json",
+            "added_tokens.json",
+            "generation_config.json",
+        ]
+        .iter()
+        .filter(|n| folder.join(n).is_file())
+        .map(|n| n.to_string())
+        .collect();
+        return Ok(LocalInput {
+            model: "GEMMA3-1B".into(),
+            files: names.iter().map(|n| folder.join(n)).collect(),
+            names,
+            settings_key: Default::default(),
+        });
+    }
     for model in preparation::MODELS {
         let n = match model.id {
             "UD-Q4_K_XL" => 4,
@@ -71,10 +100,23 @@ async fn validated(settings: &Settings, path: &str) -> Result<LocalInput, String
         Command::new(&settings.python)
             .args([
                 "-c",
-                include_str!("local_validate.py"),
+                if input.model == "GEMMA3-1B" {
+                    include_str!("../../../scripts/strata-gemma3-prepare.py")
+                } else {
+                    include_str!("local_validate.py")
+                },
                 &settings.strata_root,
-                &files,
+                if input.model == "GEMMA3-1B" {
+                    input.files[0].parent().unwrap().to_str().unwrap()
+                } else {
+                    &files
+                },
             ])
+            .args(if input.model == "GEMMA3-1B" {
+                vec!["unused", "--inspect"]
+            } else {
+                vec![]
+            })
             .kill_on_drop(true)
             .output(),
     )
@@ -296,6 +338,22 @@ mod tests {
                 ))
             })
             .collect()
+    }
+    #[test]
+    fn hf_neighbors_do_not_shadow_the_explicit_gguf_selection() {
+        let (base, _s, external) = fixture();
+        fs::write(external.join("config.json"), "{}").unwrap();
+        let weights = external.join("model.safetensors");
+        fs::write(&weights, "fixture").unwrap();
+        let files = shards(&external);
+        for (i, p) in files.iter().enumerate() {
+            gguf(p, i as u32, "qwen4exp");
+        }
+        assert_eq!(candidate(&weights).unwrap().model, "GEMMA3-1B");
+        assert_eq!(candidate(&external).unwrap().model, "GEMMA3-1B");
+        assert_eq!(candidate(&files[0]).unwrap().model, "Q2_0");
+        assert!(candidate(&external.join("README.md")).is_err());
+        fs::remove_dir_all(base).unwrap();
     }
     #[tokio::test]
     async fn refuses_missing_mixed_and_truncated_shards_before_preparation() {

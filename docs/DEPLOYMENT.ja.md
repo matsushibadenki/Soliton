@@ -193,7 +193,7 @@ GUIの案内確認後、別ターミナルからテストボリューム内の�
 - 🟢 [Done] 取得済みの上記固定リビジョンをMLX-LM 0.32.0で正式に資格確認。英語・日本語・简体中文の品質検査、30分の連続推論6,770件すべて成功、エラー0、終了処理成功。
 - 🟢 [Done] 最終配布ビルドのGUIでモデルフォルダーと証跡を指定して診断し、「証跡が一致」→起動→準備完了を確認。日本語・英語の算数質問にどちらも`2`を返しました。
 - 🟢 [Done] 入力と出力上限が検証済みコンテキストを超える場合、3言語で環境設定 → APIへの修復案内を表示。GUIで上限512による拒否を再現し、64へ下げて応答まで復旧を確認しました。
-- ⭕️ [Pending] 別Mac、より長いコンテキスト、Gemmaのマルチモーダル構成、同梱StrataでのGemma 3推論。
+- ⭕️ [Pending] 別Mac、より長いコンテキスト、Gemmaのマルチモーダル構成。同梱Strataの1Bテキスト経路は後続の節で検証しています。
 
 ### 再現手順
 
@@ -215,3 +215,44 @@ vLLM-Appleのルートを作業ディレクトリにして実行してくださ�
 環境設定 → エンジンでvLLM-Apple／MLX LM、モデル・Python・バックエンド・証跡の絶対パス、コンテキスト512を指定し、診断後に起動します。APIタブの最大トークンは今回64、Temperatureは0。会話が長くなると512の範囲を超えるため、新しい会話へ切り替えるか同じ環境でより大きなコンテキストを再検証してください。
 
 証跡はモデル、バックエンド、ラッパーのソース、Macと環境、有効期限に結び付きます。別Macやソース・モデル・バックエンド更新後は再生成が必要です。今回の結果で全Gemmaモデルや任意バージョンを包括的に許可していません。公開可能な検証要約は`docs/evaluation/gemma3-gui-20261030.json`です。
+
+## 同梱StrataのGemma 3 1B経路（2026-10-30）
+
+Soliton配布版のStrata選択に、Gemma 3 1B用の**llama.cpp Metal密モデルバックエンド**を追加しました。上流StrataのQwen専用カーネルへGemmaの演算を移植したものではありません。MLXや外部の推論環境は使用しません。
+
+- 🟢 [Done] 同梱Python 3.12.15とSentencePiece 0.2.1で、ローカルのBF16/F16/F32 SafeTensorsをF16 GGUFへ変換。PyTorch、追加のモデル取得、利用者のMac上でのコンパイルは不要です。
+- 🟢 [Done] 構造は`gemma3_text`の1Bレイアウトに限定。26層、6層周期の注意、head dimension 256、Q/K正規化、4種類の層内正規化、独立したローカル／グローバルRoPEを保持します。全340テンソルの名前・形状・データ範囲を検査し、正規化重みの+1変換を行います。範囲外の共有トークナイザー追加トークンは取り込まず、EOS 1／EOT 106を明示します。
+- 🟢 [Done] 一時GGUFからのアトミックな確定と設定生成。元のモデルを変更せず、変換用の空き容量2.5 GBを事前検査します。変換後のGGUFは約2.01 GBです。
+- 🟢 [Done] ビルド時にStrataのllama.cpp固定コミット`3cf03257f219afbe7334045ff7c6a06ac68c627d`の公式ソースをSHA-256検査。Metalライブラリを埋め込み、標準macOSライブラリ以外の動的依存があれば配布ビルドを拒否します。内部接続は認証付き127.0.0.1のHTTPで、モデル取得は既存RustのHTTPS処理が担当します。
+- 🟢 [Done] 既存インストールにはGemma追加部分だけを設置し、Qwenの設定や準備済みモデルを保持します。Gemma選択時には適用対象外のQwen用メモリ操作を表示しません。
+- ⭕️ [Pending] 別Mac・Intel Mac、他サイズのGemma、画像入力、長時間連続負荷試験。今回の経路はApple Silicon／macOS 15以降、テキスト、コンテキスト2048、1スロットです。
+
+### 利用手順
+
+1. 配布アプリを起動し、初回の実行環境設置を完了します。
+2. 推論エンジンをStrataにし、起動中なら停止します。
+3. 「モデルを準備 → ローカルモデル」で、取得済みGemma 3 1Bフォルダーを追加します。`config.json`、`model.safetensors`、`tokenizer.model`、`tokenizer_config.json`が必要です。
+4. `model.safetensors`を選択し、「Strataで使用」を押します。2.5 GBの作業領域と取得量0 GBを確認できます。
+5. 「モデルの準備が完了し、設定を反映しました」を確認します。設定・エンジン・トークナイザーがすべて確認済みになります。
+6. 環境設定 → エンジンから起動し、準備完了後にチャットします。今回の検証ではAPIタブの最大トークン64、Temperature 0を使用しました。
+
+Gemma用の設定は`Strata-metal-v1/strata-gemma3-1b.json`、生成GGUFは隣接する`Strata-data/local-models/GEMMA3-1B-<識別子>/prepared/`に保存します。設定を保持して再起動すれば再変換せず利用できます。モデルライブラリから再度準備を選ぶ場合は元ファイルを再検査・再変換します。元モデルの保存先はそのまま保持してください。
+
+### ビルドと検証
+
+通常の`npm run desktop:build -- --bundles app`でPython・SentencePiece・Gemmaバックエンドを同梱します。ビルド用MacではCMakeとコンパイラーが必要ですが、配布先では必要ありません。専用ビルド処理は`scripts/build-bundled-gemma.py`、変換処理は`scripts/strata-gemma3-prepare.py`です。モデルの重み・トークン・利用者設定はGitHubへ含めません。
+
+```sh
+.soliton-runtime/python-build/cpython-3.12.15-macos-aarch64-none/bin/python3 scripts/test-strata-gemma3.py
+cargo test -p studio-core local_model
+cargo test -p studio-core preparation
+cargo test -p studio-core catalog
+cargo test -p studio-core engine_tests
+cargo test -p soliton bundled_engine_tests
+```
+
+ネイティブGUIでは専用の空の`SOLITON_DATA_DIR`へ設置し、`PATH=/usr/bin:/bin:/usr/sbin:/sbin`、`STRATA_ROOT`・`PYTHONPATH`・`PYTHONHOME`なしで起動しました。取得済み`google/gemma-3-1b-it`の固定リビジョン`dcc83ea841ab6100d6b47a070329e1ba4cf78752`をGUIから準備し、日本語「東京」、英語「4」、追質問「4」、简体中文「北京」の応答を確認しました。これは開発Macで外部開発ツールの探索を除外した試験であり、別のクリーンなMacでの検証を代替しません。
+
+GUI試験で検出した公式追加トークンの範囲、終了トークンのメタデータ、準備画面のモデル名／容量表示を修正しました。再起動後に設定・会話の保持を確認し、GGUFの更新時刻が変わらないまま日本語の「1+1」に`2`と応答しました。最終版のBOS 2／EOS 1／EOT 106をGGUFから照合し、トークナイザー警告がないこと、アプリとエンジンの正常終了を確認しました。公開可能な検証要約は`docs/evaluation/gemma3-strata-gui-20261030.json`です。既存の外部MLX向け30分資格確認の結果と、今回の同梱MetalのGUI試験は別の記録です。
+
+参考実装：[固定llama.cppのGemma変換](https://github.com/ggml-org/llama.cpp/blob/3cf03257f219afbe7334045ff7c6a06ac68c627d/conversion/gemma.py)、[Gemma 3演算](https://github.com/ggml-org/llama.cpp/blob/3cf03257f219afbe7334045ff7c6a06ac68c627d/src/models/gemma3.cpp)。

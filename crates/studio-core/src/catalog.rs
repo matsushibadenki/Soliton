@@ -333,6 +333,8 @@ fn model_file(path: &Path, source: &str, meta: &fs::Metadata) -> Option<ModelFil
         }
     } else if read.is_err() {
         "unreadable"
+    } else if format == "SafeTensors" && path.parent()?.join("config.json").is_file() {
+        "configurationRequired"
     } else if format == "Strata pack" {
         "configurationRequired"
     } else {

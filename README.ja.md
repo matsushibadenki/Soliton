@@ -111,3 +111,8 @@ Strata 0.2.1系の `9de04cd4`（ソース版0.1.46.3）に対応しました。[
 ## Gemma 3のテキスト推論（MLX）
 
 外部vLLM-Appleエンジンに`gemma3_text`の構造判定を追加しました。開発Macでは`google/gemma-3-1b-it`とMLX-LM 0.32.0を、コンテキスト512・同時実行1で検証しています。環境設定 → エンジンでvLLM-Apple／MLX LM、取得先モデルフォルダー、対応する検証証跡JSONを指定して診断・起動します。今回の短いチャットでは環境設定 → APIの最大トークンを64に設定しました。別Macや実装更新後は、その環境で証跡を再生成してください。[手順と検証記録](docs/DEPLOYMENT.ja.md)を参照してください。
+
+
+## 同梱StrataでGemma 3 1Bを使用
+
+Apple Silicon配布版では、ローカルモデル画面で取得済みの`google/gemma-3-1b-it/model.safetensors`を選び「Strataで使用」を押します。同梱PythonでF16 GGUFへ変換し、Strata選択内の専用llama.cpp Metalバックエンドで実行します。MLX・システムPython・開発ツールは不要です。元の重みは変更せず、変換用に2.5 GB以上の空き容量が必要です。対象はGemma 3 1Bのテキスト構成、コンテキスト2048・同時実行1です。既存Qwen用Strataカーネルとは別経路であり、画像入力や他サイズのGemmaは含みません。[配布手順と実機検証](docs/DEPLOYMENT.ja.md)を参照してください。

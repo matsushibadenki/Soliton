@@ -12,4 +12,5 @@ if (process.platform !== 'darwin' || process.arch !== 'arm64') throw new Error('
 mkdirSync(resolve(root, 'src-tauri/resources'), { recursive: true });
 run('uv', ['python', 'install', '3.12.15'], { env: { ...process.env, UV_PYTHON_INSTALL_DIR: install } });
 run('uv', ['pip', 'install', '--python', resolve(python, 'bin/python3'), '--break-system-packages', '-r', 'Strata/requirements.txt']);
+run('uv', ['pip', 'install', '--python', resolve(python, 'bin/python3'), '--break-system-packages', 'sentencepiece==0.2.1']);
 run('/usr/bin/tar', ['-czf', resolve(root, 'src-tauri/resources/python.tar.gz'), '-C', python, '.']);

@@ -402,7 +402,7 @@ export function ModelLibraryDialog({
                     applying ||
                     m.status === "invalidFile" ||
                     m.status === "unreadable" ||
-                    (m.format !== "GGUF" && m.format !== "Strata pack")
+                    (m.format !== "GGUF" && m.format !== "Strata pack" && m.format !== "SafeTensors")
                   }
                   title={t.selectModel}
                   onClick={() => selectModel(m)}

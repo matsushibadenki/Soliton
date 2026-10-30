@@ -14,6 +14,11 @@ pub struct ModelOption {
 // observed in the bundled Metal setup, plus its dense pack and tokenizer.
 pub const MODELS: &[ModelOption] = &[
     ModelOption {
+        id: "GEMMA3-1B",
+        download_gb: 2.0,
+        working_gb: 4.5,
+    },
+    ModelOption {
         id: "Q2_0",
         download_gb: 66.4,
         working_gb: 112.0,
@@ -110,9 +115,15 @@ pub fn inspect_config(path: &Path, root: &Path) -> ConfigInfo {
             info.engine_exists = v["exe"]
                 .as_str()
                 .is_some_and(|p| !p.is_empty() && resolve(&cwd, p).is_file());
-            info.tokenizer_exists = v["tokenizer"]
-                .as_str()
-                .is_some_and(|p| resolve(&cwd, p).join("vocab.json").is_file());
+            info.tokenizer_exists = if v["backend"] == "strata-gemma3-metal" {
+                v["model"]
+                    .as_str()
+                    .is_some_and(|p| resolve(&cwd, p).is_file())
+            } else {
+                v["tokenizer"]
+                    .as_str()
+                    .is_some_and(|p| resolve(&cwd, p).join("vocab.json").is_file())
+            };
             info.valid = v.is_object()
                 && v["exe"].as_str().is_some_and(|p| !p.is_empty())
                 && v["args"].is_array();
@@ -183,7 +194,7 @@ impl Studio {
             }
             _ => json!({"supported":false,"dependencies":false}),
         };
-        json!({"rootExists":root.join("serve/server.py").is_file(),"setupAvailable":root.join("metal/setup_mac.py").is_file(),"supportedHost":cfg!(all(target_os="macos",target_arch="aarch64")),"metalProfile":crate::metal_policy::profile(self.memory_bytes),"python":python,"configs":configs(&root),"selected":if s.config.is_empty(){None}else{Some(inspect_config(&resolve(&root,&s.config),&root))},"models":MODELS,"freeBytes":free_bytes(&root),"recommended":if self.memory_bytes.unwrap_or(0)>=96*1024*1024*1024{"IQ3_S"}else{"Q2_0"}})
+        json!({"rootExists":root.join("serve/server.py").is_file(),"setupAvailable":root.join("metal/setup_mac.py").is_file(),"supportedHost":cfg!(all(target_os="macos",target_arch="aarch64")),"metalProfile":crate::metal_policy::profile(self.memory_bytes),"python":python,"configs":configs(&root),"selected":if s.config.is_empty(){None}else{Some(inspect_config(&resolve(&root,&s.config),&root))},"models":MODELS.iter().filter(|m| m.id != "GEMMA3-1B").collect::<Vec<_>>(),"freeBytes":free_bytes(&root),"recommended":if self.memory_bytes.unwrap_or(0)>=96*1024*1024*1024{"IQ3_S"}else{"Q2_0"}})
     }
     pub async fn prepare(self: &Arc<Self>, model: &str, confirmed: bool) -> Result<(), String> {
         self.prepare_with_capacity(model, confirmed, free_bytes)
@@ -244,6 +255,9 @@ impl Studio {
         if !root.join("metal/setup_mac.py").is_file() || !root.join("serve/server.py").is_file() {
             return Err("Select a Strata source directory with Metal setup".into());
         }
+        if model == "GEMMA3-1B" && local.is_none() {
+            return Err("Select a downloaded Gemma 3 1B model in the model library".into());
+        }
         let local_reuse = local.is_some();
         let needed = if local_reuse {
             option.working_gb - option.download_gb
@@ -284,7 +298,12 @@ os.execv(str(py), [str(py), '-u', str(root / 'metal/setup_mac.py'), '--yes', '--
                 root.to_string_lossy().into_owned(),
                 stage.to_string_lossy().into_owned(),
                 data.to_string_lossy().into_owned(),
-                include_str!("local_setup.py").to_string(),
+                if model == "GEMMA3-1B" {
+                    include_str!("../../../scripts/strata-gemma3-prepare.py")
+                } else {
+                    include_str!("local_setup.py")
+                }
+                .to_string(),
             ];
             crate::local_model::LOCAL_BOOTSTRAP
         } else {

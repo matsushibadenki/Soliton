@@ -75,7 +75,8 @@ export function SetupDialog({
   const [failure, setFailure] = useState("");
   const busy = ["running", "cancelling"].includes(job.status);
   const reuseOnly = localView || (busy && !!job.localReuse);
-  const selected = inspection?.models.find((m) => m.id === model);
+  const selected = inspection?.models.find((m) => m.id === model) ??
+    (reuseOnly && model === "GEMMA3-1B" ? { id: model, downloadGb: 2, workingGb: 4.5 } : undefined);
   const workingGb = selected
     ? selected.workingGb - (reuseOnly ? selected.downloadGb : 0)
     : undefined;
@@ -209,6 +210,7 @@ export function SetupDialog({
                 setConsent(false);
               }}
             >
+              {reuseOnly && model === "GEMMA3-1B" && <option value={model}>Gemma 3 1B</option>}
               {inspection?.models.map((m) => (
                 <option key={m.id} value={m.id}>
                   {m.id}

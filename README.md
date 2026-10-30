@@ -141,3 +141,8 @@ Latest dependency check: [2026-10-29 versions, compatibility fixes and qualifica
 ## Gemma 3 text with MLX
 
 The vLLM-Apple engine recognizes `gemma3_text`. `google/gemma-3-1b-it` was qualified on the development Mac with MLX-LM 0.32.0, context 512 and concurrency 1. In Preferences → Engine, select vLLM-Apple / MLX LM, the downloaded local model folder and the matching owner-only qualification JSON; run diagnostics and Start. Set the output limit to 64 in Preferences → API for the demonstrated short chat. Other Macs/builds need their own evidence. See [deployment and verification](docs/DEPLOYMENT.ja.md).
+
+
+## Gemma 3 1B in bundled Strata
+
+On the Apple Silicon distribution, select the downloaded `google/gemma-3-1b-it/model.safetensors` in Local models and choose “Use in Strata”. Bundled Python converts it to F16 GGUF; the Strata selection then runs a dedicated bundled llama.cpp Metal backend. MLX, system Python and developer tools are unnecessary. Source weights remain unchanged; allow at least 2.5 GB of free conversion space. This path supports the Gemma 3 1B text layout, context 2048 and one slot. It is separate from Strata's Qwen kernels; vision and other Gemma sizes are outside this scope. See [deployment and validation](docs/DEPLOYMENT.ja.md).

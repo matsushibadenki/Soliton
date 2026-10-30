@@ -128,12 +128,12 @@ export const words = {
 
     selectModel: "Select model",
     useModel: "Use in Strata",
-    checkingModel: "Checking model shards…",
+    checkingModel: "Checking model…",
     configuredModel: "Existing Strata configuration",
     localReuse: "Reuse files · no model download",
     unsupportedLocal: "This file cannot be used by this Metal setup",
     localReuseHelp:
-      "Reuses existing model weights through links. Required tools/Python packages may be downloaded and the engine built. Prepared output needs additional disk space. Optional MTP weight downloads are disabled.",
+      "Reuses local weights. Gemma 3 1B is converted locally for the bundled llama.cpp Metal backend; no extra model download. Prepared output needs additional space. Source checkouts may need build tools.",
 
     localModels: "Local models",
     scanModels: "Scan model locations",
@@ -154,7 +154,7 @@ export const words = {
     scanned: "Scanned",
     scanMissing: "Folder not found",
     modelScanHelp:
-      "Scans model metadata without copying files. GGUF detection does not verify architecture, quantization or complete shard sets. Loading requires a compatible Strata configuration; Ollama blobs and SafeTensors are not imported automatically.",
+      "Scans model metadata without copying files. GGUF detection does not verify architecture, quantization or complete shard sets. Loading requires a compatible Strata configuration; Gemma 3 1B SafeTensors can be prepared after selection. Other formats require a compatible configuration.",
     showMore: "Show more",
     originalLocation: "Strata",
     customSource: "Custom",
@@ -403,12 +403,12 @@ export const words = {
 
     selectModel: "モデルを選択",
     useModel: "Strataで使用",
-    checkingModel: "分割ファイルを確認中…",
+    checkingModel: "モデルを確認中…",
     configuredModel: "既存のStrata設定を使用",
     localReuse: "既存ファイルを再利用・モデル取得なし",
     unsupportedLocal: "このMetalセットアップでは利用できません",
     localReuseHelp:
-      "既存のモデル本体をリンク経由で再利用します。必要なツール・Pythonパッケージの取得とエンジンのビルドを行う場合があります。準備後の出力には追加容量が必要です。任意のMTPモデル取得は無効になります。",
+      "既存の重みを再利用します。Gemma 3 1Bは同梱llama.cpp Metal用にローカル変換し、モデルを追加取得しません。変換出力には追加容量が必要です。ソース版ではビルドツールが必要な場合があります。",
 
     localModels: "ローカルモデル",
     scanModels: "モデルの保存先をスキャン",
@@ -429,7 +429,7 @@ export const words = {
     scanned: "確認済み",
     scanMissing: "フォルダーがありません",
     modelScanHelp:
-      "ファイルをコピーせず、モデルの情報を検出します。GGUFの検出ではアーキテクチャ・量子化・分割ファイルの完全性は検証しません。起動には対応するStrata設定が必要です。OllamaのblobやSafeTensorsは自動変換しません。",
+      "ファイルをコピーせず、モデルの情報を検出します。GGUFの検出ではアーキテクチャ・量子化・分割ファイルの完全性は検証しません。起動には対応するStrata設定が必要です。Gemma 3 1BのSafeTensorsは選択後に準備できます。他の形式には対応する設定が必要です。",
     showMore: "さらに表示",
     originalLocation: "Strata標準",
     customSource: "ユーザー指定",
@@ -681,7 +681,7 @@ export const words = {
     localReuse: "复用文件 · 无需下载模型",
     unsupportedLocal: "此 Metal 安装流程不支持该文件",
     localReuseHelp:
-      "通过链接复用现有模型权重。可能下载必要工具及 Python 依赖并构建引擎，准备产物需要额外空间。禁用可选 MTP 权重下载。",
+      "复用本地权重。Gemma 3 1B在本地转换后使用内置llama.cpp Metal后端，无需额外下载模型。转换产物需要额外空间，源码版本可能需要构建工具。",
 
     localModels: "本地模型",
     scanModels: "扫描模型位置",
@@ -701,7 +701,7 @@ export const words = {
     scanned: "已扫描",
     scanMissing: "文件夹不存在",
     modelScanHelp:
-      "只检测模型信息，不复制文件。GGUF 检测不验证架构、量化及分片完整性。加载需要兼容的 Strata 配置；不会自动转换 Ollama blob 或 SafeTensors。",
+      "只检测模型信息，不复制文件。GGUF 检测不验证架构、量化及分片完整性。加载需要兼容的 Strata 配置；可选择Gemma 3 1B SafeTensors进行准备。其他格式需要兼容配置。",
     showMore: "显示更多",
     originalLocation: "Strata 默认",
     customSource: "自定义",

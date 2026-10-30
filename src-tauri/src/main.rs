@@ -454,7 +454,7 @@ fn install_bundled_python(
             .args([
                 "-I",
                 "-c",
-                "import ssl, numpy, jinja2, regex, PIL, requests, yaml, psutil",
+                "import ssl, numpy, jinja2, regex, PIL, requests, yaml, psutil, sentencepiece",
             ])
             .status()
             .map(|s| s.success())
@@ -482,7 +482,7 @@ fn install_bundled_python(
             .args([
                 "-I",
                 "-c",
-                "import ssl, numpy, jinja2, regex, PIL, requests, yaml, psutil",
+                "import ssl, numpy, jinja2, regex, PIL, requests, yaml, psutil, sentencepiece",
             ])
             .status()
             .map_err(|e| e.to_string())?;
@@ -497,6 +497,62 @@ fn install_bundled_python(
     }
     result
 }
+fn gemma_addon_current(archive: &std::path::Path, root: &std::path::Path) -> bool {
+    if !root.join("build-metal/strata-gemma-server").is_file()
+        || !root
+            .join("third_party/gemma3-gguf/gguf/__init__.py")
+            .is_file()
+    {
+        return false;
+    }
+    let Ok(installed) = std::fs::read(root.join(".bundled-gemma3.json")) else {
+        return false;
+    };
+    let Ok(output) = std::process::Command::new("/usr/bin/tar")
+        .arg("-xOzf")
+        .arg(archive)
+        .arg(".bundled-gemma3.json")
+        .output()
+    else {
+        return false;
+    };
+    output.status.success() && output.stdout == installed
+}
+// Upgrade only the new addon; existing Qwen configs, sources and prepared models stay in place.
+fn install_gemma_addon(archive: &std::path::Path, root: &std::path::Path) -> Result<(), String> {
+    let stage = root.join(format!(".gemma-install-{}", uuid::Uuid::new_v4()));
+    std::fs::create_dir(&stage).map_err(|e| e.to_string())?;
+    let files = [
+        "build-metal/strata-gemma-server",
+        "third_party/gemma3-gguf",
+        "third_party/gemma3-LICENSE",
+        ".bundled-gemma3.json",
+    ];
+    let result = (|| {
+        let status = std::process::Command::new("/usr/bin/tar")
+            .arg("-xzf")
+            .arg(archive)
+            .arg("-C")
+            .arg(&stage)
+            .args(files)
+            .status()
+            .map_err(|e| e.to_string())?;
+        if !status.success() {
+            return Err("Cannot extract bundled Gemma addon".into());
+        }
+        for name in files {
+            let target = root.join(name);
+            if target.exists() {
+                preserve_incomplete_install(&target)?;
+            }
+            std::fs::create_dir_all(target.parent().unwrap()).map_err(|e| e.to_string())?;
+            std::fs::rename(stage.join(name), target).map_err(|e| e.to_string())?;
+        }
+        Ok(())
+    })();
+    let _ = std::fs::remove_dir_all(stage);
+    result
+}
 // Install the immutable bundled source into a writable per-user directory.  A
 // partially extracted tree is never treated as an installation.
 fn install_bundled_engine(
@@ -508,6 +564,9 @@ fn install_bundled_engine(
         && root.join("metal/setup_mac.py").is_file()
         && (!root.join(".bundled-metal.json").exists() || root.join("build-metal/strata").is_file())
     {
+        if root.join(".bundled-metal.json").exists() && !gemma_addon_current(archive, &root) {
+            install_gemma_addon(archive, &root)?;
+        }
         return Ok(root);
     }
     preserve_incomplete_install(&root)?;
@@ -662,6 +721,55 @@ fn main() {
 #[cfg(test)]
 mod bundled_engine_tests {
     use super::install_bundled_engine;
+    #[test]
+    fn gemma_addon_upgrade_preserves_existing_models_and_config() {
+        let base =
+            std::env::temp_dir().join(format!("soliton-gemma-upgrade-{}", uuid::Uuid::new_v4()));
+        let source = base.join("source");
+        let root = base.join("installed");
+        for folder in [
+            source.join("build-metal"),
+            source.join("third_party/gemma3-gguf/gguf"),
+            root.clone(),
+        ] {
+            std::fs::create_dir_all(folder).unwrap();
+        }
+        for (name, text) in [
+            ("build-metal/strata-gemma-server", "backend"),
+            ("third_party/gemma3-gguf/gguf/__init__.py", "converter"),
+            ("third_party/gemma3-LICENSE", "license"),
+            (".bundled-gemma3.json", "manifest"),
+        ] {
+            std::fs::write(source.join(name), text).unwrap();
+        }
+        std::fs::write(root.join("strata-q2_0.json"), "user configuration").unwrap();
+        let archive = base.join("addon.tar.gz");
+        assert!(std::process::Command::new("/usr/bin/tar")
+            .arg("-czf")
+            .arg(&archive)
+            .arg("-C")
+            .arg(&source)
+            .args([
+                "build-metal/strata-gemma-server",
+                "third_party/gemma3-gguf",
+                "third_party/gemma3-LICENSE",
+                ".bundled-gemma3.json"
+            ])
+            .status()
+            .unwrap()
+            .success());
+        super::install_gemma_addon(&archive, &root).unwrap();
+        assert_eq!(
+            std::fs::read_to_string(root.join("strata-q2_0.json")).unwrap(),
+            "user configuration"
+        );
+        assert!(root.join("build-metal/strata-gemma-server").is_file());
+        assert!(root.join(".bundled-gemma3.json").is_file());
+        assert!(super::gemma_addon_current(&archive, &root));
+        std::fs::write(root.join(".bundled-gemma3.json"), "older manifest").unwrap();
+        assert!(!super::gemma_addon_current(&archive, &root));
+        std::fs::remove_dir_all(base).unwrap();
+    }
     #[test]
     fn install_is_atomic_and_preserves_existing_tree() {
         let base =

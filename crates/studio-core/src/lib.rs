@@ -569,6 +569,55 @@ impl Studio {
                 }
             }
         }
+        if !s.mock {
+            let config: Value =
+                serde_json::from_slice(&std::fs::read(&s.config).map_err(|e| e.to_string())?)
+                    .map_err(|e| e.to_string())?;
+            if config["backend"] == "strata-gemma3-metal" {
+                let reserve =
+                    std::net::TcpListener::bind("127.0.0.1:0").map_err(|e| e.to_string())?;
+                let port = reserve.local_addr().map_err(|e| e.to_string())?.port();
+                let key = uuid::Uuid::new_v4().to_string();
+                let args: Vec<&str> = config["args"]
+                    .as_array()
+                    .ok_or("Missing Gemma arguments")?
+                    .iter()
+                    .map(|v| v.as_str().ok_or("Invalid Gemma argument"))
+                    .collect::<Result<_, _>>()?;
+                let mut cmd =
+                    Command::new(config["exe"].as_str().ok_or("Missing Gemma executable")?);
+                cmd.current_dir(&root)
+                    .args(args)
+                    .args(["--host", "127.0.0.1", "--port", &port.to_string()])
+                    .env("LLAMA_API_KEY", &key)
+                    .kill_on_drop(true)
+                    .stdout(std::process::Stdio::piped())
+                    .stderr(std::process::Stdio::piped());
+                #[cfg(unix)]
+                cmd.process_group(0);
+                drop(reserve);
+                let mut child = cmd
+                    .spawn()
+                    .map_err(|e| format!("Cannot launch bundled Gemma Metal backend: {e}"))?;
+                if let Some(out) = child.stdout.take() {
+                    pump(out, self.logs.clone());
+                }
+                if let Some(out) = child.stderr.take() {
+                    pump(out, self.logs.clone());
+                }
+                p.port = port;
+                p.key = key;
+                p.group = child.id();
+                p.child = Some(child);
+                p.memory = Some(json!({"engine":"strata-gemma3-metal","context":2048}));
+                push_log(
+                    &self.logs,
+                    "[soliton] Starting bundled Strata Gemma 3 / llama.cpp Metal (text)".into(),
+                )
+                .await;
+                return Ok(());
+            }
+        }
         let probe = tokio::time::timeout(Duration::from_secs(10), Command::new(&s.python)
             .args(["-c", "import sys; assert sys.version_info >= (3,10), 'Python 3.10+ required'; import jinja2, regex, numpy, PIL"])
             .kill_on_drop(true).output()).await.map_err(|_| "Python check timed out")?
@@ -681,6 +730,19 @@ impl Studio {
         let _lifecycle = self.lifecycle.lock().await;
         if self.settings.read().await.engine != engine::Engine::Strata {
             return Err("Metal memory controls apply to Strata only".into());
+        }
+        let selected = self.settings.read().await.clone();
+        if preparation::inspect_config(
+            std::path::Path::new(&selected.config),
+            std::path::Path::new(&selected.strata_root),
+        )
+        .backend
+            == "strata-gemma3-metal"
+        {
+            return Err(
+                "Gemma 3 uses its prepared context (2048); Qwen memory controls do not apply"
+                    .into(),
+            );
         }
         if self.active_requests.load(Ordering::SeqCst) != 0 {
             return Err("Wait for active API requests to finish".into());
@@ -843,7 +905,7 @@ impl Studio {
             .cloned()
             .collect::<Vec<_>>();
         let vllm_inspection = self.inspection_snapshot(&settings.vllm).await;
-        json!({"omniCounterFailed":self.omni_counter_failed.load(Ordering::SeqCst),"startup":startup,"vllmInspection":vllm_inspection,"dockingDiagnostics":*self.docking_diagnostics.lock().await,"requests":requests,"memoryUsage":memory_usage,"memoryTuning":memory_tuning,"preparation":self.preparation.lock().await.snapshot(),"status":status,"health":health,"settings":*self.settings.read().await,"document":document,"logs":*self.logs.lock().await,"architecture":std::env::consts::ARCH,"memoryBytes":self.memory_bytes,"selectedEngine":settings.engine,"backend":if settings.engine == engine::Engine::Lfm3Omni {"LFM3-Omni"}else if settings.engine == engine::Engine::VllmApple {"vLLM-Apple"} else if cfg!(all(target_os="macos",target_arch="aarch64")){"Metal"}else{"Strata"},"endpoint":format!("http://127.0.0.1:{}/v1",self.port),"root":self.root})
+        json!({"omniCounterFailed":self.omni_counter_failed.load(Ordering::SeqCst),"startup":startup,"vllmInspection":vllm_inspection,"dockingDiagnostics":*self.docking_diagnostics.lock().await,"requests":requests,"memoryUsage":memory_usage,"memoryTuning":memory_tuning,"preparation":self.preparation.lock().await.snapshot(),"status":status,"health":health,"settings":*self.settings.read().await,"document":document,"logs":*self.logs.lock().await,"architecture":std::env::consts::ARCH,"memoryBytes":self.memory_bytes,"selectedEngine":settings.engine,"backend":if settings.engine == engine::Engine::Lfm3Omni {"LFM3-Omni"}else if settings.engine == engine::Engine::VllmApple {"vLLM-Apple"} else if preparation::inspect_config(std::path::Path::new(&settings.config), std::path::Path::new(&settings.strata_root)).backend == "strata-gemma3-metal" {"Gemma 3 Metal"} else if cfg!(all(target_os="macos",target_arch="aarch64")){"Metal"}else{"Strata"},"endpoint":format!("http://127.0.0.1:{}/v1",self.port),"root":self.root})
     }
 }
 fn pump<T: tokio::io::AsyncRead + Unpin + Send + 'static>(

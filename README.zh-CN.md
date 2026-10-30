@@ -107,3 +107,8 @@ Release构建面向Apple Silicon。发布签名与公证需要Apple开发者凭�
 ## Gemma 3文本推理（MLX）
 
 外部vLLM-Apple引擎已增加`gemma3_text`结构识别。开发Mac上的`google/gemma-3-1b-it`与MLX-LM 0.32.0通过了上下文512、并发1的验证。在偏好设置 → 引擎选择vLLM-Apple／MLX LM，指定下载的本地模型目录和匹配的验证证据JSON，然后诊断并启动。本次简短聊天在偏好设置 → API中将输出令牌上限设为64。其他Mac或实现更新后需要重新生成相应证据。参见[部署与验证记录](docs/DEPLOYMENT.ja.md)。
+
+
+## 在内置Strata中使用Gemma 3 1B
+
+Apple Silicon发行版中，在本地模型界面选择已下载的`google/gemma-3-1b-it/model.safetensors`，点击“在Strata中使用”。内置Python将其转换为F16 GGUF，并通过Strata选项中的专用llama.cpp Metal后端运行，无需MLX、系统Python或开发工具。原始权重保持不变，转换需至少2.5 GB可用空间。支持范围为Gemma 3 1B文本结构、2048上下文和单并发。此路径与Strata的Qwen内核分开，不包含图像输入和其他Gemma规模。参见[部署与验证记录](docs/DEPLOYMENT.ja.md)。

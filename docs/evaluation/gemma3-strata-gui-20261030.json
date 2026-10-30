@@ -1,0 +1,107 @@
+{
+  "date": "2026-10-30",
+  "result": "passed",
+  "scope": "native GUI smoke, not a long-duration qualification",
+  "model": {
+    "repo": "google/gemma-3-1b-it",
+    "revision": "dcc83ea841ab6100d6b47a070329e1ba4cf78752",
+    "sourceBytes": 1999811208,
+    "sourceSha256": "3d4ef8d71c14db7e448a09ebe891cfb6bf32c57a9b44499ae0d1c098e48516b6"
+  },
+  "runtime": {
+    "selectedEngine": "strata",
+    "backend": "bundled llama.cpp Metal dense extension; not upstream Qwen kernels",
+    "llamaCommit": "3cf03257f219afbe7334045ff7c6a06ac68c627d",
+    "engineSha256": "26dccf5d39c39e898b1817b58dbd75b9aa8185ee9ea3e13c96f27e63cca716cf",
+    "sourceArchiveSha256": "c076d7534afa0e5d0ec2a0d425b11e791c16f3de0d727221aea071cef156a280",
+    "python": "3.12.15",
+    "sentencepiece": "0.2.1",
+    "device": "Apple M4 / MTL0",
+    "context": 2048,
+    "slots": 1,
+    "externalMLX": false,
+    "pathDuringGuiTest": "/usr/bin:/bin:/usr/sbin:/sbin",
+    "customPythonEnvironmentVariables": false,
+    "dynamicDependencies": "only /usr/lib and /System/Library"
+  },
+  "conversion": {
+    "format": "F16 GGUF with F32 vectors",
+    "tensorCount": 340,
+    "bytes": 2006574112,
+    "sha256": "f16bfc434145c912888944678d0d1f3547804c05ca1d2ea5095524143424c2ca",
+    "specialTokens": {
+      "bos": 2,
+      "eos": 1,
+      "eot": 106
+    },
+    "sourceWeightsModified": false,
+    "publishedAtomically": true
+  },
+  "gui": {
+    "firstRunInstallation": true,
+    "preparationCompleted": true,
+    "setupChecksConfirmed": true,
+    "newBackendUpgradePreservedSettings": true,
+    "maxTokens": 64,
+    "temperature": 0.0,
+    "messages": [
+      {
+        "role": "user",
+        "content": "日本の首都はどこですか？都市名だけで答えてください。"
+      },
+      {
+        "role": "assistant",
+        "content": "東京"
+      },
+      {
+        "role": "user",
+        "content": "What is 2+2? Reply with only the digit."
+      },
+      {
+        "role": "assistant",
+        "content": "4"
+      },
+      {
+        "role": "user",
+        "content": "What number did you just answer? Reply with only that digit."
+      },
+      {
+        "role": "assistant",
+        "content": "4\n"
+      },
+      {
+        "role": "user",
+        "content": "中国的首都是哪里？只回答城市名。"
+      },
+      {
+        "role": "assistant",
+        "content": "北京\n"
+      }
+    ],
+    "warningsAfterFinalConversion": [],
+    "restartChatVerified": true,
+    "modelNotReconvertedOnRestart": true,
+    "historyRetainedOnRestart": true,
+    "restartPrompt": "1+1はいくつですか？数字だけで答えてください。",
+    "restartResponse": "2",
+    "cleanAppExit": true,
+    "nativeSurface": "Tauri WKWebView, 1440x960",
+    "browserPlugin": "Browser skill not available; actual native app exercised with CUA"
+  },
+  "checks": {
+    "converterUnitTests": 4,
+    "localModelTests": 5,
+    "preparationFilterTests": 10,
+    "catalogTests": 6,
+    "engineLifecycleTests": 10,
+    "installerTests": 2,
+    "distributionBuild": true,
+    "sourceHashRechecked": true
+  },
+  "limits": [
+    "one development Apple M4 Mac; restricted PATH is not a separate clean-Mac test",
+    "Gemma 3 1B text layout only",
+    "context 2048 and one slot",
+    "no image input, other Gemma sizes or long-duration soak in this test"
+  ]
+}

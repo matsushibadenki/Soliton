@@ -50,6 +50,11 @@ S.pip_install = _soliton_dependencies
 '''
 if '# Soliton distribution:' not in text:
     setup.write_text(text.replace('if __name__ == "__main__":', adapter + '\nif __name__ == "__main__":'))
+gemma_spec = importlib.util.spec_from_file_location('bundled_gemma', root / 'scripts/build-bundled-gemma.py')
+gemma = importlib.util.module_from_spec(gemma_spec)
+gemma_spec.loader.exec_module(gemma)
+gemma_source, gemma_engine, gemma_manifest = gemma.build(root)
+
 # Keep the distribution small and exclude build caches and developer paths.
 archive = root / 'src-tauri/resources/strata.tar.gz'
 tracked = subprocess.check_output(['git', '-C', str(root / 'Strata'), 'ls-tree', '-r', '--name-only', revision], text=True).splitlines()
@@ -65,6 +70,10 @@ with tarfile.open(archive, 'w:gz') as handle:
     if (source / 'data').is_dir():
         handle.add(source / 'data', arcname='build-metal/metal/data')
     handle.add(marker, arcname='.bundled-metal.json')
+    handle.add(gemma_engine, arcname='build-metal/strata-gemma-server')
+    handle.add(gemma_manifest, arcname='.bundled-gemma3.json')
+    handle.add(gemma_source / 'gguf-py', arcname='third_party/gemma3-gguf', filter=lambda i: None if '__pycache__' in i.name else i)
+    handle.add(gemma_source / 'LICENSE', arcname='third_party/gemma3-LICENSE')
     handle.add(llama / 'gguf-py', arcname='third_party/llama.cpp/gguf-py', filter=lambda i: None if '__pycache__' in i.name else i)
     handle.add(llama / 'LICENSE', arcname='third_party/llama.cpp/LICENSE')
 print(f'Distribution archive: {archive}')
