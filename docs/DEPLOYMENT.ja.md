@@ -117,6 +117,31 @@ GitHubへのプッシュはソースコードの公開です。バイナリ配�
 - 🟢 [Done] 日本語・英語・简体中文で保存先、対処方法、詳細と再試行を表示します。再試行はRustの排他制御下で実行し、成功後は画面を再読み込みして初回設定へ戻ります。
 - 🟢 [Done] 実機GUIで、検証用保存先の権限を500にして書き込み失敗を発生させ、案内を確認。700へ戻した後、GUIの再試行で設置が成功し、Pythonと依存ライブラリが確認済みとなる初回準備画面への復帰を確認しました。
 - 🟢 [Done] 容量不足の判定、OSエラー分類、読み取り専用領域の拒否をRustテストで確認。模擬エラーを使ったブラウザーテストで容量不足・権限エラー、再試行失敗、3言語を確認しました。
-- ⭕️ [Pending] 実ディスクを満杯にした状態での検証、別Macでの確認。
+- 🟢 [Done] 容量制限したテストディスクを実際に満杯にしてGUIから復旧する検証（下記参照）。
+- ⭕️ [Pending] 別Macでの確認。
 
 再現用UIテスト: `node scripts/installation-repair-smoke.mjs`。Browser skillが利用できないため、既存PlaywrightとChromeを使用します。必要に応じて`PLAYWRIGHT_CHROMIUM_EXECUTABLE`を指定します。テスト用HTMLと画像は`.soliton-runtime`内に置き、HTMLは正常終了時に削除します。
+
+## 容量制限ディスクでの実機GUI検証（2026-10-30）
+
+🟢 [Done] 4 GiB指定のHFS+ sparse disk image（実ボリューム約3.7 GiB）を作成し、アプリの`SOLITON_DATA_DIR`をその中に指定しました。ホストの実ディスクではなく、この検証専用ボリュームにのみ埋め草ファイルを書き込みました。
+
+1. `scripts/fill-installation-test-disk.py`で埋め、実際の`ENOSPC`（errno 28）を確認。書き込み済みカウントは3,925,868,544 bytes、`df`の使用率は100%。
+2. 配布アプリを起動すると「設置用の空き容量が不足しています」、保存先と2 GiB確保の案内が表示されました。
+3. 空き容量を増やさず「再試行」しても修復画面が維持され、再試行ボタンが利用可能なことを確認。
+4. このテストで作成した`soliton-disposable-capacity-fill.bin`だけを削除し、約3.7 GiBの空きを確保。
+5. GUIの「再試行」で設置に成功し、初回モデル準備画面へ自動復帰。同梱Python 3.12.15と依存パッケージが確認済みになりました。
+6. 設置後のディスク使用量は約370 MiB、空きは約3.3 GiB。モデル準備画面はモデルの作業領域不足を別途表示し、準備ボタンを無効化しました。
+7. アプリを終了し、テストボリュームをアンマウントしました。製品コードの追加修正は不要でした。
+
+再現手順（macOS、テスト専用）:
+
+```sh
+mkdir -p .soliton-runtime/space-disk-test/mount
+hdiutil create -size 4g -type SPARSE -fs HFS+ -volname SolitonSpaceTest .soliton-runtime/space-disk-test/test.sparseimage
+hdiutil attach .soliton-runtime/space-disk-test/test.sparseimage -mountpoint "$PWD/.soliton-runtime/space-disk-test/mount" -nobrowse
+python3 scripts/fill-installation-test-disk.py .soliton-runtime/space-disk-test/mount
+SOLITON_DATA_DIR="$PWD/.soliton-runtime/space-disk-test/mount/data" target/aarch64-apple-darwin/release/bundle/macos/Soliton.app/Contents/MacOS/soliton
+```
+
+GUIの案内確認後、別ターミナルからテストボリューム内の上記埋め草ファイルだけを削除して、GUIで再試行します。終了後は`hdiutil detach "$PWD/.soliton-runtime/space-disk-test/mount"`でアンマウントします。同名の既存テストイメージがある場合は、新しく作り直さずその内容を確認してください。充填スクリプトはマウントポイント以外・ホストと同じデバイス・5 GiB以上のボリュームを拒否し、既存の埋め草ファイルを上書きしません。
