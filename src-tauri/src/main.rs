@@ -396,14 +396,40 @@ async fn download_huggingface_file(
     )
     .await
 }
+// Preserve interrupted or damaged installations for recovery; never delete user data.
+fn preserve_incomplete_install(root: &std::path::Path) -> Result<(), String> {
+    if root.exists() {
+        let backup = root.with_file_name(format!(
+            "{}.recovery-{}",
+            root.file_name().unwrap().to_string_lossy(),
+            uuid::Uuid::new_v4()
+        ));
+        std::fs::rename(root, backup)
+            .map_err(|e| format!("Cannot preserve incomplete installation: {e}"))?;
+    }
+    Ok(())
+}
+
 fn install_bundled_python(
     archive: &std::path::Path,
     app_data: &std::path::Path,
 ) -> Result<PathBuf, String> {
     let root = app_data.join("python-3.12.15");
     if root.join("bin/python3").is_file() {
-        return Ok(root);
+        let healthy = std::process::Command::new(root.join("bin/python3"))
+            .args([
+                "-I",
+                "-c",
+                "import ssl, numpy, jinja2, regex, PIL, requests, yaml, psutil",
+            ])
+            .status()
+            .map(|s| s.success())
+            .unwrap_or(false);
+        if healthy {
+            return Ok(root);
+        }
     }
+    preserve_incomplete_install(&root)?;
     std::fs::create_dir_all(app_data).map_err(|e| e.to_string())?;
     let staging = app_data.join(format!(".python-install-{}", uuid::Uuid::new_v4()));
     std::fs::create_dir(&staging).map_err(|e| e.to_string())?;
@@ -444,14 +470,15 @@ fn install_bundled_engine(
     app_data: &std::path::Path,
 ) -> Result<PathBuf, String> {
     let root = app_data.join("Strata-metal-v1");
-    if root.join("serve/server.py").is_file() && root.join("metal/setup_mac.py").is_file() {
+    if root.join("serve/server.py").is_file()
+        && root.join("metal/setup_mac.py").is_file()
+        && (!root.join(".bundled-metal.json").exists() || root.join("build-metal/strata").is_file())
+    {
         return Ok(root);
     }
-    if root.exists() {
-        return Err(format!("Incomplete engine directory: {}", root.display()));
-    }
+    preserve_incomplete_install(&root)?;
     std::fs::create_dir_all(app_data).map_err(|e| e.to_string())?;
-    let staging = app_data.join(format!(".strata-install-{}", std::process::id()));
+    let staging = app_data.join(format!(".strata-install-{}", uuid::Uuid::new_v4()));
     std::fs::create_dir(&staging).map_err(|e| e.to_string())?;
     let result = (|| {
         let status = std::process::Command::new("/usr/bin/tar")
@@ -618,6 +645,20 @@ mod bundled_engine_tests {
         assert_eq!(
             std::fs::read_to_string(root.join("serve/server.py")).unwrap(),
             "user data"
+        );
+        std::fs::remove_file(root.join("serve/server.py")).unwrap();
+        std::fs::write(root.join("keep-user-config.json"), "preserve").unwrap();
+        install_bundled_engine(&archive, &data).unwrap();
+        assert!(root.join("serve/server.py").is_file());
+        let backup = std::fs::read_dir(&data)
+            .unwrap()
+            .flatten()
+            .find(|e| e.file_name().to_string_lossy().contains(".recovery-"))
+            .unwrap()
+            .path();
+        assert_eq!(
+            std::fs::read_to_string(backup.join("keep-user-config.json")).unwrap(),
+            "preserve"
         );
         std::fs::remove_dir_all(base).unwrap();
     }

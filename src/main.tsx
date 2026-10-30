@@ -427,6 +427,14 @@ function App() {
     );
     setInspection(data);
   }
+  const setupGuided = useRef(false);
+  useEffect(() => {
+    if (!desktop || panelView || !online || setupGuided.current) return;
+    setupGuided.current = true;
+    if (settings.engine === "strata" && !settings.config && !settings.mock) {
+      void inspectSetup().then(() => setSetupOpen(true)).catch((e) => setError(String(e)));
+    }
+  }, [online]);
   async function browse(kind: "root" | "config" | "python") {
     await run(async () => {
       const path = await invoke<string | null>("select_path", { kind });
