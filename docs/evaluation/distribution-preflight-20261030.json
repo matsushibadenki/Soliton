@@ -1,0 +1,91 @@
+{
+  "date": "2026-10-30",
+  "scope": "local distribution preflight and regression checks",
+  "result": "passed",
+  "otherMacGui": "pending_by_user_request",
+  "signingAndNotarization": "local ad hoc integrity verified; Developer ID and notarization deferred",
+  "nativeFileCounts": {
+    "app": 1,
+    "strata": 2,
+    "python": 68
+  },
+  "totalNativeFiles": 71,
+  "appMinimumMacOS": "15.0",
+  "strataMinimumMacOSBefore": "27.0",
+  "strataMinimumMacOSAfter": "15.0",
+  "allNativeTargetsWithinAppMinimum": true,
+  "dynamicDependenciesValidated": true,
+  "engineChecksumsMatched": true,
+  "appExecutableSha256": "e9770187df8c10b2482911499af4b204515a7390d36cbb246aa3e2081e4aa839",
+  "archives": {
+    "strata": {
+      "sha256": "c8665e5a48a475385b838935bd8a81ddb88c0357f3e1d59054ee3abb42410106",
+      "bytes": 43238106
+    },
+    "python": {
+      "sha256": "695b4869b44fb45bc6c92b202347161120a01997f215326179f2cc059fb03295",
+      "bytes": 94129509
+    }
+  },
+  "relocatedPython": {
+    "python": "3.12.15",
+    "sentencepiece": "0.2.1",
+    "restrictedPath": true
+  },
+  "tests": {
+    "distributionUnit": 6,
+    "installer": 3
+  },
+  "qwenRegression": {
+    "source": "extracted rebuilt distribution",
+    "model": "Q2_0",
+    "inputTokens": [
+      1,
+      2,
+      3
+    ],
+    "outputToken": 4,
+    "exitCode": 0,
+    "compilerRequired": false
+  },
+  "gemmaGuiUpgrade": {
+    "selectedEngine": "strata",
+    "backend": "Gemma 3 Metal",
+    "oldRuntimeReplaced": true,
+    "settingsAndHistoryPreserved": true,
+    "modelReconverted": false,
+    "prompt": "2+3はいくつですか？数字だけで答えてください。",
+    "response": "5",
+    "complete": true,
+    "afterAdHocSigning": {
+      "prompt": "3+4はいくつですか？数字だけで答えてください。",
+      "response": "7",
+      "complete": true
+    },
+    "cleanAppExit": true
+  },
+  "zip": {
+    "status": "local_preflight_passed_other_mac_pending",
+    "testedOnAnotherMac": false,
+    "repositoryHeadAtPackaging": "3770431ca8957bb968f19a8cdd911c5202f4177b",
+    "workingTreeDirty": true,
+    "artifactSha256": "3a685148e5239e049695c8fff76c36f9a88776a62f97adaefaea78cdcff2787d",
+    "signingAndNotarization": "Developer ID and notarization deferred; ad hoc integrity signature",
+    "releaseReady": false,
+    "weightsIncluded": false,
+    "tokensIncluded": false
+  },
+  "limits": [
+    "development Apple M4 / macOS 27.2 only",
+    "deployment-target inspection does not prove older-macOS API or GPU compatibility",
+    "validation build with preexisting unrelated worktree changes; not a reproducible clean-checkout release"
+  ],
+  "bundleIntegrity": "verified",
+  "negativeControl": {
+    "oldArtifactRejected": true,
+    "issues": [
+      "app bundle integrity verification failed",
+      "strata/build-metal/strata: minimum macOS exceeds app minimum or is unknown: 27.0"
+    ]
+  }
+}

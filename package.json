@@ -30,7 +30,10 @@
     "test:cache-memory": "node --test scripts/cache-memory-workload.test.mjs",
     "bundle:engine": "node scripts/bundle-strata.mjs",
     "bundle:python": "node scripts/bundle-python.mjs",
-    "bundle:metal": ".soliton-runtime/python-build/cpython-3.12.15-macos-aarch64-none/bin/python3 scripts/build-bundled-metal.py"
+    "bundle:metal": ".soliton-runtime/python-build/cpython-3.12.15-macos-aarch64-none/bin/python3 scripts/build-bundled-metal.py",
+    "check:distribution": ".soliton-runtime/python-build/cpython-3.12.15-macos-aarch64-none/bin/python3 scripts/check-distribution.py",
+    "postdesktop:build": "npm run check:distribution",
+    "package:validation": "node scripts/package-validation.mjs"
   },
   "dependencies": {
     "@tauri-apps/api": "^2.12.4",

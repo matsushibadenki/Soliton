@@ -4,10 +4,11 @@
 
 - 🟢 [Done] ビルド時に固定された Strata サブモジュールのソースをアプリへ同梱し、初回起動時にユーザーデータ領域へ展開する。
 - 🟢 [Done] モデルライブラリから Hugging Face の公開ファイル URL を指定して取得できる。対応形式は選択時に既存の検査で確認する。
-- 🟠 [Next] Python と依存ライブラリの配布・初回セットアップを含む、別の Mac での単独動作を検証する。
+- 🟢 [Done] Python・依存ライブラリ・両Metalエンジンを同梱し、現環境で初回設定とGemmaチャットを検証。
+- ⭕️ [Pending] 別Macでの単独動作検証（利用者の指示で保留）。
 - 🟢 [Done] 公開ファイルの取得中に進捗を表示し、設定画面から GitHub Releases の更新を確認できる。
 - 🟢 [Done] リポジトリの全ファイル取得、固定コミットに対する HTTP Range 再開、任意の読み取りトークンによる認証ヘッダー送信。
-- ⭕️ [Pending] 有効なアクセス権が必要な gated/private モデルでの実機認証確認。
+- 🟢 [Done] 認証必須GemmaのGUI取得とチャットを確認。非公開リポジトリは保留。
 - 🟠 [Next] 署名された更新パッケージの検証とアプリ内適用。
 - 🔴 [Later] Developer ID による署名、公証、DMG 配布と GitHub Releases の自動化。
 - ⭕️ [Pending] 実モデルのダウンロード、Metal エンジンのビルド、推論をクリーンな実機で確認する。
@@ -28,7 +29,7 @@ npm ci
 npm run desktop:build -- --bundles app
 ```
 
-`bundle:engine` は親リポジトリが固定する Strata のコミットからアーカイブを作成します。ローカルの未コミット変更は同梱されません。生成された `.app` は `target/aarch64-apple-darwin/release/bundle/macos/` にあります。未署名のため、配布先の Gatekeeper で警告や起動制限が生じます。
+`bundle:engine` は親リポジトリが固定する Strata のコミットからアーカイブを作成します。Strataチェックアウトの未コミット変更はこのソースアーカイブへ含めません。Soliton本体は作業ツリーからビルドするため、正式配布ではクリーンなチェックアウトを使ってください。生成された `.app` は `target/aarch64-apple-darwin/release/bundle/macos/` にあります。検証用ビルドには証明書不要のad hoc署名を付けます。Developer ID署名・公証は未実施のため、配布先の起動可否は別途確認が必要です。
 
 ## 検証
 
@@ -256,3 +257,26 @@ cargo test -p soliton bundled_engine_tests
 GUI試験で検出した公式追加トークンの範囲、終了トークンのメタデータ、準備画面のモデル名／容量表示を修正しました。再起動後に設定・会話の保持を確認し、GGUFの更新時刻が変わらないまま日本語の「1+1」に`2`と応答しました。最終版のBOS 2／EOS 1／EOT 106をGGUFから照合し、トークナイザー警告がないこと、アプリとエンジンの正常終了を確認しました。公開可能な検証要約は`docs/evaluation/gemma3-strata-gui-20261030.json`です。既存の外部MLX向け30分資格確認の結果と、今回の同梱MetalのGUI試験は別の記録です。
 
 参考実装：[固定llama.cppのGemma変換](https://github.com/ggml-org/llama.cpp/blob/3cf03257f219afbe7334045ff7c6a06ac68c627d/conversion/gemma.py)、[Gemma 3演算](https://github.com/ggml-org/llama.cpp/blob/3cf03257f219afbe7334045ff7c6a06ac68c627d/src/models/gemma3.cpp)。
+
+
+## 現環境での配布前検査（2026-10-30）
+
+- 🟢 [Done] アプリ・同梱Qwen／Gemmaエンジン・Python内の71個のMach-Oを検査。arm64、最低OS、標準または同梱ライブラリへの依存、エンジンSHA-256、必要なシェーダー・変換資源を確認。
+- 🟢 [Done] 同梱Qwenエンジンの最低OSが27.0になっていた問題を修正し、アプリと同じ15.0を明示。配布用コピーの実行時アダプターを読み込んで再ビルドを省略してしまう問題も修正しました。
+- 🟢 [Done] 既存の設置先へQwen実行ファイルとシェーダーを更新し、元ファイルを退避、設定・モデルを保持。展開失敗時に稼働中の設置内容を変更しないこともテスト。
+- 🟢 [Done] 再配置したPythonで外部PATH・PYTHONPATH等を外して依存ライブラリをimport。Qwenの実トークン生成は`1,2,3 → 4`、終了コード0。更新後の実GUIでもGemmaが`2+3 → 5`と応答し、設定・履歴・変換済みモデルが保持されました。
+- 🟢 [Done] リンク時の実行ファイル署名だけではアプリ全体の整合性検査が失敗する問題を修正。検証ビルドをad hoc署名し、`codesign --verify --deep --strict`で検査します。Appleアカウントや証明書は使いません。
+- 🟢 [Done] `desktop:build`成功後の自動検査と、検査付きZIP作成・ZIP整合性検査・SHA-256・保留状態の記録を追加。
+- ⭕️ [Pending] 別Mac、古いmacOSでの実行、Developer ID署名・公証、正式Releaseの配布。
+
+```sh
+npm run desktop:build -- --bundles app
+npm run check:distribution -- --smoke
+npm run package:validation
+```
+
+配布検査は`scripts/check-distribution.py`、回帰テストは`scripts/test-distribution-check.py`です。Pythonのコンパイラー／リンカーバージョンを最低macOSと誤認しないこともテストします。修正前のZIPを対照として再検査し、最低OS不整合を実際に拒否することを確認しました。
+
+検証用ZIPとSHA-256、検査結果、引き継ぎ手順は`.soliton-runtime/distribution-handoff/`へ保存します。モデルと認証情報は含めません。HEADと作業ツリーの状態も記録し、未コミット変更があるローカル検証物をクリーンな正式配布物とは扱いません。
+
+[別Mac向け検証手順（英語・日本語・简体中文）](CLEAN_MAC_VALIDATION.md)。公開可能な現環境の記録は`docs/evaluation/distribution-preflight-20261030.json`です。最低OSの静的検査と現環境の実行確認は、古いOSのAPIや別GPUでの動作確認を代替しません。

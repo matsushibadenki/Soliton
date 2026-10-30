@@ -116,3 +116,6 @@ Strata 0.2.1系の `9de04cd4`（ソース版0.1.46.3）に対応しました。[
 ## 同梱StrataでGemma 3 1Bを使用
 
 Apple Silicon配布版では、ローカルモデル画面で取得済みの`google/gemma-3-1b-it/model.safetensors`を選び「Strataで使用」を押します。同梱PythonでF16 GGUFへ変換し、Strata選択内の専用llama.cpp Metalバックエンドで実行します。MLX・システムPython・開発ツールは不要です。元の重みは変更せず、変換用に2.5 GB以上の空き容量が必要です。対象はGemma 3 1Bのテキスト構成、コンテキスト2048・同時実行1です。既存Qwen用Strataカーネルとは別経路であり、画像入力や他サイズのGemmaは含みません。[配布手順と実機検証](docs/DEPLOYMENT.ja.md)を参照してください。
+
+
+配布前検査は`npm run check:distribution -- --smoke`、検査付きZIP作成は`npm run package:validation`で実行します。[別Mac向け検証手順（三言語）](docs/CLEAN_MAC_VALIDATION.md)を用意しています。別Macの実機検証は保留中です。

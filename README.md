@@ -146,3 +146,6 @@ The vLLM-Apple engine recognizes `gemma3_text`. `google/gemma-3-1b-it` was quali
 ## Gemma 3 1B in bundled Strata
 
 On the Apple Silicon distribution, select the downloaded `google/gemma-3-1b-it/model.safetensors` in Local models and choose “Use in Strata”. Bundled Python converts it to F16 GGUF; the Strata selection then runs a dedicated bundled llama.cpp Metal backend. MLX, system Python and developer tools are unnecessary. Source weights remain unchanged; allow at least 2.5 GB of free conversion space. This path supports the Gemma 3 1B text layout, context 2048 and one slot. It is separate from Strata's Qwen kernels; vision and other Gemma sizes are outside this scope. See [deployment and validation](docs/DEPLOYMENT.ja.md).
+
+
+Run `npm run check:distribution -- --smoke` for local preflight and `npm run package:validation` for a checked ZIP. See the [trilingual clean-Mac checklist](docs/CLEAN_MAC_VALIDATION.md). Verification on another Mac remains pending.

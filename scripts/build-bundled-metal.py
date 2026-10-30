@@ -17,11 +17,23 @@ if not source.exists():
     with tarfile.open(archive) as handle:
         handle.extractall(source, filter='data')
     archive.unlink()
+# Always restore the pinned build script before loading it. A previous distribution
+# copy has runtime-only overrides that must never bypass a distribution rebuild.
+setup = source / 'metal/setup_mac.py'
+original_setup = subprocess.check_output(['git', '-C', str(root / 'Strata'), 'show',
+                                         f'{revision}:metal/setup_mac.py'], text=True)
+flag = '"-DCMAKE_BUILD_TYPE=Release",'
+if flag not in original_setup:
+    raise RuntimeError('Pinned Metal setup CMake contract changed')
+setup.write_text(original_setup.replace(flag, flag + ' "-DCMAKE_OSX_DEPLOYMENT_TARGET=15.0",', 1))
 sys.path.insert(0, str(source))
 spec = importlib.util.spec_from_file_location('bundled_metal_setup', source / 'metal/setup_mac.py')
 metal = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(metal)
 llama = metal.S.get_llama_cpp()
+# Reconfigure even when upstream's source-only stamp matches: it does not bind
+# the deployment target. Ninja still reuses objects whose flags have not changed.
+metal.engine_current = lambda: False
 engine = metal.build_engine(llama, jobs=2)
 subprocess.run(['otool', '-L', str(engine)], check=True)
 (stage / 'artifact.json').write_text(json.dumps({'revision': revision, 'engine': str(engine), 'llama': str(llama)}, indent=2))

@@ -497,37 +497,60 @@ fn install_bundled_python(
     }
     result
 }
-fn gemma_addon_current(archive: &std::path::Path, root: &std::path::Path) -> bool {
-    if !root.join("build-metal/strata-gemma-server").is_file()
-        || !root
-            .join("third_party/gemma3-gguf/gguf/__init__.py")
-            .is_file()
-    {
+fn bundled_component_current(
+    archive: &std::path::Path,
+    root: &std::path::Path,
+    marker: &str,
+    files: &[&str],
+) -> bool {
+    if files.iter().any(|name| !root.join(name).exists()) {
         return false;
     }
-    let Ok(installed) = std::fs::read(root.join(".bundled-gemma3.json")) else {
+    let Ok(installed) = std::fs::read(root.join(marker)) else {
         return false;
     };
     let Ok(output) = std::process::Command::new("/usr/bin/tar")
         .arg("-xOzf")
         .arg(archive)
-        .arg(".bundled-gemma3.json")
+        .arg(marker)
         .output()
     else {
         return false;
     };
     output.status.success() && output.stdout == installed
 }
-// Upgrade only the new addon; existing Qwen configs, sources and prepared models stay in place.
-fn install_gemma_addon(archive: &std::path::Path, root: &std::path::Path) -> Result<(), String> {
-    let stage = root.join(format!(".gemma-install-{}", uuid::Uuid::new_v4()));
-    std::fs::create_dir(&stage).map_err(|e| e.to_string())?;
-    let files = [
-        "build-metal/strata-gemma-server",
-        "third_party/gemma3-gguf",
-        "third_party/gemma3-LICENSE",
+fn gemma_addon_current(archive: &std::path::Path, root: &std::path::Path) -> bool {
+    bundled_component_current(
+        archive,
+        root,
         ".bundled-gemma3.json",
-    ];
+        &[
+            "build-metal/strata-gemma-server",
+            "third_party/gemma3-gguf/gguf/__init__.py",
+        ],
+    )
+}
+fn install_gemma_addon(archive: &std::path::Path, root: &std::path::Path) -> Result<(), String> {
+    install_runtime_files(
+        archive,
+        root,
+        &[
+            "build-metal/strata-gemma-server",
+            "third_party/gemma3-gguf",
+            "third_party/gemma3-LICENSE",
+            ".bundled-gemma3.json",
+        ],
+    )
+}
+// Replace only owned runtime resources. Back up previous files and publish the
+// manifest last; a failed extraction never touches the working installation.
+fn install_runtime_files(
+    archive: &std::path::Path,
+    root: &std::path::Path,
+    files: &[&str],
+) -> Result<(), String> {
+    let stage = root.join(format!(".runtime-install-{}", uuid::Uuid::new_v4()));
+    std::fs::create_dir(&stage).map_err(|e| e.to_string())?;
     let result = (|| {
         let status = std::process::Command::new("/usr/bin/tar")
             .arg("-xzf")
@@ -538,7 +561,7 @@ fn install_gemma_addon(archive: &std::path::Path, root: &std::path::Path) -> Res
             .status()
             .map_err(|e| e.to_string())?;
         if !status.success() {
-            return Err("Cannot extract bundled Gemma addon".into());
+            return Err("Cannot extract bundled runtime update".into());
         }
         for name in files {
             let target = root.join(name);
@@ -564,6 +587,24 @@ fn install_bundled_engine(
         && root.join("metal/setup_mac.py").is_file()
         && (!root.join(".bundled-metal.json").exists() || root.join("build-metal/strata").is_file())
     {
+        if root.join(".bundled-metal.json").exists()
+            && !bundled_component_current(
+                archive,
+                &root,
+                ".bundled-metal.json",
+                &["build-metal/strata", "build-metal/metal/ggml-common.h"],
+            )
+        {
+            install_runtime_files(
+                archive,
+                &root,
+                &[
+                    "build-metal/strata",
+                    "build-metal/metal",
+                    ".bundled-metal.json",
+                ],
+            )?;
+        }
         if root.join(".bundled-metal.json").exists() && !gemma_addon_current(archive, &root) {
             install_gemma_addon(archive, &root)?;
         }
@@ -768,6 +809,82 @@ mod bundled_engine_tests {
         assert!(super::gemma_addon_current(&archive, &root));
         std::fs::write(root.join(".bundled-gemma3.json"), "older manifest").unwrap();
         assert!(!super::gemma_addon_current(&archive, &root));
+        std::fs::remove_dir_all(base).unwrap();
+    }
+    #[test]
+    fn metal_update_preserves_configuration_and_failed_extraction_keeps_old_runtime() {
+        let base =
+            std::env::temp_dir().join(format!("soliton-metal-update-{}", uuid::Uuid::new_v4()));
+        let source = base.join("source");
+        let root = base.join("installed");
+        for folder in [source.join("build-metal/metal"), root.join("build-metal")] {
+            std::fs::create_dir_all(folder).unwrap();
+        }
+        std::fs::write(source.join("build-metal/strata"), "new runtime").unwrap();
+        std::fs::write(
+            source.join("build-metal/metal/ggml-common.h"),
+            "shader resource",
+        )
+        .unwrap();
+        std::fs::write(source.join(".bundled-metal.json"), "new manifest").unwrap();
+        std::fs::write(root.join("build-metal/strata"), "old runtime").unwrap();
+        std::fs::write(root.join(".bundled-metal.json"), "old manifest").unwrap();
+        std::fs::write(root.join("strata-custom.json"), "user configuration").unwrap();
+        let archive = base.join("runtime.tar.gz");
+        assert!(std::process::Command::new("/usr/bin/tar")
+            .arg("-czf")
+            .arg(&archive)
+            .arg("-C")
+            .arg(&source)
+            .args([
+                "build-metal/strata",
+                "build-metal/metal",
+                ".bundled-metal.json"
+            ])
+            .status()
+            .unwrap()
+            .success());
+        let files = ["build-metal/strata", "build-metal/metal/ggml-common.h"];
+        assert!(!super::bundled_component_current(
+            &archive,
+            &root,
+            ".bundled-metal.json",
+            &files
+        ));
+        assert!(super::install_runtime_files(
+            &archive,
+            &root,
+            &["build-metal/strata", "missing-manifest"]
+        )
+        .is_err());
+        assert_eq!(
+            std::fs::read_to_string(root.join("build-metal/strata")).unwrap(),
+            "old runtime"
+        );
+        super::install_runtime_files(
+            &archive,
+            &root,
+            &[
+                "build-metal/strata",
+                "build-metal/metal",
+                ".bundled-metal.json",
+            ],
+        )
+        .unwrap();
+        assert!(super::bundled_component_current(
+            &archive,
+            &root,
+            ".bundled-metal.json",
+            &files
+        ));
+        assert_eq!(
+            std::fs::read_to_string(root.join("strata-custom.json")).unwrap(),
+            "user configuration"
+        );
+        assert!(std::fs::read_dir(root.join("build-metal"))
+            .unwrap()
+            .flatten()
+            .any(|e| e.file_name().to_string_lossy().contains("recovery")));
         std::fs::remove_dir_all(base).unwrap();
     }
     #[test]

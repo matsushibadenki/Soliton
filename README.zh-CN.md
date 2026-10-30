@@ -112,3 +112,6 @@ Release构建面向Apple Silicon。发布签名与公证需要Apple开发者凭�
 ## 在内置Strata中使用Gemma 3 1B
 
 Apple Silicon发行版中，在本地模型界面选择已下载的`google/gemma-3-1b-it/model.safetensors`，点击“在Strata中使用”。内置Python将其转换为F16 GGUF，并通过Strata选项中的专用llama.cpp Metal后端运行，无需MLX、系统Python或开发工具。原始权重保持不变，转换需至少2.5 GB可用空间。支持范围为Gemma 3 1B文本结构、2048上下文和单并发。此路径与Strata的Qwen内核分开，不包含图像输入和其他Gemma规模。参见[部署与验证记录](docs/DEPLOYMENT.ja.md)。
+
+
+使用`npm run check:distribution -- --smoke`执行本机分发检查，使用`npm run package:validation`生成并验证ZIP。参见[三语言独立Mac验证步骤](docs/CLEAN_MAC_VALIDATION.md)。另一台Mac的实测仍待进行。
