@@ -234,7 +234,7 @@ export function ModelLibraryDialog({
           </div>
         </details>
         {desktop && <section className="custom-model-folders">
-          <label htmlFor="hf-url">{downloadText.label}</label>
+          <label htmlFor="hf-url">{downloadText.label} <span tabIndex={0} title={downloadText.hint} aria-label={downloadText.hint}><Info size={14} /></span></label>
           <form className="model-folder-form" onSubmit={async (e) => {
             e.preventDefault();
             setDownloading(true);
@@ -252,9 +252,11 @@ export function ModelLibraryDialog({
             <input type="password" autoComplete="off" aria-label="Hugging Face token" placeholder="HF token" value={hubToken} disabled={downloading} onChange={(e) => setHubToken(e.target.value)} />
             <button disabled={downloading || locked || !downloadUrl.trim() || directories.length >= 32}>{downloading ? downloadText.busy : downloadText.button}</button>
           </form>
-          {downloading && <button type="button" onClick={() => void invoke("cancel_model_download").catch((e) => setFailure(String(e)))}>{downloadText.cancel}</button>}
-          {downloading && progress && <progress aria-label={downloadText.busy} value={progress.total ? progress.received : undefined} max={progress.total || undefined} />}
-          <small>{downloadText.hint}</small>
+          {downloading && <div className="hub-download-progress">
+            <button type="button" onClick={() => void invoke("cancel_model_download").catch((e) => setFailure(String(e)))}>{downloadText.cancel}</button>
+            <progress aria-label={downloadText.busy} value={progress?.total ? progress.received : undefined} max={progress?.total || undefined} />
+            {progress?.total && <output>{Math.min(100, Math.floor(progress.received / progress.total * 100))}%</output>}
+          </div>}
         </section>}
         <section className="custom-model-folders">
           <label htmlFor="model-folder">{t.customLocations}</label>

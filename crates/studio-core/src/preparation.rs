@@ -10,12 +10,13 @@ pub struct ModelOption {
     pub working_gb: f64,
 }
 // Published download estimates: Strata/setup.py MODELS. Workspace includes the Metal repack for Unsloth,
-// preparation files and 10 GB headroom; optional expert copies can require additional disk space.
+// preparation files and 10 GB headroom. Q2_0 includes the mandatory 34 GB SSD expert copy
+// observed in the bundled Metal setup, plus its dense pack and tokenizer.
 pub const MODELS: &[ModelOption] = &[
     ModelOption {
         id: "Q2_0",
         download_gb: 66.4,
-        working_gb: 83.4,
+        working_gb: 112.0,
     },
     ModelOption {
         id: "IQ3_XXS",

@@ -403,7 +403,6 @@ fn cancel_model_download(runtime: State<'_, Runtime>) {
 
 #[tauri::command]
 async fn download_huggingface_file(
-    app: tauri::AppHandle,
     window: tauri::WebviewWindow,
     runtime: State<'_, Runtime>,
     url: String,
@@ -416,11 +415,7 @@ async fn download_huggingface_file(
     runtime
         .cancel_download
         .store(false, std::sync::atomic::Ordering::SeqCst);
-    let base = app
-        .path()
-        .app_data_dir()
-        .map_err(|e| e.to_string())?
-        .join("models");
+    let base = runtime.install_data.join("models");
     hub::download(
         &base,
         &url,

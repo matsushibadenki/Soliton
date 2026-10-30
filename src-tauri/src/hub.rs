@@ -177,6 +177,8 @@ pub async fn download(
             .map_err(|e| e.to_string())?;
         let mut stream = response.bytes_stream();
         let mut received = offset;
+        let mut last_report = std::time::Instant::now();
+        progress(received, total);
         loop {
             if cancel.load(Ordering::SeqCst) {
                 return Err("Download paused; submit the same URL to resume".into());
@@ -188,8 +190,12 @@ pub async fn download(
             let chunk = chunk.map_err(|_| "Transfer interrupted; retry to resume")?;
             output.write_all(&chunk).await.map_err(|e| e.to_string())?;
             received += chunk.len() as u64;
-            progress(received, total);
+            if last_report.elapsed() >= std::time::Duration::from_millis(250) {
+                progress(received, total);
+                last_report = std::time::Instant::now();
+            }
         }
+        progress(received, total);
         output.sync_all().await.map_err(|e| e.to_string())?;
         drop(output);
         if total.is_some_and(|n| n != received) {

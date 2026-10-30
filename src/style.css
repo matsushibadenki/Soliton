@@ -2358,3 +2358,7 @@ body > .dock-menu-items {
   overflow-wrap: anywhere;
   white-space: normal;
 }
+
+.hub-download-progress { display: flex; align-items: center; gap: 8px; margin-top: 8px; }
+.hub-download-progress progress { flex: 1; min-width: 0; width: 100%; }
+.hub-download-progress output { min-width: 4ch; text-align: right; white-space: nowrap; }

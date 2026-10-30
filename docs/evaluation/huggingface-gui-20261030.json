@@ -1,0 +1,44 @@
+{
+  "date": "2026-10-30",
+  "result": "passed",
+  "surface": "native packaged Tauri GUI",
+  "repository": "ISTA-DASLab/Qwen3.8-Flash-Next-GSQ-RCO-GGUF",
+  "revision": "ed59f92082b1e93c0e96d60a8b11aab089b52f09",
+  "download": "two individual resolve URLs entered in GUI; new regular files in empty isolated data directory",
+  "files": [
+    {
+      "name": "Qwen3.8-Flash-Next-GSQ-RCO-Q2_0-00001-of-00002.gguf",
+      "bytes": 37623740192,
+      "sha256": "69820c02ec7d0b45ef2ebb19d6620299db749fe2aded7f39f93c6b88b199b720"
+    },
+    {
+      "name": "Qwen3.8-Flash-Next-GSQ-RCO-Q2_0-00002-of-00002.gguf",
+      "bytes": 28800138432,
+      "sha256": "316b46f3a2dbd68c900f43136ab9449f9dcc3725dfd8c794847c204bc161e113"
+    }
+  ],
+  "sha256Verified": true,
+  "preparedFromNewDownloads": true,
+  "settingsSurvivedRestart": true,
+  "testEngine": false,
+  "chat": [
+    {
+      "role": "user",
+      "content": "Reply with exactly OK. Do not explain."
+    },
+    {
+      "role": "assistant",
+      "content": "OK"
+    }
+  ],
+  "displayedMetrics": {
+    "elapsedSeconds": 28.18,
+    "tokens": 23,
+    "decodeTokensPerSecond": 3.9
+  },
+  "limitations": [
+    "one short chat on the development Mac",
+    "no gated/private token was used",
+    "not a sustained performance qualification"
+  ]
+}
