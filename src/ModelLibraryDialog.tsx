@@ -1,3 +1,4 @@
+import { DiskBudget, type DiskPlan } from "./DiskBudget";
 import { useEffect, useRef, useState } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import { listen } from "@tauri-apps/api/event";
@@ -62,6 +63,7 @@ export function ModelLibraryDialog({
   const [check, setCheck] = useState<{
     kind: string;
     model?: string;
+    diskPlan?: DiskPlan;
     workingGb?: number;
     freeBytes?: number | null;
     reason?: string;
@@ -454,7 +456,8 @@ export function ModelLibraryDialog({
             </small>
             {check?.reason && <p role="alert">{check.reason}</p>}
             {!engineOffline && <small>{t.stopForSetup}</small>}
-            {check?.kind === "prepare" &&
+            {check?.kind === "prepare" && check.diskPlan && <DiskBudget value={check.diskPlan} language={language} />}
+            {check?.kind === "prepare" && !check.diskPlan &&
               check.freeBytes != null &&
               check.freeBytes / 1e9 < (check.workingGb || 0) && (
                 <small>{t.diskShort}</small>
@@ -477,9 +480,8 @@ export function ModelLibraryDialog({
               applying ||
               !check ||
               check.kind === "unsupported" ||
-              (check.kind === "prepare" &&
-                check.freeBytes != null &&
-                check.freeBytes / 1e9 < (check.workingGb || 0))
+              (check.kind === "prepare" && (check.diskPlan ? check.diskPlan.status === "insufficient" :
+                check.freeBytes != null && check.freeBytes / 1e9 < (check.workingGb || 0)))
             }
             onClick={async () => {
               setApplying(true);

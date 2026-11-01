@@ -204,8 +204,15 @@ impl Studio {
             .iter()
             .find(|m| m.id == input.model)
             .unwrap();
+        let root = Path::new(&s.strata_root);
+        let disk = preparation::disk_plan(
+            option,
+            root,
+            true,
+            preparation::free_bytes(&preparation::capacity_path(root, true)),
+        );
         Ok(
-            json!({"kind":"prepare","model":input.model,"path":path,"files":input.files,"workingGb":option.working_gb-option.download_gb,"downloadGb":0,"freeBytes":preparation::free_bytes(&Path::new(&s.strata_root).parent().unwrap_or(Path::new(&s.strata_root)).join("Strata-data"))}),
+            json!({"diskPlan":disk,"kind":"prepare","model":input.model,"path":path,"files":input.files,"workingGb":option.working_gb-option.download_gb,"downloadGb":0,"freeBytes":disk.free_bytes}),
         )
     }
     pub async fn use_local(self: &Arc<Self>, path: &str, confirmed: bool) -> Result<(), String> {

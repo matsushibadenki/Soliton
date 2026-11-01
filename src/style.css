@@ -2373,3 +2373,6 @@ body > .dock-menu-items {
 @media (max-width: 420px) {
   .model-plan dl { grid-template-columns: minmax(0, 1fr); }
 }
+.disk-budget { min-width: 0; }
+.disk-budget code { overflow-wrap: anywhere; white-space: normal; text-align: right; min-width: 0; }
+.disk-budget .value-row { gap: 12px; }

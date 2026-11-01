@@ -1,3 +1,4 @@
+import { DiskBudget, type DiskPlan } from "./DiskBudget";
 import { useEffect, useRef, useState } from "react";
 import {
   CheckCircle2,
@@ -20,6 +21,7 @@ export type ConfigInfo = {
   backend: string;
 };
 export type Inspection = {
+  diskPlans?: { id: string; download: DiskPlan; local: DiskPlan }[];
   rootExists: boolean;
   setupAvailable: boolean;
   supportedHost: boolean;
@@ -77,11 +79,13 @@ export function SetupDialog({
   const reuseOnly = localView || (busy && !!job.localReuse);
   const selected = inspection?.models.find((m) => m.id === model) ??
     (reuseOnly && model === "GEMMA3-1B" ? { id: model, downloadGb: 2, workingGb: 4.5 } : undefined);
+  const plans = inspection?.diskPlans?.find(p=>p.id===model);
+  const diskPlan = reuseOnly ? plans?.local : plans?.download;
   const workingGb = selected
     ? selected.workingGb - (reuseOnly ? selected.downloadGb : 0)
     : undefined;
   const free =
-    inspection?.freeBytes == null ? null : inspection.freeBytes / 1e9;
+    diskPlan ? diskPlan.freeBytes == null ? null : diskPlan.freeBytes/1e9 : inspection?.freeBytes == null ? null : inspection.freeBytes / 1e9;
   useEffect(() => {
     ref.current?.showModal();
     return () => ref.current?.close();
@@ -225,6 +229,7 @@ export function SetupDialog({
             <span>{t.downloadSize}</span>
           </div>
         </div>
+        {diskPlan ? <DiskBudget value={diskPlan} language={language} /> : <>
         <div className="value-row">
           <span>{t.freeDisk}</span>
           <code>{free?.toFixed(1) ?? "—"} GB</code>
@@ -243,6 +248,7 @@ export function SetupDialog({
             {t.diskShort}
           </p>
         ) : null}
+        </>}
         {!inspection?.supportedHost ? (
           <p className="setup-warning">{t.macOnly}</p>
         ) : null}
@@ -317,7 +323,7 @@ export function SetupDialog({
                 !inspection?.python.supported ||
                 !engineOffline ||
                 !selected ||
-                (free !== null && free < selected.workingGb)
+                (diskPlan ? diskPlan.status === "insufficient" : free !== null && free < selected.workingGb)
               }
               onClick={() =>
                 run(async () => {

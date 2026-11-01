@@ -9,6 +9,48 @@ pub struct ModelOption {
     pub download_gb: f64,
     pub working_gb: f64,
 }
+/// Additional free space required by preparation, not final model size.
+#[derive(Clone, Debug, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct DiskPlan {
+    pub target: String,
+    pub required_bytes: u64,
+    pub free_bytes: Option<u64>,
+    pub shortfall_bytes: Option<u64>,
+    pub status: &'static str,
+}
+impl ModelOption {
+    pub fn required_bytes(&self, local: bool) -> u64 {
+        let total = (self.working_gb * 1e9).round() as u64;
+        if local {
+            total.saturating_sub((self.download_gb * 1e9).round() as u64)
+        } else {
+            total
+        }
+    }
+}
+pub fn capacity_path(root: &Path, local: bool) -> PathBuf {
+    let root = root.canonicalize().unwrap_or_else(|_| root.to_path_buf());
+    if local {
+        root.parent().unwrap_or(&root).join("Strata-data")
+    } else {
+        root
+    }
+}
+pub fn disk_plan(option: &ModelOption, root: &Path, local: bool, free: Option<u64>) -> DiskPlan {
+    let required = option.required_bytes(local);
+    DiskPlan {
+        target: capacity_path(root, local).to_string_lossy().into(),
+        required_bytes: required,
+        free_bytes: free,
+        shortfall_bytes: free.map(|n| required.saturating_sub(n)),
+        status: match free {
+            None => "unknown",
+            Some(n) if n < required => "insufficient",
+            _ => "sufficient",
+        },
+    }
+}
 // Published download estimates: Strata/setup.py MODELS. Workspace includes the Metal repack for Unsloth,
 // preparation files and 10 GB headroom. Q2_0 includes the mandatory 34 GB SSD expert copy
 // observed in the bundled Metal setup, plus its dense pack and tokenizer.
@@ -194,7 +236,10 @@ impl Studio {
             }
             _ => json!({"supported":false,"dependencies":false}),
         };
-        json!({"rootExists":root.join("serve/server.py").is_file(),"setupAvailable":root.join("metal/setup_mac.py").is_file(),"supportedHost":cfg!(all(target_os="macos",target_arch="aarch64")),"metalProfile":crate::metal_policy::profile(self.memory_bytes),"python":python,"configs":configs(&root),"selected":if s.config.is_empty(){None}else{Some(inspect_config(&resolve(&root,&s.config),&root))},"models":MODELS.iter().filter(|m| m.id != "GEMMA3-1B").collect::<Vec<_>>(),"freeBytes":free_bytes(&root),"recommended":if self.memory_bytes.unwrap_or(0)>=96*1024*1024*1024{"IQ3_S"}else{"Q2_0"}})
+        let download_free = free_bytes(&root);
+        let local_free = free_bytes(&capacity_path(&root, true));
+        let disk_plans:Vec<_> = MODELS.iter().map(|m|json!({"id":m.id,"download":disk_plan(m,&root,false,download_free),"local":disk_plan(m,&root,true,local_free)})).collect();
+        json!({"diskPlans":disk_plans,"rootExists":root.join("serve/server.py").is_file(),"setupAvailable":root.join("metal/setup_mac.py").is_file(),"supportedHost":cfg!(all(target_os="macos",target_arch="aarch64")),"metalProfile":crate::metal_policy::profile(self.memory_bytes),"python":python,"configs":configs(&root),"selected":if s.config.is_empty(){None}else{Some(inspect_config(&resolve(&root,&s.config),&root))},"models":MODELS.iter().filter(|m| m.id != "GEMMA3-1B").collect::<Vec<_>>(),"freeBytes":download_free,"recommended":if self.memory_bytes.unwrap_or(0)>=96*1024*1024*1024{"IQ3_S"}else{"Q2_0"}})
     }
     pub async fn prepare(self: &Arc<Self>, model: &str, confirmed: bool) -> Result<(), String> {
         self.prepare_with_capacity(model, confirmed, free_bytes)
@@ -259,20 +304,12 @@ impl Studio {
             return Err("Select a downloaded Gemma 3 1B model in the model library".into());
         }
         let local_reuse = local.is_some();
-        let needed = if local_reuse {
-            option.working_gb - option.download_gb
-        } else {
-            option.working_gb
-        };
-        let capacity_path = if local.is_some() {
-            root.parent().unwrap_or(&root).join("Strata-data")
-        } else {
-            root.clone()
-        };
-        if capacity(&capacity_path).is_some_and(|n| (n as f64) < needed * 1e9) {
+        let target = capacity_path(&root, local_reuse);
+        let plan = disk_plan(option, &root, local_reuse, capacity(&target));
+        if plan.status == "insufficient" {
             return Err(format!(
                 "At least {:.1} GB of working space is required",
-                needed
+                plan.required_bytes as f64 / 1e9
             ));
         }
         // Never install into the selected system/shared interpreter. Bootstrap an isolated Strata .venv,
@@ -471,6 +508,46 @@ fn kill_group(child: &mut Child, signal: Signal) {
 
 #[cfg(test)]
 mod tests {
+    #[cfg(unix)]
+    #[test]
+    fn disk_destination_follows_canonical_runtime_parent() {
+        let dir = std::env::temp_dir().join(uuid::Uuid::new_v4().to_string());
+        std::fs::create_dir_all(dir.join("real/Strata")).unwrap();
+        std::fs::create_dir_all(dir.join("links")).unwrap();
+        std::os::unix::fs::symlink(dir.join("real/Strata"), dir.join("links/Strata")).unwrap();
+        assert_eq!(
+            super::capacity_path(&dir.join("links/Strata"), true),
+            dir.join("real/Strata-data")
+                .canonicalize()
+                .unwrap_or_else(|_| dir.join("real").canonicalize().unwrap().join("Strata-data"))
+        );
+        std::fs::remove_dir_all(dir).unwrap();
+    }
+    #[test]
+    fn disk_budgets_distinguish_targets_boundaries_and_missing_samples() {
+        let root = std::path::Path::new("/vol/runtime/Strata");
+        let q = super::MODELS.iter().find(|m| m.id == "Q2_0").unwrap();
+        assert_eq!(q.required_bytes(false), 112_000_000_000);
+        assert_eq!(q.required_bytes(true), 45_600_000_000);
+        let a = super::disk_plan(q, root, false, Some(112_000_000_000));
+        assert_eq!(a.status, "sufficient");
+        assert_eq!(a.shortfall_bytes, Some(0));
+        assert_eq!(a.target, "/vol/runtime/Strata");
+        let b = super::disk_plan(q, root, true, Some(45_599_999_999));
+        assert_eq!(b.status, "insufficient");
+        assert_eq!(b.shortfall_bytes, Some(1));
+        assert_eq!(b.target, "/vol/runtime/Strata-data");
+        let c = super::disk_plan(q, root, true, None);
+        assert_eq!(c.status, "unknown");
+        assert!(c.shortfall_bytes.is_none());
+        let g = &super::MODELS[0];
+        assert_eq!(g.required_bytes(true), 2_500_000_000);
+        assert_eq!(
+            super::disk_plan(g, root, true, Some(0)).shortfall_bytes,
+            Some(2_500_000_000)
+        );
+    }
+
     use super::*;
     fn temp_root() -> PathBuf {
         let p = std::env::temp_dir().join(format!("strata-prepare-{}", uuid::Uuid::new_v4()));

@@ -118,7 +118,7 @@ pub fn inspect(settings: &Settings, memory: Option<u64>, inspection: &Value) -> 
         Engine::Strata => {
             let root = Path::new(&settings.strata_root);
             let path = resolve(root, &settings.config);
-            let mut disk = root.parent().unwrap_or(root).join("Strata-data");
+            let mut disk = preparation::capacity_path(root, true);
             if let Some(v) = config(&path) {
                 let backend = v["backend"].as_str().unwrap_or("");
                 if matches!(backend, "metal" | "strata-gemma3-metal") {
