@@ -2362,3 +2362,14 @@ body > .dock-menu-items {
 .hub-download-progress { display: flex; align-items: center; gap: 8px; margin-top: 8px; }
 .hub-download-progress progress { flex: 1; min-width: 0; width: 100%; }
 .hub-download-progress output { min-width: 4ch; text-align: right; white-space: nowrap; }
+
+.model-plan { border: 1px solid var(--border); border-radius: 8px; padding: 10px; margin: 8px 0; }
+.model-plan summary { cursor: pointer; display: flex; align-items: center; flex-wrap: wrap; gap: 6px; }
+.model-plan dl { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin: 12px 0 0; }
+.model-plan dt { color: var(--muted); font-size: 11px; overflow-wrap: anywhere; }
+.model-plan dd { margin: 3px 0 0; overflow-wrap: anywhere; font-variant-numeric: tabular-nums; }
+.model-plan ul { padding-left: 18px; margin-bottom: 0; }
+.model-plan li { margin-top: 6px; overflow-wrap: anywhere; }
+@media (max-width: 420px) {
+  .model-plan dl { grid-template-columns: minmax(0, 1fr); }
+}

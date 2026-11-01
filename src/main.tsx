@@ -1,3 +1,4 @@
+import { ModelPlan, type ModelPlanState } from "./ModelPlan";
 import { useEffect, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { getCurrentWindow } from "@tauri-apps/api/window";
@@ -95,6 +96,7 @@ type Settings = {
 };
 type Message = { role: string; content: string; inference?: Inference };
 type Snapshot = {
+  modelPlan?: ModelPlanState;
   vllmInspection?: VllmInspection | null;
   requests?: Metrics[];
   dockingDiagnostics?: { enabled: boolean };
@@ -690,6 +692,9 @@ function App() {
               <option value="vllmApple">vLLM-Apple</option>
             </select>
           </label>
+          {!dirty.current && snapshot?.modelPlan && (
+            <ModelPlan value={snapshot.modelPlan} language={language} />
+          )}
           {settings.engine === "strata" ? (
             <>
               {snapshot?.backend === "Metal" && (

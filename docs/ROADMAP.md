@@ -111,7 +111,8 @@ See [implementation scope](LFM3_OMNI.md) and [readiness](evaluation/lfm3-omni-re
 ## Kapitsa ideas — 2026-11-01
 
 - 🟢 [Done] Rust-owned prompt cache reuse, uncached input count and completed-request prefill speed, separated from generation speed and gateway first-output delay. Kapitsa timing metadata and Anthropic cache accounting are normalized; legacy messages retain their existing fields.
-- 🟠 [Next] A common doctor-style model plan: backend-specific weights/KV/workspace/OS reserve, context and disk budgets, with estimated and verified results kept distinct.
+- 🟢 [Done] Common read-only model-plan panel in Engine preferences: saved context, Gemma model file size, cached backend resident estimate, planned OS reserve/memory budget and free disk; warnings for missing files/config, exhausted reserve, oversized weights and output reservation. Shared Rust snapshot, EN/JA/ZH, 1440/390/320 px. Unknown KV/workspace remain unavailable; no fit/qualification verdict, model load or settings mutation.
+- 🟠 [Next] Complete backend-specific doctor budgets: validated KV/workspace accounting and preparation disk requirements; distinguish planned reserve from backend enforcement and measured residency. Current partial observations do not certify model fit.
 - 🟠 [Next] Review each backend's conversation-state save/restore API for bounded SSD prefix caching; bind model/runtime/state-format identities and preserve checksum/atomic-write/quota rules.
 - 🔴 [Later] Quiet-time history preparation with foreground priority, cancellation and superseded-work removal; KFlash/ANE/native SDK integration after model-specific correctness and lifecycle checks.
 - ⭕️ [Pending] Other-Mac verification and multi-Mac execution remain on hold.
