@@ -209,6 +209,15 @@ impl Studio {
         )
     }
     pub async fn use_local(self: &Arc<Self>, path: &str, confirmed: bool) -> Result<(), String> {
+        self.use_local_with_capacity(path, confirmed, preparation::free_bytes)
+            .await
+    }
+    async fn use_local_with_capacity(
+        self: &Arc<Self>,
+        path: &str,
+        confirmed: bool,
+        capacity: impl FnOnce(&Path) -> Option<u64>,
+    ) -> Result<(), String> {
         if !confirmed {
             return Err("Confirm reuse before preparing a local model".into());
         }
@@ -234,13 +243,8 @@ impl Studio {
             return Ok(());
         }
         let input = validated(&s, path).await?;
-        self.prepare_input(
-            &input.model.clone(),
-            true,
-            preparation::free_bytes,
-            Some(input),
-        )
-        .await
+        self.prepare_input(&input.model.clone(), true, capacity, Some(input))
+            .await
     }
 }
 pub(crate) fn stage(root: &Path, input: &LocalInput) -> Result<(PathBuf, PathBuf), String> {
@@ -490,7 +494,16 @@ def main(args):
     return 0
 "#).unwrap();
         let before = fs::read(&files[0]).unwrap();
-        s.use_local(files[0].to_str().unwrap(), true).await.unwrap();
+        // Tiny synthetic weights must not depend on the host's real free space.
+        assert!(s
+            .use_local_with_capacity(files[0].to_str().unwrap(), true, |_| Some(0))
+            .await
+            .unwrap_err()
+            .contains("working space"));
+        assert!(!s.preparation.lock().await.busy());
+        s.use_local_with_capacity(files[0].to_str().unwrap(), true, |_| Some(u64::MAX))
+            .await
+            .unwrap();
         tokio::time::timeout(Duration::from_secs(10), async {
             while s.preparation.lock().await.busy() {
                 tokio::time::sleep(Duration::from_millis(30)).await;

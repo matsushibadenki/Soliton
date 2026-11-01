@@ -106,3 +106,14 @@ See [implementation scope](LFM3_OMNI.md) and [readiness](evaluation/lfm3-omni-re
 
 - 🟢 [Done] 2026-10-29 workspace dependency refresh, including reqwest/tower-http/rusqlite/sha2 major migrations, SHA-256 identity compatibility, Lucide 1.63.0, dialog 2.8.4, Strata 0.2.7.1, upstream Python pins, Metal rebuild, 86 Rust tests and multilingual UI fixtures. [Verification](DEPENDENCY_UPDATE_20261029.md).
 - ⭕️ [Pending] New Strata real inference awaits exclusive GPU availability while the existing Omni qualification runs; pinned model runtime identities remain unchanged.
+
+
+## Kapitsa ideas — 2026-11-01
+
+- 🟢 [Done] Rust-owned prompt cache reuse, uncached input count and completed-request prefill speed, separated from generation speed and gateway first-output delay. Kapitsa timing metadata and Anthropic cache accounting are normalized; legacy messages retain their existing fields.
+- 🟠 [Next] A common doctor-style model plan: backend-specific weights/KV/workspace/OS reserve, context and disk budgets, with estimated and verified results kept distinct.
+- 🟠 [Next] Review each backend's conversation-state save/restore API for bounded SSD prefix caching; bind model/runtime/state-format identities and preserve checksum/atomic-write/quota rules.
+- 🔴 [Later] Quiet-time history preparation with foreground priority, cancellation and superseded-work removal; KFlash/ANE/native SDK integration after model-specific correctness and lifecycle checks.
+- ⭕️ [Pending] Other-Mac verification and multi-Mac execution remain on hold.
+
+See [design and validation scope](INFERENCE.md#kapitsaから取り入れた計測設計2026-11-01).

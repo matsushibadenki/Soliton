@@ -16,7 +16,13 @@ export type Metrics = {
     completion: number | null;
     total: number | null;
     cached: number | null;
+    cacheCreation?: number | null;
     reasoning: number | null;
+  } | null;
+  promptProcessing?: {
+    uncachedTokens: number | null;
+    cacheHitPercent: number | null;
+    tokensPerSecond: number | null;
   } | null;
   timings: {
     promptMs: number | null;
@@ -66,10 +72,14 @@ export function RequestMetrics({
     [t.promptTokens, count(m.usage?.prompt)],
     [t.outputTokens, count(m.usage?.completion)],
     [t.cachedTokens, count(m.usage?.cached)],
+    [t.cacheCreationTokens, count(m.usage?.cacheCreation)],
+    [t.uncachedTokens, count(m.promptProcessing?.uncachedTokens)],
+    [t.cacheHitRate, m.promptProcessing?.cacheHitPercent == null ? "—" : `${m.promptProcessing.cacheHitPercent.toFixed(1)}%`],
     [t.reasoningTokens, count(m.usage?.reasoning)],
     [t.totalTokens, count(m.usage?.total)],
     [t.promptTime, seconds(m.timings?.promptMs)],
     [t.decodeTime, seconds(m.timings?.decodeMs)],
+    [t.prefillSpeed, m.promptProcessing?.tokensPerSecond == null ? "—" : `${m.promptProcessing.tokensPerSecond.toFixed(1)} tok/s`],
     [
       t.engineSpeed,
       m.timings?.tokensPerSecond == null

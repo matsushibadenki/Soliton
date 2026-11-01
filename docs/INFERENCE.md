@@ -19,3 +19,37 @@
 計測一覧はRust共有State内だけに保持し、アプリ終了時にリセットする。APIリクエストの回答本文や推論文は一覧に保存しない。チャットでは推論文・ツール引数・計測値を会話本文と一緒に保存し、会話切り替え・再起動・JSON書き出しでも保持する。次のモデル入力には会話のrole/contentだけを送り、表示用の推論・計測データを混入させない。
 
 保存には回答／推論各1 MiB、ツール呼び出し最大64件・各引数64 KiBの上限があり、省略した場合は明示する。会話ライブラリーの本文容量検査には推論文とツール引数も含める。履歴はRustが所有し、各WebViewは表示のみ行う。
+
+
+## Kapitsaから取り入れた計測設計（2026-11-01）
+
+参照版: Kapitsa `2d374d5e85bcc87708527102dee3ac7d40119dfe`（ローカル追加されたソース、Apache-2.0）。[計測API](https://github.com/nace-ai/kapitsa/blob/2d374d5e85bcc87708527102dee3ac7d40119dfe/src/api/chat_completions.cpp)、[SSDキャッシュ](https://github.com/nace-ai/kapitsa/blob/2d374d5e85bcc87708527102dee3ac7d40119dfe/src/engine/prefix_cache.h)、[履歴準備の優先制御](https://github.com/nace-ai/kapitsa/blob/2d374d5e85bcc87708527102dee3ac7d40119dfe/src/engine/history_gate.h)、[doctor](https://github.com/nace-ai/kapitsa/blob/2d374d5e85bcc87708527102dee3ac7d40119dfe/src/engine/doctor.cpp)を調査しました。
+
+最初の採用は、キャッシュで省略できた入力と、新しく読み込んだ入力の処理速度を分ける設計です。計算・保存はRust共有Stateで行い、チャットの計測詳細とAPIの要求履歴に三言語で表示します。
+
+| 表示 | 算出・条件 |
+| --- | --- |
+| 入力キャッシュ再利用率 | 応答のキャッシュ読込数 ÷ 入力総数 × 100。リクエストのヒット率や速度向上率ではありません |
+| 未キャッシュ入力 | 入力総数 − キャッシュ読込数。またはエンジンが報告する`timings.prompt_n` |
+| 入力処理速度 | 未キャッシュ入力 ÷ 応答の入力処理時間。完了要求に限定 |
+| 生成速度 | 応答の`timings.predicted_per_second`。入力処理速度と別の表示 |
+| キャッシュ書込トークン | Anthropic形式の`cache_creation_input_tokens`。読込分と区別 |
+
+Kapitsaの`usage.kapitsa.prefill_ms`を入力処理時間として読めるようにしました。通常の`timings.prompt_ms`にも対応します。入力数とキャッシュ数がない場合、初回出力時間や総経過時間から入力処理速度を代用しません。全入力が再利用された場合、時間0、数値の不整合、中断・失敗では入力処理速度は「—」です。`prompt_n`と入力差分が一致しない場合も速度を表示しません。追加フィールドのない過去の会話は従来の値を保持します。
+
+Anthropic形式の入力総数は、非キャッシュ入力・キャッシュ読込・キャッシュ書込の合計へ正規化しました。増分イベントを足し込み続けず、各カウンターの最新値を保持します。入力総数と出力数が揃えば合計も算出し、整数の桁あふれ時は未取得として扱います。[公式仕様のトークン内訳](https://platform.claude.com/docs/en/build-with-claude/prompt-caching)に基づきます。
+
+### 次の採用候補
+
+| アイデア | Solitonへの取り込み方 | 進捗 |
+| --- | --- | --- |
+| キャッシュと処理段階を分けた計測 | Rustで集計し、既存の要求詳細へ表示 | 🟢 [Done] |
+| `doctor`のモデル適合診断 | 重み・KV・作業用メモリ・OS予約・コンテキスト・空き容量をエンジン別に評価。推定と実機確認を区別 | 🟠 [Next] |
+| SSD上の会話プレフィックス | 既存バックエンドの状態保存／復元APIを調査し、モデル・実行環境・状態形式の識別、整合性検査、容量制限を設計 | 🟠 [Next] |
+| 静穏時の履歴準備 | 前面要求を優先し、新しい要求で譲る。古い会話準備を破棄し、キャッシュを圧迫しない制御 | 🔴 [Later] |
+| KFlash・Neural Engine・C ABI SDK | Rust管理のワーカープロセスとの接続を検討。モデル対応・キャンセル・異常終了・実機品質を確認して段階導入 | 🔴 [Later] |
+| 他Macでの測定・複数Mac連携 | 対象実機と接続先が必要 | ⭕️ [Pending] |
+
+Kapitsa本体のエンジン追加、KVの保存形式変更、推論カーネルの高速化は今後の項目です。今回の検証はRustの応答パーサーと計算、および模擬データを使うブラウザー表示です。KapitsaやGPUでの高速化・実モデルの品質向上を示す測定ではありません。
+
+再確認: `cargo test -p studio-core`、`npm run build`、`node scripts/prompt-metrics-ui-smoke.mjs`。UI試験はBrowser skillがないため既存Playwrightを使用し、三言語、1440/390 px、通常・欠損・中断、コンソールと横はみ出しを確認します。画像はシステム一時ディレクトリへ保存します。
