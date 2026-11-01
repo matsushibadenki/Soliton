@@ -1,7 +1,8 @@
 //! Read-only capacity observations. Missing backend budgets never imply a model fits.
-use crate::{engine::Engine, metal_policy, preparation, Settings};
+use crate::{engine::Engine, metal_policy, model_budget, preparation, Settings};
 use serde::Serialize;
 use serde_json::Value;
+use sha2::{Digest, Sha256};
 use std::{
     io::Read,
     path::{Path, PathBuf},
@@ -16,6 +17,10 @@ pub struct ModelPlan {
     pub resident_estimate_bytes: Option<u64>,
     pub kv_bytes: Option<u64>,
     pub workspace_bytes: Option<u64>,
+    pub kv_basis: Option<&'static str>,
+    pub workspace_basis: Option<&'static str>,
+    pub retained_kv_limit_bytes: Option<u64>,
+    pub allocator_cache_limit_bytes: Option<u64>,
     pub os_reserve_bytes: u64,
     pub memory_budget_bytes: Option<u64>,
     pub disk_free_bytes: Option<u64>,
@@ -32,6 +37,9 @@ fn resolve(root: &Path, value: &str) -> PathBuf {
     }
 }
 fn config(path: &Path) -> Option<Value> {
+    if !std::fs::metadata(path).ok()?.is_file() {
+        return None;
+    }
     let file = std::fs::File::open(path).ok()?;
     if !file.metadata().ok()?.is_file() {
         return None;
@@ -42,6 +50,27 @@ fn config(path: &Path) -> Option<Value> {
         return None;
     }
     serde_json::from_slice(bytes.strip_prefix(&[0xef, 0xbb, 0xbf]).unwrap_or(&bytes)).ok()
+}
+fn reviewed_source(path: &Path) -> bool {
+    let read = || -> Option<Vec<u8>> {
+        if !std::fs::metadata(path).ok()?.is_file() {
+            return None;
+        }
+        let mut bytes = Vec::new();
+        std::fs::File::open(path)
+            .ok()?
+            .take(512 * 1024 + 1)
+            .read_to_end(&mut bytes)
+            .ok()?;
+        (bytes.len() <= 512 * 1024).then_some(bytes)
+    };
+    read().is_some_and(|bytes| {
+        let digest = Sha256::digest(bytes)
+            .iter()
+            .map(|b| format!("{b:02x}"))
+            .collect::<String>();
+        digest == "4895f2ba12e91d7893935e42cbd82f0ac1ea5c82fa9920923011593e777f9dfd"
+    })
 }
 fn context(args: &Value, flag: &str) -> Option<u64> {
     let args = args.as_array()?;
@@ -74,12 +103,17 @@ pub fn inspect(settings: &Settings, memory: Option<u64>, inspection: &Value) -> 
         resident_estimate_bytes: None,
         kv_bytes: None,
         workspace_bytes: None,
+        kv_basis: None,
+        workspace_basis: None,
+        retained_kv_limit_bytes: None,
+        allocator_cache_limit_bytes: None,
         os_reserve_bytes: reserve,
         memory_budget_bytes: None,
         disk_free_bytes: None,
         warnings: vec![],
         assessment: "incomplete",
     };
+    let mut budget = model_budget::Budget::default();
     let disk = match settings.engine {
         Engine::Strata => {
             let root = Path::new(&settings.strata_root);
@@ -106,6 +140,14 @@ pub fn inspect(settings: &Settings, memory: Option<u64>, inspection: &Value) -> 
                                 p.os_reserve_bytes = gb * 1_000_000_000;
                             }
                         }
+                        // A source profile is an estimate, not proof of the executable's identity.
+                        let source = root.join("metal/src/engine/window.cpp");
+                        let reviewed = reviewed_source(&source);
+                        if reviewed {
+                            if let Some(context) = p.context {
+                                budget = model_budget::strata(context);
+                            }
+                        }
                     } else {
                         let cwd = v["cwd"]
                             .as_str()
@@ -119,6 +161,30 @@ pub fn inspect(settings: &Settings, memory: Option<u64>, inspection: &Value) -> 
                             .and_then(|s| std::fs::metadata(resolve(&cwd, s)).ok())
                             .filter(|m| m.is_file())
                             .map(|m| m.len());
+                        let args = v["args"].as_array();
+                        let unsupported = args.is_none_or(|args| {
+                            args.iter().filter_map(Value::as_str).any(|s| {
+                                [
+                                    "--cache-type-k",
+                                    "--cache-type-v",
+                                    "-ctk",
+                                    "-ctv",
+                                    "--kv-unified",
+                                    "--swa-full",
+                                    "--no-swa",
+                                ]
+                                .iter()
+                                .any(|flag| s == *flag || s.starts_with(&format!("{flag}=")))
+                            })
+                        });
+                        if !unsupported
+                            && context(&v["args"], "--parallel") == Some(1)
+                            && v["llama_commit"] == "3cf03257f219afbe7334045ff7c6a06ac68c627d"
+                        {
+                            if let Some(ctx) = p.context {
+                                budget = model_budget::gemma(&disk, ctx);
+                            }
+                        }
                         if p.weights_bytes.is_none() {
                             p.warnings.push("model_missing");
                         }
@@ -137,6 +203,16 @@ pub fn inspect(settings: &Settings, memory: Option<u64>, inspection: &Value) -> 
             if inspection["fitsMemory"] == false {
                 p.warnings.push("backend_memory");
             }
+            if settings.vllm.backend == "mlx_lm" {
+                let v = config(&Path::new(&settings.vllm.model).join("config.json"))
+                    .unwrap_or(Value::Null);
+                budget = model_budget::mlx(
+                    &v,
+                    settings.vllm.context as u64,
+                    settings.vllm.kv_cache_mib,
+                    settings.vllm.allocator_cache_mib,
+                );
+            }
             PathBuf::from(&settings.vllm.model)
         }
         Engine::Lfm3Omni => {
@@ -144,6 +220,12 @@ pub fn inspect(settings: &Settings, memory: Option<u64>, inspection: &Value) -> 
             PathBuf::from(&settings.omni.model)
         }
     };
+    p.kv_bytes = budget.kv_bytes;
+    p.workspace_bytes = budget.workspace_bytes;
+    p.kv_basis = budget.kv_basis;
+    p.workspace_basis = budget.workspace_basis;
+    p.retained_kv_limit_bytes = budget.retained_kv_limit_bytes;
+    p.allocator_cache_limit_bytes = budget.allocator_cache_limit_bytes;
     p.disk_free_bytes = preparation::free_bytes(&disk);
     p.memory_budget_bytes = memory.map(|m| m.saturating_sub(p.os_reserve_bytes));
     if memory.is_some_and(|m| p.os_reserve_bytes >= m) {
@@ -152,6 +234,13 @@ pub fn inspect(settings: &Settings, memory: Option<u64>, inspection: &Value) -> 
     if let (Some(w), Some(b)) = (p.weights_bytes, p.memory_budget_bytes) {
         if w > b {
             p.warnings.push("weights_over_budget");
+        }
+    }
+    if let (Some(kv), Some(work), Some(budget)) =
+        (p.kv_bytes, p.workspace_bytes, p.memory_budget_bytes)
+    {
+        if kv.checked_add(work).is_none_or(|sum| sum > budget) {
+            p.warnings.push("state_workspace_budget");
         }
     }
     if p.context.is_some_and(|c| settings.max_tokens as u64 >= c) {
@@ -219,6 +308,38 @@ mod tests {
         let p = inspect(&s, Some(1), &Value::Null);
         assert!(p.warnings.contains(&"reserve_exhausted"));
         assert!(p.warnings.contains(&"weights_over_budget"));
+        std::fs::remove_dir_all(root).unwrap();
+    }
+    #[test]
+    fn saved_mlx_metadata_and_limits_refresh_without_stale_fallback() {
+        let root = std::env::temp_dir().join(uuid::Uuid::new_v4().to_string());
+        std::fs::create_dir_all(&root).unwrap();
+        let model = serde_json::json!({"model_type":"gemma2","torch_dtype":"bfloat16","num_hidden_layers":26,"num_attention_heads":8,"num_key_value_heads":4,"head_dim":256,"vocab_size":256000});
+        std::fs::write(root.join("config.json"), model.to_string()).unwrap();
+        let mut s = Settings::default();
+        s.engine = Engine::VllmApple;
+        s.vllm.model = root.to_string_lossy().into();
+        s.vllm.context = 4096;
+        s.vllm.kv_cache_mib = 1024;
+        s.vllm.allocator_cache_mib = 512;
+        let a = inspect(&s, Some(32 << 30), &Value::Null);
+        assert_eq!(a.kv_bytes, Some(436207616));
+        assert_eq!(a.workspace_bytes, Some(512000));
+        assert_eq!(a.retained_kv_limit_bytes, Some(1 << 30));
+        assert_eq!(a.allocator_cache_limit_bytes, Some(512 << 20));
+        assert_eq!(a.assessment, "incomplete");
+        let tiny = inspect(&s, Some(1), &Value::Null);
+        assert!(tiny.warnings.contains(&"state_workspace_budget"));
+        s.vllm.backend = "vllm_metal".into();
+        assert!(inspect(&s, Some(32 << 30), &Value::Null).kv_bytes.is_none());
+        s.vllm.backend = "mlx_lm".into();
+        std::fs::write(root.join("config.json"), b"{}").unwrap();
+        let b = inspect(&s, Some(32 << 30), &Value::Null);
+        assert!(b.kv_bytes.is_none() && b.workspace_bytes.is_none());
+        std::fs::remove_file(root.join("config.json")).unwrap();
+        let missing = inspect(&s, Some(32 << 30), &Value::Null);
+        assert!(missing.kv_bytes.is_none());
+        assert_eq!(missing.retained_kv_limit_bytes, Some(1 << 30));
         std::fs::remove_dir_all(root).unwrap();
     }
     #[test]

@@ -73,3 +73,36 @@ OS予約が搭載量以上、モデルファイルが予算超過、最大出力
 検証: `cargo test -p studio-core`、`npm run build`、`node scripts/model-plan-ui-smoke.mjs`。Rustでは設定変更への追従、欠落値、相対モデルパス、予約不足、不正・重複コンテキスト、設定ファイル不変を確認。Browser skillがないためPlaywrightで三言語・1440/390/320 pxの開閉、欠落値、警告、横はみ出し、コンソールを確認します。UI値は模擬データで、実機の推論性能や適合確認ではありません。
 
 次はモデル／バックエンドごとのKV・作業用メモリと準備ディスク予算の根拠を追加し、その後にSSD状態保存APIの調査へ進めます。他Mac検証・署名・公証は保留を維持します。
+
+
+## バックエンド別KV・作業用バッファ — 2026-11-02
+
+共通モデル診断にバックエンド別の計算を追加しました。前節のKV・作業用メモリが一律未取得だった状態を更新します。KV／状態は `≈`、作業用バッファの既知分は `≥` と表示し、情報アイコンで対象範囲を確認できます。小さい値はMiB表示にして、1 MiBを0.00 GiBに丸めません。
+
+| 対象 | KV／状態データの計算 | 作業用メモリの既知分 |
+| --- | --- | --- |
+| 同梱Strata Gemma 3 Metal | 固定llamaコミット、並列1、既定F16 KVに限定。GGUF v3ヘッダーのGemma 3 1B形状を検査。`26層 × K/V 2個 × 256次元 × 2 bytes × ceil(context/256)×256`。全層を全コンテキストで見積もり、SWAによる節約は差し引きません | llama-contextの出力ベクトル1つ、`vocab × 4 bytes`。計算グラフ・入力処理・Metal割当の全量ではありません |
+| vLLM-Apple / mlx_lm | ローカルconfig.jsonのgemma2／gemma3_textのみ。`2 × layers × KV heads × head_dim × dtype bytes × ceil(context/256)×256`。明示されたFP16/BF16/FP32を使用。SWAの節約は差し引きません | 出力ベクトル1つのデータ分、`vocab × dtype bytes`。MLXの遅延評価・一時テンソル・prefill・アロケータを含む総量ではありません |
+| Strata Metal Qwen window | 確認済みwindow.cppのSHA-256一致時のみ。QSA12層のint8 K/V・スケール・索引、GDN36層の状態と二重conv履歴、PLE履歴。コンテキストはソースと同じセル丸めを使用 | `R_`, `bo_`, `xn_`, `qkv_`, `z_`, `qkvL_`, `zL_`の必須バッファ。prompt GEMM、MTP、エキスパートarena、追加バッファは含みません |
+| vllm_metal／LFM3-Omni／未確認レイアウト | 未取得。汎用の密Transformer式を流用しません | 未取得。特に画像・音声・動画の作業量をテキスト量から推測しません |
+
+根拠: 同梱llama.cpp `3cf03257f219afbe7334045ff7c6a06ac68c627d` の `src/llama-kv-cache.cpp`, `src/llama-kv-cache-iswa.cpp`, `src/llama-context.cpp`、既存のGemma変換器、MLXの密注意KV形状と既存vLLMモデル検査の式、Strata `46c152a1310f77cd2f0ce2c7cd213962df14fe83` の `metal/src/engine/window.cpp`。Strataソースの対象SHA-256は `4895f2ba12e91d7893935e42cbd82f0ac1ea5c82fa9920923011593e777f9dfd` です。この一致は計算式を選ぶ条件で、バイナリの同一性・動作品質の証明ではありません。MLXのKV式はconfigの浮動小数点dtypeを仮定した計画値です。
+
+保持KV上限とアロケータ空きキャッシュ上限は別の行に表示します。前者は使用中の全KV、後者は使用中のテンソル全体を制限する値ではありません。0／既定値は0 bytesとして表示せず未取得にします。これらの上限と常駐推定をKV計画値へ機械的に加算しません。重複や共有領域があるためです。
+
+KV／状態の計画値＋既知作業用バッファがOS予約後のメモリ予算を超える場合は確認を促します。警告がなくても適合とは判定しません。既知の下限だけで全作業用メモリを賄えるとは判断できないため、状態表示は「部分的な確認」のままです。変更した設定・モデルメタデータは次の共有スナップショットで再評価し、解析失敗時に古い推定を残しません。GGUFの読取は先頭1 MiB以内、設定は1 MiB以内、Strataソースは512 KiB以内に制限し、テンソル本体・語彙配列を読み込まず、GPU/Pythonを起動しません。
+
+### 確認方法と結果
+
+`cargo test -p studio-core`（110件）、`npm run build`、`node scripts/model-plan-ui-smoke.mjs`。モデル形状、dtype、256単位丸め、過大値・不正GGUF、未対応レイアウト、設定変更後の未取得復帰、予算警告と上限分離を確認しました。三言語・1440/390/320 pxの開閉、欠落、警告、上限表示、横はみ出し、コンソールをPlaywrightで検査しました（Browser skillがないため既存Chrome経由）。
+
+読み取り専用CLIも追加しました。
+
+```sh
+cargo run -p studio-core --example model-plan -- strata /path/to/runtime strata-gemma3-1b.json
+cargo run -p studio-core --example model-plan -- mlx /path/to/local-model 4096
+```
+
+CLI例の搭載メモリは比較用に32 GiBを指定しています。実アプリは従来どおり取得した搭載量を使用します。取得済みGemma 3 1Bの実GGUFで、2048コンテキストのKV計画値52 MiB・出力ベクトル1 MiBを確認。元のHFメタデータをMLXプロファイルで診断すると4096で104 MiB・0.5 MiBでした。これはMLXでの当該モデルの起動可否や品質確認ではありません。確認済みStrataソースと一時的なMetal設定では8192で状態データ240,715,776 bytes・既知作業バッファ20,135,936 bytesでした。元のモデル・設定は変更していません。
+
+実GGUFのRust診断JSONを `SOLITON_MODEL_PLAN_FIXTURE=/path/to/report.json node scripts/model-plan-ui-smoke.mjs` でGUIへ渡す経路も確認しました。[記録](evaluation/model-budget-20261102.json)。今回の検証はメタデータと表示であり、GPUのピーク常駐量・性能・推論品質の再測定ではありません。次段階はバックエンドが報告するprefill/計算グラフ割当との照合と、MTP・履歴・メディアを含めた全体計画です。

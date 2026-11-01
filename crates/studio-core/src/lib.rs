@@ -8,6 +8,7 @@ pub mod local_model;
 pub mod memory_usage;
 pub mod metal_policy;
 pub mod model_plan;
+mod model_budget;
 pub mod omni;
 pub mod omni_runtime;
 pub mod omni_realtime;

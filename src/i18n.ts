@@ -127,8 +127,20 @@ export const words = {
     planBackend: "Backend",
     planWeights: "Model file (disk)",
     planResident: "Backend resident estimate",
-    planKv: "KV memory",
-    planWorkspace: "Workspace memory",
+    planRetained: "Retained KV limit",
+    planAllocator: "Allocator free-cache limit",
+    planKvHelp:
+      "Dense KV payload estimate at full context, with 256-token rounding. Sliding-window savings are ignored. Excludes retained histories and allocation overhead; not measured usage.",
+    planStateHelp:
+      "Strata QSA KV, indexer and recurrent state payload from the reviewed Metal window source. Excludes MTP, history snapshots and allocation overhead.",
+    planWorkspaceHelp:
+      "Known workspace buffers only: one output vector for dense models; selected mandatory decode buffers for Strata. This is a partial lower bound, not the total prefill/compute workspace.",
+    planLimitsHelp:
+      "Configured cache limits are separate from active KV/workspace. A retained-cache cap does not cap active requests; a free-cache cap does not cap live allocations. Zero/default limits remain unavailable.",
+    planStateBudget:
+      "KV/state estimate plus known workspace exceeds the planned memory budget. Review context and backend settings; this is not a total resident-memory estimate.",
+    planKv: "KV/state estimate",
+    planWorkspace: "Known workspace minimum",
     planBudget: "Memory after OS reserve",
     planDisk: "Free disk at model/runtime location",
     planHelp:
@@ -427,8 +439,20 @@ export const words = {
     planBackend: "バックエンド",
     planWeights: "モデルファイル（ディスク）",
     planResident: "バックエンドの常駐推定",
-    planKv: "KVメモリ",
-    planWorkspace: "作業用メモリ",
+    planRetained: "保持KVの上限",
+    planAllocator: "アロケータ空きキャッシュ上限",
+    planKvHelp:
+      "全コンテキスト・256トークン単位で丸めたKVデータの概算です。スライディングウィンドウの節約分は差し引きません。保持履歴・割当の付随費用は含まず、使用量の実測ではありません。",
+    planStateHelp:
+      "確認済みMetalソースから計算したStrataのQSA KV・索引・再帰状態データです。MTP・履歴複製・割当の付随費用は含みません。",
+    planWorkspaceHelp:
+      "既知バッファだけの下限です。密モデルは出力ベクトル1つ、Strataは必須のデコード用バッファの一部を含みます。入力処理・計算全体の作業用メモリではありません。",
+    planLimitsHelp:
+      "設定済みの上限です。保持KVの上限は推論中のKVを、空きキャッシュの上限は使用中の割当を制限しません。0／既定値は未取得扱いです。",
+    planStateBudget:
+      "KV／状態の概算と既知作業用バッファがメモリ予算を超えています。コンテキストとバックエンド設定を確認してください。常駐量全体の推定ではありません。",
+    planKv: "KV／状態の概算",
+    planWorkspace: "既知作業用メモリの下限",
     planBudget: "OS予約後のメモリ",
     planDisk: "モデル／実行環境の空き容量",
     planHelp:
@@ -725,8 +749,20 @@ export const words = {
     planBackend: "后端",
     planWeights: "模型文件（磁盘）",
     planResident: "后端常驻内存估算",
-    planKv: "KV内存",
-    planWorkspace: "工作内存",
+    planRetained: "保留KV上限",
+    planAllocator: "分配器空闲缓存上限",
+    planKvHelp:
+      "按完整上下文及256 token对齐计算KV数据估算，不扣除滑动窗口节省量。不含保留历史和分配开销，不是实测使用量。",
+    planStateHelp:
+      "根据已核对的Metal源码计算Strata的QSA KV、索引和递归状态数据。不含MTP、历史副本和分配开销。",
+    planWorkspaceHelp:
+      "仅包含已知缓冲区的下限：稠密模型的一个输出向量，或Strata的部分必需解码缓冲区。不是完整预填充或计算工作内存。",
+    planLimitsHelp:
+      "配置的缓存上限与活动KV和工作内存分开。保留KV上限不限制活动请求，空闲缓存上限不限制活动分配。0或默认值显示为未知。",
+    planStateBudget:
+      "KV／状态估算加已知工作缓冲区超过内存预算，请检查上下文及后端设置。这不是总常驻内存估算。",
+    planKv: "KV／状态估算",
+    planWorkspace: "已知工作内存下限",
     planBudget: "预留系统内存后的预算",
     planDisk: "模型／运行环境可用磁盘",
     planHelp:

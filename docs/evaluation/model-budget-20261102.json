@@ -1,0 +1,65 @@
+{
+  "date": "2026-11-02",
+  "scope": "Read-only local metadata planning and rendered UI. No engine launch, model inference or peak allocation measurement.",
+  "profiles": [
+    {
+      "fixture": "bundled-gemma3-real-gguf",
+      "backend": "strata-gemma3-metal",
+      "context": 2048,
+      "kvBytes": 54525952,
+      "workspaceBytes": 1048576,
+      "kvBasis": "dense_payload_envelope",
+      "workspaceBasis": "output_vector_floor",
+      "assessment": "incomplete"
+    },
+    {
+      "fixture": "mlx-profile-real-gemma3-config",
+      "backend": "vLLM-Apple",
+      "context": 4096,
+      "kvBytes": 109051904,
+      "workspaceBytes": 524288,
+      "kvBasis": "dense_payload_envelope",
+      "workspaceBasis": "output_vector_floor",
+      "assessment": "incomplete"
+    },
+    {
+      "fixture": "reviewed-strata-source-with-temporary-config",
+      "backend": "metal",
+      "context": 8192,
+      "kvBytes": 240715776,
+      "workspaceBytes": 20135936,
+      "kvBasis": "strata_state_payload",
+      "workspaceBasis": "strata_decode_floor",
+      "assessment": "incomplete"
+    }
+  ],
+  "validation": {
+    "rustTests": 110,
+    "frontendBuild": true,
+    "ui": {
+      "languages": [
+        "en",
+        "ja",
+        "zh"
+      ],
+      "widths": [
+        1440,
+        390,
+        320
+      ],
+      "states": [
+        "valid",
+        "missing",
+        "warning",
+        "limits"
+      ],
+      "rustMetadataFixture": true
+    }
+  },
+  "limitations": [
+    "Workspace is a partial buffer lower bound, not the complete prefill/compute workspace.",
+    "Dense KV is a full-context payload envelope, not actual SWA allocation or measured residency.",
+    "vllm_metal, Omni and unreviewed model layouts remain unavailable.",
+    "No model-fit or inference-qualification verdict."
+  ]
+}
