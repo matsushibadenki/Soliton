@@ -127,3 +127,10 @@ See [design and validation scope](INFERENCE.md#kapitsaから取り入れた計�
 - 🟢 [Done] Current owned Gemma process reports KV, prefill/decode compute-graph and output allocations separately from static estimates. Per-launch collectors, config digest/session/live-process checks, stop/restart clearing, bounded scalar parsing and multilingual diagnostics. Actual existing Gemma: two authenticated answers `5`, KV30 MiB / compute≈55.54 MiB / output1 MiB; config unchanged and owned shutdown verified. 115 Rust tests, build, real report → EN/JA/ZH 1440/390/320 px GUI and stopped-state checks passed. [Evidence](evaluation/gemma-allocation-report-20261102.json).
 - 🟠 [Next] Extend source-reviewed runtime allocation reporting to other backends and reconcile MTP/history/media/unreported temporary allocations. Reported buffers are not whole-process physical or peak memory; no full-workspace fit verdict is enabled.
 - ⭕️ [Pending] Other-Mac distribution validation and signing/notarization remain deferred.
+
+
+## vLLM runtime budget diagnostics — 2026-11-02
+
+- 🟢 [Done] On-demand, private runtime memory diagnostics for the currently owned vLLM process. Two-second/64 KiB limits, 30-second sample expiry, fetch timestamp, latest-request/session/config checks, failure/stop clearing and EN/JA/ZH refresh control. Allocator/logical KV reports stay separate from model-spec/artifact/projection/mixed-ledger components; no inferred total/workspace. 118 Rust tests, build and three-language 1440/390/320 px fixture GUI checks passed.
+- ⭕️ [Pending] Real current MLX runtime verification: existing evidence is rejected with architecture identity mismatch. No compatibility/evidence bypass or ordinary state change; fresh identity-bound qualification is required before real-model diagnostics can be approved.
+- 🟠 [Next] Qualify the current MLX environment, then verify its runtime memory ledger through the GUI; continue reviewed Strata/Omni/MTP/media working-set reporting and bounded SSD-state API review.

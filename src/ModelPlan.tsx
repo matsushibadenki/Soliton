@@ -1,7 +1,14 @@
-import { Info, Stethoscope } from "lucide-react";
+import { Info, Stethoscope, RefreshCw } from "lucide-react";
 import { words, type Language } from "./i18n";
 
 export type ModelPlanState = {
+  backendBudget?: {
+    sampledAt?: number | null;
+    allocatorBytes: number | null;
+    allocatorPeakBytes: number | null;
+    kvBytes: number | null;
+    components: { name: string; bytes: number; basis: string }[];
+  } | null;
   runtimeBuffers?: {
     session: string;
     pid: number;
@@ -29,9 +36,13 @@ export type ModelPlanState = {
 export function ModelPlan({
   value,
   language,
+  onRefresh,
+  refreshDisabled = false,
 }: {
   value: ModelPlanState;
   language: Language;
+  onRefresh?: () => Promise<void>;
+  refreshDisabled?: boolean;
 }) {
   const t = words[language];
   const bytes = (n: number | null) =>
@@ -84,6 +95,48 @@ export function ModelPlan({
       ]);
     }
   }
+  if (value.backendBudget) {
+    const b = value.backendBudget;
+    for (const [label, n] of [
+      [t.planBackendAllocator, b.allocatorBytes],
+      [t.planBackendAllocatorPeak, b.allocatorPeakBytes],
+      [t.planBackendKv, b.kvBytes],
+    ] as const) {
+      rows.push([label, bytes(n), t.planBackendTelemetryHelp]);
+    }
+    const names: Record<string, string> = {
+      weights: t.planComponentWeights,
+      recurrent: t.planComponentRecurrent,
+      prefix: t.planComponentPrefix,
+      window: t.planComponentWindow,
+      experts: t.planComponentExperts,
+      ngram: t.planComponentNgram,
+      mtp: "MTP",
+      scratch: t.planComponentScratch,
+      coreml: "Core ML",
+    };
+    const basis: Record<string, string> = {
+      artifact: t.planArtifactBudget,
+      model_spec: t.planSpecBudget,
+      projection: t.planProjectedBudget,
+      ledger: t.planLedgerBudget,
+    };
+    if (b.sampledAt)
+      rows.push([
+        t.planSampleTime,
+        new Date(b.sampledAt).toLocaleTimeString(
+          language === "zh" ? "zh-CN" : language,
+        ),
+        t.planBackendTelemetryHelp,
+      ]);
+    for (const c of b.components)
+      if (names[c.name] && basis[c.basis])
+        rows.push([
+          `${names[c.name]} · ${basis[c.basis]}`,
+          bytes(c.bytes),
+          t.planBackendComponentsHelp,
+        ]);
+  }
   const warnings: Record<string, string> = {
     config_missing: t.planConfigMissing,
     model_missing: t.planModelMissing,
@@ -107,6 +160,21 @@ export function ModelPlan({
           <Info size={13} />
         </span>
       </summary>
+      {onRefresh && (
+        <div className="value-row">
+          <span>{t.planRefreshBudget}</span>
+          <button
+            type="button"
+            className="icon-button"
+            title={t.planRefreshBudget}
+            aria-label={t.planRefreshBudget}
+            disabled={refreshDisabled}
+            onClick={() => void onRefresh()}
+          >
+            <RefreshCw size={15} />
+          </button>
+        </div>
+      )}
       <dl>
         {rows.map(([label, text, help]) => (
           <div key={label}>

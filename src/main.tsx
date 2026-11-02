@@ -693,7 +693,9 @@ function App() {
             </select>
           </label>
           {!dirty.current && snapshot?.modelPlan && (
-            <ModelPlan value={snapshot.modelPlan} language={language} />
+            <ModelPlan value={snapshot.modelPlan} language={language}
+              onRefresh={settings.engine === "vllmApple" ? async()=>{await run(async()=>{try {await action("refreshBackendBudget");} catch {throw new Error(words[language].planRuntimeError);}});}:undefined}
+              refreshDisabled={!online || pending || status === "offline"} />
           )}
           {settings.engine === "strata" ? (
             <>

@@ -1,4 +1,5 @@
 mod allocation_report;
+mod backend_budget;
 pub mod catalog;
 pub mod conversations;
 pub mod docking;
@@ -142,6 +143,9 @@ impl Startup {
 }
 struct Process {
     allocation_report: Option<allocation_report::Session>,
+    vllm_memory_binding: Option<engine::VllmSettings>,
+    backend_budget: Option<backend_budget::Sample>,
+    backend_budget_request: Option<String>,
     child: Option<Child>,
     key: String,
     port: u16,
@@ -220,6 +224,9 @@ impl Studio {
             docking_diagnostics: Mutex::new(docking::DragDiagnostics::default()),
             process: Mutex::new(Process {
                 allocation_report: None,
+                vllm_memory_binding: None,
+                backend_budget: None,
+                backend_budget_request: None,
                 child: None,
                 key: String::new(),
                 port: 0,
@@ -321,6 +328,9 @@ impl Studio {
         self.token_counter.lock().await.stop().await?;
         let mut p = self.process.lock().await;
         p.allocation_report = None;
+        p.vllm_memory_binding = None;
+        p.backend_budget = None;
+        p.backend_budget_request = None;
         if let Some(id) = p.child.as_ref().and_then(|c| c.id()) {
             let captured = owned_process::capture(id)?;
             p.workers.retain(|worker| worker.alive());
@@ -526,6 +536,7 @@ impl Studio {
             p.port = port;
             p.key = key;
             p.memory = Some(json!({"engine":"vllmApple"}));
+            p.vllm_memory_binding = Some(s.vllm.clone());
             push_log(
                 &self.logs,
                 format!(
@@ -934,6 +945,23 @@ impl Studio {
             .collect::<Vec<_>>();
         let vllm_inspection = self.inspection_snapshot(&settings.vllm).await;
         let mut model_plan = model_plan::inspect(&settings, self.memory_bytes, &vllm_inspection);
+        if settings.engine == engine::Engine::VllmApple {
+            let current = self.settings.read().await.clone();
+            let mut p = self.process.lock().await;
+            let bound = p.vllm_memory_binding.as_ref() == Some(&settings.vllm)
+                && p.port == upstream
+                && p.key == key;
+            let live = p
+                .child
+                .as_mut()
+                .is_some_and(|c| matches!(c.try_wait(), Ok(None)));
+            if bound && live && current.engine == settings.engine && current.vllm == settings.vllm {
+                model_plan.backend_budget = p
+                    .backend_budget
+                    .as_ref()
+                    .and_then(backend_budget::Sample::snapshot);
+            }
+        }
         let allocation_session = if running {
             self.process.lock().await.allocation_report.clone()
         } else {
@@ -1034,6 +1062,7 @@ async fn action(State(s): State<Arc<Studio>>, h: HeaderMap, Json(v): Json<Value>
             Err(_) => Err("Invalid engine".into()),
         },
         "inspectVllm" => s.inspect_vllm().await,
+        "refreshBackendBudget" => s.refresh_backend_budget().await,
         "start" => s.start().await,
         "applyMemoryRestart" => match serde_json::from_value(v["memory"].clone()) {
             Ok(memory) => s.apply_memory_restart(memory).await,

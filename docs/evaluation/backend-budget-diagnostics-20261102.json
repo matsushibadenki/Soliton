@@ -1,0 +1,53 @@
+{
+  "date": "2026-11-02",
+  "scope": "On-demand bounded runtime diagnostic normalization and GUI. Real MLX startup was blocked by existing evidence identity checks.",
+  "validation": {
+    "coreTests": 118,
+    "build": true,
+    "apiFixture": [
+      "runtime fetch",
+      "30-second expiry",
+      "failed refresh clears sample",
+      "settings mismatch",
+      "stop clears sample"
+    ],
+    "ui": {
+      "synthetic": true,
+      "languages": [
+        "en",
+        "ja",
+        "zh"
+      ],
+      "widths": [
+        1440,
+        390,
+        320
+      ],
+      "flows": [
+        "refresh",
+        "missing peak",
+        "zero MTP budget",
+        "expiry",
+        "refresh again",
+        "stop"
+      ],
+      "consoleErrors": []
+    }
+  },
+  "realModel": {
+    "status": "Pending",
+    "backend": "mlx_lm",
+    "context": 4096,
+    "kvCacheMiB": 1024,
+    "allocatorCacheMiB": 512,
+    "reason": "architecture evidence identity mismatch",
+    "qualificationBypassed": false,
+    "ordinarySettingsChanged": false
+  },
+  "limits": [
+    "Budget provenance is explicit; these are not physical component allocations.",
+    "Runtime fetch time is not upstream measurement time; upstream may retain an earlier sample.",
+    "Do not add overlap or subtract allocator/weights/KV to infer workspace.",
+    "Current working tree includes preserved unrelated dependency-update changes."
+  ]
+}
