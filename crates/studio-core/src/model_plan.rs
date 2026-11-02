@@ -11,6 +11,7 @@ use std::{
 #[derive(Debug, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ModelPlan {
+    pub runtime_buffers: Option<crate::allocation_report::Report>,
     pub backend: String,
     pub context: Option<u64>,
     pub weights_bytes: Option<u64>,
@@ -97,6 +98,7 @@ pub fn inspect(settings: &Settings, memory: Option<u64>, inspection: &Value) -> 
         .unwrap_or(7)
         * 1_000_000_000;
     let mut p = ModelPlan {
+        runtime_buffers: None,
         backend: settings.engine.label().into(),
         context: None,
         weights_bytes: None,

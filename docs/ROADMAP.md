@@ -120,3 +120,10 @@ See [implementation scope](LFM3_OMNI.md) and [readiness](evaluation/lfm3-omni-re
 - ⭕️ [Pending] Other-Mac verification and multi-Mac execution remain on hold.
 
 See [design and validation scope](INFERENCE.md#kapitsaから取り入れた計測設計2026-11-01).
+
+
+## Gemma allocation reports — 2026-11-02
+
+- 🟢 [Done] Current owned Gemma process reports KV, prefill/decode compute-graph and output allocations separately from static estimates. Per-launch collectors, config digest/session/live-process checks, stop/restart clearing, bounded scalar parsing and multilingual diagnostics. Actual existing Gemma: two authenticated answers `5`, KV30 MiB / compute≈55.54 MiB / output1 MiB; config unchanged and owned shutdown verified. 115 Rust tests, build, real report → EN/JA/ZH 1440/390/320 px GUI and stopped-state checks passed. [Evidence](evaluation/gemma-allocation-report-20261102.json).
+- 🟠 [Next] Extend source-reviewed runtime allocation reporting to other backends and reconcile MTP/history/media/unreported temporary allocations. Reported buffers are not whole-process physical or peak memory; no full-workspace fit verdict is enabled.
+- ⭕️ [Pending] Other-Mac distribution validation and signing/notarization remain deferred.

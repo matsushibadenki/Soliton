@@ -2,6 +2,14 @@ import { Info, Stethoscope } from "lucide-react";
 import { words, type Language } from "./i18n";
 
 export type ModelPlanState = {
+  runtimeBuffers?: {
+    session: string;
+    pid: number;
+    kvBytes: number | null;
+    computeBytes: number | null;
+    outputBytes: number | null;
+    workspaceBytes: number | null;
+  } | null;
   backend: string;
   context: number | null;
   weightsBytes: number | null;
@@ -61,6 +69,21 @@ export function ModelPlan({
     [t.planBudget, bytes(value.memoryBudgetBytes)],
     [t.planDisk, bytes(value.diskFreeBytes)],
   ];
+  if (value.runtimeBuffers) {
+    const r = value.runtimeBuffers;
+    for (const [label, amount] of [
+      [t.planReportedKv, r.kvBytes],
+      [t.planReportedCompute, r.computeBytes],
+      [t.planReportedOutput, r.outputBytes],
+      [t.planReportedWorkspace, r.workspaceBytes],
+    ] as const) {
+      rows.push([
+        label,
+        amount == null ? "—" : `≈ ${bytes(amount)}`,
+        t.planReportedHelp,
+      ]);
+    }
+  }
   const warnings: Record<string, string> = {
     config_missing: t.planConfigMissing,
     model_missing: t.planModelMissing,

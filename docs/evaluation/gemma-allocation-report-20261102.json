@@ -1,0 +1,65 @@
+{
+  "date": "2026-11-02",
+  "scope": "Actual local bundled Gemma startup allocations and two short authenticated API inferences; no performance or whole-process/peak memory claim.",
+  "model": "google/gemma-3-1b-it",
+  "llamaCommit": "3cf03257f219afbe7334045ff7c6a06ac68c627d",
+  "context": 2048,
+  "rounds": [
+    {
+      "answer": "5",
+      "beforeRequest": {
+        "computeBytes": 58237912,
+        "kvBytes": 31457280,
+        "outputBytes": 1048576,
+        "workspaceBytes": 59286488
+      },
+      "afterRequest": {
+        "computeBytes": 58237912,
+        "kvBytes": 31457280,
+        "outputBytes": 1048576,
+        "workspaceBytes": 59286488
+      }
+    },
+    {
+      "answer": "5",
+      "beforeRequest": {
+        "computeBytes": 58237912,
+        "kvBytes": 31457280,
+        "outputBytes": 1048576,
+        "workspaceBytes": 59286488
+      },
+      "afterRequest": {
+        "computeBytes": 58237912,
+        "kvBytes": 31457280,
+        "outputBytes": 1048576,
+        "workspaceBytes": 59286488
+      }
+    }
+  ],
+  "stoppedReportCleared": true,
+  "restartSessionChanged": true,
+  "configUnchanged": true,
+  "ordinarySettingsUsed": false,
+  "validation": {
+    "coreTests": 115,
+    "frontendBuild": true,
+    "uiLanguages": [
+      "en",
+      "ja",
+      "zh"
+    ],
+    "uiWidths": [
+      1440,
+      390,
+      320
+    ],
+    "realAllocationFixture": true,
+    "consoleErrors": []
+  },
+  "limits": [
+    "Backend log values rounded to 0.01 MiB; byte values are approximate.",
+    "Compute plus output excludes model weights and other unreported allocations.",
+    "Initial logging-level/format probes timed out and stopped cleanly; final probe passed after fixes.",
+    "Validated in the current working tree alongside preserved pending dependency-update changes."
+  ]
+}

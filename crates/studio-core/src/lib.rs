@@ -1,3 +1,4 @@
+mod allocation_report;
 pub mod catalog;
 pub mod conversations;
 pub mod docking;
@@ -140,6 +141,7 @@ impl Startup {
     }
 }
 struct Process {
+    allocation_report: Option<allocation_report::Session>,
     child: Option<Child>,
     key: String,
     port: u16,
@@ -217,6 +219,7 @@ impl Studio {
             document: RwLock::new(Document::default()),
             docking_diagnostics: Mutex::new(docking::DragDiagnostics::default()),
             process: Mutex::new(Process {
+                allocation_report: None,
                 child: None,
                 key: String::new(),
                 port: 0,
@@ -317,6 +320,7 @@ impl Studio {
     async fn stop_inner(&self) -> Result<(), String> {
         self.token_counter.lock().await.stop().await?;
         let mut p = self.process.lock().await;
+        p.allocation_report = None;
         if let Some(id) = p.child.as_ref().and_then(|c| c.id()) {
             let captured = owned_process::capture(id)?;
             p.workers.retain(|worker| worker.alive());
@@ -572,9 +576,8 @@ impl Studio {
             }
         }
         if !s.mock {
-            let config: Value =
-                serde_json::from_slice(&std::fs::read(&s.config).map_err(|e| e.to_string())?)
-                    .map_err(|e| e.to_string())?;
+            let config_bytes = std::fs::read(&s.config).map_err(|e| e.to_string())?;
+            let config: Value = serde_json::from_slice(&config_bytes).map_err(|e| e.to_string())?;
             if config["backend"] == "strata-gemma3-metal" {
                 let reserve =
                     std::net::TcpListener::bind("127.0.0.1:0").map_err(|e| e.to_string())?;
@@ -589,24 +592,47 @@ impl Studio {
                 let mut cmd =
                     Command::new(config["exe"].as_str().ok_or("Missing Gemma executable")?);
                 cmd.current_dir(&root)
-                    .args(args)
+                    .args(&args)
                     .args(["--host", "127.0.0.1", "--port", &port.to_string()])
                     .env("LLAMA_API_KEY", &key)
                     .kill_on_drop(true)
                     .stdout(std::process::Stdio::piped())
                     .stderr(std::process::Stdio::piped());
+                // Level 4 exposes the native allocation summaries; keep explicit user logging choices.
+                if std::env::var_os("LLAMA_ARG_LOG_VERBOSITY").is_none()
+                    && !args.iter().any(|a| {
+                        [
+                            "-lv",
+                            "--verbosity",
+                            "--log-verbosity",
+                            "--log-disable",
+                            "--log-verbose",
+                            "-v",
+                        ]
+                        .iter()
+                        .any(|flag| *a == *flag || a.starts_with(&format!("{flag}=")))
+                    })
+                {
+                    cmd.args(["--verbosity", "4"]);
+                }
                 #[cfg(unix)]
                 cmd.process_group(0);
                 drop(reserve);
                 let mut child = cmd
                     .spawn()
                     .map_err(|e| format!("Cannot launch bundled Gemma Metal backend: {e}"))?;
+                let report = allocation_report::Session::new(
+                    &s,
+                    &config_bytes,
+                    child.id().ok_or("Missing Gemma process ID")?,
+                );
                 if let Some(out) = child.stdout.take() {
                     pump(out, self.logs.clone());
                 }
                 if let Some(out) = child.stderr.take() {
-                    pump(out, self.logs.clone());
+                    pump_allocations(out, self.logs.clone(), report.collector.clone());
                 }
+                p.allocation_report = Some(report);
                 p.port = port;
                 p.key = key;
                 p.group = child.id();
@@ -907,7 +933,28 @@ impl Studio {
             .cloned()
             .collect::<Vec<_>>();
         let vllm_inspection = self.inspection_snapshot(&settings.vllm).await;
-        let model_plan = model_plan::inspect(&settings, self.memory_bytes, &vllm_inspection);
+        let mut model_plan = model_plan::inspect(&settings, self.memory_bytes, &vllm_inspection);
+        let allocation_session = if running {
+            self.process.lock().await.allocation_report.clone()
+        } else {
+            None
+        };
+        if let Some(session) = allocation_session {
+            if let Some(report) = session.snapshot(&settings).await {
+                let mut p = self.process.lock().await;
+                let same = p
+                    .allocation_report
+                    .as_ref()
+                    .is_some_and(|s| s.same_report(&report));
+                let live = p
+                    .child
+                    .as_mut()
+                    .is_some_and(|c| matches!(c.try_wait(), Ok(None)));
+                if same && live {
+                    model_plan.runtime_buffers = Some(report);
+                }
+            }
+        }
         json!({"modelPlan":model_plan,"omniCounterFailed":self.omni_counter_failed.load(Ordering::SeqCst),"startup":startup,"vllmInspection":vllm_inspection,"dockingDiagnostics":*self.docking_diagnostics.lock().await,"requests":requests,"memoryUsage":memory_usage,"memoryTuning":memory_tuning,"preparation":self.preparation.lock().await.snapshot(),"status":status,"health":health,"settings":*self.settings.read().await,"document":document,"logs":*self.logs.lock().await,"architecture":std::env::consts::ARCH,"memoryBytes":self.memory_bytes,"selectedEngine":settings.engine,"backend":if settings.engine == engine::Engine::Lfm3Omni {"LFM3-Omni"}else if settings.engine == engine::Engine::VllmApple {"vLLM-Apple"} else if preparation::inspect_config(std::path::Path::new(&settings.config), std::path::Path::new(&settings.strata_root)).backend == "strata-gemma3-metal" {"Gemma 3 Metal"} else if cfg!(all(target_os="macos",target_arch="aarch64")){"Metal"}else{"Strata"},"endpoint":format!("http://127.0.0.1:{}/v1",self.port),"root":self.root})
     }
 }
@@ -918,6 +965,19 @@ fn pump<T: tokio::io::AsyncRead + Unpin + Send + 'static>(
     tokio::spawn(async move {
         let mut lines = BufReader::new(stream).lines();
         while let Ok(Some(line)) = lines.next_line().await {
+            push_log(&logs, line.chars().take(4096).collect()).await;
+        }
+    });
+}
+fn pump_allocations<T: tokio::io::AsyncRead + Unpin + Send + 'static>(
+    stream: T,
+    logs: Arc<Mutex<VecDeque<String>>>,
+    collector: Arc<Mutex<allocation_report::Collector>>,
+) {
+    tokio::spawn(async move {
+        let mut lines = BufReader::new(stream).lines();
+        while let Ok(Some(line)) = lines.next_line().await {
+            collector.lock().await.observe(&line);
             push_log(&logs, line.chars().take(4096).collect()).await;
         }
     });
