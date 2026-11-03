@@ -1,4 +1,5 @@
 mod allocation_report;
+pub mod knowledge;
 mod backend_budget;
 pub mod catalog;
 pub mod conversations;
@@ -46,6 +47,9 @@ use tower_http::{cors::CorsLayer, services::ServeDir};
 
 fn default_chat_font_size() -> u8 {
     13
+}
+fn default_workspace_mode() -> String {
+    "inference".into()
 }
 fn default_theme() -> String {
     "dark".into()
@@ -107,9 +111,13 @@ pub struct Message {
     pub role: String,
     pub content: String,
 }
-#[derive(Default, Serialize, Deserialize)]
+#[derive(Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Document {
+    #[serde(default)]
+    pub knowledge: knowledge::Workspace,
+    #[serde(default = "default_workspace_mode")]
+    pub workspace_mode: String,
     #[serde(default)]
     pub conversations: conversations::Library,
     pub messages: Vec<Message>,
@@ -120,6 +128,20 @@ pub struct Document {
     pub layout: layout::Layout,
     #[serde(skip)]
     pub workspace_hosts: std::collections::BTreeMap<String, String>,
+}
+impl Default for Document {
+    fn default() -> Self {
+        Self {
+            knowledge: knowledge::Workspace::default(),
+            workspace_mode: default_workspace_mode(),
+            conversations: conversations::Library::default(),
+            messages: Vec::new(),
+            detached: Vec::new(),
+            generating: false,
+            layout: layout::Layout::default(),
+            workspace_hosts: std::collections::BTreeMap::new(),
+        }
+    }
 }
 struct Startup {
     started: std::time::Instant,
@@ -156,6 +178,7 @@ struct Process {
     startup: Option<Startup>,
 }
 pub struct Studio {
+    knowledge_job: Mutex<Option<tokio::sync::watch::Sender<bool>>>,
     pub root: PathBuf,
     pub port: u16,
     pub token: String,
@@ -238,6 +261,7 @@ impl Studio {
                 startup: None,
             }),
             logs: Arc::new(Mutex::new(VecDeque::new())),
+            knowledge_job: Mutex::new(None),
             client: reqwest::Client::new(),
             storage: Mutex::new(None),
             preparation: Mutex::new(preparation::Preparation::default()),
@@ -275,6 +299,10 @@ impl Studio {
                     *self.settings.get_mut() = settings;
                 }
                 if let Ok(mut doc) = serde_json::from_value::<Document>(value["document"].clone()) {
+                    doc.knowledge.restore();
+                    if !["inference", "knowledge"].contains(&doc.workspace_mode.as_str()) {
+                        doc.workspace_mode = default_workspace_mode();
+                    }
                     if doc.layout.validate().is_err() {
                         doc.layout = layout::Layout::default();
                     }
@@ -449,10 +477,16 @@ impl Studio {
         result
     }
     pub async fn start(&self) -> Result<(), String> {
+        if self.knowledge_job.lock().await.is_some() {
+            return Err("Finish or cancel the knowledge experiment before starting inference".into());
+        }
         let _lifecycle = self.lifecycle.lock().await;
         self.start_inner().await
     }
     async fn start_inner(&self) -> Result<(), String> {
+        if self.knowledge_job.lock().await.is_some() {
+            return Err("A knowledge experiment is running".into());
+        }
         if self.preparation.lock().await.busy() {
             return Err("Wait for model preparation to finish".into());
         }
@@ -937,7 +971,7 @@ impl Studio {
             .snapshot(self.memory_bytes, pid);
         let document = {
             let d = self.document.read().await;
-            json!({"messages":d.messages,"detached":d.detached,"generating":d.generating,"layout":d.layout,"workspaceGroups":d.layout.groups(),"workspaceHosts":d.workspace_hosts,"conversations":d.conversations.summaries(&d.messages)})
+            json!({"workspaceMode":d.workspace_mode,"messages":d.messages,"detached":d.detached,"generating":d.generating,"layout":d.layout,"workspaceGroups":d.layout.groups(),"workspaceHosts":d.workspace_hosts,"conversations":d.conversations.summaries(&d.messages)})
         };
         let requests = self
             .requests
@@ -1061,6 +1095,15 @@ async fn action(State(s): State<Arc<Studio>>, h: HeaderMap, Json(v): Json<Value>
         return Json(json!({"ok":true})).into_response();
     }
     let result = match v["action"].as_str().unwrap_or("") {
+        "workspaceMode" => {
+            match v["mode"].as_str() {
+                Some(mode @ ("inference" | "knowledge")) => {
+                    s.document.write().await.workspace_mode = mode.into();
+                    Ok(())
+                }
+                _ => Err("Unknown workspace mode".into()),
+            }
+        }
         "switchEngine" => match serde_json::from_value(v["engine"].clone()) {
             Ok(engine) => s.switch_engine(engine).await,
             Err(_) => Err("Invalid engine".into()),
@@ -1819,6 +1862,7 @@ pub fn router(s: Arc<Studio>) -> Router {
     Router::new()
         .route("/studio/session", post(session))
         .route("/studio/state", get(snapshot))
+        .route("/studio/knowledge", get(knowledge::snapshot).post(knowledge::action))
         .route("/studio/inspect", get(inspect))
         .route("/studio/models", get(catalog::scan_handler))
         .route("/studio/omni/capabilities", get(omni_capabilities))

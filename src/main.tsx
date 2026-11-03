@@ -69,6 +69,8 @@ import {
 } from "./MemoryControls";
 import { MemoryUsage, type MemoryUsageState } from "./MemoryUsage";
 import { MemoryHistory } from "./MemoryHistory";
+import { KnowledgeLab } from "./KnowledgeLab";
+import { knowledgeWords } from "./knowledge-i18n";
 type Settings = {
   engine: "strata" | "vllmApple";
   vllm: {
@@ -104,6 +106,7 @@ type Snapshot = {
   status: "offline" | "starting" | "ready";
   settings: Settings;
   document: {
+    workspaceMode?: "inference" | "knowledge";
     conversations?: ConversationIndex;
     messages: Message[];
     detached: string[];
@@ -195,6 +198,7 @@ function App() {
   const t = words[language];
   const layout = snapshot?.document.layout || defaultLayout;
   const workspaceTab = layout.workspaceActive;
+  const workspaceMode = snapshot?.document.workspaceMode || "inference";
   const groups = snapshot?.document.workspaceGroups || defaultGroups;
   const workspaceWindow =
     panelView === "workspace" ||
@@ -223,6 +227,8 @@ function App() {
       detached.some((id) => id === "workspace" || id.startsWith("group-")));
   function setWorkspaceTab(tab: WorkspaceTab) {
     void run(async () => {
+      if (workspaceMode !== "inference")
+        await action("workspaceMode", { mode: "inference" });
       await action("workspaceTab", { tab });
       if (desktop) {
         const target = groups.find((group) => group.tabs.includes(tab));
@@ -1561,28 +1567,114 @@ function App() {
               : logs()}
         </main>
       ) : (
-        <main className="workspace-host">
-          <WorkspaceDock
-            groups={groups}
-            trace={snapshot?.dockingDiagnostics?.enabled}
-            layout={layout}
-            detached={detached}
-            hosts={hosts}
-            windowGroup={windowGroup}
-            language={language}
-            native={desktop}
-            disabled={!online || pending}
-            structureDisabled={structureDisabled}
-            onSelect={setWorkspaceTab}
-            onMove={moveWorkspaceTab}
-            onFloat={(group) => float(group)}
-            onDockWindow={(group) => dockWorkspace(group)}
-            onDockTab={dockWorkspaceTab}
-            onResize={(ratio) =>
-              run(() => action("resizeWorkspace", { ratio }))
-            }
-            render={(tab) => (tab === "chat" ? chat() : logs())}
-          />
+        <main className="workspace-host workspace-with-modes">
+          <div
+            className="workspace-mode-tabs"
+            role="tablist"
+            aria-label="Soliton"
+          >
+            {(["inference", "knowledge"] as const).map((mode) => (
+              <button
+                key={mode}
+                id={`mode-${mode}`}
+                role="tab"
+                aria-selected={workspaceMode === mode}
+                aria-controls={`mode-content-${mode}`}
+                tabIndex={workspaceMode === mode ? 0 : -1}
+                disabled={!online || pending}
+                onClick={() =>
+                  void run(() => action("workspaceMode", { mode }))
+                }
+                onKeyDown={(e) => {
+                  if (
+                    !["ArrowLeft", "ArrowRight", "Home", "End"].includes(e.key)
+                  )
+                    return;
+                  e.preventDefault();
+                  const next =
+                    e.key === "Home"
+                      ? "inference"
+                      : e.key === "End"
+                        ? "knowledge"
+                        : mode === "inference"
+                          ? "knowledge"
+                          : "inference";
+                  void run(() => action("workspaceMode", { mode: next })).then(
+                    () => document.getElementById(`mode-${next}`)?.focus(),
+                  );
+                }}
+              >
+                {mode === "inference" ? (
+                  <MessageSquare size={15} />
+                ) : (
+                  <Layers size={15} />
+                )}
+                {knowledgeWords[language][mode]}
+              </button>
+            ))}
+            {workspaceMode === "knowledge" && desktop && (
+              <button
+                className="icon-button knowledge-float"
+                title={windowGroup ? t.dockGroup : t.floatGroup}
+                aria-label={windowGroup ? t.dockGroup : t.floatGroup}
+                disabled={pending}
+                onClick={() =>
+                  windowGroup
+                    ? dockWorkspace(currentGroup)
+                    : float(currentGroup)
+                }
+              >
+                {windowGroup ? (
+                  <PanelLeftClose size={15} />
+                ) : (
+                  <ExternalLink size={15} />
+                )}
+              </button>
+            )}
+          </div>
+          <div
+            id="mode-content-inference"
+            role="tabpanel"
+            aria-labelledby="mode-inference"
+            hidden={workspaceMode !== "inference"}
+            className="workspace-mode-content"
+          >
+            <WorkspaceDock
+              groups={groups}
+              trace={snapshot?.dockingDiagnostics?.enabled}
+              layout={layout}
+              detached={detached}
+              hosts={hosts}
+              windowGroup={windowGroup}
+              language={language}
+              native={desktop}
+              disabled={!online || pending}
+              structureDisabled={structureDisabled}
+              onSelect={setWorkspaceTab}
+              onMove={moveWorkspaceTab}
+              onFloat={(group) => float(group)}
+              onDockWindow={(group) => dockWorkspace(group)}
+              onDockTab={dockWorkspaceTab}
+              onResize={(ratio) =>
+                run(() => action("resizeWorkspace", { ratio }))
+              }
+              render={(tab) => (tab === "chat" ? chat() : logs())}
+            />
+          </div>
+          <div
+            id="mode-content-knowledge"
+            role="tabpanel"
+            aria-labelledby="mode-knowledge"
+            hidden={workspaceMode !== "knowledge"}
+            className="workspace-mode-content"
+          >
+            <KnowledgeLab
+              language={language}
+              active={workspaceMode === "knowledge"}
+              online={online}
+              engineOffline={snapshot?.status === "offline"}
+            />
+          </div>
         </main>
       )}
       <InstallationRepair language={language} />

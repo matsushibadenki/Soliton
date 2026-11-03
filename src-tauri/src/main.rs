@@ -351,6 +351,41 @@ async fn export_conversation(
     }
 }
 #[tauri::command]
+async fn export_knowledge_report(
+    app: tauri::AppHandle,
+    runtime: State<'_, Runtime>,
+    id: String,
+) -> Result<Option<String>, String> {
+    let data = {
+        let document = runtime.studio.document.read().await;
+        let experiment = document
+            .knowledge
+            .experiments
+            .iter()
+            .find(|e| e.id == id)
+            .ok_or("Unknown knowledge experiment")?;
+        serde_json::to_vec_pretty(experiment).map_err(|e| e.to_string())?
+    };
+    let selected = tauri::async_runtime::spawn_blocking(move || {
+        app.dialog()
+            .file()
+            .set_file_name(format!("Soliton-knowledge-{id}.json"))
+            .add_filter("JSON", &["json"])
+            .blocking_save_file()
+    })
+    .await
+    .map_err(|e| e.to_string())?;
+    if let Some(file) = selected {
+        let path = file.into_path().map_err(|e| e.to_string())?;
+        tokio::fs::write(&path, data)
+            .await
+            .map_err(|e| e.to_string())?;
+        Ok(Some(path.to_string_lossy().into_owned()))
+    } else {
+        Ok(None)
+    }
+}
+#[tauri::command]
 async fn check_software_update() -> Result<serde_json::Value, String> {
     let response = reqwest::Client::builder()
         .user_agent("Soliton-update-check")
@@ -739,6 +774,7 @@ fn main() {
             open_releases_page,
             quit_app,
             export_conversation,
+            export_knowledge_report,
             select_path,
             float_panel,
             dock_panel,

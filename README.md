@@ -6,6 +6,12 @@
 
 A Tauri 2 inference workbench and shared Rust API gateway for Strata and vLLM-Apple on Apple Silicon. Rust owns conversations, history, logs and metrics across all windows. Engines run separately and are selected manually.
 
+## Knowledge Lab
+
+Switch between **Inference** and **Knowledge Lab** using the top tabs. In **Edit**, choose a local MLX model and a Python environment with MLX-LM training support, record the source, and enter training examples plus held-out target, paraphrase and locality questions. Stop inference, then **Train & evaluate** runs baseline evaluation, LoRA/QLoRA training, saved-adapter reload and candidate evaluation. Rust shares jobs, cancellation, draft revisions and history across windows; the UI supports English, Japanese and Simplified Chinese.
+
+**Suppress answers** trains a refusal response; it does not establish that knowledge has been erased. Scores are required/forbidden phrase checks with output-limit rejection, so inspect the answers. The base model is never overwritten. Manifests, adapters and reports are stored beside the state file under `.soliton-knowledge/<experiment-id>/`. Keeping an adapter does not automatically activate it in the inference engine. This requires a separately selected MLX environment; GGUF training, OpenAI planning, ROME/MEMIT, true unlearning and weight heatmaps are not implemented. [Workflow and implementation scope](docs/KNOWLEDGE_LAB.md)
+
 ## Engine selection
 
 Preferences → Engine → Inference engine selects **Strata** or **vLLM-Apple**. Switching stops the previous managed engine and its workers, then saves the selection; click Start to load the selected engine. Active GUI/API requests and model preparation block switching. Only one managed engine runs at a time. Independently started processes are outside Soliton's lifecycle; stop those before using Soliton.

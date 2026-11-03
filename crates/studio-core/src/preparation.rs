@@ -271,6 +271,9 @@ impl Studio {
             return Err("Model preparation currently requires Apple Silicon macOS".into());
         }
         let _lifecycle = self.lifecycle.lock().await;
+        if self.knowledge_job.lock().await.is_some() {
+            return Err("Finish or cancel the knowledge experiment before preparing a model".into());
+        }
         {
             let mut p = self.process.lock().await;
             if p.child
@@ -467,6 +470,7 @@ os.execv(str(py), [str(py), '-u', str(root / 'metal/setup_mac.py'), '--yes', '--
         Ok(())
     }
     pub async fn shutdown(&self) -> Result<(), String> {
+        self.shutdown_knowledge().await;
         self.stop().await?;
         let mut job = self.preparation.lock().await;
         if let Some(mut c) = job.child.take() {

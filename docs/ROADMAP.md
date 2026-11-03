@@ -1,5 +1,19 @@
 # Soliton roadmap
 
+## Knowledge Lab — 2026-11-04
+
+- 🟢 [Done] Inference / Knowledge Lab screen tabs and Edit / Evaluation / History views; shared Rust document, revision-checked drafts, native workspace hosting, English / 日本語 / 简体中文 UI.
+- 🟢 [Done] Offline MLX LoRA/QLoRA knowledge addition/correction and response-suppression experiments, separate adapter artifacts, held-out baseline/candidate comparisons, source/adapter SHA-256, finite-loss/weight guards, progress, cancellation and shutdown cleanup.
+- 🟢 [Done] Required/forbidden phrase scoring, output-limit rejection and baseline locality gates; failed candidates cannot be marked retained. Reports can be exported; adapters are never automatically fused or activated in the normal inference engine.
+- 🟢 [Done] Verification: 126 Rust tests, frontend build, Tauri compile check, real Gemma 2 2B 4bit addition and suppression (each 3/3 candidate phrase checks, unchanged source hash), fail-fast non-finite loss, EN/JA/ZH responsive browser flows, report download and existing workspace/docking regressions. These small English model fixtures do not certify broad editing efficacy or erasure.
+- 🟠 [Next] OpenAI-assisted editing plans and sourced datasets, stronger semantic evaluation, multilingual paraphrases and indirect extraction probes, explicit adapter activation with backend qualification.
+- 🔴 [Later] Architecture-specific ROME/MEMIT and targeted unlearning; Rust/wgpu weight inspection and causal/activation maps; model compression and optimization experiments. Response suppression is not a verified knowledge-erasure method.
+- ⭕️ [Pending] Native save-dialog / floating-window interaction QA for the new surface, other model families and GPU platforms. Browser QA does not certify native window lifecycle.
+
+See [Knowledge Lab](KNOWLEDGE_LAB.md) for scope and verification.
+
+## Existing work
+
 - 🟢 [Done] Soliton product/package/window branding and legacy desktop state migration; engine and workspace paths retain compatibility.
 - 🟢 [Done] Rust-owned Strata/vLLM-Apple selection, supervised daemon launch, stop-before-switch, private session authentication and inference-ready gating. Backend dependencies and local models are explicitly selected.
 - 🟢 [Done] Common chat/history/logs/memory and request metrics with engine attribution; active GUI/API requests and preparation block switching; English/Japanese/Simplified Chinese controls.
