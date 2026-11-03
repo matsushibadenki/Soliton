@@ -121,6 +121,10 @@ See [implementation scope](LFM3_OMNI.md) and [readiness](evaluation/lfm3-omni-re
 
 See [design and validation scope](INFERENCE.md#kapitsaから取り入れた計測設計2026-11-01).
 
+- 🟢 [Done] 2026-11-02 Strata 0.2.9, Lucide 1.66.0, tokio-tungstenite 0.30.0, base64 0.23.1; explicit distribution revision pin prevents stale-engine packaging; 112 Rust tests, upstream/three-language UI regressions, real Q2_0 inference and 71-native-file distribution preflight passed. [Evidence](DEPENDENCY_UPDATE_20261102.md).
+- 🟢 [Done] 2026-11-02 reclaimed reproducible debug caches; full Q2_0 re-preparation, 48×512 expert verification, exact authenticated inference and cleanup passed with 123,513 existing protected files unchanged. [Evidence](CACHE_CLEANUP_REPREP_20261102.md).
+- ⭕️ [Pending] Other-Mac GUI and Developer ID/notarization remain unverified.
+
 
 ## Gemma allocation reports — 2026-11-02
 

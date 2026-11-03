@@ -229,26 +229,55 @@ def main(args):
     })
     .click();
   await dialog.getByText(/Reuse files · no model download/).waitFor();
-  await dialog
-    .getByRole("button", { name: "Use in Strata", exact: true })
-    .click();
-  const setup = page.locator(".setup-dialog");
-  await setup.waitFor();
-  assert.equal(
-    await setup.locator(".download-size code").textContent(),
-    "0 GB",
-  );
-  assert.equal(await setup.locator(".download-consent").count(), 0);
-  await setup
-    .getByText("Model prepared. Configuration applied.", { exact: true })
-    .waitFor({ timeout: 30000 });
-  assert.equal(
-    (await state()).settings.config,
-    join(fixture, "strata-q2_0.json"),
-  );
-  assert.equal((await state()).status, "offline");
-  assert.deepEqual(await readFile(incomplete), first);
-  await page.keyboard.press("Escape");
+  const reusePlan = await fetch(
+    (process.env.SOLITON_TEST_API || "http://127.0.0.1:8080") +
+      "/studio/action",
+    {
+      method: "POST",
+      headers,
+      body: JSON.stringify({ action: "inspectLocalModel", path: incomplete }),
+    },
+  ).then(async (r) => {
+    assert.equal(r.status, 200);
+    return r.json();
+  });
+  assert.equal(reusePlan.kind, "prepare");
+  const preparationSkipped = reusePlan.diskPlan?.status === "insufficient";
+  if (preparationSkipped) {
+    const before = (await state()).settings.config;
+    assert(
+      await dialog
+        .getByRole("button", { name: "Use in Strata", exact: true })
+        .isDisabled(),
+    );
+    assert(await dialog.locator(".disk-budget .setup-warning").isVisible());
+    assert.equal((await state()).settings.config, before);
+    console.log(
+      "PENDING: successful preparation requires more free disk; verified disk refusal without bypassing the guard.",
+    );
+    await page.keyboard.press("Escape");
+  } else {
+    await dialog
+      .getByRole("button", { name: "Use in Strata", exact: true })
+      .click();
+    const setup = page.locator(".setup-dialog");
+    await setup.waitFor();
+    assert.equal(
+      await setup.locator(".download-size code").textContent(),
+      "0 GB",
+    );
+    assert.equal(await setup.locator(".download-consent").count(), 0);
+    await setup
+      .getByText("Model prepared. Configuration applied.", { exact: true })
+      .waitFor({ timeout: 30000 });
+    assert.equal(
+      (await state()).settings.config,
+      join(fixture, "strata-q2_0.json"),
+    );
+    assert.equal((await state()).status, "offline");
+    assert.deepEqual(await readFile(incomplete), first);
+    await page.keyboard.press("Escape");
+  }
   for (const [label, select, use] of [
     ["日本語", "モデルを選択", "Strataで使用"],
     ["简体中文", "选择模型", "在 Strata 中使用"],
@@ -273,7 +302,7 @@ def main(args):
   }
   assert.deepEqual(errors, []);
   console.log(
-    "PASS: real API model selection, missing-shard refusal, existing-config activation, supervised local preparation without model downloads, 3 languages, 4 responsive selection footers.",
+    `PASS: real API model selection, missing-shard refusal, existing-config activation, ${preparationSkipped ? "insufficient-disk refusal (preparation PENDING)" : "supervised local preparation without model downloads"}, 3 languages, 4 responsive selection footers.`,
   );
 } finally {
   if (baseline) await put(baseline);

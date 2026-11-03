@@ -102,7 +102,7 @@ Strata 0.2.1系の `9de04cd4`（ソース版0.1.46.3）に対応しました。[
 
 現在のGemma 2 2Bは、既存のidentity-bound証跡を使ってSoliton.appで実推論を確認済みです。対象環境と7日ごとの証跡更新手順は上記を参照してください。
 
-現在のStrataソースは0.2.7.1、Tauriは2.12.5です。[依存更新と検証範囲](docs/DEPENDENCY_UPDATE_20261026.md)を参照してください。一時設定での認証付き実推論は確認済みですが、保存済み設定の旧パス移行は残っています。
+現在のStrataソースは0.2.9、Tauriは2.12.5です。[依存更新と検証範囲](docs/DEPENDENCY_UPDATE_20261026.md)を参照してください。一時設定での認証付き実推論は確認済みですが、保存済み設定の旧パス移行は残っています。
 
 最新の更新：[2026-10-26の依存移行と実推論の検証範囲](docs/DEPENDENCY_UPDATE_20261026.md)。
 
@@ -119,3 +119,5 @@ Apple Silicon配布版では、ローカルモデル画面で取得済みの`goo
 
 
 配布前検査は`npm run check:distribution -- --smoke`、検査付きZIP作成は`npm run package:validation`で実行します。[別Mac向け検証手順（三言語）](docs/CLEAN_MAC_VALIDATION.md)を用意しています。別Macの実機検証は保留中です。
+
+最新の更新：[2026-11-02の依存・配布コミット固定・実推論検証](docs/DEPENDENCY_UPDATE_20261102.md)。

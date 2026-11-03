@@ -55,6 +55,14 @@ def dependency_errors(libraries, binary, boundary, rpaths=()):
     return errors
 
 
+def revision_errors(expected, bundled):
+    if not re.fullmatch(r'[0-9a-f]{40}', expected):
+        return ['invalid distribution Strata revision pin']
+    if bundled != expected:
+        return ['bundled Strata revision does not match distribution pin']
+    return []
+
+
 def inspect_macho(binary, boundary, minimum='15.0'):
     def run(*args):
         return subprocess.check_output(args, text=True, stderr=subprocess.STDOUT)
@@ -118,6 +126,10 @@ def check(app, smoke=False):
             report['archives'][kind] = {'sha256':sha(archive), 'bytes':archive.stat().st_size}
             roots.append((kind,destination))
         strata = work/'strata'
+        expected = (ROOT/'src-tauri/strata-revision.txt').read_text().strip()
+        bundled = json.loads((strata/'.bundled-metal.json').read_text()).get('revision')
+        report['strataRevision'] = bundled
+        report['errors'] += revision_errors(expected, bundled)
         for binary in [main,work/'python/bin/python3',strata/'build-metal/strata',strata/'build-metal/strata-gemma-server']:
             if not os.access(binary,os.X_OK):
                 report['errors'].append('required runtime is not executable: '+binary.name)

@@ -1,0 +1,47 @@
+{
+  "revision": "c62d5e3a15b40ea51c96aae9e8d36928965f53ab",
+  "engineSha256": "6a9fcb413b8ed06ce6733dfafd1c40890e2709fe3f3b9fb996c3093419921213",
+  "work": "/var/folders/yz/bsd6nq0941lc9tsfd9pxxhb40000gn/T/soliton-strata-20261102-d3bxwxss",
+  "started": 1793578339.2124212,
+  "passed": true,
+  "temporaryConfigOnly": true,
+  "unauthorizedRefused": true,
+  "response": {
+    "id": "chatcmpl-ee8e9ee31e88453e8fe630c6",
+    "object": "chat.completion",
+    "created": 1793578356,
+    "model": "qwen3.8-flash-next-q2_0",
+    "choices": [
+      {
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": "SOLITON112"
+        },
+        "finish_reason": "stop"
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 24,
+      "completion_tokens": 8,
+      "total_tokens": 32,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "timings": {
+      "cache_n": 0,
+      "prompt_n": 24,
+      "prompt_ms": 15009.6,
+      "prompt_per_token_ms": 625.4,
+      "prompt_per_second": 1.6,
+      "predicted_n": 8,
+      "predicted_ms": 1649.4,
+      "predicted_per_token_ms": 206.175,
+      "predicted_per_second": 4.9,
+      "draft_n": 0,
+      "draft_n_accepted": 0
+    }
+  },
+  "exitCode": 0
+}

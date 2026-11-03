@@ -1,3 +1,9 @@
+> Follow-up · 2026-11-02: the disk-space Pending item below is resolved. [Cache cleanup, real Q2_0 re-preparation and data-preservation verification](CACHE_CLEANUP_REPREP_20261102.md). 日本語：容量不足による保留を解除しました。简体中文：容量不足导致的待验证项已完成。
+
+# Current dependency update · 2026-11-02
+
+Strata v0.2.9 (`c62d5e3a`), source engine 0.1.55. [Distribution pin, real inference and validation limits](DEPENDENCY_UPDATE_20261102.md). Change both the Strata gitlink and `src-tauri/strata-revision.txt` for future updates. Earlier sections are historical.
+
 # Current dependency update · 2026-10-29
 
 Strata v0.2.7.1 (`46c152a1`), source engine 0.1.53; [current checks and GPU qualification limits](DEPENDENCY_UPDATE_20261029.md). Earlier sections are historical snapshots.

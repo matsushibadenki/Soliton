@@ -8,7 +8,9 @@ import tarfile
 
 root = pathlib.Path(__file__).resolve().parent.parent
 stage = root / '.soliton-runtime' / 'metal-distribution'
-revision = subprocess.check_output(['git', 'rev-parse', 'HEAD:Strata'], cwd=root, text=True).strip()
+revision = (root / 'src-tauri/strata-revision.txt').read_text().strip()
+if len(revision) != 40 or any(c not in '0123456789abcdef' for c in revision):
+    raise RuntimeError('Invalid pinned Strata revision')
 source = stage / revision
 if not source.exists():
     source.mkdir(parents=True)

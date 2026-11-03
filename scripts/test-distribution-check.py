@@ -7,6 +7,14 @@ spec=importlib.util.spec_from_file_location('check_distribution',Path(__file__).
 c=importlib.util.module_from_spec(spec);spec.loader.exec_module(c)
 
 class DistributionChecks(unittest.TestCase):
+    def test_distribution_rejects_stale_missing_or_malformed_strata_revision(self):
+        current = 'c62d5e3a15b40ea51c96aae9e8d36928965f53ab'
+        old = '46c152a1310f77cd2f0ce2c7cd213962df14fe83'
+        self.assertEqual(c.revision_errors(current, current), [])
+        self.assertTrue(c.revision_errors(current, old))
+        self.assertTrue(c.revision_errors(current, None))
+        self.assertTrue(c.revision_errors('HEAD', 'HEAD'))
+
     def test_compiler_and_linker_versions_are_not_macos_versions(self):
         for tool in ['LD','4','CLANG']:
             text=f'cmd LC_BUILD_VERSION\n minos 11.0\n sdk 27.0\n ntools 1\n tool {tool}\n version 23.1.3\n'

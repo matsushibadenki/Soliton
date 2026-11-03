@@ -98,7 +98,7 @@ Release构建面向Apple Silicon。发布签名与公证需要Apple开发者凭�
 
 当前Gemma 2 2B已通过既有identity-bound证据机制，在Soliton.app中验证真实推理。具体环境及七天证据更新流程请参见上述文档。
 
-当前Strata源码为0.2.7.1，Tauri为2.12.5。参见[依赖更新与验证范围](docs/DEPENDENCY_UPDATE_20261026.md)。已通过临时配置的认证真实推理，保存配置的旧路径迁移仍待处理。
+当前Strata源码为0.2.9，Tauri为2.12.5。参见[依赖更新与验证范围](docs/DEPENDENCY_UPDATE_20261026.md)。已通过临时配置的认证真实推理，保存配置的旧路径迁移仍待处理。
 
 最新更新：[2026-10-26依赖迁移与真实推理验证范围](docs/DEPENDENCY_UPDATE_20261026.md)。
 
@@ -115,3 +115,5 @@ Apple Silicon发行版中，在本地模型界面选择已下载的`google/gemma
 
 
 使用`npm run check:distribution -- --smoke`执行本机分发检查，使用`npm run package:validation`生成并验证ZIP。参见[三语言独立Mac验证步骤](docs/CLEAN_MAC_VALIDATION.md)。另一台Mac的实测仍待进行。
+
+最新更新：[2026-11-02依赖、分发提交固定及真实推理验证](docs/DEPENDENCY_UPDATE_20261102.md)。

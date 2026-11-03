@@ -1,0 +1,209 @@
+{
+  "work": "/var/folders/yz/bsd6nq0941lc9tsfd9pxxhb40000gn/T/soliton-real-reprepare-vrw5qtvp",
+  "started": 1793581590.3904262,
+  "passed": true,
+  "freeBefore": 68592177152,
+  "documentBefore": {
+    "conversations": {
+      "activeId": "60c2a7e2-4c71-4c2e-a206-719fd64959e3",
+      "items": [
+        {
+          "id": "60c2a7e2-4c71-4c2e-a206-719fd64959e3",
+          "messageCount": 0,
+          "title": "",
+          "updatedAt": 0
+        }
+      ]
+    },
+    "detached": [],
+    "generating": false,
+    "layout": {
+      "apiWidth": 300,
+      "engineWidth": 270,
+      "logsHeight": 174,
+      "workspaceActive": "chat",
+      "workspaceOrder": [
+        "chat",
+        "logs"
+      ],
+      "workspaceRatio": 50,
+      "workspaceSplit": null
+    },
+    "messages": [],
+    "workspaceGroups": [
+      {
+        "active": "chat",
+        "id": "workspace",
+        "tabs": [
+          "chat",
+          "logs"
+        ]
+      }
+    ],
+    "workspaceHosts": {}
+  },
+  "inspection": {
+    "diskPlan": {
+      "freeBytes": 70023602176,
+      "requiredBytes": 45600000000,
+      "shortfallBytes": 0,
+      "status": "sufficient",
+      "target": "/private/var/folders/yz/bsd6nq0941lc9tsfd9pxxhb40000gn/T/soliton-real-reprepare-vrw5qtvp/Strata-data"
+    },
+    "downloadGb": 0,
+    "files": [
+      "/Users/Shared/Program/Tauri/Soliton/Strata-data/models/Q2_0/Qwen3.8-Flash-Next-GSQ-RCO-Q2_0-00001-of-00002.gguf",
+      "/Users/Shared/Program/Tauri/Soliton/Strata-data/models/Q2_0/Qwen3.8-Flash-Next-GSQ-RCO-Q2_0-00002-of-00002.gguf"
+    ],
+    "freeBytes": 70023602176,
+    "kind": "prepare",
+    "model": "Q2_0",
+    "path": "/Users/Shared/Program/Tauri/Soliton/Strata-data/models/Q2_0/Qwen3.8-Flash-Next-GSQ-RCO-Q2_0-00001-of-00002.gguf",
+    "workingGb": 45.599999999999994
+  },
+  "preparation": {
+    "error": null,
+    "localReuse": true,
+    "model": "Q2_0",
+    "status": "completed"
+  },
+  "preparedConfig": {
+    "args": [
+      "--pack",
+      "/private/var/folders/yz/bsd6nq0941lc9tsfd9pxxhb40000gn/T/soliton-real-reprepare-vrw5qtvp/Strata-data/local-models/Q2_0-887db389fe27cf66/prepared/packs/q2_0",
+      "--native",
+      "/private/var/folders/yz/bsd6nq0941lc9tsfd9pxxhb40000gn/T/soliton-real-reprepare-vrw5qtvp/Strata-data/local-models/Q2_0-887db389fe27cf66/sources/Qwen3.8-Flash-Next-GSQ-RCO-Q2_0-00001-of-00002.gguf",
+      "--ple-gguf",
+      "/private/var/folders/yz/bsd6nq0941lc9tsfd9pxxhb40000gn/T/soliton-real-reprepare-vrw5qtvp/Strata-data/local-models/Q2_0-887db389fe27cf66/sources/Qwen3.8-Flash-Next-GSQ-RCO-Q2_0-00002-of-00002.gguf",
+      "--expert-profile",
+      "/private/var/folders/yz/bsd6nq0941lc9tsfd9pxxhb40000gn/T/soliton-real-reprepare-vrw5qtvp/Strata/data/expert-profile.bin",
+      "--expert-cache",
+      "64",
+      "--prefill",
+      "auto",
+      "--spec",
+      "2",
+      "--suffix-draft",
+      "0",
+      "--mmap-experts",
+      "--max-context",
+      "8192"
+    ],
+    "backend": "metal",
+    "cwd": "/private/var/folders/yz/bsd6nq0941lc9tsfd9pxxhb40000gn/T/soliton-real-reprepare-vrw5qtvp/Strata",
+    "env": {
+      "STRATA_METAL_KEEP_FREE_GB": "7",
+      "STRATA_METAL_PROMPT_CHUNK": "64",
+      "STRATA_METAL_STREAM": "1"
+    },
+    "exe": "/private/var/folders/yz/bsd6nq0941lc9tsfd9pxxhb40000gn/T/soliton-real-reprepare-vrw5qtvp/Strata/build-metal/strata",
+    "lib_dirs": [],
+    "log": "/private/var/folders/yz/bsd6nq0941lc9tsfd9pxxhb40000gn/T/soliton-real-reprepare-vrw5qtvp/Strata/strata-q2_0.log",
+    "model_name": "qwen3.8-flash-next-q2_0",
+    "open_browser": false,
+    "port": 8080,
+    "studio_metal_memory": {
+      "automatic": true,
+      "context": 8192,
+      "keepFreeGb": 7,
+      "promptChunk": 64
+    },
+    "tokenizer": "/private/var/folders/yz/bsd6nq0941lc9tsfd9pxxhb40000gn/T/soliton-real-reprepare-vrw5qtvp/Strata-data/local-models/Q2_0-887db389fe27cf66/prepared/packs/q2_0/tokenizer"
+  },
+  "preparationLogs": [
+    "[setup] Preparing Q2_0; local reuse: true; engine remains stopped",
+    "Strata on a Mac (Apple Silicon, Metal)",
+    "",
+    "=== Step 1: checking your Mac ===",
+    "  [ok] Apple M4, 32 GB unified memory, macOS 27.2",
+    "  [ok] free disk: 73 GB at /private/var/folders/yz/bsd6nq0941lc9tsfd9pxxhb40000gn/T/soliton-real-reprepare-vrw5qtvp/Strata-data/local-models/Q2_0-887db389fe27cf66/prepared",
+    "",
+    "=== Step 2: your choices ===",
+    "  [!]  32 GB of memory: no pack fits whole, so the engine streams the experts from the SSD (automatic; measured on a 32 GB M4: Q2_0 ~14 tok/s, IQ3_XXS ~10 tok/s; smaller Macs are untested). Recommended: Q2_0, without the MTP draft layer (slower when streaming)",
+    "  [!]  Q2_0 needs ~46 GB of the 26 GB Metal keeps resident on this Mac: its experts stream from the SSD (automatic); measured on a 32 GB M4: ~14 tok/s",
+    "  [ok] Q2_0, context 8192",
+    "",
+    "=== Step 3: Python packages ===",
+    "",
+    "=== Step 4: the Strata engine (Metal) ===",
+    "  [ok] llama.cpp 3cf0325 (ggml, gguf-py)",
+    "",
+    "=== Step 5: downloading Qwen3.8-Flash-Next Q2_0 ===",
+    "  [ok] Qwen3.8-Flash-Next-GSQ-RCO-Q2_0-00001-of-00002.gguf already downloaded",
+    "  [ok] Qwen3.8-Flash-Next-GSQ-RCO-Q2_0-00002-of-00002.gguf already downloaded",
+    "  [ok] model files present",
+    "",
+    "=== Step 6: preparing the model for Strata ===",
+    "  > /private/var/folders/yz/bsd6nq0941lc9tsfd9pxxhb40000gn/T/soliton-real-reprepare-vrw5qtvp/Strata/.venv/bin/python /private/var/folders/yz/bsd6nq0941lc9tsfd9pxxhb40000gn/T/soliton-real-reprepare-vrw5qtvp/Strata/tools/iq_pack.py --gguf /private/var/folders/yz/bsd6nq0941lc9tsfd9pxxhb40000gn/T/soliton-real-reprepare-vrw5qtvp/Strata-data/local-models/Q2_0-887db389fe27cf66/sources/Qwen3.8-Flash-Next-GSQ-RCO-Q2_0-00001-of-00002.gguf --out /private/var/folders/yz/bsd6nq0941lc9tsfd9pxxhb40000gn/T/soliton-real-reprepare-vrw5qtvp/Strata-data/local-models/Q2_0-887db389fe27cf66/prepared/packs/q2_0",
+    "model shards: Qwen3.8-Flash-Next-GSQ-RCO-Q2_0-00001-of-00002.gguf, Qwen3.8-Flash-Next-GSQ-RCO-Q2_0-00002-of-00002.gguf",
+    "index.txt: 1079 tensors, 303 served natively, 0 in extra.bin, arena 1.38 GiB",
+    "tokenizer/: vocab 248320, merges 247587, pre qwen35, specials {'tokenizer.ggml.eos_token_id': 248046, 'tokenizer.ggml.padding_token_id': 248044, 'tokenizer.ggml.bos_token_id': 248044}",
+    "  [ok] model prepared: /private/var/folders/yz/bsd6nq0941lc9tsfd9pxxhb40000gn/T/soliton-real-reprepare-vrw5qtvp/Strata-data/local-models/Q2_0-887db389fe27cf66/prepared/packs/q2_0",
+    "  [ok] the experts will stream from the SSD: no MTP draft layer (one token per step is faster there); ./setup.sh --setup on a Mac with more memory adds it",
+    "  Writing the experts in SSD-read order (one time, 34 GB; each expert is read with one request) ...",
+    "  > /private/var/folders/yz/bsd6nq0941lc9tsfd9pxxhb40000gn/T/soliton-real-reprepare-vrw5qtvp/Strata/.venv/bin/python /private/var/folders/yz/bsd6nq0941lc9tsfd9pxxhb40000gn/T/soliton-real-reprepare-vrw5qtvp/Strata/metal/tools/stream_experts.py --gguf /private/var/folders/yz/bsd6nq0941lc9tsfd9pxxhb40000gn/T/soliton-real-reprepare-vrw5qtvp/Strata-data/local-models/Q2_0-887db389fe27cf66/sources/Qwen3.8-Flash-Next-GSQ-RCO-Q2_0-00001-of-00002.gguf --verify",
+    "\r  layer 1 / 48\r  layer 2 / 48\r  layer 3 / 48\r  layer 4 / 48\r  layer 5 / 48\r  layer 6 / 48\r  layer 7 / 48\r  layer 8 / 48\r  layer 9 / 48\r  layer 10 / 48\r  layer 11 / 48\r  layer 12 / 48\r  layer 13 / 48\r  layer 14 / 48\r  layer 15 / 48\r  layer 16 / 48\r  layer 17 / 48\r  layer 18 / 48\r  layer 19 / 48\r  layer 20 / 48\r  layer 21 / 48\r  layer 22 / 48\r  layer 23 / 48\r  layer 24 / 48\r  layer 25 / 48\r  layer 26 / 48\r  layer 27 / 48\r  layer 28 / 48\r  layer 29 / 48\r  layer 30 / 48\r  layer 31 / 48\r  layer 32 / 48\r  layer 33 / 48\r  layer 34 / 48\r  layer 35 / 48\r  layer 36 / 48\r  layer 37 / 48\r  layer 38 / 48\r  layer 39 / 48\r  layer 40 / 48\r  layer 41 / 48\r  layer 42 / 48\r  layer 43 / 48\r  layer 44 / 48\r  layer 45 / 48\r  layer 46 / 48\r  layer 47 / 48\r  layer 48 / 48",
+    "verify: 48 layers x 512 experts identical to the GGUF",
+    "/private/var/folders/yz/bsd6nq0941lc9tsfd9pxxhb40000gn/T/soliton-real-reprepare-vrw5qtvp/Strata-data/local-models/Q2_0-887db389fe27cf66/sources/Qwen3.8-Flash-Next-GSQ-RCO-Q2_0-00001-of-00002.gguf.experts: 31.64 GiB",
+    "  [ok] the experts' streaming copy: Qwen3.8-Flash-Next-GSQ-RCO-Q2_0-00001-of-00002.gguf.experts",
+    "",
+    "=== Step 7: writing the start script ===",
+    "  [ok] start script: run-q2_0.sh",
+    "",
+    "All set.",
+    "  API (OpenAI):     http://127.0.0.1:8080/v1",
+    "  API (Anthropic):  http://127.0.0.1:8080/v1/messages",
+    "  Next time:        just run ./setup.sh (or run-q2_0.sh) - it starts right away",
+    "[setup] completed"
+  ],
+  "gatewayExit": 0,
+  "freeBeforeTemporaryCleanup": 69911785472,
+  "response": {
+    "id": "chatcmpl-3885fbe29645405296885ac4",
+    "object": "chat.completion",
+    "created": 1793582000,
+    "model": "qwen3.8-flash-next-q2_0",
+    "choices": [
+      {
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": "REPREP112"
+        },
+        "finish_reason": "stop"
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 24,
+      "completion_tokens": 7,
+      "total_tokens": 31,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "timings": {
+      "cache_n": 0,
+      "prompt_n": 24,
+      "prompt_ms": 33033.5,
+      "prompt_per_token_ms": 1376.396,
+      "prompt_per_second": 0.7,
+      "predicted_n": 7,
+      "predicted_ms": 3014.4,
+      "predicted_per_token_ms": 430.629,
+      "predicted_per_second": 2.3,
+      "draft_n": 0,
+      "draft_n_accepted": 0
+    }
+  },
+  "stopped": true,
+  "documentPreserved": true,
+  "readyState": "ready",
+  "harnessCorrection": "Readiness is ready rather than running; continuation verified the already-prepared model without repeating preparation.",
+  "temporaryFileBytes": 35597239680,
+  "freeBeforeValidationCleanup": 74874445824,
+  "temporaryWorkspaceRemoved": true,
+  "freeFinal": 111571824640,
+  "protectedFilesChecked": 123513,
+  "protectedChanges": [],
+  "finished": 1793582072.8882492
+}

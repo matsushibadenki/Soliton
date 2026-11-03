@@ -132,7 +132,7 @@ Validated against the Strata 0.2.1 line at `9de04cd4` (source version 0.1.46.3).
 
 Verified local Gemma 2 2B inference is available through the existing identity-bound evidence gate; see the linked procedure for the exact environment and seven-day renewal.
 
-Current Strata source: v0.2.7.1; Tauri 2.12.5. See [dependency update and validation limits](docs/DEPENDENCY_UPDATE_20261026.md), including authenticated inference with a temporary config and remaining saved-path migration.
+Current Strata source: v0.2.9; Tauri 2.12.5. See [dependency update and validation limits](docs/DEPENDENCY_UPDATE_20261026.md), including authenticated inference with a temporary config and remaining saved-path migration.
 
 Latest update: [2026-10-26 dependency migration and real-inference limits](docs/DEPENDENCY_UPDATE_20261026.md).
 
@@ -149,3 +149,5 @@ On the Apple Silicon distribution, select the downloaded `google/gemma-3-1b-it/m
 
 
 Run `npm run check:distribution -- --smoke` for local preflight and `npm run package:validation` for a checked ZIP. See the [trilingual clean-Mac checklist](docs/CLEAN_MAC_VALIDATION.md). Verification on another Mac remains pending.
+
+Latest update: [2026-11-02 dependencies, immutable distribution pin and real-inference evidence](docs/DEPENDENCY_UPDATE_20261102.md).
