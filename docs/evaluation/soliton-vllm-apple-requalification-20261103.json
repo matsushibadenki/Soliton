@@ -1,0 +1,166 @@
+{
+  "architecture_evidence": {
+    "concurrency": 1,
+    "context_tokens": 4096,
+    "created_at": 1793704565.9451892,
+    "identity": {
+      "backend": "mlx_lm",
+      "backend_sha256": "d1ba8a3ee8e3e6ffc708bda03e6cfc9725db9bdb2669061d60ece400b628c485",
+      "config_sha256": "9279e9a8c58d7656782dc02f787feaa45118f37109281acb88144b6a44093401",
+      "environment_sha256": "dd85ef85e863c42aa69d163e4dd701040d7c9d4178040999603a3f0c4d7693e6",
+      "hardware_sha256": "c8baa7d3ff988ba85885da228624da76c5a85818ef2f1daa3b1d3128e4b95d6c",
+      "model_root_sha256": "4f69654cb373cc4392fd048acf60d51d39d67e8176648a3e52a7936b0776cd14",
+      "runtime_sha256": "719a8eab119f6c810a47384f05aeca59518d7c62351434a43a8ac7da3434eec6"
+    },
+    "report_sha256": "73750e6346db040126b4388de31288c306be4bf5d03787798447f498e9df7ffb",
+    "schema_version": 1,
+    "scope": "text_smoke_30min"
+  },
+  "backend": "mlx_lm",
+  "backend_versions": {
+    "mlx_lm": "0.32.0"
+  },
+  "context_reevaluation": {
+    "capacity_context_tokens": null,
+    "configured_context_tokens": 4096,
+    "effective_context_tokens": 4096,
+    "enabled": false,
+    "kv_bytes_per_token": null,
+    "kv_capacity_bytes": null,
+    "passed": true,
+    "reevaluations": 0,
+    "source": null,
+    "status": "unavailable",
+    "weights_bytes": null
+  },
+  "load_seconds": 3.824,
+  "model": "models/gemma-2-2b-it-4bit",
+  "model_memory_fit": {
+    "artifact_bytes": 1470988882,
+    "context_tokens": 4096,
+    "estimated_resident_bytes": 1907196498,
+    "fits": true,
+    "hard_ceiling_bytes": 14412264899
+  },
+  "passed": true,
+  "phase_profile": {
+    "backend": "mlx_lm",
+    "decode": {
+      "duration_ms": 597.71,
+      "output_tokens": 39,
+      "token_intervals": 36,
+      "tokens_per_second": 60.23,
+      "tpot": {
+        "max_ms": 16.958,
+        "mean_ms": 16.603,
+        "p50_upper_bound_ms": 25.0,
+        "p95_upper_bound_ms": 25.0
+      }
+    },
+    "hardware_fingerprint": "365408a8b019fc7de48ad967",
+    "model_id": "default_model",
+    "peak_memory_bytes": 2271772672,
+    "prefill": {
+      "prompt_tokens": 48,
+      "ttft": {
+        "max_ms": 280.149,
+        "mean_ms": 206.052,
+        "p50_upper_bound_ms": 250.0,
+        "p95_upper_bound_ms": 500.0
+      }
+    },
+    "profile_id": "f9aedfed3ce2f06d071db1a0",
+    "sample_count": 3,
+    "schema_version": 1,
+    "storage": {
+      "latency_bucket_count": 52,
+      "raw_sample_count": 0
+    },
+    "transport": {
+      "end_to_end": {
+        "max_ms": 504.262,
+        "mean_ms": 427.038,
+        "p50_upper_bound_ms": 500.0,
+        "p95_upper_bound_ms": 1000.0
+      },
+      "sample_count": 3,
+      "stream_tail": {
+        "max_ms": 22.37,
+        "mean_ms": 21.749,
+        "p50_upper_bound_ms": 25.0,
+        "p95_upper_bound_ms": 25.0
+      },
+      "unavailable_sample_count": 0
+    }
+  },
+  "promotion_probe": {
+    "checks": {
+      "greedy_repeat_equal": true,
+      "sampled_repeat_equal": true,
+      "sampled_stream_equal": true,
+      "stream_completed": true
+    },
+    "determinism_mode": "greedy_only",
+    "digests": {
+      "greedy": "a72f0215ec983589f7140253c77d742103fd5bf1210ece94febc2d1562d35e6d",
+      "sampled": "a72f0215ec983589f7140253c77d742103fd5bf1210ece94febc2d1562d35e6d",
+      "sampled_stream": "a72f0215ec983589f7140253c77d742103fd5bf1210ece94febc2d1562d35e6d"
+    },
+    "model": "default_model",
+    "passed": true,
+    "schema_version": 1,
+    "seed": 1729,
+    "temperature": 0
+  },
+  "qualification_limits": {
+    "concurrency": 1,
+    "context_tokens": 4096
+  },
+  "quality_smoke": {
+    "checks": {
+      "english": true,
+      "japanese": true,
+      "simplified_chinese": true
+    },
+    "match_policy": "trimmed_exact",
+    "passed": true,
+    "sample_count": 3,
+    "schema_version": 1,
+    "stores_generated_text": false
+  },
+  "requested_modes": [
+    "text"
+  ],
+  "schema_version": 1,
+  "shutdown_clean": true,
+  "soak": {
+    "certification_required": true,
+    "elapsed_seconds": 1800.392,
+    "errors": {},
+    "failures": 0,
+    "latency_ms": {
+      "max": 4086.729,
+      "mean": 357.353,
+      "p50_upper_bound": 500,
+      "p95_upper_bound": 1000
+    },
+    "passed": true,
+    "process_alive": true,
+    "requests": 5038,
+    "requests_per_second": 2.798,
+    "rss": {
+      "baseline_bytes": 2264023040,
+      "final_bytes": 1730854912,
+      "growth_bytes": 0,
+      "limit_bytes": 268435456,
+      "peak_bytes": 2275819520,
+      "peak_growth_bytes": 11796480
+    },
+    "stability_window_met": true,
+    "storage": {
+      "error_keys": 0,
+      "latency_buckets": 12
+    },
+    "successes": 5038
+  }
+}

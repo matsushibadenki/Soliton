@@ -136,5 +136,15 @@ See [design and validation scope](INFERENCE.md#kapitsaから取り入れた計�
 ## vLLM runtime budget diagnostics — 2026-11-02
 
 - 🟢 [Done] On-demand, private runtime memory diagnostics for the currently owned vLLM process. Two-second/64 KiB limits, 30-second sample expiry, fetch timestamp, latest-request/session/config checks, failure/stop clearing and EN/JA/ZH refresh control. Allocator/logical KV reports stay separate from model-spec/artifact/projection/mixed-ledger components; no inferred total/workspace. 118 Rust tests, build and three-language 1440/390/320 px fixture GUI checks passed.
-- ⭕️ [Pending] Real current MLX runtime verification: existing evidence is rejected with architecture identity mismatch. No compatibility/evidence bypass or ordinary state change; fresh identity-bound qualification is required before real-model diagnostics can be approved.
-- 🟠 [Next] Qualify the current MLX environment, then verify its runtime memory ledger through the GUI; continue reviewed Strata/Omni/MTP/media working-set reporting and bounded SSD-state API review.
+- 🟢 [Done] Resolved 2026-11-03: current MLX runtime requalified for 1800.392s /5038 successes /zero failures, then native GUI memory diagnostics and chat passed in EN/JA/ZH. See the requalification section below; checks remain enabled.
+- 🟠 [Next] Continue reviewed Strata/Omni/MTP/media working-set reporting and bounded SSD-state API review; current MLX requalification and native GUI checks are now complete.
+
+
+## Current MLX requalification and native diagnostics — 2026-11-03
+
+- 🟢 [Done] Fresh original 30-minute MLX-LM0.32.0 / Gemma2 2B4-bit qualification:1800.392s,5038 successes,zero failures,11.25 MiB peak RSS growth,clean shutdown and before/after identity agreement. Context4096/concurrency1/retained-KV1024 MiB/allocator512 MiB retained. Only runtime identity changed versus the prior certificate. [Raw evidence](evaluation/soliton-vllm-apple-requalification-20261103.json).
+- 🟢 [Done] Fixed real diagnostics for the reviewed retained-KV launcher: read its existing private scalar endpoint as well as control-runtime budgets; active MLX allocations/free cache/active peak and retained-LRU bytes/entries remain separate. Both responses share the two-second/64 KiB bound; missing worker metrics do not preserve stale values.
+- 🟢 [Done] Explicit per-engine MPS fallback environment (inherit/1/0), applied identically to inspection and launch. Legacy inheritance remains; no global environment change. Native GUI was launched without an external MPS flag and successfully used stored1.
+- 🟢 [Done] Actual native GUI evidence acceptance, answer5, memory refresh in EN/JA/ZH,30-second expiry,stop clearing and fresh zero-retention after restart passed. Ordinary native/headless states updated only for the fresh certificate and explicit certified MPS value, with backups and history/all-other-setting equality.120 Rust tests,build,three-language fixture layout tests and71-native-file distribution preflight passed. [Native checks](evaluation/mlx-native-memory-20261103.json).
+- 🟠 [Next] Source-reviewed Strata/Omni dynamic working sets and bounded SSD prefix-state save/restore API review; do not infer full workspace or physical ownership from these scalar counters.
+- ⭕️ [Pending] Other-Mac verification,Developer ID signing and notarization remain deferred.

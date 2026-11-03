@@ -79,6 +79,7 @@ type Settings = {
     executable: string;
     evidence: string;
     context: number;
+    mpsFallback?: boolean | null;
     kvCacheMiB: number;
     allocatorCacheMiB: number;
   };
@@ -818,6 +819,26 @@ function App() {
                 >
                   <option value="mlx_lm">MLX LM</option>
                   <option value="vllm_metal">vLLM-Metal</option>
+                </select>
+              </label>
+              <label>
+                {t.mpsFallback}
+                <span title={t.mpsFallbackHelp}><Info size={13} /></span>
+                <select
+                  aria-label={t.mpsFallback}
+                  value={settings.vllm.mpsFallback == null ? "inherit" : settings.vllm.mpsFallback ? "1" : "0"}
+                  disabled={status !== "offline" || pending}
+                  onChange={(e) => {
+                    update("vllm", {
+                      ...settings.vllm,
+                      mpsFallback: e.target.value === "inherit" ? null : e.target.value === "1",
+                    });
+                    void run(persist);
+                  }}
+                >
+                  <option value="inherit">{t.mpsInherit}</option>
+                  <option value="1">{t.mpsEnabled}</option>
+                  <option value="0">{t.mpsDisabled}</option>
                 </select>
               </label>
               {!dirty.current && snapshot?.vllmInspection && (

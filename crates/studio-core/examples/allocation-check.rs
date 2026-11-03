@@ -87,6 +87,14 @@ async fn probe(studio: &Arc<Studio>, port: u16, mlx: bool) -> Result<Value, Stri
                     studio.refresh_backend_budget().await?;
                     continue;
                 }
+                if mlx
+                    && state["modelPlan"]["backendBudget"].is_object()
+                    && (!state["modelPlan"]["backendBudget"]["mlxAllocator"]["activeBytes"]
+                        .is_u64()
+                        || !state["modelPlan"]["backendBudget"]["retainedKv"]["bytes"].is_u64())
+                {
+                    return Err("MLX worker scalar diagnostics are unavailable".to_string());
+                }
                 if state["status"] == "ready"
                     && if mlx {
                         state["modelPlan"]["backendBudget"].is_object()
@@ -110,6 +118,9 @@ async fn probe(studio: &Arc<Studio>, port: u16, mlx: bool) -> Result<Value, Stri
             .trim();
         if answer != "5" {
             return Err(format!("Unexpected probe answer: {answer:?}"));
+        }
+        if mlx {
+            studio.refresh_backend_budget().await?;
         }
         rounds.push(json!({"beforeRequest":state["modelPlan"],"afterRequest":studio.snapshot().await["modelPlan"],"answer":answer}));
         studio.stop().await?;

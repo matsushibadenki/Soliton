@@ -11,7 +11,23 @@ pub struct Component {
 }
 #[derive(Clone, Debug, Serialize)]
 #[serde(rename_all = "camelCase")]
+pub struct MlxAllocator {
+    pub active_bytes: u64,
+    pub free_cache_bytes: u64,
+    pub peak_active_bytes: Option<u64>,
+}
+#[derive(Clone, Debug, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct RetainedKv {
+    pub bytes: u64,
+    pub limit_bytes: u64,
+    pub entries: u64,
+}
+#[derive(Clone, Debug, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct Reading {
+    pub mlx_allocator: Option<MlxAllocator>,
+    pub retained_kv: Option<RetainedKv>,
     pub sampled_at: Option<u64>,
     pub allocator_bytes: Option<u64>,
     pub allocator_peak_bytes: Option<u64>,
@@ -75,6 +91,8 @@ pub fn parse(health: &Value) -> Option<Reading> {
     // Never add allocator + KV + components or subtract them to invent workspace.
     (allocator.is_some() || peak.is_some() || kv.is_some() || !components.is_empty()).then_some(
         Reading {
+            mlx_allocator: None,
+            retained_kv: None,
             sampled_at: None,
             allocator_bytes: allocator,
             allocator_peak_bytes: peak,
@@ -82,6 +100,64 @@ pub fn parse(health: &Value) -> Option<Reading> {
             components,
         },
     )
+}
+fn merge_retained_wrapper(reading: &mut Reading, value: &Value, expected_limit: u64) {
+    // This endpoint describes retained LRU accounting, not active attention KV.
+    if value["accounting"] != "LRU tensor bytes, not unique physical memory" {
+        return;
+    }
+    let a = &value["allocator"];
+    if a["consistency"] == "non_atomic" {
+        if let (Some(active), Some(free)) = (number(&a["active_bytes"]), number(&a["cache_bytes"]))
+        {
+            reading.mlx_allocator = Some(MlxAllocator {
+                active_bytes: active,
+                free_cache_bytes: free,
+                peak_active_bytes: number(&a["peak_bytes"]).filter(|n| *n >= active),
+            });
+        }
+    }
+    if let (Some(bytes), Some(limit), Some(entries)) = (
+        number(&value["retained_bytes"]),
+        number(&value["max_bytes"]),
+        number(&value["entries"]),
+    ) {
+        if limit == expected_limit && limit > 0 && bytes <= limit && entries <= 100_000 {
+            reading.retained_kv = Some(RetainedKv {
+                bytes,
+                limit_bytes: limit,
+                entries,
+            });
+        }
+    }
+}
+async fn bounded_json(
+    mut response: reqwest::Response,
+    remaining: usize,
+) -> Result<(Value, usize), &'static str> {
+    if !response.status().is_success() {
+        return Err("Runtime diagnostic request was rejected");
+    }
+    if response
+        .content_length()
+        .is_some_and(|n| n > remaining as u64)
+    {
+        return Err("Runtime diagnostic response exceeds 64 KiB");
+    }
+    let mut bytes = Vec::new();
+    while let Some(chunk) = response
+        .chunk()
+        .await
+        .map_err(|_| "Runtime diagnostic response failed")?
+    {
+        if bytes.len() + chunk.len() > remaining {
+            return Err("Runtime diagnostic response exceeds 64 KiB");
+        }
+        bytes.extend_from_slice(&chunk);
+    }
+    let value =
+        serde_json::from_slice(&bytes).map_err(|_| "Invalid runtime diagnostic response")?;
+    Ok((value, bytes.len()))
 }
 pub(crate) struct Sample {
     pub reading: Reading,
@@ -99,7 +175,7 @@ impl crate::Studio {
             return Err("Select vLLM-Apple for runtime diagnostics".into());
         }
         let request = uuid::Uuid::new_v4().to_string();
-        let (port, key, pid) = {
+        let (port, key, pid, backend_port) = {
             let mut p = self.process.lock().await;
             p.backend_budget = None;
             p.backend_budget_request = Some(request.clone());
@@ -120,36 +196,44 @@ impl crate::Studio {
                     }
                 })
                 .ok_or("Start the selected engine before refreshing diagnostics")?;
-            (p.port, p.key.clone(), pid)
+            (
+                p.port,
+                p.key.clone(),
+                pid,
+                p.vllm_backend_port.filter(|_| {
+                    settings.vllm.backend == "mlx_lm" && settings.vllm.kv_cache_mib > 0
+                }),
+            )
         };
         let mut reading = tokio::time::timeout(std::time::Duration::from_secs(2), async {
-            let mut response = self
+            let response = self
                 .client
                 .get(format!("http://127.0.0.1:{port}/v1/runtime"))
                 .bearer_auth(&key)
                 .send()
                 .await
                 .map_err(|_| "Runtime diagnostic request failed")?;
-            if !response.status().is_success() {
-                return Err("Runtime diagnostic request was rejected");
-            }
-            if response.content_length().is_some_and(|n| n > 65536) {
-                return Err("Runtime diagnostic response exceeds 64 KiB");
-            }
-            let mut bytes = Vec::new();
-            while let Some(chunk) = response
-                .chunk()
-                .await
-                .map_err(|_| "Runtime diagnostic response failed")?
-            {
-                if bytes.len() + chunk.len() > 65536 {
-                    return Err("Runtime diagnostic response exceeds 64 KiB");
+            let (value, size) = bounded_json(response, 65536).await?;
+            let mut reading = parse(&value).ok_or("Runtime memory diagnostics are unavailable")?;
+            if let Some(backend_port) = backend_port {
+                if let Ok(response) = self
+                    .client
+                    .get(format!(
+                        "http://127.0.0.1:{backend_port}/vllm-apple/kv-cache"
+                    ))
+                    .send()
+                    .await
+                {
+                    if let Ok((value, _)) = bounded_json(response, 65536 - size).await {
+                        merge_retained_wrapper(
+                            &mut reading,
+                            &value,
+                            settings.vllm.kv_cache_mib as u64 * (1 << 20),
+                        );
+                    }
                 }
-                bytes.extend_from_slice(&chunk);
             }
-            let value: Value = serde_json::from_slice(&bytes)
-                .map_err(|_| "Invalid runtime diagnostic response")?;
-            parse(&value).ok_or("Runtime memory diagnostics are unavailable")
+            Ok(reading)
         })
         .await
         .map_err(|_| "Runtime diagnostic request timed out")?
@@ -197,13 +281,18 @@ mod tests {
         });
         let app = axum::Router::new()
             .route("/health", handler.clone())
-            .route("/v1/runtime", handler);
+            .route("/v1/runtime", handler)
+            .route("/vllm-apple/kv-cache",axum::routing::get(||async{axum::Json(json!({"retained_bytes":40,"max_bytes":1073741824u64,"entries":2,"accounting":"LRU tensor bytes, not unique physical memory","allocator":{"active_bytes":200,"cache_bytes":50,"peak_bytes":250,"consistency":"non_atomic"}}))}));
         let server = tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
         let studio = Arc::new(Studio::new(
             std::env::temp_dir().join("soliton-budget-fixture"),
             0,
         ));
-        studio.settings.write().await.engine = Engine::VllmApple;
+        {
+            let mut settings = studio.settings.write().await;
+            settings.engine = Engine::VllmApple;
+            settings.vllm.kv_cache_mib = 1024;
+        }
         let binding = studio.settings.read().await.vllm.clone();
         let mut cmd = tokio::process::Command::new("/bin/sleep");
         cmd.arg("30").kill_on_drop(true).process_group(0);
@@ -215,11 +304,27 @@ mod tests {
             p.port = port;
             p.key = "fixture".into();
             p.vllm_memory_binding = Some(binding.clone());
+            p.vllm_backend_port = Some(port);
         }
         studio.refresh_backend_budget().await.unwrap();
         let state = studio.snapshot().await;
         assert_eq!(state["modelPlan"]["backendBudget"]["allocatorBytes"], 100);
         assert_eq!(state["modelPlan"]["backendBudget"]["kvBytes"], 0);
+        assert_eq!(
+            state["modelPlan"]["backendBudget"]["mlxAllocator"]["activeBytes"],
+            200
+        );
+        assert_eq!(
+            state["modelPlan"]["backendBudget"]["retainedKv"]["bytes"],
+            40
+        );
+        studio.process.lock().await.vllm_backend_port = Some(0);
+        studio.refresh_backend_budget().await.unwrap();
+        let partial = studio.snapshot().await;
+        assert_eq!(partial["modelPlan"]["backendBudget"]["allocatorBytes"], 100);
+        assert!(partial["modelPlan"]["backendBudget"]["mlxAllocator"].is_null());
+        assert!(partial["modelPlan"]["backendBudget"]["retainedKv"].is_null());
+        studio.process.lock().await.vllm_backend_port = Some(port);
         {
             let mut p = studio.process.lock().await;
             p.backend_budget.as_mut().unwrap().at =
@@ -247,6 +352,25 @@ mod tests {
         assert_eq!(r.components[0].bytes, 0);
         assert_eq!(r.components[0].basis, "model_spec");
         assert_eq!(r.components[1].basis, "ledger");
+    }
+    #[test]
+    fn retained_wrapper_scopes_and_missing_metadata_are_kept_distinct() {
+        let mut reading=parse(&json!({"memory_budget":{"components":{"mtp":{"current_bytes":0,"source":"model_spec","accounting":"additive"}}}})).unwrap();
+        let v = json!({"retained_bytes":40,"max_bytes":100,"entries":2,"accounting":"LRU tensor bytes, not unique physical memory","allocator":{"active_bytes":200,"cache_bytes":50,"peak_bytes":250,"consistency":"non_atomic"}});
+        merge_retained_wrapper(&mut reading, &v, 100);
+        assert_eq!(reading.mlx_allocator.as_ref().unwrap().active_bytes, 200);
+        assert_eq!(reading.mlx_allocator.as_ref().unwrap().free_cache_bytes, 50);
+        assert_eq!(reading.retained_kv.as_ref().unwrap().bytes, 40);
+        assert!(reading.kv_bytes.is_none() && reading.allocator_bytes.is_none());
+        let mut unknown = reading.clone();
+        unknown.mlx_allocator = None;
+        unknown.retained_kv = None;
+        merge_retained_wrapper(&mut unknown, &json!({"retained_bytes":0}), 100);
+        assert!(unknown.mlx_allocator.is_none() && unknown.retained_kv.is_none());
+        let mut wrong = unknown.clone();
+        merge_retained_wrapper(&mut wrong, &v, 999);
+        assert!(wrong.retained_kv.is_none());
+        assert!(wrong.mlx_allocator.is_some());
     }
     #[test]
     fn invalid_values_missing_sources_and_unknown_schemas_are_unknown() {

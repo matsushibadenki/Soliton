@@ -3,6 +3,12 @@ import { words, type Language } from "./i18n";
 
 export type ModelPlanState = {
   backendBudget?: {
+    mlxAllocator?: {
+      activeBytes: number;
+      freeCacheBytes: number;
+      peakActiveBytes: number | null;
+    } | null;
+    retainedKv?: { bytes: number; limitBytes: number; entries: number } | null;
     sampledAt?: number | null;
     allocatorBytes: number | null;
     allocatorPeakBytes: number | null;
@@ -97,13 +103,46 @@ export function ModelPlan({
   }
   if (value.backendBudget) {
     const b = value.backendBudget;
-    for (const [label, n] of [
-      [t.planBackendAllocator, b.allocatorBytes],
-      [t.planBackendAllocatorPeak, b.allocatorPeakBytes],
-      [t.planBackendKv, b.kvBytes],
-    ] as const) {
-      rows.push([label, bytes(n), t.planBackendTelemetryHelp]);
+    if (b.mlxAllocator) {
+      rows.push([
+        t.planMlxActive,
+        bytes(b.mlxAllocator.activeBytes),
+        t.planMlxHelp,
+      ]);
+      rows.push([
+        t.planMlxFree,
+        bytes(b.mlxAllocator.freeCacheBytes),
+        t.planMlxHelp,
+      ]);
+      rows.push([
+        t.planMlxPeak,
+        bytes(b.mlxAllocator.peakActiveBytes),
+        t.planMlxHelp,
+      ]);
     }
+    if (b.retainedKv) {
+      rows.push([
+        t.planMlxRetained,
+        bytes(b.retainedKv.bytes),
+        t.planMlxRetainedHelp,
+      ]);
+      rows.push([
+        t.planMlxRetainedEntries,
+        b.retainedKv.entries.toLocaleString(),
+        t.planMlxRetainedHelp,
+      ]);
+    }
+    if (
+      !b.mlxAllocator ||
+      [b.allocatorBytes, b.allocatorPeakBytes, b.kvBytes].some((n) => n != null)
+    )
+      for (const [label, n] of [
+        [t.planBackendAllocator, b.allocatorBytes],
+        [t.planBackendAllocatorPeak, b.allocatorPeakBytes],
+        [t.planBackendKv, b.kvBytes],
+      ] as const) {
+        rows.push([label, bytes(n), t.planBackendTelemetryHelp]);
+      }
     const names: Record<string, string> = {
       weights: t.planComponentWeights,
       recurrent: t.planComponentRecurrent,

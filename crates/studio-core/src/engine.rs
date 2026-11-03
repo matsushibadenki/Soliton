@@ -30,6 +30,7 @@ pub struct VllmSettings {
     pub executable: String,
     pub evidence: String,
     pub context: u32,
+    pub mps_fallback: Option<bool>,
     /// Zero preserves the backend default; nonzero requires qualified MLX evidence.
     #[serde(rename = "kvCacheMiB")]
     pub kv_cache_mib: u32,
@@ -46,6 +47,7 @@ impl Default for VllmSettings {
             executable: String::new(),
             evidence: String::new(),
             context: 1024,
+            mps_fallback: None,
             kv_cache_mib: 0,
             allocator_cache_mib: 0,
         }
@@ -99,6 +101,13 @@ impl VllmSettings {
         Ok(())
     }
     fn cache_environment(&self, command: &mut Command) {
+        // Bind the certified environment to inspection and launch without changing global settings.
+        if let Some(enabled) = self.mps_fallback {
+            command.env(
+                "PYTORCH_ENABLE_MPS_FALLBACK",
+                if enabled { "1" } else { "0" },
+            );
+        }
         // Bind explicit policy to both inspection and launch; never inherit a hidden cap.
         command.env_remove("VLLM_APPLE_KV_CACHE_MIB");
         command.env_remove("VLLM_APPLE_ALLOCATOR_CACHE_MIB");
@@ -157,5 +166,30 @@ impl VllmSettings {
         }
         self.cache_environment(&mut cmd);
         Ok(cmd)
+    }
+}
+
+#[cfg(test)]
+mod environment_tests {
+    use super::*;
+    #[test]
+    fn explicit_mps_environment_and_legacy_inheritance() {
+        let mut settings = VllmSettings::default();
+        for value in [None, Some(true), Some(false)] {
+            settings.mps_fallback = value;
+            let mut command = Command::new("python");
+            settings.cache_environment(&mut command);
+            let found = command
+                .as_std()
+                .get_envs()
+                .find(|(k, _)| *k == "PYTORCH_ENABLE_MPS_FALLBACK")
+                .map(|(_, v)| v.unwrap().to_str().unwrap().to_owned());
+            assert_eq!(
+                found,
+                value.map(|v| if v { "1".to_string() } else { "0".to_string() })
+            );
+        }
+        let old: VllmSettings = serde_json::from_str("{}").unwrap();
+        assert_eq!(old.mps_fallback, None);
     }
 }

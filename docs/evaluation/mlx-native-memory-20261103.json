@@ -1,0 +1,431 @@
+{
+  "date": "2026-11-03",
+  "passed": true,
+  "scope": "Native Tauri GUI with actual Gemma 2 2B 4-bit MLX; not a performance comparison or whole-memory fit verdict.",
+  "qualification": {
+    "rawReport": "soliton-vllm-apple-requalification-20261103.json",
+    "sha256": "b06f7f2c52d42bee6cf8173befd4f74f12dd92336b435524fdf628c5436d35ed",
+    "elapsedSeconds": 1800.392,
+    "successes": 5038,
+    "failures": 0,
+    "peakRssGrowthBytes": 11796480,
+    "shutdownClean": true,
+    "changedIdentityFields": [
+      "runtime_sha256"
+    ]
+  },
+  "profile": {
+    "context": 4096,
+    "concurrency": 1,
+    "kvCacheMiB": 1024,
+    "allocatorCacheMiB": 512,
+    "mpsFallback": true
+  },
+  "gui": {
+    "runtime": "native Apple Silicon Soliton.app",
+    "externalMpsEnvironmentRemoved": true,
+    "question": "2+3の答えを数字1文字だけで返してください。",
+    "answer": "5",
+    "languages": [
+      "ja",
+      "en",
+      "zh"
+    ],
+    "stages": [
+      {
+        "stage": "offline-before",
+        "status": "offline",
+        "language": "ja",
+        "context": 4096,
+        "reading": null,
+        "messageCount": 0
+      },
+      {
+        "stage": "ready-ja-before-chat",
+        "status": "ready",
+        "language": "ja",
+        "context": 4096,
+        "reading": {
+          "allocatorBytes": null,
+          "allocatorPeakBytes": null,
+          "components": [
+            {
+              "basis": "artifact",
+              "bytes": 1470988882,
+              "name": "weights"
+            },
+            {
+              "basis": "model_spec",
+              "bytes": 0,
+              "name": "recurrent"
+            },
+            {
+              "basis": "ledger",
+              "bytes": 0,
+              "name": "prefix"
+            },
+            {
+              "basis": "projection",
+              "bytes": 0,
+              "name": "window"
+            },
+            {
+              "basis": "model_spec",
+              "bytes": 0,
+              "name": "experts"
+            },
+            {
+              "basis": "model_spec",
+              "bytes": 0,
+              "name": "ngram"
+            },
+            {
+              "basis": "model_spec",
+              "bytes": 0,
+              "name": "mtp"
+            },
+            {
+              "basis": "ledger",
+              "bytes": 0,
+              "name": "scratch"
+            }
+          ],
+          "kvBytes": null,
+          "mlxAllocator": {
+            "activeBytes": 1473045008,
+            "freeCacheBytes": 3380,
+            "peakActiveBytes": 1473045008
+          },
+          "retainedKv": {
+            "bytes": 0,
+            "entries": 0,
+            "limitBytes": 1073741824
+          },
+          "sampledAt": 1793704670024
+        },
+        "messageCount": 0
+      },
+      {
+        "stage": "expired-after-chat",
+        "status": "ready",
+        "language": "ja",
+        "context": 4096,
+        "reading": null,
+        "messageCount": 2
+      },
+      {
+        "stage": "ready-ja-after-chat",
+        "status": "ready",
+        "language": "ja",
+        "context": 4096,
+        "reading": {
+          "allocatorBytes": null,
+          "allocatorPeakBytes": null,
+          "components": [
+            {
+              "basis": "artifact",
+              "bytes": 1470988882,
+              "name": "weights"
+            },
+            {
+              "basis": "model_spec",
+              "bytes": 0,
+              "name": "recurrent"
+            },
+            {
+              "basis": "ledger",
+              "bytes": 0,
+              "name": "prefix"
+            },
+            {
+              "basis": "projection",
+              "bytes": 0,
+              "name": "window"
+            },
+            {
+              "basis": "model_spec",
+              "bytes": 0,
+              "name": "experts"
+            },
+            {
+              "basis": "model_spec",
+              "bytes": 0,
+              "name": "ngram"
+            },
+            {
+              "basis": "model_spec",
+              "bytes": 0,
+              "name": "mtp"
+            },
+            {
+              "basis": "ledger",
+              "bytes": 0,
+              "name": "scratch"
+            }
+          ],
+          "kvBytes": null,
+          "mlxAllocator": {
+            "activeBytes": 1528095300,
+            "freeCacheBytes": 10126522,
+            "peakActiveBytes": 1552002459
+          },
+          "retainedKv": {
+            "bytes": 2768896,
+            "entries": 1,
+            "limitBytes": 1073741824
+          },
+          "sampledAt": 1793704737762
+        },
+        "messageCount": 2
+      },
+      {
+        "stage": "ready-en",
+        "status": "ready",
+        "language": "en",
+        "context": 4096,
+        "reading": {
+          "allocatorBytes": null,
+          "allocatorPeakBytes": null,
+          "components": [
+            {
+              "basis": "artifact",
+              "bytes": 1470988882,
+              "name": "weights"
+            },
+            {
+              "basis": "model_spec",
+              "bytes": 0,
+              "name": "recurrent"
+            },
+            {
+              "basis": "ledger",
+              "bytes": 0,
+              "name": "prefix"
+            },
+            {
+              "basis": "projection",
+              "bytes": 0,
+              "name": "window"
+            },
+            {
+              "basis": "model_spec",
+              "bytes": 0,
+              "name": "experts"
+            },
+            {
+              "basis": "model_spec",
+              "bytes": 0,
+              "name": "ngram"
+            },
+            {
+              "basis": "model_spec",
+              "bytes": 0,
+              "name": "mtp"
+            },
+            {
+              "basis": "ledger",
+              "bytes": 0,
+              "name": "scratch"
+            }
+          ],
+          "kvBytes": null,
+          "mlxAllocator": {
+            "activeBytes": 1528095300,
+            "freeCacheBytes": 10126522,
+            "peakActiveBytes": 1552002459
+          },
+          "retainedKv": {
+            "bytes": 2768896,
+            "entries": 1,
+            "limitBytes": 1073741824
+          },
+          "sampledAt": 1793704776592
+        },
+        "messageCount": 2
+      },
+      {
+        "stage": "ready-zh",
+        "status": "ready",
+        "language": "zh",
+        "context": 4096,
+        "reading": {
+          "allocatorBytes": null,
+          "allocatorPeakBytes": null,
+          "components": [
+            {
+              "basis": "artifact",
+              "bytes": 1470988882,
+              "name": "weights"
+            },
+            {
+              "basis": "model_spec",
+              "bytes": 0,
+              "name": "recurrent"
+            },
+            {
+              "basis": "ledger",
+              "bytes": 0,
+              "name": "prefix"
+            },
+            {
+              "basis": "projection",
+              "bytes": 0,
+              "name": "window"
+            },
+            {
+              "basis": "model_spec",
+              "bytes": 0,
+              "name": "experts"
+            },
+            {
+              "basis": "model_spec",
+              "bytes": 0,
+              "name": "ngram"
+            },
+            {
+              "basis": "model_spec",
+              "bytes": 0,
+              "name": "mtp"
+            },
+            {
+              "basis": "ledger",
+              "bytes": 0,
+              "name": "scratch"
+            }
+          ],
+          "kvBytes": null,
+          "mlxAllocator": {
+            "activeBytes": 1528095300,
+            "freeCacheBytes": 10126522,
+            "peakActiveBytes": 1552002459
+          },
+          "retainedKv": {
+            "bytes": 2768896,
+            "entries": 1,
+            "limitBytes": 1073741824
+          },
+          "sampledAt": 1793704805174
+        },
+        "messageCount": 2
+      },
+      {
+        "stage": "stopped",
+        "status": "offline",
+        "language": "zh",
+        "context": 4096,
+        "reading": null,
+        "messageCount": 2
+      },
+      {
+        "stage": "restarted-before-refresh",
+        "status": "ready",
+        "language": "zh",
+        "context": 4096,
+        "reading": null,
+        "messageCount": 2
+      },
+      {
+        "stage": "restarted-refreshed",
+        "status": "ready",
+        "language": "zh",
+        "context": 4096,
+        "reading": {
+          "allocatorBytes": null,
+          "allocatorPeakBytes": null,
+          "components": [
+            {
+              "basis": "artifact",
+              "bytes": 1470988882,
+              "name": "weights"
+            },
+            {
+              "basis": "model_spec",
+              "bytes": 0,
+              "name": "recurrent"
+            },
+            {
+              "basis": "ledger",
+              "bytes": 0,
+              "name": "prefix"
+            },
+            {
+              "basis": "projection",
+              "bytes": 0,
+              "name": "window"
+            },
+            {
+              "basis": "model_spec",
+              "bytes": 0,
+              "name": "experts"
+            },
+            {
+              "basis": "model_spec",
+              "bytes": 0,
+              "name": "ngram"
+            },
+            {
+              "basis": "model_spec",
+              "bytes": 0,
+              "name": "mtp"
+            },
+            {
+              "basis": "ledger",
+              "bytes": 0,
+              "name": "scratch"
+            }
+          ],
+          "kvBytes": null,
+          "mlxAllocator": {
+            "activeBytes": 1473045008,
+            "freeCacheBytes": 3380,
+            "peakActiveBytes": 1473045008
+          },
+          "retainedKv": {
+            "bytes": 0,
+            "entries": 0,
+            "limitBytes": 1073741824
+          },
+          "sampledAt": 1793704912408
+        },
+        "messageCount": 2
+      },
+      {
+        "stage": "stopped-final",
+        "status": "offline",
+        "language": "zh",
+        "context": 4096,
+        "reading": null,
+        "messageCount": 2
+      }
+    ]
+  },
+  "activation": {
+    "oldEvidenceRejected": "architecture evidence identity mismatch",
+    "freshEvidenceAccepted": true,
+    "overContextRejected": true,
+    "wrongMpsEnvironmentRejected": true,
+    "onlyEvidenceAndCertifiedMpsSettingChanged": true
+  },
+  "ordinaryState": {
+    "files": 2,
+    "conversationAndOtherSettingsPreserved": true,
+    "backupsCreated": true
+  },
+  "checks": {
+    "rustCoreTests": 120,
+    "frontendBuild": true,
+    "distributionNativeFiles": 71,
+    "fixtureUiWidths": [
+      1440,
+      390,
+      320
+    ],
+    "nativeGuiVisibleValuesVerified": true,
+    "ownedProcessesStopped": true
+  },
+  "limitations": [
+    "Active allocations, free cache, retained LRU accounting and peak have different scopes; do not add or equate them to physical RAM.",
+    "All certification/model input checks remain enabled; no model download, global package update or runtime source modification.",
+    "Other Macs, larger context, other models and full MTP/media workspace remain unqualified."
+  ]
+}

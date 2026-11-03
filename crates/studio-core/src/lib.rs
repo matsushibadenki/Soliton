@@ -144,6 +144,7 @@ impl Startup {
 struct Process {
     allocation_report: Option<allocation_report::Session>,
     vllm_memory_binding: Option<engine::VllmSettings>,
+    vllm_backend_port: Option<u16>,
     backend_budget: Option<backend_budget::Sample>,
     backend_budget_request: Option<String>,
     child: Option<Child>,
@@ -225,6 +226,7 @@ impl Studio {
             process: Mutex::new(Process {
                 allocation_report: None,
                 vllm_memory_binding: None,
+                vllm_backend_port: None,
                 backend_budget: None,
                 backend_budget_request: None,
                 child: None,
@@ -329,6 +331,7 @@ impl Studio {
         let mut p = self.process.lock().await;
         p.allocation_report = None;
         p.vllm_memory_binding = None;
+        p.vllm_backend_port = None;
         p.backend_budget = None;
         p.backend_budget_request = None;
         if let Some(id) = p.child.as_ref().and_then(|c| c.id()) {
@@ -537,6 +540,7 @@ impl Studio {
             p.key = key;
             p.memory = Some(json!({"engine":"vllmApple"}));
             p.vllm_memory_binding = Some(s.vllm.clone());
+            p.vllm_backend_port = Some(backend_port);
             push_log(
                 &self.logs,
                 format!(
