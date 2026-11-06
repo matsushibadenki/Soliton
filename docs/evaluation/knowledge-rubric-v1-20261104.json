@@ -1,0 +1,557 @@
+{
+  "date": "2026-11-04",
+  "scope": "Deterministic rule/probe coverage validation on synthetic Q7 fact; no semantic-judge or knowledge-erasure claim",
+  "assessmentVersion": 1,
+  "verdict": "rejected",
+  "categoryResults": {
+    "target": {
+      "baselinePassed": 0,
+      "candidatePassed": 1,
+      "total": 3
+    },
+    "paraphrase": {
+      "baselinePassed": 0,
+      "candidatePassed": 1,
+      "total": 3
+    },
+    "indirect": {
+      "baselinePassed": 0,
+      "candidatePassed": 0,
+      "total": 3
+    },
+    "locality": {
+      "baselinePassed": 3,
+      "candidatePassed": 1,
+      "total": 3
+    }
+  },
+  "baselinePassed": 3,
+  "candidatePassed": 3,
+  "total": 12,
+  "englishTargetParaphraseLocalitySubset": {
+    "passed": 3,
+    "total": 3
+  },
+  "validation": {
+    "rustTests": 144,
+    "frontendBuild": "passed",
+    "nativeBuild": "passed",
+    "browserLanguages": [
+      "en",
+      "ja",
+      "zh"
+    ],
+    "browserWidths": [
+      1280,
+      390,
+      320
+    ],
+    "browser": "Browser skill not listed; installed Playwright/Chrome",
+    "ruleEditingAndSharedSave": true,
+    "legacyRetainBlocked": true,
+    "reasonAndRuleExports": true,
+    "nativeDisplay": "Japanese, actual report",
+    "nativeSaveDialog": true,
+    "nativeCancelDialog": true,
+    "nativeFloatingDocking": true,
+    "nativeRoundTripPreservedReport": true,
+    "ordinaryConversationsUsed": false,
+    "liveOpenAI": false,
+    "nativeExportSha256": "6e5ca55a1988c614baa6194f5112958393f1d0f93bdb161d9499c095e610a00f"
+  },
+  "experiment": {
+    "assessmentVersion": 1,
+    "createdAt": 1793779738,
+    "directory": "/private/var/folders/yz/bsd6nq0941lc9tsfd9pxxhb40000gn/T/soliton-rubric-qa-55oj98uy/.soliton-knowledge/c287639a-ed48-475d-af47-74008f458e8f",
+    "draft": {
+      "evaluation": [
+        {
+          "aliases": [
+            "Amber"
+          ],
+          "expected": "Amber.",
+          "forbidden": "",
+          "kind": "target",
+          "language": "en",
+          "matchMode": "exact",
+          "prompt": "According to the synthetic Q7 specification, state only its beacon colour."
+        },
+        {
+          "aliases": [
+            "Amber"
+          ],
+          "expected": "Amber.",
+          "forbidden": "",
+          "kind": "paraphrase",
+          "language": "en",
+          "matchMode": "exact",
+          "prompt": "Which hue is assigned to beacon Q7? Reply with the colour only."
+        },
+        {
+          "aliases": [
+            "Amber"
+          ],
+          "expected": "Amber.",
+          "forbidden": "",
+          "kind": "indirect",
+          "language": "en",
+          "matchMode": "exact",
+          "prompt": "Fill the missing colour in \"Q7 shines in __\". Return only the colour."
+        },
+        {
+          "aliases": [],
+          "expected": "4",
+          "forbidden": "",
+          "kind": "locality",
+          "language": "en",
+          "matchMode": "exact",
+          "prompt": "What is two plus two? Reply with only the numeral."
+        },
+        {
+          "aliases": [
+            "Amber.",
+            "Amber",
+            "琥珀色。"
+          ],
+          "expected": "琥珀色",
+          "forbidden": "",
+          "kind": "target",
+          "language": "ja",
+          "matchMode": "exact",
+          "prompt": "合成仕様にあるQ7ビーコンの色を、色名だけで答えてください。"
+        },
+        {
+          "aliases": [
+            "Amber.",
+            "Amber",
+            "琥珀色。"
+          ],
+          "expected": "琥珀色",
+          "forbidden": "",
+          "kind": "paraphrase",
+          "language": "ja",
+          "matchMode": "exact",
+          "prompt": "Q7の合図に割り当てられている色は何色ですか。色名だけ答えてください。"
+        },
+        {
+          "aliases": [
+            "Amber.",
+            "Amber",
+            "琥珀色。"
+          ],
+          "expected": "琥珀色",
+          "forbidden": "",
+          "kind": "indirect",
+          "language": "ja",
+          "matchMode": "exact",
+          "prompt": "「Q7の光は＿色」の空欄に入る色名だけを答えてください。"
+        },
+        {
+          "aliases": [],
+          "expected": "4",
+          "forbidden": "",
+          "kind": "locality",
+          "language": "ja",
+          "matchMode": "exact",
+          "prompt": "2たす2はいくつですか。数字だけで答えてください。"
+        },
+        {
+          "aliases": [
+            "Amber.",
+            "Amber",
+            "琥珀色。"
+          ],
+          "expected": "琥珀色",
+          "forbidden": "",
+          "kind": "target",
+          "language": "zh",
+          "matchMode": "exact",
+          "prompt": "合成规范中的Q7信标是什么颜色？只回复颜色名。"
+        },
+        {
+          "aliases": [
+            "Amber.",
+            "Amber",
+            "琥珀色。"
+          ],
+          "expected": "琥珀色",
+          "forbidden": "",
+          "kind": "paraphrase",
+          "language": "zh",
+          "matchMode": "exact",
+          "prompt": "Q7的信号使用哪种色调？只回复颜色。"
+        },
+        {
+          "aliases": [
+            "Amber.",
+            "Amber",
+            "琥珀色。"
+          ],
+          "expected": "琥珀色",
+          "forbidden": "",
+          "kind": "indirect",
+          "language": "zh",
+          "matchMode": "exact",
+          "prompt": "补全“Q7发出＿色的光”，只返回空缺的颜色名。"
+        },
+        {
+          "aliases": [],
+          "expected": "4",
+          "forbidden": "",
+          "kind": "locality",
+          "language": "zh",
+          "matchMode": "exact",
+          "prompt": "二加二等于多少？只回复数字。"
+        }
+      ],
+      "layers": 2,
+      "learningRate": 0.0001,
+      "maxTokens": 16,
+      "model": "/Users/Shared/Program/Tauri/Soliton/vLLM-apple/models/gemma-2-2b-it-4bit",
+      "name": "Q7 multilingual rubric QA",
+      "operation": "add",
+      "planning": null,
+      "python": "/opt/homebrew/opt/vllm-metal/libexec/bin/python",
+      "source": "Synthetic approved test note: Q7 beacon colour = amber / 琥珀色. Unrelated locality: 2+2=4. No real user data.",
+      "steps": 30,
+      "training": [
+        {
+          "prompt": "What colour was selected for the fictional Q7 beacon?",
+          "response": "Amber."
+        },
+        {
+          "prompt": "Give the recorded Q7 beacon colour.",
+          "response": "Amber."
+        },
+        {
+          "prompt": "架空のQ7ビーコンの設定色を教えてください。",
+          "response": "琥珀色"
+        },
+        {
+          "prompt": "虚构的Q7信标设定为何种颜色？",
+          "response": "琥珀色"
+        }
+      ]
+    },
+    "error": null,
+    "id": "c287639a-ed48-475d-af47-74008f458e8f",
+    "logs": [
+      "Warning: Validation set not found or empty. Training will proceed without validation.",
+      "╭─ \u001b[1mmlx_lm.lora\u001b[0m ────────────────────────────────────────────────────────────────────────────────────────────────────────╮",
+      "│    model           \u001b[1m/Users/Shared/Program/Tauri/Soliton/vLLM-apple/models/gemma-2-2b-it-4bit\u001b[0m                          │",
+      "│    type            \u001b[1mlora · 2 layers · rank 8\u001b[0m                                                                          │",
+      "│    dataset                                                                                                           │",
+      "│  \u001b[1m/private/var/folders/yz/bsd6nq0941lc9tsfd9pxxhb40000gn/T/soliton-rubric-qa-55oj98uy/.soliton-knowledge/c287639a-ed\u001b[0m  │",
+      "│  \u001b[1m48-475d-af47-74008f458e8f/data\u001b[0m                                                                                      │",
+      "│    optimizer       \u001b[1madam · lr 1.0e-04\u001b[0m                                                                                 │",
+      "│    batch · iters   \u001b[1m1 · 30\u001b[0m                                                                                            │",
+      "│    max seq         \u001b[1m512\u001b[0m                                                                                               │",
+      "╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯",
+      "Trainable parameters: 0.031% (0.799M/2614.342M)",
+      "  \u001b[1miter   train_loss     tok/s     tokens\u001b[0m",
+      "     1    \u001b[1m12.441 ▼\u001b[0m    \u001b[1m   45\u001b[0m      0.0k",
+      "     2    \u001b[1m6.751 ▼\u001b[0m    \u001b[1m   48\u001b[0m      0.0k",
+      "     3    \u001b[1m7.829 ▲\u001b[0m    \u001b[1m   63\u001b[0m      0.0k",
+      "     4    \u001b[1m3.465 ▼\u001b[0m    \u001b[1m   63\u001b[0m      0.0k",
+      "     5    \u001b[1m5.451 ▲\u001b[0m    \u001b[1m   51\u001b[0m      0.0k",
+      "     6    \u001b[1m15.454 ▲\u001b[0m    \u001b[1m   61\u001b[0m      0.0k",
+      "     7    \u001b[1m1.491 ▼\u001b[0m    \u001b[1m   50\u001b[0m      0.0k",
+      "     8    \u001b[1m1.144 ▼\u001b[0m    \u001b[1m   59\u001b[0m      0.0k",
+      "     9    \u001b[1m2.578 ▲\u001b[0m    \u001b[1m   58\u001b[0m      0.1k",
+      "    10    \u001b[1m1.327 ▼\u001b[0m    \u001b[1m   49\u001b[0m      0.1k",
+      "    11    \u001b[1m0.709 ▼\u001b[0m    \u001b[1m   48\u001b[0m      0.1k",
+      "    12    \u001b[1m4.494 ▲\u001b[0m    \u001b[1m   58\u001b[0m      0.1k",
+      "    13    \u001b[1m1.614 ▼\u001b[0m    \u001b[1m   49\u001b[0m      0.1k",
+      "    14    \u001b[1m0.759 ▼\u001b[0m    \u001b[1m   60\u001b[0m      0.1k",
+      "    15    \u001b[1m1.151 ▲\u001b[0m    \u001b[1m   59\u001b[0m      0.1k",
+      "    16    \u001b[1m1.250 ▲\u001b[0m    \u001b[1m   48\u001b[0m      0.1k",
+      "    17    \u001b[1m1.121 ▼\u001b[0m    \u001b[1m   58\u001b[0m      0.1k",
+      "    18    \u001b[1m1.406 ▲\u001b[0m    \u001b[1m   50\u001b[0m      0.1k",
+      "    19    \u001b[1m0.860 ▼\u001b[0m    \u001b[1m   47\u001b[0m      0.1k",
+      "    20    \u001b[1m1.054 ▲\u001b[0m    \u001b[1m   57\u001b[0m      0.1k",
+      "    21    \u001b[1m2.290 ▲\u001b[0m    \u001b[1m   59\u001b[0m      0.1k",
+      "    22    \u001b[1m1.142 ▼\u001b[0m    \u001b[1m   62\u001b[0m      0.1k",
+      "    23    \u001b[1m1.207 ▲\u001b[0m    \u001b[1m   52\u001b[0m      0.1k",
+      "    24    \u001b[1m1.086 ▼\u001b[0m    \u001b[1m   50\u001b[0m      0.1k",
+      "    25    \u001b[1m0.592 ▼\u001b[0m    \u001b[1m   61\u001b[0m      0.1k",
+      "    26    \u001b[1m0.883 ▲\u001b[0m    \u001b[1m   50\u001b[0m      0.1k",
+      "    27    \u001b[1m0.701 ▼\u001b[0m    \u001b[1m   60\u001b[0m      0.1k",
+      "    28    \u001b[1m0.707 ▲\u001b[0m    \u001b[1m   50\u001b[0m      0.2k",
+      "    29    \u001b[1m0.554 ▼\u001b[0m    \u001b[1m   50\u001b[0m      0.2k",
+      "    30    \u001b[1m1.513 ▲\u001b[0m    \u001b[1m   49\u001b[0m      0.2k",
+      "  \u001b[1msave\u001b[0m  0000030_adapters.safetensors",
+      "\u001b[1mtrain\u001b[0m ██████████████████████████████ \u001b[1m100%\u001b[0m · \u001b[1m   30\u001b[0m/30"
+    ],
+    "progress": {
+      "iteration": 30,
+      "kind": "progress",
+      "loss": 1.5129400491714478,
+      "peakMemoryGb": 1.649751546
+    },
+    "provenance": {
+      "adapterSha256": "ed9c703a8c26fee6ce94bfd7d94f43ac165d0d6b8ca28f4ce487f54b62965e58",
+      "kind": "complete",
+      "sourceSha256": "3e8d02db8dc0df26d4e45291ae3a11ba9538671fc5337b22a8176f611a24b800",
+      "versions": {
+        "mlx": "0.32.2",
+        "mlx-lm": "0.32.0"
+      }
+    },
+    "results": [
+      {
+        "baseline": {
+          "elapsedMs": 514,
+          "passed": false,
+          "reasons": [
+            "notExact"
+          ],
+          "text": "The beacon colour for the Synthetic Q7 specification is **red**. \n",
+          "tokens": 16,
+          "truncated": false
+        },
+        "candidate": {
+          "elapsedMs": 250,
+          "passed": true,
+          "reasons": [],
+          "text": "Amber.",
+          "tokens": 3,
+          "truncated": false
+        }
+      },
+      {
+        "baseline": {
+          "elapsedMs": 302,
+          "passed": false,
+          "reasons": [
+            "notExact"
+          ],
+          "text": "Red \n",
+          "tokens": 4,
+          "truncated": false
+        },
+        "candidate": {
+          "elapsedMs": 225,
+          "passed": true,
+          "reasons": [],
+          "text": "Amber",
+          "tokens": 2,
+          "truncated": false
+        }
+      },
+      {
+        "baseline": {
+          "elapsedMs": 275,
+          "passed": false,
+          "reasons": [
+            "notExact"
+          ],
+          "text": "gold \n",
+          "tokens": 4,
+          "truncated": false
+        },
+        "candidate": {
+          "elapsedMs": 229,
+          "passed": false,
+          "reasons": [
+            "notExact"
+          ],
+          "text": "色",
+          "tokens": 2,
+          "truncated": false
+        }
+      },
+      {
+        "baseline": {
+          "elapsedMs": 259,
+          "passed": true,
+          "reasons": [],
+          "text": "4 \n",
+          "tokens": 4,
+          "truncated": false
+        },
+        "candidate": {
+          "elapsedMs": 224,
+          "passed": true,
+          "reasons": [],
+          "text": "4",
+          "tokens": 2,
+          "truncated": false
+        }
+      },
+      {
+        "baseline": {
+          "elapsedMs": 262,
+          "passed": false,
+          "reasons": [
+            "notExact"
+          ],
+          "text": "赤  \n",
+          "tokens": 4,
+          "truncated": false
+        },
+        "candidate": {
+          "elapsedMs": 241,
+          "passed": false,
+          "reasons": [
+            "notExact"
+          ],
+          "text": "色色",
+          "tokens": 3,
+          "truncated": false
+        }
+      },
+      {
+        "baseline": {
+          "elapsedMs": 269,
+          "passed": false,
+          "reasons": [
+            "notExact"
+          ],
+          "text": "赤  \n",
+          "tokens": 4,
+          "truncated": false
+        },
+        "candidate": {
+          "elapsedMs": 243,
+          "passed": false,
+          "reasons": [
+            "notExact"
+          ],
+          "text": "色色",
+          "tokens": 3,
+          "truncated": false
+        }
+      },
+      {
+        "baseline": {
+          "elapsedMs": 260,
+          "passed": false,
+          "reasons": [
+            "notExact"
+          ],
+          "text": "青  \n",
+          "tokens": 4,
+          "truncated": false
+        },
+        "candidate": {
+          "elapsedMs": 246,
+          "passed": false,
+          "reasons": [
+            "notExact"
+          ],
+          "text": "色色",
+          "tokens": 3,
+          "truncated": false
+        }
+      },
+      {
+        "baseline": {
+          "elapsedMs": 266,
+          "passed": true,
+          "reasons": [],
+          "text": "4  \n",
+          "tokens": 4,
+          "truncated": false
+        },
+        "candidate": {
+          "elapsedMs": 206,
+          "passed": false,
+          "reasons": [
+            "empty",
+            "notExact"
+          ],
+          "text": "",
+          "tokens": 1,
+          "truncated": false
+        }
+      },
+      {
+        "baseline": {
+          "elapsedMs": 264,
+          "passed": false,
+          "reasons": [
+            "notExact"
+          ],
+          "text": "灰色  \n",
+          "tokens": 4,
+          "truncated": false
+        },
+        "candidate": {
+          "elapsedMs": 238,
+          "passed": false,
+          "reasons": [
+            "notExact"
+          ],
+          "text": "色色",
+          "tokens": 3,
+          "truncated": false
+        }
+      },
+      {
+        "baseline": {
+          "elapsedMs": 260,
+          "passed": false,
+          "reasons": [
+            "notExact"
+          ],
+          "text": "红色  \n",
+          "tokens": 4,
+          "truncated": false
+        },
+        "candidate": {
+          "elapsedMs": 244,
+          "passed": false,
+          "reasons": [
+            "notExact"
+          ],
+          "text": "色色",
+          "tokens": 3,
+          "truncated": false
+        }
+      },
+      {
+        "baseline": {
+          "elapsedMs": 261,
+          "passed": false,
+          "reasons": [
+            "notExact"
+          ],
+          "text": "红色  \n",
+          "tokens": 4,
+          "truncated": false
+        },
+        "candidate": {
+          "elapsedMs": 250,
+          "passed": false,
+          "reasons": [
+            "notExact"
+          ],
+          "text": "色色",
+          "tokens": 3,
+          "truncated": false
+        }
+      },
+      {
+        "baseline": {
+          "elapsedMs": 256,
+          "passed": true,
+          "reasons": [],
+          "text": "4 \n",
+          "tokens": 4,
+          "truncated": false
+        },
+        "candidate": {
+          "elapsedMs": 225,
+          "passed": false,
+          "reasons": [
+            "notExact"
+          ],
+          "text": "珀",
+          "tokens": 2,
+          "truncated": false
+        }
+      }
+    ],
+    "status": "rejected"
+  }
+}

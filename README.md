@@ -4,13 +4,37 @@
 
 [日本語](README.ja.md) · [简体中文](README.zh-CN.md)
 
-A Tauri 2 inference workbench and shared Rust API gateway for Strata and vLLM-Apple on Apple Silicon. Rust owns conversations, history, logs and metrics across all windows. Engines run separately and are selected manually.
+A Tauri 2 workbench for local inference, knowledge-editing experiments and OpenAI-assisted editing plans on Apple Silicon, with a shared Rust API gateway for Strata and vLLM-Apple. Rust owns conversations, history, logs and metrics across all windows. Engines run separately and are selected manually.
 
 ## Knowledge Lab
 
-Switch between **Inference** and **Knowledge Lab** using the top tabs. In **Edit**, choose a local MLX model and a Python environment with MLX-LM training support, record the source, and enter training examples plus held-out target, paraphrase and locality questions. Stop inference, then **Train & evaluate** runs baseline evaluation, LoRA/QLoRA training, saved-adapter reload and candidate evaluation. Rust shares jobs, cancellation, draft revisions and history across windows; the UI supports English, Japanese and Simplified Chinese.
+Use the top **Inference / Knowledge Lab** tabs to switch screens. Knowledge Lab has **Edit / Evaluation / History** views for creating separate LoRA/QLoRA adapters and comparing them with the base model. English, Japanese and Simplified Chinese are supported; Rust shares drafts, plans, jobs and history across windows.
 
-**Suppress answers** trains a refusal response; it does not establish that knowledge has been erased. Scores are required/forbidden phrase checks with output-limit rejection, so inspect the answers. The base model is never overwritten. Manifests, adapters and reports are stored beside the state file under `.soliton-knowledge/<experiment-id>/`. Keeping an adapter does not automatically activate it in the inference engine. This requires a separately selected MLX environment; GGUF training, OpenAI planning, ROME/MEMIT, true unlearning and weight heatmaps are not implemented. [Workflow and implementation scope](docs/KNOWLEDGE_LAB.md)
+### Create an editing plan with OpenAI
+
+1. Open **Knowledge Lab → Edit → OpenAI editing planner**. Save any draft changes first.
+2. Enter the editing goal and source material. Include unrelated, sourced facts for locality tests. Choose **Add / correct** or **Suppress answers** in the editor.
+3. Enter an OpenAI API key in the planner, or set `OPENAI_API_KEY` in the Rust server's environment. The desktop app must inherit that environment when launched. The planner key is separate from Soliton's local session API key and is not saved.
+4. Select an OpenAI model supporting Structured Outputs; the initial field value is `gpt-4.1`. Availability depends on your API project. Click **Generate plan & data**.
+5. Review the summary, risks, 4–12 training examples and 6–12 held-out evaluation questions, then **Review & import into draft**. Import preserves the local model, Python and training settings. It does not start training.
+
+The planner sends the entered goal, sources, operation and language to OpenAI; API charges apply. Local weights, model paths and conversations are not included. Source claims require your review. The original proposal, source material and producing model are carried into imported drafts and experiment reports. Generation and import reject stale draft revisions, duplicate training/evaluation questions and conflicting required/forbidden phrases.
+
+### Train and compare locally
+
+Choose an absolute local MLX model folder containing its configuration, tokenizer and Safetensors weights, plus a Python executable with MLX-LM training support. This is a separately prepared environment; bundled Strata inference support does not provide the Knowledge Lab training environment.
+
+Stop inference, then **Train & evaluate** runs base-model evaluation → LoRA/QLoRA training → saved-adapter reload → candidate evaluation. Compare target, paraphrase, indirect and locality answers. All candidate checks and the base-model locality checks must pass before an adapter can be kept. New tests default to exact matching with explicit allowed alternatives and language labels; substring matching remains available. Empty, truncated and forbidden-phrase answers fail. Failure reasons and versioned criteria travel with reports. These are deterministic rules, so review meaning as well. Legacy reports require a current-version rerun before new retention.
+
+**Suppress answers** trains refusal responses and does not prove knowledge erasure. Base weights remain intact. Manifests, adapters and reports are saved beside the state file in `.soliton-knowledge/<experiment-id>/`. Keeping an adapter records the accepted candidate; activation in the normal inference engine is a separate, unfinished feature. GGUF training, autonomous editing, ROME/MEMIT, true unlearning and weight heatmaps are not implemented.
+
+### Verification status
+
+- 🟢 [Done] Local adapter training, comparison, cancellation, history and report export; small real Gemma 2 2B 4bit addition/suppression fixtures passed their three candidate checks.
+- 🟢 [Done] OpenAI planning UI, structured-response parsing, source/proposal preservation and revision-checked import; 11 knowledge-related Rust tests, frontend build and Tauri compile check pass. Loopback fixtures cover successful and authentication-error HTTP responses.
+- ⭕️ [Pending] Live OpenAI generation: no API key was available in the development environment. Small local fixtures do not certify broad editing quality or erasure.
+
+[Detailed workflow, limits and data flow](docs/KNOWLEDGE_LAB.md) · [Roadmap](docs/ROADMAP.md)
 
 ## Engine selection
 
@@ -54,7 +78,7 @@ Real inference requires the upstream Metal executable, prepared model pack, and 
 
 On Apple Silicon, Studio automatically caps context and prompt buffers by physical memory, reapplies them after model preparation and before startup, and preserves existing smaller limits. The 32 GiB profile uses 8K context and chunks of 64. See [Mac memory policy](docs/MAC_MEMORY.md). Preferences → Engine now shows automatic/active memory values and supports Manual context, prompt batch and macOS reserve settings. Use Apply & restart to save and restart in one action, including while running; plain Apply saves while stopped. Values survive re-preparation. The Engine tab also shows live system-wide memory, available memory and a before-change comparison; these include reclaimable cache and other apps, not only Strata. Memory history charts compare Mac-wide usage and the Strata process over 2, 5 or 10 minutes, with settings, start/stop and inference markers. Rust keeps recording while chatting; history resets on app exit.
 
-The logo opens About, Preferences and Quit. File/Edit/View/Help menus provide conversation export, text editing and workspace switching. Preferences has **General** (language), **Engine**, and **API** tabs. Switch the main workspace using the **Chat / Logs** tabs at the bottom. `⌘,` opens Preferences; `⌘N` starts a new conversation; `⌘1` / `⌘2` switch the workspace. File → Export conversation saves JSON through a native save dialog (browser builds download JSON).
+The logo opens About, Preferences and Quit. File/Edit/View/Help menus provide conversation export, text editing and workspace switching. Preferences has **General** (language), **Engine**, and **API** tabs. Use the top **Inference / Knowledge Lab** tabs to switch screens; within Inference, use the bottom **Chat / Logs** tabs. `⌘,` opens Preferences; `⌘N` starts a new conversation; `⌘1` / `⌘2` switch the workspace. File → Export conversation saves JSON through a native save dialog (browser builds download JSON).
 
 Configuration, conversation, and in-flight generated text belong to Rust. Configuration, conversation, workspace tab order and selection survive restart; the unsent composer is temporary interaction state. Path fields retain their native file/folder pickers.
 
@@ -157,3 +181,8 @@ On the Apple Silicon distribution, select the downloaded `google/gemma-3-1b-it/m
 Run `npm run check:distribution -- --smoke` for local preflight and `npm run package:validation` for a checked ZIP. See the [trilingual clean-Mac checklist](docs/CLEAN_MAC_VALIDATION.md). Verification on another Mac remains pending.
 
 Latest update: [2026-11-02 dependencies, immutable distribution pin and real-inference evidence](docs/DEPENDENCY_UPDATE_20261102.md).
+
+
+Opt-in **MLX SSD** is available in Preferences → Engine, with Rust-owned lifecycle and private, identity-bound 30-minute qualification. The verified Gemma 2 2B profile is text-only, total context 512, output up to 128 and one request at a time. See [configuration, qualification and limits](docs/SSD_PREFIX_CACHE.md#managed-soliton-engine-and-requalification).
+
+The MLX SSD preferences also show store usage and offer stopped-engine trimming to 75% of quota, protecting unknown files.

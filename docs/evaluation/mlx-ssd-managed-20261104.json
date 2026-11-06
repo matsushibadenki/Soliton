@@ -1,0 +1,109 @@
+{
+  "date": "2026-11-04",
+  "scope": "Isolated native Soliton QA host and local Gemma 2 2B 4bit; no ordinary user settings or conversations changed",
+  "qualification": {
+    "result": "passed",
+    "identity": "7898d50420f4a57f5a791ba1ab13b5473c8847b6e27741f95dd94ee05e6292e2",
+    "profile": {
+      "schema": 1,
+      "engine": "mlxPrefix",
+      "context": 512,
+      "maximum_output_tokens": 128,
+      "concurrency": 1,
+      "temperature": 0,
+      "seed": 0,
+      "memory_cache_bytes": 67108864,
+      "allocator_cache_bytes": 268435456
+    },
+    "quota_bytes": 268435456,
+    "created_at": 1793751157.8512352,
+    "duration_seconds": 1800.3024684169995,
+    "successes": 2953,
+    "failures": 0,
+    "rss_growth_bytes": 4669440,
+    "gates": {
+      "authentication": true,
+      "request_rejection": true,
+      "cold": true,
+      "restart_hit": true,
+      "corruption_fallback": true,
+      "disconnect_recovery": true,
+      "quota_fallback": true,
+      "context_boundary": true
+    },
+    "final_counters": {
+      "hits": 0,
+      "misses": 1,
+      "writes": 2948,
+      "errors": 0,
+      "identity": "7898d50420f4a57f5a791ba1ab13b5473c8847b6e27741f95dd94ee05e6292e2",
+      "profile": {
+        "schema": 1,
+        "engine": "mlxPrefix",
+        "context": 512,
+        "maximum_output_tokens": 128,
+        "concurrency": 1,
+        "temperature": 0,
+        "seed": 0,
+        "memory_cache_bytes": 67108864,
+        "allocator_cache_bytes": 268435456
+      },
+      "quota_bytes": 268435456,
+      "experimental": true,
+      "productionIntegration": false
+    }
+  },
+  "managedHost": {
+    "result": "passed",
+    "qualificationIdentity": "7898d50420f4a57f5a791ba1ab13b5473c8847b6e27741f95dd94ee05e6292e2",
+    "checks": {
+      "qualifiedStartup": true,
+      "diskReuse": true,
+      "exclusiveStart": true,
+      "settingsLocked": true,
+      "admissionRefusals": true,
+      "sse": true,
+      "ownedProcessCleanup": true,
+      "restartReuse": true,
+      "wrongQuotaRefused": true,
+      "expiredEvidenceRefused": true,
+      "engineSwitch": true,
+      "recovery": true,
+      "conversationsPreserved": true
+    },
+    "engine": "MLX SSD"
+  },
+  "nativeUi": {
+    "ready": true,
+    "prompt": "What is 2 + 2? Answer with only the number.",
+    "answer": "4",
+    "metrics": {
+      "hits": 1,
+      "misses": 0,
+      "writes": 0,
+      "errors": 0
+    },
+    "stopClearsMetrics": true
+  },
+  "validation": {
+    "rustTests": 136,
+    "pythonContractTests": 4,
+    "frontendBuild": "passed",
+    "uiLanguages": [
+      "en",
+      "ja",
+      "zh"
+    ],
+    "uiWidths": [
+      1280,
+      390,
+      320
+    ]
+  },
+  "limitations": [
+    "Fixed 512 total context,128 output,greedy seed0,single request",
+    "Repeated synchronous writes require optimization; no speedup claim",
+    "Other machines/models and signed distribution unverified"
+  ],
+  "usableStartupEvidence": false
+}

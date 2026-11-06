@@ -1,0 +1,57 @@
+{
+  "date": "2026-11-05",
+  "scope": "Read-only Rust control-plane staging inventory; no qualified inference changes",
+  "rustTests": {
+    "passed": 147,
+    "failed": 0
+  },
+  "frontendBuild": "passed; existing Lucide use-client directive warnings",
+  "browser": {
+    "runtime": "installed Playwright/Chrome; browser skill absent",
+    "languages": [
+      "en",
+      "ja",
+      "zh"
+    ],
+    "widths": [
+      1280,
+      390,
+      320
+    ],
+    "fixture": "synthetic files via real Rust API",
+    "staging": {
+      "bytes": 4195330,
+      "directories": 2,
+      "staleBytes": 4194306,
+      "staleDirectories": 1,
+      "otherBytes": 4,
+      "otherEntries": 1
+    },
+    "checks": [
+      "missing-store accounting",
+      "saved-store quota remains separate",
+      "unauthenticated request 401",
+      "stopped trim preserves staging",
+      "unexpected link refused with HTTP400",
+      "failed refresh clears old report",
+      "refresh recovers after link removal",
+      "no document/panel horizontal overflow",
+      "no framework overlay or unexpected console/page errors",
+      "conversation history preserved",
+      "settings restored"
+    ]
+  },
+  "qualifiedArtifactSha256": {
+    "target/debug/examples/prefix-store": "b25d7b002e3163b4e4451db4bd9a9a64cd41397dd1d5093f5a1c42eac0dbcfcf",
+    "scripts/prefix-cache-http.py": "2ce653005e7ec33d9d735c9ac25d7a245f7a373bb73d055e95250923c41a0c81",
+    "scripts/prefix_cache_writes.py": "3be92dd6ba4698ee43df6d782341112807593f7481e6f2e6cbc398b820d1daa7"
+  },
+  "limits": [
+    "no staging deletion or eviction",
+    "stale is a candidate, not provenance proof",
+    "logical bytes, not physical allocation or NAND writes",
+    "live snapshots are not atomic",
+    "no native-window validation for this new surface",
+    "no real crash-recovery or performance comparison"
+  ]
+}

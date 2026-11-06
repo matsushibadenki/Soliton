@@ -69,10 +69,12 @@ import {
 } from "./MemoryControls";
 import { MemoryUsage, type MemoryUsageState } from "./MemoryUsage";
 import { MemoryHistory } from "./MemoryHistory";
+import { PrefixEngineSettings, defaultPrefixSettings, type PrefixSettings } from "./PrefixEngineSettings";
 import { KnowledgeLab } from "./KnowledgeLab";
 import { knowledgeWords } from "./knowledge-i18n";
 type Settings = {
-  engine: "strata" | "vllmApple";
+  engine: "strata" | "vllmApple" | "mlxPrefix";
+  prefixCache: PrefixSettings;
   vllm: {
     root: string;
     python: string;
@@ -127,6 +129,7 @@ type Snapshot = {
   health: { model?: string } | null;
 };
 const defaults: Settings = {
+  prefixCache: defaultPrefixSettings,
   engine: "strata",
   vllm: {
     root: "",
@@ -697,6 +700,7 @@ function App() {
             >
               <option value="strata">Strata</option>
               <option value="vllmApple">vLLM-Apple</option>
+              <option value="mlxPrefix">MLX SSD</option>
             </select>
           </label>
           {!dirty.current && snapshot?.modelPlan && (
@@ -704,7 +708,11 @@ function App() {
               onRefresh={settings.engine === "vllmApple" ? async()=>{await run(async()=>{try {await action("refreshBackendBudget");} catch {throw new Error(words[language].planRuntimeError);}});}:undefined}
               refreshDisabled={!online || pending || status === "offline"} />
           )}
-          {settings.engine === "strata" ? (
+          {settings.engine === "mlxPrefix" ? (
+            <PrefixEngineSettings value={settings.prefixCache || defaultPrefixSettings} language={language}
+              locked={status !== "offline" || pending} running={status === "ready"}
+              onChange={(value) => update("prefixCache", value)} onSave={persist} />
+          ) : settings.engine === "strata" ? (
             <>
               {snapshot?.backend === "Metal" && (
                 <MemoryControls

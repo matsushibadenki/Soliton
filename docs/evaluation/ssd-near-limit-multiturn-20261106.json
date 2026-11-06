@@ -1,0 +1,4318 @@
+{
+  "result": "passed",
+  "scope": "Cache-functional validation with synthetic practical multi-turn EN/JA/ZH fixtures; model format adherence is reported separately",
+  "context": 512,
+  "output_limit": 16,
+  "quota_bytes": 268435456,
+  "automatic_eviction": true,
+  "live_evicted_entries": 22,
+  "boundary_checks": [
+    {
+      "language": "en",
+      "input_tokens": 496,
+      "output_tokens": 16,
+      "messages": 17,
+      "one_token_over_rejected": true
+    },
+    {
+      "language": "ja",
+      "input_tokens": 496,
+      "output_tokens": 16,
+      "messages": 17,
+      "one_token_over_rejected": true
+    },
+    {
+      "language": "zh",
+      "input_tokens": 496,
+      "output_tokens": 16,
+      "messages": 17,
+      "one_token_over_rejected": true
+    }
+  ],
+  "identity": "dd211b106bf39771f5d78b95ecd0a7891c16366e64b469f1cdbb695a755a8836",
+  "worker_hashes": {
+    "prefix-cache-http.py": "0ddfce6281a01a09d7d3d2f6f35cdddd8672d639d6b582fa063bfefe4d207bc0",
+    "prefix_cache_contract.py": "50bf4a83f6587fc8b4bb335c175269e8229f29ab542413f2ac18890af31f518c",
+    "prefix_cache_roundtrip_support.py": "23fc141aa82c900d737b00137df2b72924378d8e468338348d749c3f283a8381",
+    "prefix_cache_writes.py": "3be92dd6ba4698ee43df6d782341112807593f7481e6f2e6cbc398b820d1daa7",
+    "prefix-store-evict": "1b7dba7efc03df065b0b6e52b846224310e2a78c53601b86bb82b97f5333e589"
+  },
+  "quality_checks": [
+    {
+      "label": "en-4",
+      "expected": [
+        "Maple"
+      ],
+      "passed": true
+    },
+    {
+      "label": "en-5",
+      "expected": [
+        "14:00"
+      ],
+      "passed": true
+    },
+    {
+      "label": "en-6",
+      "expected": [
+        "Maple",
+        "14:00"
+      ],
+      "passed": true
+    },
+    {
+      "label": "en-7",
+      "expected": [
+        "Maple"
+      ],
+      "passed": true
+    },
+    {
+      "label": "en-8",
+      "expected": [
+        "14:00"
+      ],
+      "passed": true
+    },
+    {
+      "label": "en-9",
+      "expected": [
+        "Maple",
+        "14:00"
+      ],
+      "passed": true
+    },
+    {
+      "label": "ja-4",
+      "expected": [
+        "1"
+      ],
+      "passed": true
+    },
+    {
+      "label": "ja-5",
+      "expected": [
+        "3"
+      ],
+      "passed": true
+    },
+    {
+      "label": "ja-6",
+      "expected": [
+        "1",
+        "3"
+      ],
+      "passed": true
+    },
+    {
+      "label": "ja-7",
+      "expected": [
+        "1"
+      ],
+      "passed": true
+    },
+    {
+      "label": "ja-8",
+      "expected": [
+        "3"
+      ],
+      "passed": true
+    },
+    {
+      "label": "ja-9",
+      "expected": [
+        "1",
+        "3"
+      ],
+      "passed": true
+    },
+    {
+      "label": "zh-4",
+      "expected": [
+        "大阪"
+      ],
+      "passed": true
+    },
+    {
+      "label": "zh-5",
+      "expected": [
+        "09:30"
+      ],
+      "passed": true
+    },
+    {
+      "label": "zh-6",
+      "expected": [
+        "大阪",
+        "09:30"
+      ],
+      "passed": true
+    },
+    {
+      "label": "zh-7",
+      "expected": [
+        "大阪"
+      ],
+      "passed": true
+    },
+    {
+      "label": "zh-8",
+      "expected": [
+        "09:30"
+      ],
+      "passed": true
+    },
+    {
+      "label": "zh-9",
+      "expected": [
+        "大阪",
+        "09:30"
+      ],
+      "passed": true
+    }
+  ],
+  "quality_passed": 18,
+  "quality_total": 18,
+  "fresh_text_parity": 27,
+  "boundary_rejected": true,
+  "trim": null,
+  "summary": {
+    "evicted-after-eviction": {
+      "requests": 1,
+      "writes": 1,
+      "skipped_writes": 0,
+      "cache_errors": 0,
+      "first_content_median_ms": 3131.542334000187,
+      "completion_median_ms": 3459.0293749997727
+    },
+    "fresh": {
+      "requests": 27,
+      "writes": 27,
+      "skipped_writes": 0,
+      "cache_errors": 0,
+      "first_content_median_ms": 1474.3960409996362,
+      "completion_median_ms": 1595.8034170007522
+    },
+    "growing": {
+      "requests": 27,
+      "writes": 27,
+      "skipped_writes": 0,
+      "cache_errors": 0,
+      "first_content_median_ms": 2712.5913330000913,
+      "completion_median_ms": 2944.2523749994507
+    },
+    "repeat": {
+      "requests": 27,
+      "writes": 0,
+      "skipped_writes": 24,
+      "cache_errors": 0,
+      "first_content_median_ms": 200.74695799939946,
+      "completion_median_ms": 551.9479999993564
+    },
+    "repeat-after-repair": {
+      "requests": 1,
+      "writes": 0,
+      "skipped_writes": 1,
+      "cache_errors": 0,
+      "first_content_median_ms": 228.29908300082025,
+      "completion_median_ms": 558.5802499999772
+    },
+    "retained-after-eviction": {
+      "requests": 1,
+      "writes": 0,
+      "skipped_writes": 0,
+      "cache_errors": 0,
+      "first_content_median_ms": 7210.6170420001945,
+      "completion_median_ms": 8189.660541999729
+    }
+  },
+  "canonical": [
+    {
+      "label": "en-1",
+      "query": {
+        "model": "default_model",
+        "messages": [
+          {
+            "role": "user",
+            "content": "We are planning a workshop. The room is Cedar. Remember this and reply only OK."
+          }
+        ],
+        "temperature": 0,
+        "seed": 0,
+        "max_tokens": 16
+      },
+      "answer": "OK. \n",
+      "entries": [
+        "44686061416fd1958aec5498f76a43f71ef1c3ea397bb12074aa4db31991b53d.cache"
+      ]
+    },
+    {
+      "label": "en-2",
+      "query": {
+        "model": "default_model",
+        "messages": [
+          {
+            "role": "user",
+            "content": "We are planning a workshop. The room is Cedar. Remember this and reply only OK."
+          },
+          {
+            "role": "assistant",
+            "content": "OK. \n"
+          },
+          {
+            "role": "user",
+            "content": "The start time is 14:00. Reply only OK."
+          }
+        ],
+        "temperature": 0,
+        "seed": 0,
+        "max_tokens": 16
+      },
+      "answer": "OK. \n",
+      "entries": [
+        "82417f4b79e67f291ca07ecab94716c0e5289727abe2257cd1a6cf64999dff6b.cache"
+      ]
+    },
+    {
+      "label": "en-3",
+      "query": {
+        "model": "default_model",
+        "messages": [
+          {
+            "role": "user",
+            "content": "We are planning a workshop. The room is Cedar. Remember this and reply only OK."
+          },
+          {
+            "role": "assistant",
+            "content": "OK. \n"
+          },
+          {
+            "role": "user",
+            "content": "The start time is 14:00. Reply only OK."
+          },
+          {
+            "role": "assistant",
+            "content": "OK. \n"
+          },
+          {
+            "role": "user",
+            "content": "Change the room from Cedar to Maple. Reply only OK."
+          }
+        ],
+        "temperature": 0,
+        "seed": 0,
+        "max_tokens": 16
+      },
+      "answer": "OK. \n",
+      "entries": [
+        "36697b171035530419616088fca2922064f96efb95b9b5be2c00886a7d73ff23.cache"
+      ]
+    },
+    {
+      "label": "en-4",
+      "query": {
+        "model": "default_model",
+        "messages": [
+          {
+            "role": "user",
+            "content": "We are planning a workshop. The room is Cedar. Remember this and reply only OK."
+          },
+          {
+            "role": "assistant",
+            "content": "OK. \n"
+          },
+          {
+            "role": "user",
+            "content": "The start time is 14:00. Reply only OK."
+          },
+          {
+            "role": "assistant",
+            "content": "OK. \n"
+          },
+          {
+            "role": "user",
+            "content": "Change the room from Cedar to Maple. Reply only OK."
+          },
+          {
+            "role": "assistant",
+            "content": "OK. \n"
+          },
+          {
+            "role": "user",
+            "content": "What is the room now? Answer with only its name."
+          }
+        ],
+        "temperature": 0,
+        "seed": 0,
+        "max_tokens": 16
+      },
+      "answer": "Maple \n",
+      "entries": [
+        "b4cc9b03082cad07a799fe83293401fbcab67683a44442ef429487b820d075a2.cache"
+      ]
+    },
+    {
+      "label": "en-5",
+      "query": {
+        "model": "default_model",
+        "messages": [
+          {
+            "role": "user",
+            "content": "We are planning a workshop. The room is Cedar. Remember this and reply only OK."
+          },
+          {
+            "role": "assistant",
+            "content": "OK. \n"
+          },
+          {
+            "role": "user",
+            "content": "The start time is 14:00. Reply only OK."
+          },
+          {
+            "role": "assistant",
+            "content": "OK. \n"
+          },
+          {
+            "role": "user",
+            "content": "Change the room from Cedar to Maple. Reply only OK."
+          },
+          {
+            "role": "assistant",
+            "content": "OK. \n"
+          },
+          {
+            "role": "user",
+            "content": "What is the room now? Answer with only its name."
+          },
+          {
+            "role": "assistant",
+            "content": "Maple \n"
+          },
+          {
+            "role": "user",
+            "content": "What start time did I set? Answer with only the time."
+          }
+        ],
+        "temperature": 0,
+        "seed": 0,
+        "max_tokens": 16
+      },
+      "answer": "14:00 \n",
+      "entries": [
+        "4289ede6fc29568093c9640f1be295ee85698e6ed5cea8377b10e09b11319ead.cache"
+      ]
+    },
+    {
+      "label": "en-6",
+      "query": {
+        "model": "default_model",
+        "messages": [
+          {
+            "role": "user",
+            "content": "We are planning a workshop. The room is Cedar. Remember this and reply only OK."
+          },
+          {
+            "role": "assistant",
+            "content": "OK. \n"
+          },
+          {
+            "role": "user",
+            "content": "The start time is 14:00. Reply only OK."
+          },
+          {
+            "role": "assistant",
+            "content": "OK. \n"
+          },
+          {
+            "role": "user",
+            "content": "Change the room from Cedar to Maple. Reply only OK."
+          },
+          {
+            "role": "assistant",
+            "content": "OK. \n"
+          },
+          {
+            "role": "user",
+            "content": "What is the room now? Answer with only its name."
+          },
+          {
+            "role": "assistant",
+            "content": "Maple \n"
+          },
+          {
+            "role": "user",
+            "content": "What start time did I set? Answer with only the time."
+          },
+          {
+            "role": "assistant",
+            "content": "14:00 \n"
+          },
+          {
+            "role": "user",
+            "content": "Return one line with the current room and time: room | time."
+          }
+        ],
+        "temperature": 0,
+        "seed": 0,
+        "max_tokens": 16
+      },
+      "answer": "Maple | 14:00 \n",
+      "entries": [
+        "c56b31b73a8cd94c244681f93a42957140f172b5c7a87efdfa6e25fd2385c041.cache"
+      ]
+    },
+    {
+      "label": "en-7",
+      "query": {
+        "model": "default_model",
+        "messages": [
+          {
+            "role": "user",
+            "content": "We are planning a workshop. The room is Cedar. Remember this and reply only OK."
+          },
+          {
+            "role": "assistant",
+            "content": "OK. \n"
+          },
+          {
+            "role": "user",
+            "content": "The start time is 14:00. Reply only OK."
+          },
+          {
+            "role": "assistant",
+            "content": "OK. \n"
+          },
+          {
+            "role": "user",
+            "content": "Change the room from Cedar to Maple. Reply only OK."
+          },
+          {
+            "role": "assistant",
+            "content": "OK. \n"
+          },
+          {
+            "role": "user",
+            "content": "What is the room now? Answer with only its name."
+          },
+          {
+            "role": "assistant",
+            "content": "Maple \n"
+          },
+          {
+            "role": "user",
+            "content": "What start time did I set? Answer with only the time."
+          },
+          {
+            "role": "assistant",
+            "content": "14:00 \n"
+          },
+          {
+            "role": "user",
+            "content": "Return one line with the current room and time: room | time."
+          },
+          {
+            "role": "assistant",
+            "content": "Maple | 14:00 \n"
+          },
+          {
+            "role": "user",
+            "content": "Which room are we using? Name only."
+          }
+        ],
+        "temperature": 0,
+        "seed": 0,
+        "max_tokens": 16
+      },
+      "answer": "Maple \n",
+      "entries": [
+        "0349c53da2c50484bb001c1d3b82dba74295ce1d403a20582ff28cdb81637f06.cache"
+      ]
+    },
+    {
+      "label": "en-8",
+      "query": {
+        "model": "default_model",
+        "messages": [
+          {
+            "role": "user",
+            "content": "We are planning a workshop. The room is Cedar. Remember this and reply only OK."
+          },
+          {
+            "role": "assistant",
+            "content": "OK. \n"
+          },
+          {
+            "role": "user",
+            "content": "The start time is 14:00. Reply only OK."
+          },
+          {
+            "role": "assistant",
+            "content": "OK. \n"
+          },
+          {
+            "role": "user",
+            "content": "Change the room from Cedar to Maple. Reply only OK."
+          },
+          {
+            "role": "assistant",
+            "content": "OK. \n"
+          },
+          {
+            "role": "user",
+            "content": "What is the room now? Answer with only its name."
+          },
+          {
+            "role": "assistant",
+            "content": "Maple \n"
+          },
+          {
+            "role": "user",
+            "content": "What start time did I set? Answer with only the time."
+          },
+          {
+            "role": "assistant",
+            "content": "14:00 \n"
+          },
+          {
+            "role": "user",
+            "content": "Return one line with the current room and time: room | time."
+          },
+          {
+            "role": "assistant",
+            "content": "Maple | 14:00 \n"
+          },
+          {
+            "role": "user",
+            "content": "Which room are we using? Name only."
+          },
+          {
+            "role": "assistant",
+            "content": "Maple \n"
+          },
+          {
+            "role": "user",
+            "content": "What time does it begin? Time only."
+          }
+        ],
+        "temperature": 0,
+        "seed": 0,
+        "max_tokens": 16
+      },
+      "answer": "14:00 \n",
+      "entries": [
+        "b0a26f7fa71371cccf288bcc2d0e6154d44ee341970adfb421bbe86b37ffe133.cache"
+      ]
+    },
+    {
+      "label": "en-9",
+      "query": {
+        "model": "default_model",
+        "messages": [
+          {
+            "role": "user",
+            "content": "We are planning a workshop. The room is Cedar. Remember this and reply only OK."
+          },
+          {
+            "role": "assistant",
+            "content": "OK. \n"
+          },
+          {
+            "role": "user",
+            "content": "The start time is 14:00. Reply only OK."
+          },
+          {
+            "role": "assistant",
+            "content": "OK. \n"
+          },
+          {
+            "role": "user",
+            "content": "Change the room from Cedar to Maple. Reply only OK."
+          },
+          {
+            "role": "assistant",
+            "content": "OK. \n"
+          },
+          {
+            "role": "user",
+            "content": "What is the room now? Answer with only its name."
+          },
+          {
+            "role": "assistant",
+            "content": "Maple \n"
+          },
+          {
+            "role": "user",
+            "content": "What start time did I set? Answer with only the time."
+          },
+          {
+            "role": "assistant",
+            "content": "14:00 \n"
+          },
+          {
+            "role": "user",
+            "content": "Return one line with the current room and time: room | time."
+          },
+          {
+            "role": "assistant",
+            "content": "Maple | 14:00 \n"
+          },
+          {
+            "role": "user",
+            "content": "Which room are we using? Name only."
+          },
+          {
+            "role": "assistant",
+            "content": "Maple \n"
+          },
+          {
+            "role": "user",
+            "content": "What time does it begin? Time only."
+          },
+          {
+            "role": "assistant",
+            "content": "14:00 \n"
+          },
+          {
+            "role": "user",
+            "content": "Notes: a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a  x\nGive the current room and time: room | time."
+          }
+        ],
+        "temperature": 0,
+        "seed": 0,
+        "max_tokens": 16
+      },
+      "answer": "Maple | 14:00 \n",
+      "entries": [
+        "75996e8ec156ffb63601c9a2f8d0393fa298e5bcbed0f1e86449ea2f9bb8354c.cache"
+      ]
+    },
+    {
+      "label": "ja-1",
+      "query": {
+        "model": "default_model",
+        "messages": [
+          {
+            "role": "user",
+            "content": "買い物メモです。牛乳は2本です。確認としてOKだけ返してください。"
+          }
+        ],
+        "temperature": 0,
+        "seed": 0,
+        "max_tokens": 16
+      },
+      "answer": "OK \n",
+      "entries": [
+        "228ee225d4e706582d228ac0a563a79a54d4c33782fcc5afd2f6c84a11997e67.cache"
+      ]
+    },
+    {
+      "label": "ja-2",
+      "query": {
+        "model": "default_model",
+        "messages": [
+          {
+            "role": "user",
+            "content": "買い物メモです。牛乳は2本です。確認としてOKだけ返してください。"
+          },
+          {
+            "role": "assistant",
+            "content": "OK \n"
+          },
+          {
+            "role": "user",
+            "content": "パンは3個です。確認としてOKだけ返してください。"
+          }
+        ],
+        "temperature": 0,
+        "seed": 0,
+        "max_tokens": 16
+      },
+      "answer": "OK \n",
+      "entries": [
+        "1b92faf4df7f5ab3255da7e50826f6dae9c9d6a193805830f19507f2b359ebbe.cache"
+      ]
+    },
+    {
+      "label": "ja-3",
+      "query": {
+        "model": "default_model",
+        "messages": [
+          {
+            "role": "user",
+            "content": "買い物メモです。牛乳は2本です。確認としてOKだけ返してください。"
+          },
+          {
+            "role": "assistant",
+            "content": "OK \n"
+          },
+          {
+            "role": "user",
+            "content": "パンは3個です。確認としてOKだけ返してください。"
+          },
+          {
+            "role": "assistant",
+            "content": "OK \n"
+          },
+          {
+            "role": "user",
+            "content": "牛乳を2本から1本に変更します。確認としてOKだけ返してください。"
+          }
+        ],
+        "temperature": 0,
+        "seed": 0,
+        "max_tokens": 16
+      },
+      "answer": "OK \n",
+      "entries": [
+        "3f6b6990e583a95e3a41ea636fc6db430ea98d68d297e347f2595e2eb5dd660e.cache"
+      ]
+    },
+    {
+      "label": "ja-4",
+      "query": {
+        "model": "default_model",
+        "messages": [
+          {
+            "role": "user",
+            "content": "買い物メモです。牛乳は2本です。確認としてOKだけ返してください。"
+          },
+          {
+            "role": "assistant",
+            "content": "OK \n"
+          },
+          {
+            "role": "user",
+            "content": "パンは3個です。確認としてOKだけ返してください。"
+          },
+          {
+            "role": "assistant",
+            "content": "OK \n"
+          },
+          {
+            "role": "user",
+            "content": "牛乳を2本から1本に変更します。確認としてOKだけ返してください。"
+          },
+          {
+            "role": "assistant",
+            "content": "OK \n"
+          },
+          {
+            "role": "user",
+            "content": "牛乳はいま何本ですか。数字だけ返してください。"
+          }
+        ],
+        "temperature": 0,
+        "seed": 0,
+        "max_tokens": 16
+      },
+      "answer": "1本 \n",
+      "entries": [
+        "778525fd42518ea155b7ea551868074a061c2bad6b7e3ce0242ec0957d993d05.cache"
+      ]
+    },
+    {
+      "label": "ja-5",
+      "query": {
+        "model": "default_model",
+        "messages": [
+          {
+            "role": "user",
+            "content": "買い物メモです。牛乳は2本です。確認としてOKだけ返してください。"
+          },
+          {
+            "role": "assistant",
+            "content": "OK \n"
+          },
+          {
+            "role": "user",
+            "content": "パンは3個です。確認としてOKだけ返してください。"
+          },
+          {
+            "role": "assistant",
+            "content": "OK \n"
+          },
+          {
+            "role": "user",
+            "content": "牛乳を2本から1本に変更します。確認としてOKだけ返してください。"
+          },
+          {
+            "role": "assistant",
+            "content": "OK \n"
+          },
+          {
+            "role": "user",
+            "content": "牛乳はいま何本ですか。数字だけ返してください。"
+          },
+          {
+            "role": "assistant",
+            "content": "1本 \n"
+          },
+          {
+            "role": "user",
+            "content": "パンは何個ですか。数字だけ返してください。"
+          }
+        ],
+        "temperature": 0,
+        "seed": 0,
+        "max_tokens": 16
+      },
+      "answer": "3個 \n",
+      "entries": [
+        "4eb84f486c4fb48b81af4e67b6811c0373376f1df143a3045fc070a7a5fe68cb.cache"
+      ]
+    },
+    {
+      "label": "ja-6",
+      "query": {
+        "model": "default_model",
+        "messages": [
+          {
+            "role": "user",
+            "content": "買い物メモです。牛乳は2本です。確認としてOKだけ返してください。"
+          },
+          {
+            "role": "assistant",
+            "content": "OK \n"
+          },
+          {
+            "role": "user",
+            "content": "パンは3個です。確認としてOKだけ返してください。"
+          },
+          {
+            "role": "assistant",
+            "content": "OK \n"
+          },
+          {
+            "role": "user",
+            "content": "牛乳を2本から1本に変更します。確認としてOKだけ返してください。"
+          },
+          {
+            "role": "assistant",
+            "content": "OK \n"
+          },
+          {
+            "role": "user",
+            "content": "牛乳はいま何本ですか。数字だけ返してください。"
+          },
+          {
+            "role": "assistant",
+            "content": "1本 \n"
+          },
+          {
+            "role": "user",
+            "content": "パンは何個ですか。数字だけ返してください。"
+          },
+          {
+            "role": "assistant",
+            "content": "3個 \n"
+          },
+          {
+            "role": "user",
+            "content": "現在の買い物メモを「牛乳: 数字 / パン: 数字」の1行で返してください。"
+          }
+        ],
+        "temperature": 0,
+        "seed": 0,
+        "max_tokens": 16
+      },
+      "answer": "牛乳:1本 /パン:3個 \n",
+      "entries": [
+        "26814ef55a2f95b68b4c4756e06c9ac0482cf654a2da5ac707923a7e1a6a567e.cache"
+      ]
+    },
+    {
+      "label": "ja-7",
+      "query": {
+        "model": "default_model",
+        "messages": [
+          {
+            "role": "user",
+            "content": "買い物メモです。牛乳は2本です。確認としてOKだけ返してください。"
+          },
+          {
+            "role": "assistant",
+            "content": "OK \n"
+          },
+          {
+            "role": "user",
+            "content": "パンは3個です。確認としてOKだけ返してください。"
+          },
+          {
+            "role": "assistant",
+            "content": "OK \n"
+          },
+          {
+            "role": "user",
+            "content": "牛乳を2本から1本に変更します。確認としてOKだけ返してください。"
+          },
+          {
+            "role": "assistant",
+            "content": "OK \n"
+          },
+          {
+            "role": "user",
+            "content": "牛乳はいま何本ですか。数字だけ返してください。"
+          },
+          {
+            "role": "assistant",
+            "content": "1本 \n"
+          },
+          {
+            "role": "user",
+            "content": "パンは何個ですか。数字だけ返してください。"
+          },
+          {
+            "role": "assistant",
+            "content": "3個 \n"
+          },
+          {
+            "role": "user",
+            "content": "現在の買い物メモを「牛乳: 数字 / パン: 数字」の1行で返してください。"
+          },
+          {
+            "role": "assistant",
+            "content": "牛乳:1本 /パン:3個 \n"
+          },
+          {
+            "role": "user",
+            "content": "牛乳の本数を数字だけで答えてください。"
+          }
+        ],
+        "temperature": 0,
+        "seed": 0,
+        "max_tokens": 16
+      },
+      "answer": "1本 \n",
+      "entries": [
+        "7d4f70995a39e3f4de4dfda69704004ec058b574c7414c588394ed18acb504f8.cache"
+      ]
+    },
+    {
+      "label": "ja-8",
+      "query": {
+        "model": "default_model",
+        "messages": [
+          {
+            "role": "user",
+            "content": "買い物メモです。牛乳は2本です。確認としてOKだけ返してください。"
+          },
+          {
+            "role": "assistant",
+            "content": "OK \n"
+          },
+          {
+            "role": "user",
+            "content": "パンは3個です。確認としてOKだけ返してください。"
+          },
+          {
+            "role": "assistant",
+            "content": "OK \n"
+          },
+          {
+            "role": "user",
+            "content": "牛乳を2本から1本に変更します。確認としてOKだけ返してください。"
+          },
+          {
+            "role": "assistant",
+            "content": "OK \n"
+          },
+          {
+            "role": "user",
+            "content": "牛乳はいま何本ですか。数字だけ返してください。"
+          },
+          {
+            "role": "assistant",
+            "content": "1本 \n"
+          },
+          {
+            "role": "user",
+            "content": "パンは何個ですか。数字だけ返してください。"
+          },
+          {
+            "role": "assistant",
+            "content": "3個 \n"
+          },
+          {
+            "role": "user",
+            "content": "現在の買い物メモを「牛乳: 数字 / パン: 数字」の1行で返してください。"
+          },
+          {
+            "role": "assistant",
+            "content": "牛乳:1本 /パン:3個 \n"
+          },
+          {
+            "role": "user",
+            "content": "牛乳の本数を数字だけで答えてください。"
+          },
+          {
+            "role": "assistant",
+            "content": "1本 \n"
+          },
+          {
+            "role": "user",
+            "content": "パンの個数を数字だけで答えてください。"
+          }
+        ],
+        "temperature": 0,
+        "seed": 0,
+        "max_tokens": 16
+      },
+      "answer": "3個 \n",
+      "entries": [
+        "f855353f0d11f84f880f73802060129645679e4368f7a241e4b7b3f4cc901d61.cache"
+      ]
+    },
+    {
+      "label": "ja-9",
+      "query": {
+        "model": "default_model",
+        "messages": [
+          {
+            "role": "user",
+            "content": "買い物メモです。牛乳は2本です。確認としてOKだけ返してください。"
+          },
+          {
+            "role": "assistant",
+            "content": "OK \n"
+          },
+          {
+            "role": "user",
+            "content": "パンは3個です。確認としてOKだけ返してください。"
+          },
+          {
+            "role": "assistant",
+            "content": "OK \n"
+          },
+          {
+            "role": "user",
+            "content": "牛乳を2本から1本に変更します。確認としてOKだけ返してください。"
+          },
+          {
+            "role": "assistant",
+            "content": "OK \n"
+          },
+          {
+            "role": "user",
+            "content": "牛乳はいま何本ですか。数字だけ返してください。"
+          },
+          {
+            "role": "assistant",
+            "content": "1本 \n"
+          },
+          {
+            "role": "user",
+            "content": "パンは何個ですか。数字だけ返してください。"
+          },
+          {
+            "role": "assistant",
+            "content": "3個 \n"
+          },
+          {
+            "role": "user",
+            "content": "現在の買い物メモを「牛乳: 数字 / パン: 数字」の1行で返してください。"
+          },
+          {
+            "role": "assistant",
+            "content": "牛乳:1本 /パン:3個 \n"
+          },
+          {
+            "role": "user",
+            "content": "牛乳の本数を数字だけで答えてください。"
+          },
+          {
+            "role": "assistant",
+            "content": "1本 \n"
+          },
+          {
+            "role": "user",
+            "content": "パンの個数を数字だけで答えてください。"
+          },
+          {
+            "role": "assistant",
+            "content": "3個 \n"
+          },
+          {
+            "role": "user",
+            "content": "Notes: a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a  x\n現在のメモを「牛乳: 数字 / パン: 数字」で返してください。"
+          }
+        ],
+        "temperature": 0,
+        "seed": 0,
+        "max_tokens": 16
+      },
+      "answer": "牛乳:1本 /パン:3個 \n",
+      "entries": [
+        "20f14de1620d6d80869e274a78500ce65f3f324fb8f21ece2336f5129b106ca0.cache"
+      ]
+    },
+    {
+      "label": "zh-1",
+      "query": {
+        "model": "default_model",
+        "messages": [
+          {
+            "role": "user",
+            "content": "旅行安排：目的地是京都。请记住，只回复OK。"
+          }
+        ],
+        "temperature": 0,
+        "seed": 0,
+        "max_tokens": 16
+      },
+      "answer": "OK. \n",
+      "entries": [
+        "e956dfeb392b5d7330b67c87ba71b12fd125fb0ed8af3c7fcf41a741e3e8e34f.cache"
+      ]
+    },
+    {
+      "label": "zh-2",
+      "query": {
+        "model": "default_model",
+        "messages": [
+          {
+            "role": "user",
+            "content": "旅行安排：目的地是京都。请记住，只回复OK。"
+          },
+          {
+            "role": "assistant",
+            "content": "OK. \n"
+          },
+          {
+            "role": "user",
+            "content": "出发时间是09:30。只回复OK。"
+          }
+        ],
+        "temperature": 0,
+        "seed": 0,
+        "max_tokens": 16
+      },
+      "answer": "OK. \n",
+      "entries": [
+        "1c5afedd6b09121b915b434620b221f2afe9560ae3f20c59a7737fa83a2de0a5.cache"
+      ]
+    },
+    {
+      "label": "zh-3",
+      "query": {
+        "model": "default_model",
+        "messages": [
+          {
+            "role": "user",
+            "content": "旅行安排：目的地是京都。请记住，只回复OK。"
+          },
+          {
+            "role": "assistant",
+            "content": "OK. \n"
+          },
+          {
+            "role": "user",
+            "content": "出发时间是09:30。只回复OK。"
+          },
+          {
+            "role": "assistant",
+            "content": "OK. \n"
+          },
+          {
+            "role": "user",
+            "content": "把目的地从京都改为大阪。只回复OK。"
+          }
+        ],
+        "temperature": 0,
+        "seed": 0,
+        "max_tokens": 16
+      },
+      "answer": "OK. \n",
+      "entries": [
+        "c956c09f059f01f55d3827f97b029f200e38cc1cec036c64195ed4dc7aafe105.cache"
+      ]
+    },
+    {
+      "label": "zh-4",
+      "query": {
+        "model": "default_model",
+        "messages": [
+          {
+            "role": "user",
+            "content": "旅行安排：目的地是京都。请记住，只回复OK。"
+          },
+          {
+            "role": "assistant",
+            "content": "OK. \n"
+          },
+          {
+            "role": "user",
+            "content": "出发时间是09:30。只回复OK。"
+          },
+          {
+            "role": "assistant",
+            "content": "OK. \n"
+          },
+          {
+            "role": "user",
+            "content": "把目的地从京都改为大阪。只回复OK。"
+          },
+          {
+            "role": "assistant",
+            "content": "OK. \n"
+          },
+          {
+            "role": "user",
+            "content": "现在的目的地是哪里？只回复地名。"
+          }
+        ],
+        "temperature": 0,
+        "seed": 0,
+        "max_tokens": 16
+      },
+      "answer": "大阪  \n",
+      "entries": [
+        "fa1a5cc5bd52813910f48601e389433d0562e9732cbda887daf220cce0118245.cache"
+      ]
+    },
+    {
+      "label": "zh-5",
+      "query": {
+        "model": "default_model",
+        "messages": [
+          {
+            "role": "user",
+            "content": "旅行安排：目的地是京都。请记住，只回复OK。"
+          },
+          {
+            "role": "assistant",
+            "content": "OK. \n"
+          },
+          {
+            "role": "user",
+            "content": "出发时间是09:30。只回复OK。"
+          },
+          {
+            "role": "assistant",
+            "content": "OK. \n"
+          },
+          {
+            "role": "user",
+            "content": "把目的地从京都改为大阪。只回复OK。"
+          },
+          {
+            "role": "assistant",
+            "content": "OK. \n"
+          },
+          {
+            "role": "user",
+            "content": "现在的目的地是哪里？只回复地名。"
+          },
+          {
+            "role": "assistant",
+            "content": "大阪  \n"
+          },
+          {
+            "role": "user",
+            "content": "出发时间是什么？只回复时间。"
+          }
+        ],
+        "temperature": 0,
+        "seed": 0,
+        "max_tokens": 16
+      },
+      "answer": "09:30 \n",
+      "entries": [
+        "3279bf7aad3e4d4dec8ecceca0d122bfab5933acf2094ea7dac02cd237708194.cache"
+      ]
+    },
+    {
+      "label": "zh-6",
+      "query": {
+        "model": "default_model",
+        "messages": [
+          {
+            "role": "user",
+            "content": "旅行安排：目的地是京都。请记住，只回复OK。"
+          },
+          {
+            "role": "assistant",
+            "content": "OK. \n"
+          },
+          {
+            "role": "user",
+            "content": "出发时间是09:30。只回复OK。"
+          },
+          {
+            "role": "assistant",
+            "content": "OK. \n"
+          },
+          {
+            "role": "user",
+            "content": "把目的地从京都改为大阪。只回复OK。"
+          },
+          {
+            "role": "assistant",
+            "content": "OK. \n"
+          },
+          {
+            "role": "user",
+            "content": "现在的目的地是哪里？只回复地名。"
+          },
+          {
+            "role": "assistant",
+            "content": "大阪  \n"
+          },
+          {
+            "role": "user",
+            "content": "出发时间是什么？只回复时间。"
+          },
+          {
+            "role": "assistant",
+            "content": "09:30 \n"
+          },
+          {
+            "role": "user",
+            "content": "用一行返回当前目的地和时间：目的地 | 时间。"
+          }
+        ],
+        "temperature": 0,
+        "seed": 0,
+        "max_tokens": 16
+      },
+      "answer": "大阪 | 09:30 \n",
+      "entries": [
+        "28a9c134058d44db7fb657dbb2dfbae42df4e63cfe7b263d5eff60f7d9f53cbc.cache"
+      ]
+    },
+    {
+      "label": "zh-7",
+      "query": {
+        "model": "default_model",
+        "messages": [
+          {
+            "role": "user",
+            "content": "旅行安排：目的地是京都。请记住，只回复OK。"
+          },
+          {
+            "role": "assistant",
+            "content": "OK. \n"
+          },
+          {
+            "role": "user",
+            "content": "出发时间是09:30。只回复OK。"
+          },
+          {
+            "role": "assistant",
+            "content": "OK. \n"
+          },
+          {
+            "role": "user",
+            "content": "把目的地从京都改为大阪。只回复OK。"
+          },
+          {
+            "role": "assistant",
+            "content": "OK. \n"
+          },
+          {
+            "role": "user",
+            "content": "现在的目的地是哪里？只回复地名。"
+          },
+          {
+            "role": "assistant",
+            "content": "大阪  \n"
+          },
+          {
+            "role": "user",
+            "content": "出发时间是什么？只回复时间。"
+          },
+          {
+            "role": "assistant",
+            "content": "09:30 \n"
+          },
+          {
+            "role": "user",
+            "content": "用一行返回当前目的地和时间：目的地 | 时间。"
+          },
+          {
+            "role": "assistant",
+            "content": "大阪 | 09:30 \n"
+          },
+          {
+            "role": "user",
+            "content": "当前目的地是什么？只回复地名。"
+          }
+        ],
+        "temperature": 0,
+        "seed": 0,
+        "max_tokens": 16
+      },
+      "answer": "大阪  \n",
+      "entries": [
+        "e12a40947ccb70574d6901f7459652c61336a7c4fb027c1924d8f7c7a08a3b30.cache"
+      ]
+    },
+    {
+      "label": "zh-8",
+      "query": {
+        "model": "default_model",
+        "messages": [
+          {
+            "role": "user",
+            "content": "旅行安排：目的地是京都。请记住，只回复OK。"
+          },
+          {
+            "role": "assistant",
+            "content": "OK. \n"
+          },
+          {
+            "role": "user",
+            "content": "出发时间是09:30。只回复OK。"
+          },
+          {
+            "role": "assistant",
+            "content": "OK. \n"
+          },
+          {
+            "role": "user",
+            "content": "把目的地从京都改为大阪。只回复OK。"
+          },
+          {
+            "role": "assistant",
+            "content": "OK. \n"
+          },
+          {
+            "role": "user",
+            "content": "现在的目的地是哪里？只回复地名。"
+          },
+          {
+            "role": "assistant",
+            "content": "大阪  \n"
+          },
+          {
+            "role": "user",
+            "content": "出发时间是什么？只回复时间。"
+          },
+          {
+            "role": "assistant",
+            "content": "09:30 \n"
+          },
+          {
+            "role": "user",
+            "content": "用一行返回当前目的地和时间：目的地 | 时间。"
+          },
+          {
+            "role": "assistant",
+            "content": "大阪 | 09:30 \n"
+          },
+          {
+            "role": "user",
+            "content": "当前目的地是什么？只回复地名。"
+          },
+          {
+            "role": "assistant",
+            "content": "大阪  \n"
+          },
+          {
+            "role": "user",
+            "content": "几点出发？只回复时间。"
+          }
+        ],
+        "temperature": 0,
+        "seed": 0,
+        "max_tokens": 16
+      },
+      "answer": "09:30 \n",
+      "entries": [
+        "c9404600edf54442aad7f7ae4535702bf29d59838a6fc4822a827c454fe6fa63.cache"
+      ]
+    },
+    {
+      "label": "zh-9",
+      "query": {
+        "model": "default_model",
+        "messages": [
+          {
+            "role": "user",
+            "content": "旅行安排：目的地是京都。请记住，只回复OK。"
+          },
+          {
+            "role": "assistant",
+            "content": "OK. \n"
+          },
+          {
+            "role": "user",
+            "content": "出发时间是09:30。只回复OK。"
+          },
+          {
+            "role": "assistant",
+            "content": "OK. \n"
+          },
+          {
+            "role": "user",
+            "content": "把目的地从京都改为大阪。只回复OK。"
+          },
+          {
+            "role": "assistant",
+            "content": "OK. \n"
+          },
+          {
+            "role": "user",
+            "content": "现在的目的地是哪里？只回复地名。"
+          },
+          {
+            "role": "assistant",
+            "content": "大阪  \n"
+          },
+          {
+            "role": "user",
+            "content": "出发时间是什么？只回复时间。"
+          },
+          {
+            "role": "assistant",
+            "content": "09:30 \n"
+          },
+          {
+            "role": "user",
+            "content": "用一行返回当前目的地和时间：目的地 | 时间。"
+          },
+          {
+            "role": "assistant",
+            "content": "大阪 | 09:30 \n"
+          },
+          {
+            "role": "user",
+            "content": "当前目的地是什么？只回复地名。"
+          },
+          {
+            "role": "assistant",
+            "content": "大阪  \n"
+          },
+          {
+            "role": "user",
+            "content": "几点出发？只回复时间。"
+          },
+          {
+            "role": "assistant",
+            "content": "09:30 \n"
+          },
+          {
+            "role": "user",
+            "content": "Notes: a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a  x\n返回当前目的地和时间：目的地 | 时间。"
+          }
+        ],
+        "temperature": 0,
+        "seed": 0,
+        "max_tokens": 16
+      },
+      "answer": "大阪 | 09:30 \n",
+      "entries": [
+        "ad85482bfedf65a600b8be8e1033eed20a45d44ce4ebbd18316854386eed4129.cache"
+      ]
+    }
+  ],
+  "samples": [
+    {
+      "phase": "growing",
+      "label": "en-1",
+      "answer": "OK. \n",
+      "usage": {
+        "prompt_tokens": 27,
+        "completion_tokens": 5,
+        "total_tokens": 32,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "counters": {
+        "hits": 0,
+        "misses": 1,
+        "writes": 1,
+        "errors": 0,
+        "skippedWrites": 0,
+        "serializedBytes": 27270312
+      },
+      "first_content_seconds": 2.2262157089999164,
+      "completion_seconds": 2.4832473340002252,
+      "new_entries": [
+        "44686061416fd1958aec5498f76a43f71ef1c3ea397bb12074aa4db31991b53d.cache"
+      ],
+      "removed_entries": [],
+      "store_bytes": 27274416,
+      "finish_reason": "stop",
+      "empty": false
+    },
+    {
+      "phase": "repeat",
+      "label": "en-1",
+      "answer": "OK. \n",
+      "usage": {
+        "prompt_tokens": 27,
+        "completion_tokens": 5,
+        "total_tokens": 32,
+        "prompt_tokens_details": {
+          "cached_tokens": 26
+        }
+      },
+      "counters": {
+        "hits": 0,
+        "misses": 0,
+        "writes": 0,
+        "errors": 0,
+        "skippedWrites": 1,
+        "serializedBytes": 0
+      },
+      "first_content_seconds": 0.5918703329998607,
+      "completion_seconds": 0.9178609999999026,
+      "new_entries": [],
+      "removed_entries": [],
+      "store_bytes": 27274416,
+      "finish_reason": "stop",
+      "empty": false
+    },
+    {
+      "phase": "growing",
+      "label": "en-2",
+      "answer": "OK. \n",
+      "usage": {
+        "prompt_tokens": 54,
+        "completion_tokens": 5,
+        "total_tokens": 59,
+        "prompt_tokens_details": {
+          "cached_tokens": 29
+        }
+      },
+      "counters": {
+        "hits": 0,
+        "misses": 0,
+        "writes": 1,
+        "errors": 0,
+        "skippedWrites": 0,
+        "serializedBytes": 27270312
+      },
+      "first_content_seconds": 2.7125913330000913,
+      "completion_seconds": 3.2179953750001005,
+      "new_entries": [
+        "82417f4b79e67f291ca07ecab94716c0e5289727abe2257cd1a6cf64999dff6b.cache"
+      ],
+      "removed_entries": [],
+      "store_bytes": 54548832,
+      "finish_reason": "stop",
+      "empty": false
+    },
+    {
+      "phase": "repeat",
+      "label": "en-2",
+      "answer": "OK. \n",
+      "usage": {
+        "prompt_tokens": 54,
+        "completion_tokens": 5,
+        "total_tokens": 59,
+        "prompt_tokens_details": {
+          "cached_tokens": 53
+        }
+      },
+      "counters": {
+        "hits": 0,
+        "misses": 0,
+        "writes": 0,
+        "errors": 0,
+        "skippedWrites": 1,
+        "serializedBytes": 0
+      },
+      "first_content_seconds": 0.3241978330006532,
+      "completion_seconds": 0.6843863330004751,
+      "new_entries": [],
+      "removed_entries": [],
+      "store_bytes": 54548832,
+      "finish_reason": "stop",
+      "empty": false
+    },
+    {
+      "phase": "growing",
+      "label": "en-3",
+      "answer": "OK. \n",
+      "usage": {
+        "prompt_tokens": 78,
+        "completion_tokens": 5,
+        "total_tokens": 83,
+        "prompt_tokens_details": {
+          "cached_tokens": 56
+        }
+      },
+      "counters": {
+        "hits": 0,
+        "misses": 0,
+        "writes": 1,
+        "errors": 0,
+        "skippedWrites": 0,
+        "serializedBytes": 27270312
+      },
+      "first_content_seconds": 2.988788167000166,
+      "completion_seconds": 3.1133014170000024,
+      "new_entries": [
+        "36697b171035530419616088fca2922064f96efb95b9b5be2c00886a7d73ff23.cache"
+      ],
+      "removed_entries": [],
+      "store_bytes": 81823248,
+      "finish_reason": "stop",
+      "empty": false
+    },
+    {
+      "phase": "repeat",
+      "label": "en-3",
+      "answer": "OK. \n",
+      "usage": {
+        "prompt_tokens": 78,
+        "completion_tokens": 5,
+        "total_tokens": 83,
+        "prompt_tokens_details": {
+          "cached_tokens": 77
+        }
+      },
+      "counters": {
+        "hits": 0,
+        "misses": 0,
+        "writes": 0,
+        "errors": 0,
+        "skippedWrites": 1,
+        "serializedBytes": 0
+      },
+      "first_content_seconds": 0.23491208400082542,
+      "completion_seconds": 0.5628442920005909,
+      "new_entries": [],
+      "removed_entries": [],
+      "store_bytes": 81823248,
+      "finish_reason": "stop",
+      "empty": false
+    },
+    {
+      "phase": "growing",
+      "label": "en-4",
+      "answer": "Maple \n",
+      "usage": {
+        "prompt_tokens": 102,
+        "completion_tokens": 4,
+        "total_tokens": 106,
+        "prompt_tokens_details": {
+          "cached_tokens": 80
+        }
+      },
+      "counters": {
+        "hits": 0,
+        "misses": 0,
+        "writes": 1,
+        "errors": 0,
+        "skippedWrites": 0,
+        "serializedBytes": 27270312
+      },
+      "first_content_seconds": 2.993515000000116,
+      "completion_seconds": 3.128567750000002,
+      "new_entries": [
+        "b4cc9b03082cad07a799fe83293401fbcab67683a44442ef429487b820d075a2.cache"
+      ],
+      "removed_entries": [],
+      "store_bytes": 109097664,
+      "finish_reason": "stop",
+      "empty": false
+    },
+    {
+      "phase": "repeat",
+      "label": "en-4",
+      "answer": "Maple \n",
+      "usage": {
+        "prompt_tokens": 102,
+        "completion_tokens": 4,
+        "total_tokens": 106,
+        "prompt_tokens_details": {
+          "cached_tokens": 101
+        }
+      },
+      "counters": {
+        "hits": 0,
+        "misses": 0,
+        "writes": 0,
+        "errors": 0,
+        "skippedWrites": 1,
+        "serializedBytes": 0
+      },
+      "first_content_seconds": 0.07654045799972664,
+      "completion_seconds": 0.322353290999672,
+      "new_entries": [],
+      "removed_entries": [],
+      "store_bytes": 109097664,
+      "finish_reason": "stop",
+      "empty": false
+    },
+    {
+      "phase": "growing",
+      "label": "en-5",
+      "answer": "14:00 \n",
+      "usage": {
+        "prompt_tokens": 126,
+        "completion_tokens": 8,
+        "total_tokens": 134,
+        "prompt_tokens_details": {
+          "cached_tokens": 103
+        }
+      },
+      "counters": {
+        "hits": 0,
+        "misses": 0,
+        "writes": 1,
+        "errors": 0,
+        "skippedWrites": 0,
+        "serializedBytes": 27270312
+      },
+      "first_content_seconds": 2.9193902079996406,
+      "completion_seconds": 3.122721207999348,
+      "new_entries": [
+        "4289ede6fc29568093c9640f1be295ee85698e6ed5cea8377b10e09b11319ead.cache"
+      ],
+      "removed_entries": [],
+      "store_bytes": 136372080,
+      "finish_reason": "stop",
+      "empty": false
+    },
+    {
+      "phase": "repeat",
+      "label": "en-5",
+      "answer": "14:00 \n",
+      "usage": {
+        "prompt_tokens": 126,
+        "completion_tokens": 8,
+        "total_tokens": 134,
+        "prompt_tokens_details": {
+          "cached_tokens": 125
+        }
+      },
+      "counters": {
+        "hits": 0,
+        "misses": 0,
+        "writes": 0,
+        "errors": 0,
+        "skippedWrites": 1,
+        "serializedBytes": 0
+      },
+      "first_content_seconds": 0.09474979100014025,
+      "completion_seconds": 0.4634560410004269,
+      "new_entries": [],
+      "removed_entries": [],
+      "store_bytes": 136372080,
+      "finish_reason": "stop",
+      "empty": false
+    },
+    {
+      "phase": "growing",
+      "label": "en-6",
+      "answer": "Maple | 14:00 \n",
+      "usage": {
+        "prompt_tokens": 155,
+        "completion_tokens": 11,
+        "total_tokens": 166,
+        "prompt_tokens_details": {
+          "cached_tokens": 131
+        }
+      },
+      "counters": {
+        "hits": 0,
+        "misses": 0,
+        "writes": 1,
+        "errors": 0,
+        "skippedWrites": 0,
+        "serializedBytes": 27270312
+      },
+      "first_content_seconds": 2.2438762080000743,
+      "completion_seconds": 2.525950625000405,
+      "new_entries": [
+        "c56b31b73a8cd94c244681f93a42957140f172b5c7a87efdfa6e25fd2385c041.cache"
+      ],
+      "removed_entries": [],
+      "store_bytes": 163646496,
+      "finish_reason": "stop",
+      "empty": false
+    },
+    {
+      "phase": "repeat",
+      "label": "en-6",
+      "answer": "Maple | 14:00 \n",
+      "usage": {
+        "prompt_tokens": 155,
+        "completion_tokens": 11,
+        "total_tokens": 166,
+        "prompt_tokens_details": {
+          "cached_tokens": 154
+        }
+      },
+      "counters": {
+        "hits": 0,
+        "misses": 0,
+        "writes": 0,
+        "errors": 0,
+        "skippedWrites": 1,
+        "serializedBytes": 0
+      },
+      "first_content_seconds": 0.06360283400044864,
+      "completion_seconds": 0.7263922920001278,
+      "new_entries": [],
+      "removed_entries": [],
+      "store_bytes": 163646496,
+      "finish_reason": "stop",
+      "empty": false
+    },
+    {
+      "phase": "growing",
+      "label": "en-7",
+      "answer": "Maple \n",
+      "usage": {
+        "prompt_tokens": 182,
+        "completion_tokens": 4,
+        "total_tokens": 186,
+        "prompt_tokens_details": {
+          "cached_tokens": 163
+        }
+      },
+      "counters": {
+        "hits": 0,
+        "misses": 0,
+        "writes": 1,
+        "errors": 0,
+        "skippedWrites": 0,
+        "serializedBytes": 27270312
+      },
+      "first_content_seconds": 2.8618300409998483,
+      "completion_seconds": 2.9442523749994507,
+      "new_entries": [
+        "0349c53da2c50484bb001c1d3b82dba74295ce1d403a20582ff28cdb81637f06.cache"
+      ],
+      "removed_entries": [],
+      "store_bytes": 190920912,
+      "finish_reason": "stop",
+      "empty": false
+    },
+    {
+      "phase": "repeat",
+      "label": "en-7",
+      "answer": "Maple \n",
+      "usage": {
+        "prompt_tokens": 182,
+        "completion_tokens": 4,
+        "total_tokens": 186,
+        "prompt_tokens_details": {
+          "cached_tokens": 181
+        }
+      },
+      "counters": {
+        "hits": 0,
+        "misses": 0,
+        "writes": 0,
+        "errors": 0,
+        "skippedWrites": 1,
+        "serializedBytes": 0
+      },
+      "first_content_seconds": 0.06017379200056894,
+      "completion_seconds": 0.13989412500086473,
+      "new_entries": [],
+      "removed_entries": [],
+      "store_bytes": 190920912,
+      "finish_reason": "stop",
+      "empty": false
+    },
+    {
+      "phase": "growing",
+      "label": "en-8",
+      "answer": "14:00 \n",
+      "usage": {
+        "prompt_tokens": 202,
+        "completion_tokens": 8,
+        "total_tokens": 210,
+        "prompt_tokens_details": {
+          "cached_tokens": 183
+        }
+      },
+      "counters": {
+        "hits": 0,
+        "misses": 0,
+        "writes": 1,
+        "errors": 0,
+        "skippedWrites": 0,
+        "serializedBytes": 27270312
+      },
+      "first_content_seconds": 3.2506116250006016,
+      "completion_seconds": 3.9046927080007663,
+      "new_entries": [
+        "b0a26f7fa71371cccf288bcc2d0e6154d44ee341970adfb421bbe86b37ffe133.cache"
+      ],
+      "removed_entries": [],
+      "store_bytes": 218195328,
+      "finish_reason": "stop",
+      "empty": false
+    },
+    {
+      "phase": "repeat",
+      "label": "en-8",
+      "answer": "14:00 \n",
+      "usage": {
+        "prompt_tokens": 202,
+        "completion_tokens": 8,
+        "total_tokens": 210,
+        "prompt_tokens_details": {
+          "cached_tokens": 201
+        }
+      },
+      "counters": {
+        "hits": 0,
+        "misses": 0,
+        "writes": 0,
+        "errors": 0,
+        "skippedWrites": 1,
+        "serializedBytes": 0
+      },
+      "first_content_seconds": 0.252610999999888,
+      "completion_seconds": 1.141031624999414,
+      "new_entries": [],
+      "removed_entries": [],
+      "store_bytes": 218195328,
+      "finish_reason": "stop",
+      "empty": false
+    },
+    {
+      "phase": "growing",
+      "label": "en-9",
+      "answer": "Maple | 14:00 \n",
+      "usage": {
+        "prompt_tokens": 496,
+        "completion_tokens": 11,
+        "total_tokens": 507,
+        "prompt_tokens_details": {
+          "cached_tokens": 207
+        }
+      },
+      "counters": {
+        "hits": 0,
+        "misses": 0,
+        "writes": 1,
+        "errors": 0,
+        "skippedWrites": 0,
+        "serializedBytes": 76578010
+      },
+      "first_content_seconds": 6.29601591699975,
+      "completion_seconds": 6.610123000000385,
+      "new_entries": [
+        "75996e8ec156ffb63601c9a2f8d0393fa298e5bcbed0f1e86449ea2f9bb8354c.cache"
+      ],
+      "removed_entries": [
+        "36697b171035530419616088fca2922064f96efb95b9b5be2c00886a7d73ff23.cache",
+        "44686061416fd1958aec5498f76a43f71ef1c3ea397bb12074aa4db31991b53d.cache",
+        "82417f4b79e67f291ca07ecab94716c0e5289727abe2257cd1a6cf64999dff6b.cache",
+        "b4cc9b03082cad07a799fe83293401fbcab67683a44442ef429487b820d075a2.cache"
+      ],
+      "store_bytes": 185679778,
+      "finish_reason": "stop",
+      "empty": false
+    },
+    {
+      "phase": "repeat",
+      "label": "en-9",
+      "answer": "Maple | 14:00 \n",
+      "usage": {
+        "prompt_tokens": 496,
+        "completion_tokens": 11,
+        "total_tokens": 507,
+        "prompt_tokens_details": {
+          "cached_tokens": 495
+        }
+      },
+      "counters": {
+        "hits": 1,
+        "misses": 0,
+        "writes": 0,
+        "errors": 0,
+        "skippedWrites": 0,
+        "serializedBytes": 0
+      },
+      "first_content_seconds": 2.9596015409997563,
+      "completion_seconds": 3.294262040999456,
+      "new_entries": [],
+      "removed_entries": [],
+      "store_bytes": 185679778,
+      "finish_reason": "stop",
+      "empty": false
+    },
+    {
+      "phase": "growing",
+      "label": "ja-1",
+      "answer": "OK \n",
+      "usage": {
+        "prompt_tokens": 26,
+        "completion_tokens": 4,
+        "total_tokens": 30,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "counters": {
+        "hits": 0,
+        "misses": 1,
+        "writes": 1,
+        "errors": 0,
+        "skippedWrites": 0,
+        "serializedBytes": 27270312
+      },
+      "first_content_seconds": 2.453362332999859,
+      "completion_seconds": 2.7098526669997227,
+      "new_entries": [
+        "228ee225d4e706582d228ac0a563a79a54d4c33782fcc5afd2f6c84a11997e67.cache"
+      ],
+      "removed_entries": [],
+      "store_bytes": 212954194,
+      "finish_reason": "stop",
+      "empty": false
+    },
+    {
+      "phase": "repeat",
+      "label": "ja-1",
+      "answer": "OK \n",
+      "usage": {
+        "prompt_tokens": 26,
+        "completion_tokens": 4,
+        "total_tokens": 30,
+        "prompt_tokens_details": {
+          "cached_tokens": 25
+        }
+      },
+      "counters": {
+        "hits": 0,
+        "misses": 0,
+        "writes": 0,
+        "errors": 0,
+        "skippedWrites": 1,
+        "serializedBytes": 0
+      },
+      "first_content_seconds": 0.20471091700073885,
+      "completion_seconds": 0.4524721249999857,
+      "new_entries": [],
+      "removed_entries": [],
+      "store_bytes": 212954194,
+      "finish_reason": "stop",
+      "empty": false
+    },
+    {
+      "phase": "growing",
+      "label": "ja-2",
+      "answer": "OK \n",
+      "usage": {
+        "prompt_tokens": 50,
+        "completion_tokens": 4,
+        "total_tokens": 54,
+        "prompt_tokens_details": {
+          "cached_tokens": 27
+        }
+      },
+      "counters": {
+        "hits": 0,
+        "misses": 0,
+        "writes": 1,
+        "errors": 0,
+        "skippedWrites": 0,
+        "serializedBytes": 27270312
+      },
+      "first_content_seconds": 1.9739612079993094,
+      "completion_seconds": 2.050150749999375,
+      "new_entries": [
+        "1b92faf4df7f5ab3255da7e50826f6dae9c9d6a193805830f19507f2b359ebbe.cache"
+      ],
+      "removed_entries": [],
+      "store_bytes": 240228610,
+      "finish_reason": "stop",
+      "empty": false
+    },
+    {
+      "phase": "repeat",
+      "label": "ja-2",
+      "answer": "OK \n",
+      "usage": {
+        "prompt_tokens": 50,
+        "completion_tokens": 4,
+        "total_tokens": 54,
+        "prompt_tokens_details": {
+          "cached_tokens": 49
+        }
+      },
+      "counters": {
+        "hits": 0,
+        "misses": 0,
+        "writes": 0,
+        "errors": 0,
+        "skippedWrites": 1,
+        "serializedBytes": 0
+      },
+      "first_content_seconds": 0.07464312499996595,
+      "completion_seconds": 0.23449024999990797,
+      "new_entries": [],
+      "removed_entries": [],
+      "store_bytes": 240228610,
+      "finish_reason": "stop",
+      "empty": false
+    },
+    {
+      "phase": "growing",
+      "label": "ja-3",
+      "answer": "OK \n",
+      "usage": {
+        "prompt_tokens": 78,
+        "completion_tokens": 4,
+        "total_tokens": 82,
+        "prompt_tokens_details": {
+          "cached_tokens": 51
+        }
+      },
+      "counters": {
+        "hits": 0,
+        "misses": 0,
+        "writes": 1,
+        "errors": 0,
+        "skippedWrites": 0,
+        "serializedBytes": 27270312
+      },
+      "first_content_seconds": 2.0842788749996544,
+      "completion_seconds": 2.850600707999547,
+      "new_entries": [
+        "3f6b6990e583a95e3a41ea636fc6db430ea98d68d297e347f2595e2eb5dd660e.cache"
+      ],
+      "removed_entries": [],
+      "store_bytes": 267503026,
+      "finish_reason": "stop",
+      "empty": false
+    },
+    {
+      "phase": "repeat",
+      "label": "ja-3",
+      "answer": "OK \n",
+      "usage": {
+        "prompt_tokens": 78,
+        "completion_tokens": 4,
+        "total_tokens": 82,
+        "prompt_tokens_details": {
+          "cached_tokens": 77
+        }
+      },
+      "counters": {
+        "hits": 0,
+        "misses": 0,
+        "writes": 0,
+        "errors": 0,
+        "skippedWrites": 1,
+        "serializedBytes": 0
+      },
+      "first_content_seconds": 0.46709862500028976,
+      "completion_seconds": 0.776351208000051,
+      "new_entries": [],
+      "removed_entries": [],
+      "store_bytes": 267503026,
+      "finish_reason": "stop",
+      "empty": false
+    },
+    {
+      "phase": "growing",
+      "label": "ja-4",
+      "answer": "1本 \n",
+      "usage": {
+        "prompt_tokens": 101,
+        "completion_tokens": 5,
+        "total_tokens": 106,
+        "prompt_tokens_details": {
+          "cached_tokens": 79
+        }
+      },
+      "counters": {
+        "hits": 0,
+        "misses": 0,
+        "writes": 1,
+        "errors": 0,
+        "skippedWrites": 0,
+        "serializedBytes": 27270312
+      },
+      "first_content_seconds": 3.787278333999893,
+      "completion_seconds": 4.083121083999686,
+      "new_entries": [
+        "778525fd42518ea155b7ea551868074a061c2bad6b7e3ce0242ec0957d993d05.cache"
+      ],
+      "removed_entries": [
+        "0349c53da2c50484bb001c1d3b82dba74295ce1d403a20582ff28cdb81637f06.cache",
+        "4289ede6fc29568093c9640f1be295ee85698e6ed5cea8377b10e09b11319ead.cache",
+        "b0a26f7fa71371cccf288bcc2d0e6154d44ee341970adfb421bbe86b37ffe133.cache",
+        "c56b31b73a8cd94c244681f93a42957140f172b5c7a87efdfa6e25fd2385c041.cache"
+      ],
+      "store_bytes": 185679778,
+      "finish_reason": "stop",
+      "empty": false
+    },
+    {
+      "phase": "repeat",
+      "label": "ja-4",
+      "answer": "1本 \n",
+      "usage": {
+        "prompt_tokens": 101,
+        "completion_tokens": 5,
+        "total_tokens": 106,
+        "prompt_tokens_details": {
+          "cached_tokens": 100
+        }
+      },
+      "counters": {
+        "hits": 0,
+        "misses": 0,
+        "writes": 0,
+        "errors": 0,
+        "skippedWrites": 1,
+        "serializedBytes": 0
+      },
+      "first_content_seconds": 0.23499870900013775,
+      "completion_seconds": 0.5390747499995996,
+      "new_entries": [],
+      "removed_entries": [],
+      "store_bytes": 185679778,
+      "finish_reason": "stop",
+      "empty": false
+    },
+    {
+      "phase": "growing",
+      "label": "ja-5",
+      "answer": "3個 \n",
+      "usage": {
+        "prompt_tokens": 123,
+        "completion_tokens": 5,
+        "total_tokens": 128,
+        "prompt_tokens_details": {
+          "cached_tokens": 103
+        }
+      },
+      "counters": {
+        "hits": 0,
+        "misses": 0,
+        "writes": 1,
+        "errors": 0,
+        "skippedWrites": 0,
+        "serializedBytes": 27270312
+      },
+      "first_content_seconds": 3.3348323750005875,
+      "completion_seconds": 3.5779124999999112,
+      "new_entries": [
+        "4eb84f486c4fb48b81af4e67b6811c0373376f1df143a3045fc070a7a5fe68cb.cache"
+      ],
+      "removed_entries": [],
+      "store_bytes": 212954194,
+      "finish_reason": "stop",
+      "empty": false
+    },
+    {
+      "phase": "repeat",
+      "label": "ja-5",
+      "answer": "3個 \n",
+      "usage": {
+        "prompt_tokens": 123,
+        "completion_tokens": 5,
+        "total_tokens": 128,
+        "prompt_tokens_details": {
+          "cached_tokens": 122
+        }
+      },
+      "counters": {
+        "hits": 0,
+        "misses": 0,
+        "writes": 0,
+        "errors": 0,
+        "skippedWrites": 1,
+        "serializedBytes": 0
+      },
+      "first_content_seconds": 0.1472486669999853,
+      "completion_seconds": 0.4659871249996286,
+      "new_entries": [],
+      "removed_entries": [],
+      "store_bytes": 212954194,
+      "finish_reason": "stop",
+      "empty": false
+    },
+    {
+      "phase": "growing",
+      "label": "ja-6",
+      "answer": "牛乳:1本 /パン:3個 \n",
+      "usage": {
+        "prompt_tokens": 155,
+        "completion_tokens": 12,
+        "total_tokens": 167,
+        "prompt_tokens_details": {
+          "cached_tokens": 125
+        }
+      },
+      "counters": {
+        "hits": 0,
+        "misses": 0,
+        "writes": 1,
+        "errors": 0,
+        "skippedWrites": 0,
+        "serializedBytes": 27270312
+      },
+      "first_content_seconds": 3.260106749999977,
+      "completion_seconds": 4.003751582999939,
+      "new_entries": [
+        "26814ef55a2f95b68b4c4756e06c9ac0482cf654a2da5ac707923a7e1a6a567e.cache"
+      ],
+      "removed_entries": [],
+      "store_bytes": 240228610,
+      "finish_reason": "stop",
+      "empty": false
+    },
+    {
+      "phase": "repeat",
+      "label": "ja-6",
+      "answer": "牛乳:1本 /パン:3個 \n",
+      "usage": {
+        "prompt_tokens": 155,
+        "completion_tokens": 12,
+        "total_tokens": 167,
+        "prompt_tokens_details": {
+          "cached_tokens": 154
+        }
+      },
+      "counters": {
+        "hits": 0,
+        "misses": 0,
+        "writes": 0,
+        "errors": 0,
+        "skippedWrites": 1,
+        "serializedBytes": 0
+      },
+      "first_content_seconds": 0.3376901250003357,
+      "completion_seconds": 2.5323416670007646,
+      "new_entries": [],
+      "removed_entries": [],
+      "store_bytes": 240228610,
+      "finish_reason": "stop",
+      "empty": false
+    },
+    {
+      "phase": "growing",
+      "label": "ja-7",
+      "answer": "1本 \n",
+      "usage": {
+        "prompt_tokens": 183,
+        "completion_tokens": 5,
+        "total_tokens": 188,
+        "prompt_tokens_details": {
+          "cached_tokens": 164
+        }
+      },
+      "counters": {
+        "hits": 0,
+        "misses": 0,
+        "writes": 1,
+        "errors": 0,
+        "skippedWrites": 0,
+        "serializedBytes": 27270312
+      },
+      "first_content_seconds": 3.2364724580002076,
+      "completion_seconds": 3.615320832999714,
+      "new_entries": [
+        "7d4f70995a39e3f4de4dfda69704004ec058b574c7414c588394ed18acb504f8.cache"
+      ],
+      "removed_entries": [],
+      "store_bytes": 267503026,
+      "finish_reason": "stop",
+      "empty": false
+    },
+    {
+      "phase": "repeat",
+      "label": "ja-7",
+      "answer": "1本 \n",
+      "usage": {
+        "prompt_tokens": 183,
+        "completion_tokens": 5,
+        "total_tokens": 188,
+        "prompt_tokens_details": {
+          "cached_tokens": 182
+        }
+      },
+      "counters": {
+        "hits": 0,
+        "misses": 0,
+        "writes": 0,
+        "errors": 0,
+        "skippedWrites": 1,
+        "serializedBytes": 0
+      },
+      "first_content_seconds": 0.25053408299936564,
+      "completion_seconds": 0.8003653329997178,
+      "new_entries": [],
+      "removed_entries": [],
+      "store_bytes": 267503026,
+      "finish_reason": "stop",
+      "empty": false
+    },
+    {
+      "phase": "growing",
+      "label": "ja-8",
+      "answer": "3個 \n",
+      "usage": {
+        "prompt_tokens": 205,
+        "completion_tokens": 5,
+        "total_tokens": 210,
+        "prompt_tokens_details": {
+          "cached_tokens": 185
+        }
+      },
+      "counters": {
+        "hits": 0,
+        "misses": 0,
+        "writes": 1,
+        "errors": 0,
+        "skippedWrites": 0,
+        "serializedBytes": 27270312
+      },
+      "first_content_seconds": 3.488352583000051,
+      "completion_seconds": 3.6234469169994554,
+      "new_entries": [
+        "f855353f0d11f84f880f73802060129645679e4368f7a241e4b7b3f4cc901d61.cache"
+      ],
+      "removed_entries": [
+        "228ee225d4e706582d228ac0a563a79a54d4c33782fcc5afd2f6c84a11997e67.cache",
+        "75996e8ec156ffb63601c9a2f8d0393fa298e5bcbed0f1e86449ea2f9bb8354c.cache"
+      ],
+      "store_bytes": 190920912,
+      "finish_reason": "stop",
+      "empty": false
+    },
+    {
+      "phase": "repeat",
+      "label": "ja-8",
+      "answer": "3個 \n",
+      "usage": {
+        "prompt_tokens": 205,
+        "completion_tokens": 5,
+        "total_tokens": 210,
+        "prompt_tokens_details": {
+          "cached_tokens": 204
+        }
+      },
+      "counters": {
+        "hits": 0,
+        "misses": 0,
+        "writes": 0,
+        "errors": 0,
+        "skippedWrites": 1,
+        "serializedBytes": 0
+      },
+      "first_content_seconds": 0.20074695799939946,
+      "completion_seconds": 0.5519479999993564,
+      "new_entries": [],
+      "removed_entries": [],
+      "store_bytes": 190920912,
+      "finish_reason": "stop",
+      "empty": false
+    },
+    {
+      "phase": "growing",
+      "label": "ja-9",
+      "answer": "牛乳:1本 /パン:3個 \n",
+      "usage": {
+        "prompt_tokens": 496,
+        "completion_tokens": 12,
+        "total_tokens": 508,
+        "prompt_tokens_details": {
+          "cached_tokens": 207
+        }
+      },
+      "counters": {
+        "hits": 0,
+        "misses": 0,
+        "writes": 1,
+        "errors": 0,
+        "skippedWrites": 0,
+        "serializedBytes": 76578010
+      },
+      "first_content_seconds": 5.897384249999959,
+      "completion_seconds": 6.208847709000111,
+      "new_entries": [
+        "20f14de1620d6d80869e274a78500ce65f3f324fb8f21ece2336f5129b106ca0.cache"
+      ],
+      "removed_entries": [],
+      "store_bytes": 267503026,
+      "finish_reason": "stop",
+      "empty": false
+    },
+    {
+      "phase": "repeat",
+      "label": "ja-9",
+      "answer": "牛乳:1本 /パン:3個 \n",
+      "usage": {
+        "prompt_tokens": 496,
+        "completion_tokens": 12,
+        "total_tokens": 508,
+        "prompt_tokens_details": {
+          "cached_tokens": 495
+        }
+      },
+      "counters": {
+        "hits": 1,
+        "misses": 0,
+        "writes": 0,
+        "errors": 0,
+        "skippedWrites": 0,
+        "serializedBytes": 0
+      },
+      "first_content_seconds": 4.378365833999851,
+      "completion_seconds": 4.675305042000218,
+      "new_entries": [],
+      "removed_entries": [],
+      "store_bytes": 267503026,
+      "finish_reason": "stop",
+      "empty": false
+    },
+    {
+      "phase": "growing",
+      "label": "zh-1",
+      "answer": "OK. \n",
+      "usage": {
+        "prompt_tokens": 23,
+        "completion_tokens": 5,
+        "total_tokens": 28,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "counters": {
+        "hits": 0,
+        "misses": 1,
+        "writes": 1,
+        "errors": 0,
+        "skippedWrites": 0,
+        "serializedBytes": 27270312
+      },
+      "first_content_seconds": 1.7980742499994449,
+      "completion_seconds": 1.96375820799949,
+      "new_entries": [
+        "e956dfeb392b5d7330b67c87ba71b12fd125fb0ed8af3c7fcf41a741e3e8e34f.cache"
+      ],
+      "removed_entries": [
+        "1b92faf4df7f5ab3255da7e50826f6dae9c9d6a193805830f19507f2b359ebbe.cache",
+        "3f6b6990e583a95e3a41ea636fc6db430ea98d68d297e347f2595e2eb5dd660e.cache",
+        "4eb84f486c4fb48b81af4e67b6811c0373376f1df143a3045fc070a7a5fe68cb.cache",
+        "778525fd42518ea155b7ea551868074a061c2bad6b7e3ce0242ec0957d993d05.cache"
+      ],
+      "store_bytes": 185679778,
+      "finish_reason": "stop",
+      "empty": false
+    },
+    {
+      "phase": "repeat",
+      "label": "zh-1",
+      "answer": "OK. \n",
+      "usage": {
+        "prompt_tokens": 23,
+        "completion_tokens": 5,
+        "total_tokens": 28,
+        "prompt_tokens_details": {
+          "cached_tokens": 22
+        }
+      },
+      "counters": {
+        "hits": 0,
+        "misses": 0,
+        "writes": 0,
+        "errors": 0,
+        "skippedWrites": 1,
+        "serializedBytes": 0
+      },
+      "first_content_seconds": 0.21889345799991133,
+      "completion_seconds": 0.49486783300017123,
+      "new_entries": [],
+      "removed_entries": [],
+      "store_bytes": 185679778,
+      "finish_reason": "stop",
+      "empty": false
+    },
+    {
+      "phase": "growing",
+      "label": "zh-2",
+      "answer": "OK. \n",
+      "usage": {
+        "prompt_tokens": 48,
+        "completion_tokens": 5,
+        "total_tokens": 53,
+        "prompt_tokens_details": {
+          "cached_tokens": 25
+        }
+      },
+      "counters": {
+        "hits": 0,
+        "misses": 0,
+        "writes": 1,
+        "errors": 0,
+        "skippedWrites": 0,
+        "serializedBytes": 27270312
+      },
+      "first_content_seconds": 1.6709110840001813,
+      "completion_seconds": 1.787540541999988,
+      "new_entries": [
+        "1c5afedd6b09121b915b434620b221f2afe9560ae3f20c59a7737fa83a2de0a5.cache"
+      ],
+      "removed_entries": [],
+      "store_bytes": 212954194,
+      "finish_reason": "stop",
+      "empty": false
+    },
+    {
+      "phase": "repeat",
+      "label": "zh-2",
+      "answer": "OK. \n",
+      "usage": {
+        "prompt_tokens": 48,
+        "completion_tokens": 5,
+        "total_tokens": 53,
+        "prompt_tokens_details": {
+          "cached_tokens": 47
+        }
+      },
+      "counters": {
+        "hits": 0,
+        "misses": 0,
+        "writes": 0,
+        "errors": 0,
+        "skippedWrites": 1,
+        "serializedBytes": 0
+      },
+      "first_content_seconds": 0.060507749999487714,
+      "completion_seconds": 0.24145466600020882,
+      "new_entries": [],
+      "removed_entries": [],
+      "store_bytes": 212954194,
+      "finish_reason": "stop",
+      "empty": false
+    },
+    {
+      "phase": "growing",
+      "label": "zh-3",
+      "answer": "OK. \n",
+      "usage": {
+        "prompt_tokens": 71,
+        "completion_tokens": 5,
+        "total_tokens": 76,
+        "prompt_tokens_details": {
+          "cached_tokens": 50
+        }
+      },
+      "counters": {
+        "hits": 0,
+        "misses": 0,
+        "writes": 1,
+        "errors": 0,
+        "skippedWrites": 0,
+        "serializedBytes": 27270312
+      },
+      "first_content_seconds": 1.5688604169999962,
+      "completion_seconds": 1.6746192919999885,
+      "new_entries": [
+        "c956c09f059f01f55d3827f97b029f200e38cc1cec036c64195ed4dc7aafe105.cache"
+      ],
+      "removed_entries": [],
+      "store_bytes": 240228610,
+      "finish_reason": "stop",
+      "empty": false
+    },
+    {
+      "phase": "repeat",
+      "label": "zh-3",
+      "answer": "OK. \n",
+      "usage": {
+        "prompt_tokens": 71,
+        "completion_tokens": 5,
+        "total_tokens": 76,
+        "prompt_tokens_details": {
+          "cached_tokens": 70
+        }
+      },
+      "counters": {
+        "hits": 0,
+        "misses": 0,
+        "writes": 0,
+        "errors": 0,
+        "skippedWrites": 1,
+        "serializedBytes": 0
+      },
+      "first_content_seconds": 0.07185404200026824,
+      "completion_seconds": 0.20188025000061316,
+      "new_entries": [],
+      "removed_entries": [],
+      "store_bytes": 240228610,
+      "finish_reason": "stop",
+      "empty": false
+    },
+    {
+      "phase": "growing",
+      "label": "zh-4",
+      "answer": "大阪  \n",
+      "usage": {
+        "prompt_tokens": 92,
+        "completion_tokens": 4,
+        "total_tokens": 96,
+        "prompt_tokens_details": {
+          "cached_tokens": 73
+        }
+      },
+      "counters": {
+        "hits": 0,
+        "misses": 0,
+        "writes": 1,
+        "errors": 0,
+        "skippedWrites": 0,
+        "serializedBytes": 27270312
+      },
+      "first_content_seconds": 1.4492930839996916,
+      "completion_seconds": 1.5372053339997365,
+      "new_entries": [
+        "fa1a5cc5bd52813910f48601e389433d0562e9732cbda887daf220cce0118245.cache"
+      ],
+      "removed_entries": [],
+      "store_bytes": 267503026,
+      "finish_reason": "stop",
+      "empty": false
+    },
+    {
+      "phase": "repeat",
+      "label": "zh-4",
+      "answer": "大阪  \n",
+      "usage": {
+        "prompt_tokens": 92,
+        "completion_tokens": 4,
+        "total_tokens": 96,
+        "prompt_tokens_details": {
+          "cached_tokens": 91
+        }
+      },
+      "counters": {
+        "hits": 0,
+        "misses": 0,
+        "writes": 0,
+        "errors": 0,
+        "skippedWrites": 1,
+        "serializedBytes": 0
+      },
+      "first_content_seconds": 0.06143970800076204,
+      "completion_seconds": 0.13796245800040197,
+      "new_entries": [],
+      "removed_entries": [],
+      "store_bytes": 267503026,
+      "finish_reason": "stop",
+      "empty": false
+    },
+    {
+      "phase": "growing",
+      "label": "zh-5",
+      "answer": "09:30 \n",
+      "usage": {
+        "prompt_tokens": 111,
+        "completion_tokens": 8,
+        "total_tokens": 119,
+        "prompt_tokens_details": {
+          "cached_tokens": 93
+        }
+      },
+      "counters": {
+        "hits": 0,
+        "misses": 0,
+        "writes": 1,
+        "errors": 0,
+        "skippedWrites": 0,
+        "serializedBytes": 27270312
+      },
+      "first_content_seconds": 1.2361086669998258,
+      "completion_seconds": 1.427880666999954,
+      "new_entries": [
+        "3279bf7aad3e4d4dec8ecceca0d122bfab5933acf2094ea7dac02cd237708194.cache"
+      ],
+      "removed_entries": [
+        "20f14de1620d6d80869e274a78500ce65f3f324fb8f21ece2336f5129b106ca0.cache",
+        "26814ef55a2f95b68b4c4756e06c9ac0482cf654a2da5ac707923a7e1a6a567e.cache",
+        "7d4f70995a39e3f4de4dfda69704004ec058b574c7414c588394ed18acb504f8.cache",
+        "f855353f0d11f84f880f73802060129645679e4368f7a241e4b7b3f4cc901d61.cache"
+      ],
+      "store_bytes": 136372080,
+      "finish_reason": "stop",
+      "empty": false
+    },
+    {
+      "phase": "repeat",
+      "label": "zh-5",
+      "answer": "09:30 \n",
+      "usage": {
+        "prompt_tokens": 111,
+        "completion_tokens": 8,
+        "total_tokens": 119,
+        "prompt_tokens_details": {
+          "cached_tokens": 110
+        }
+      },
+      "counters": {
+        "hits": 0,
+        "misses": 0,
+        "writes": 0,
+        "errors": 0,
+        "skippedWrites": 1,
+        "serializedBytes": 0
+      },
+      "first_content_seconds": 0.05908887500027049,
+      "completion_seconds": 0.5835234169999239,
+      "new_entries": [],
+      "removed_entries": [],
+      "store_bytes": 136372080,
+      "finish_reason": "stop",
+      "empty": false
+    },
+    {
+      "phase": "growing",
+      "label": "zh-6",
+      "answer": "大阪 | 09:30 \n",
+      "usage": {
+        "prompt_tokens": 138,
+        "completion_tokens": 11,
+        "total_tokens": 149,
+        "prompt_tokens_details": {
+          "cached_tokens": 116
+        }
+      },
+      "counters": {
+        "hits": 0,
+        "misses": 0,
+        "writes": 1,
+        "errors": 0,
+        "skippedWrites": 0,
+        "serializedBytes": 27270312
+      },
+      "first_content_seconds": 2.2715337919999,
+      "completion_seconds": 2.5417789580005774,
+      "new_entries": [
+        "28a9c134058d44db7fb657dbb2dfbae42df4e63cfe7b263d5eff60f7d9f53cbc.cache"
+      ],
+      "removed_entries": [],
+      "store_bytes": 163646496,
+      "finish_reason": "stop",
+      "empty": false
+    },
+    {
+      "phase": "repeat",
+      "label": "zh-6",
+      "answer": "大阪 | 09:30 \n",
+      "usage": {
+        "prompt_tokens": 138,
+        "completion_tokens": 11,
+        "total_tokens": 149,
+        "prompt_tokens_details": {
+          "cached_tokens": 137
+        }
+      },
+      "counters": {
+        "hits": 0,
+        "misses": 0,
+        "writes": 0,
+        "errors": 0,
+        "skippedWrites": 1,
+        "serializedBytes": 0
+      },
+      "first_content_seconds": 0.05959450000045763,
+      "completion_seconds": 0.5211952500003463,
+      "new_entries": [],
+      "removed_entries": [],
+      "store_bytes": 163646496,
+      "finish_reason": "stop",
+      "empty": false
+    },
+    {
+      "phase": "growing",
+      "label": "zh-7",
+      "answer": "大阪  \n",
+      "usage": {
+        "prompt_tokens": 164,
+        "completion_tokens": 4,
+        "total_tokens": 168,
+        "prompt_tokens_details": {
+          "cached_tokens": 146
+        }
+      },
+      "counters": {
+        "hits": 0,
+        "misses": 0,
+        "writes": 1,
+        "errors": 0,
+        "skippedWrites": 0,
+        "serializedBytes": 27270312
+      },
+      "first_content_seconds": 2.2250059999996665,
+      "completion_seconds": 2.304816624999148,
+      "new_entries": [
+        "e12a40947ccb70574d6901f7459652c61336a7c4fb027c1924d8f7c7a08a3b30.cache"
+      ],
+      "removed_entries": [],
+      "store_bytes": 190920912,
+      "finish_reason": "stop",
+      "empty": false
+    },
+    {
+      "phase": "repeat",
+      "label": "zh-7",
+      "answer": "大阪  \n",
+      "usage": {
+        "prompt_tokens": 164,
+        "completion_tokens": 4,
+        "total_tokens": 168,
+        "prompt_tokens_details": {
+          "cached_tokens": 163
+        }
+      },
+      "counters": {
+        "hits": 0,
+        "misses": 0,
+        "writes": 0,
+        "errors": 0,
+        "skippedWrites": 1,
+        "serializedBytes": 0
+      },
+      "first_content_seconds": 0.06143100000008417,
+      "completion_seconds": 0.14748866599984467,
+      "new_entries": [],
+      "removed_entries": [],
+      "store_bytes": 190920912,
+      "finish_reason": "stop",
+      "empty": false
+    },
+    {
+      "phase": "growing",
+      "label": "zh-8",
+      "answer": "09:30 \n",
+      "usage": {
+        "prompt_tokens": 182,
+        "completion_tokens": 8,
+        "total_tokens": 190,
+        "prompt_tokens_details": {
+          "cached_tokens": 165
+        }
+      },
+      "counters": {
+        "hits": 0,
+        "misses": 0,
+        "writes": 1,
+        "errors": 0,
+        "skippedWrites": 0,
+        "serializedBytes": 27270312
+      },
+      "first_content_seconds": 2.3945216669999354,
+      "completion_seconds": 2.6568874170006893,
+      "new_entries": [
+        "c9404600edf54442aad7f7ae4535702bf29d59838a6fc4822a827c454fe6fa63.cache"
+      ],
+      "removed_entries": [],
+      "store_bytes": 218195328,
+      "finish_reason": "stop",
+      "empty": false
+    },
+    {
+      "phase": "repeat",
+      "label": "zh-8",
+      "answer": "09:30 \n",
+      "usage": {
+        "prompt_tokens": 182,
+        "completion_tokens": 8,
+        "total_tokens": 190,
+        "prompt_tokens_details": {
+          "cached_tokens": 181
+        }
+      },
+      "counters": {
+        "hits": 0,
+        "misses": 0,
+        "writes": 0,
+        "errors": 0,
+        "skippedWrites": 1,
+        "serializedBytes": 0
+      },
+      "first_content_seconds": 0.09244424999997136,
+      "completion_seconds": 0.6550269590006792,
+      "new_entries": [],
+      "removed_entries": [],
+      "store_bytes": 218195328,
+      "finish_reason": "stop",
+      "empty": false
+    },
+    {
+      "phase": "growing",
+      "label": "zh-9",
+      "answer": "大阪 | 09:30 \n",
+      "usage": {
+        "prompt_tokens": 496,
+        "completion_tokens": 11,
+        "total_tokens": 507,
+        "prompt_tokens_details": {
+          "cached_tokens": 187
+        }
+      },
+      "counters": {
+        "hits": 0,
+        "misses": 0,
+        "writes": 1,
+        "errors": 0,
+        "skippedWrites": 0,
+        "serializedBytes": 74448090
+      },
+      "first_content_seconds": 8.021056707999378,
+      "completion_seconds": 8.326137291999657,
+      "new_entries": [
+        "ad85482bfedf65a600b8be8e1033eed20a45d44ce4ebbd18316854386eed4129.cache"
+      ],
+      "removed_entries": [
+        "1c5afedd6b09121b915b434620b221f2afe9560ae3f20c59a7737fa83a2de0a5.cache",
+        "c956c09f059f01f55d3827f97b029f200e38cc1cec036c64195ed4dc7aafe105.cache",
+        "e956dfeb392b5d7330b67c87ba71b12fd125fb0ed8af3c7fcf41a741e3e8e34f.cache",
+        "fa1a5cc5bd52813910f48601e389433d0562e9732cbda887daf220cce0118245.cache"
+      ],
+      "store_bytes": 183549858,
+      "finish_reason": "stop",
+      "empty": false
+    },
+    {
+      "phase": "repeat",
+      "label": "zh-9",
+      "answer": "大阪 | 09:30 \n",
+      "usage": {
+        "prompt_tokens": 496,
+        "completion_tokens": 11,
+        "total_tokens": 507,
+        "prompt_tokens_details": {
+          "cached_tokens": 495
+        }
+      },
+      "counters": {
+        "hits": 1,
+        "misses": 0,
+        "writes": 0,
+        "errors": 0,
+        "skippedWrites": 0,
+        "serializedBytes": 0
+      },
+      "first_content_seconds": 5.248106375000134,
+      "completion_seconds": 5.574014625000018,
+      "new_entries": [],
+      "removed_entries": [],
+      "store_bytes": 183549858,
+      "finish_reason": "stop",
+      "empty": false
+    },
+    {
+      "phase": "retained-after-eviction",
+      "label": "zh-9",
+      "answer": "大阪 | 09:30 \n",
+      "usage": {
+        "prompt_tokens": 496,
+        "completion_tokens": 11,
+        "total_tokens": 507,
+        "prompt_tokens_details": {
+          "cached_tokens": 495
+        }
+      },
+      "counters": {
+        "hits": 1,
+        "misses": 0,
+        "writes": 0,
+        "errors": 0,
+        "skippedWrites": 0,
+        "serializedBytes": 0
+      },
+      "first_content_seconds": 7.2106170420001945,
+      "completion_seconds": 8.189660541999729,
+      "new_entries": [],
+      "removed_entries": [],
+      "store_bytes": 183549858,
+      "finish_reason": "stop",
+      "empty": false
+    },
+    {
+      "phase": "evicted-after-eviction",
+      "label": "en-1",
+      "answer": "OK. \n",
+      "usage": {
+        "prompt_tokens": 27,
+        "completion_tokens": 5,
+        "total_tokens": 32,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "counters": {
+        "hits": 0,
+        "misses": 1,
+        "writes": 1,
+        "errors": 0,
+        "skippedWrites": 0,
+        "serializedBytes": 27270312
+      },
+      "first_content_seconds": 3.131542334000187,
+      "completion_seconds": 3.4590293749997727,
+      "new_entries": [
+        "44686061416fd1958aec5498f76a43f71ef1c3ea397bb12074aa4db31991b53d.cache"
+      ],
+      "removed_entries": [],
+      "store_bytes": 210824274,
+      "finish_reason": "stop",
+      "empty": false
+    },
+    {
+      "phase": "repeat-after-repair",
+      "label": "en-1",
+      "answer": "OK. \n",
+      "usage": {
+        "prompt_tokens": 27,
+        "completion_tokens": 5,
+        "total_tokens": 32,
+        "prompt_tokens_details": {
+          "cached_tokens": 26
+        }
+      },
+      "counters": {
+        "hits": 0,
+        "misses": 0,
+        "writes": 0,
+        "errors": 0,
+        "skippedWrites": 1,
+        "serializedBytes": 0
+      },
+      "first_content_seconds": 0.22829908300082025,
+      "completion_seconds": 0.5585802499999772,
+      "new_entries": [],
+      "removed_entries": [],
+      "store_bytes": 210824274,
+      "finish_reason": "stop",
+      "empty": false
+    },
+    {
+      "phase": "fresh",
+      "label": "en-1",
+      "answer": "OK. \n",
+      "usage": {
+        "prompt_tokens": 27,
+        "completion_tokens": 5,
+        "total_tokens": 32,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "counters": {
+        "hits": 0,
+        "misses": 1,
+        "writes": 1,
+        "errors": 0,
+        "skippedWrites": 0,
+        "serializedBytes": 27270312
+      },
+      "first_content_seconds": 1.7494462079994264,
+      "completion_seconds": 1.8555432079992897,
+      "new_entries": [
+        "44686061416fd1958aec5498f76a43f71ef1c3ea397bb12074aa4db31991b53d.cache"
+      ],
+      "removed_entries": [],
+      "store_bytes": 27274416,
+      "finish_reason": "stop",
+      "empty": false
+    },
+    {
+      "phase": "fresh",
+      "label": "en-2",
+      "answer": "OK. \n",
+      "usage": {
+        "prompt_tokens": 54,
+        "completion_tokens": 5,
+        "total_tokens": 59,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "counters": {
+        "hits": 0,
+        "misses": 1,
+        "writes": 1,
+        "errors": 0,
+        "skippedWrites": 0,
+        "serializedBytes": 27270312
+      },
+      "first_content_seconds": 1.1850954170004115,
+      "completion_seconds": 1.2881863749998956,
+      "new_entries": [
+        "82417f4b79e67f291ca07ecab94716c0e5289727abe2257cd1a6cf64999dff6b.cache"
+      ],
+      "removed_entries": [],
+      "store_bytes": 27274416,
+      "finish_reason": "stop",
+      "empty": false
+    },
+    {
+      "phase": "fresh",
+      "label": "en-3",
+      "answer": "OK. \n",
+      "usage": {
+        "prompt_tokens": 78,
+        "completion_tokens": 5,
+        "total_tokens": 83,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "counters": {
+        "hits": 0,
+        "misses": 1,
+        "writes": 1,
+        "errors": 0,
+        "skippedWrites": 0,
+        "serializedBytes": 27270312
+      },
+      "first_content_seconds": 3.2835806659995797,
+      "completion_seconds": 3.572586207999848,
+      "new_entries": [
+        "36697b171035530419616088fca2922064f96efb95b9b5be2c00886a7d73ff23.cache"
+      ],
+      "removed_entries": [],
+      "store_bytes": 27274416,
+      "finish_reason": "stop",
+      "empty": false
+    },
+    {
+      "phase": "fresh",
+      "label": "en-4",
+      "answer": "Maple \n",
+      "usage": {
+        "prompt_tokens": 102,
+        "completion_tokens": 4,
+        "total_tokens": 106,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "counters": {
+        "hits": 0,
+        "misses": 1,
+        "writes": 1,
+        "errors": 0,
+        "skippedWrites": 0,
+        "serializedBytes": 27270312
+      },
+      "first_content_seconds": 1.1104081659996154,
+      "completion_seconds": 1.1814700409995567,
+      "new_entries": [
+        "b4cc9b03082cad07a799fe83293401fbcab67683a44442ef429487b820d075a2.cache"
+      ],
+      "removed_entries": [],
+      "store_bytes": 27274416,
+      "finish_reason": "stop",
+      "empty": false
+    },
+    {
+      "phase": "fresh",
+      "label": "en-5",
+      "answer": "14:00 \n",
+      "usage": {
+        "prompt_tokens": 126,
+        "completion_tokens": 8,
+        "total_tokens": 134,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "counters": {
+        "hits": 0,
+        "misses": 1,
+        "writes": 1,
+        "errors": 0,
+        "skippedWrites": 0,
+        "serializedBytes": 27270312
+      },
+      "first_content_seconds": 0.6960979580007916,
+      "completion_seconds": 0.8376896660001876,
+      "new_entries": [
+        "4289ede6fc29568093c9640f1be295ee85698e6ed5cea8377b10e09b11319ead.cache"
+      ],
+      "removed_entries": [],
+      "store_bytes": 27274416,
+      "finish_reason": "stop",
+      "empty": false
+    },
+    {
+      "phase": "fresh",
+      "label": "en-6",
+      "answer": "Maple | 14:00 \n",
+      "usage": {
+        "prompt_tokens": 155,
+        "completion_tokens": 11,
+        "total_tokens": 166,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "counters": {
+        "hits": 0,
+        "misses": 1,
+        "writes": 1,
+        "errors": 0,
+        "skippedWrites": 0,
+        "serializedBytes": 27270312
+      },
+      "first_content_seconds": 0.764721708000252,
+      "completion_seconds": 0.9661814999999478,
+      "new_entries": [
+        "c56b31b73a8cd94c244681f93a42957140f172b5c7a87efdfa6e25fd2385c041.cache"
+      ],
+      "removed_entries": [],
+      "store_bytes": 27274416,
+      "finish_reason": "stop",
+      "empty": false
+    },
+    {
+      "phase": "fresh",
+      "label": "en-7",
+      "answer": "Maple \n",
+      "usage": {
+        "prompt_tokens": 182,
+        "completion_tokens": 4,
+        "total_tokens": 186,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "counters": {
+        "hits": 0,
+        "misses": 1,
+        "writes": 1,
+        "errors": 0,
+        "skippedWrites": 0,
+        "serializedBytes": 27270312
+      },
+      "first_content_seconds": 1.0676989169996887,
+      "completion_seconds": 1.1446328339998217,
+      "new_entries": [
+        "0349c53da2c50484bb001c1d3b82dba74295ce1d403a20582ff28cdb81637f06.cache"
+      ],
+      "removed_entries": [],
+      "store_bytes": 27274416,
+      "finish_reason": "stop",
+      "empty": false
+    },
+    {
+      "phase": "fresh",
+      "label": "en-8",
+      "answer": "14:00 \n",
+      "usage": {
+        "prompt_tokens": 202,
+        "completion_tokens": 8,
+        "total_tokens": 210,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "counters": {
+        "hits": 0,
+        "misses": 1,
+        "writes": 1,
+        "errors": 0,
+        "skippedWrites": 0,
+        "serializedBytes": 27270312
+      },
+      "first_content_seconds": 1.3700064589993417,
+      "completion_seconds": 1.5947669170000154,
+      "new_entries": [
+        "b0a26f7fa71371cccf288bcc2d0e6154d44ee341970adfb421bbe86b37ffe133.cache"
+      ],
+      "removed_entries": [],
+      "store_bytes": 27274416,
+      "finish_reason": "stop",
+      "empty": false
+    },
+    {
+      "phase": "fresh",
+      "label": "en-9",
+      "answer": "Maple | 14:00 \n",
+      "usage": {
+        "prompt_tokens": 496,
+        "completion_tokens": 11,
+        "total_tokens": 507,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "counters": {
+        "hits": 0,
+        "misses": 1,
+        "writes": 1,
+        "errors": 0,
+        "skippedWrites": 0,
+        "serializedBytes": 54533332
+      },
+      "first_content_seconds": 8.476186124999913,
+      "completion_seconds": 9.304474042000038,
+      "new_entries": [
+        "75996e8ec156ffb63601c9a2f8d0393fa298e5bcbed0f1e86449ea2f9bb8354c.cache"
+      ],
+      "removed_entries": [],
+      "store_bytes": 54537436,
+      "finish_reason": "stop",
+      "empty": false
+    },
+    {
+      "phase": "fresh",
+      "label": "ja-1",
+      "answer": "OK \n",
+      "usage": {
+        "prompt_tokens": 26,
+        "completion_tokens": 4,
+        "total_tokens": 30,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "counters": {
+        "hits": 0,
+        "misses": 1,
+        "writes": 1,
+        "errors": 0,
+        "skippedWrites": 0,
+        "serializedBytes": 27270312
+      },
+      "first_content_seconds": 3.5326884579999387,
+      "completion_seconds": 3.7788242910000918,
+      "new_entries": [
+        "228ee225d4e706582d228ac0a563a79a54d4c33782fcc5afd2f6c84a11997e67.cache"
+      ],
+      "removed_entries": [],
+      "store_bytes": 27274416,
+      "finish_reason": "stop",
+      "empty": false
+    },
+    {
+      "phase": "fresh",
+      "label": "ja-2",
+      "answer": "OK \n",
+      "usage": {
+        "prompt_tokens": 50,
+        "completion_tokens": 4,
+        "total_tokens": 54,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "counters": {
+        "hits": 0,
+        "misses": 1,
+        "writes": 1,
+        "errors": 0,
+        "skippedWrites": 0,
+        "serializedBytes": 27270312
+      },
+      "first_content_seconds": 2.316007499999614,
+      "completion_seconds": 2.4165436659995976,
+      "new_entries": [
+        "1b92faf4df7f5ab3255da7e50826f6dae9c9d6a193805830f19507f2b359ebbe.cache"
+      ],
+      "removed_entries": [],
+      "store_bytes": 27274416,
+      "finish_reason": "stop",
+      "empty": false
+    },
+    {
+      "phase": "fresh",
+      "label": "ja-3",
+      "answer": "OK \n",
+      "usage": {
+        "prompt_tokens": 78,
+        "completion_tokens": 4,
+        "total_tokens": 82,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "counters": {
+        "hits": 0,
+        "misses": 1,
+        "writes": 1,
+        "errors": 0,
+        "skippedWrites": 0,
+        "serializedBytes": 27270312
+      },
+      "first_content_seconds": 2.188776458000575,
+      "completion_seconds": 2.304143583000041,
+      "new_entries": [
+        "3f6b6990e583a95e3a41ea636fc6db430ea98d68d297e347f2595e2eb5dd660e.cache"
+      ],
+      "removed_entries": [],
+      "store_bytes": 27274416,
+      "finish_reason": "stop",
+      "empty": false
+    },
+    {
+      "phase": "fresh",
+      "label": "ja-4",
+      "answer": "1本 \n",
+      "usage": {
+        "prompt_tokens": 101,
+        "completion_tokens": 5,
+        "total_tokens": 106,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "counters": {
+        "hits": 0,
+        "misses": 1,
+        "writes": 1,
+        "errors": 0,
+        "skippedWrites": 0,
+        "serializedBytes": 27270312
+      },
+      "first_content_seconds": 1.4237067909998586,
+      "completion_seconds": 1.5285947080001279,
+      "new_entries": [
+        "778525fd42518ea155b7ea551868074a061c2bad6b7e3ce0242ec0957d993d05.cache"
+      ],
+      "removed_entries": [],
+      "store_bytes": 27274416,
+      "finish_reason": "stop",
+      "empty": false
+    },
+    {
+      "phase": "fresh",
+      "label": "ja-5",
+      "answer": "3個 \n",
+      "usage": {
+        "prompt_tokens": 123,
+        "completion_tokens": 5,
+        "total_tokens": 128,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "counters": {
+        "hits": 0,
+        "misses": 1,
+        "writes": 1,
+        "errors": 0,
+        "skippedWrites": 0,
+        "serializedBytes": 27270312
+      },
+      "first_content_seconds": 3.811536416999843,
+      "completion_seconds": 3.9332745000001523,
+      "new_entries": [
+        "4eb84f486c4fb48b81af4e67b6811c0373376f1df143a3045fc070a7a5fe68cb.cache"
+      ],
+      "removed_entries": [],
+      "store_bytes": 27274416,
+      "finish_reason": "stop",
+      "empty": false
+    },
+    {
+      "phase": "fresh",
+      "label": "ja-6",
+      "answer": "牛乳:1本 /パン:3個 \n",
+      "usage": {
+        "prompt_tokens": 155,
+        "completion_tokens": 12,
+        "total_tokens": 167,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "counters": {
+        "hits": 0,
+        "misses": 1,
+        "writes": 1,
+        "errors": 0,
+        "skippedWrites": 0,
+        "serializedBytes": 27270312
+      },
+      "first_content_seconds": 5.837292874999548,
+      "completion_seconds": 7.651657208999495,
+      "new_entries": [
+        "26814ef55a2f95b68b4c4756e06c9ac0482cf654a2da5ac707923a7e1a6a567e.cache"
+      ],
+      "removed_entries": [],
+      "store_bytes": 27274416,
+      "finish_reason": "stop",
+      "empty": false
+    },
+    {
+      "phase": "fresh",
+      "label": "ja-7",
+      "answer": "1本 \n",
+      "usage": {
+        "prompt_tokens": 183,
+        "completion_tokens": 5,
+        "total_tokens": 188,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "counters": {
+        "hits": 0,
+        "misses": 1,
+        "writes": 1,
+        "errors": 0,
+        "skippedWrites": 0,
+        "serializedBytes": 27270312
+      },
+      "first_content_seconds": 3.75116162500035,
+      "completion_seconds": 3.9227124590006497,
+      "new_entries": [
+        "7d4f70995a39e3f4de4dfda69704004ec058b574c7414c588394ed18acb504f8.cache"
+      ],
+      "removed_entries": [],
+      "store_bytes": 27274416,
+      "finish_reason": "stop",
+      "empty": false
+    },
+    {
+      "phase": "fresh",
+      "label": "ja-8",
+      "answer": "3個 \n",
+      "usage": {
+        "prompt_tokens": 205,
+        "completion_tokens": 5,
+        "total_tokens": 210,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "counters": {
+        "hits": 0,
+        "misses": 1,
+        "writes": 1,
+        "errors": 0,
+        "skippedWrites": 0,
+        "serializedBytes": 27270312
+      },
+      "first_content_seconds": 1.503581082999517,
+      "completion_seconds": 1.6254331660002208,
+      "new_entries": [
+        "f855353f0d11f84f880f73802060129645679e4368f7a241e4b7b3f4cc901d61.cache"
+      ],
+      "removed_entries": [],
+      "store_bytes": 27274416,
+      "finish_reason": "stop",
+      "empty": false
+    },
+    {
+      "phase": "fresh",
+      "label": "ja-9",
+      "answer": "牛乳:1本 /パン:3個 \n",
+      "usage": {
+        "prompt_tokens": 496,
+        "completion_tokens": 12,
+        "total_tokens": 508,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "counters": {
+        "hits": 0,
+        "misses": 1,
+        "writes": 1,
+        "errors": 0,
+        "skippedWrites": 0,
+        "serializedBytes": 54533332
+      },
+      "first_content_seconds": 3.0706414160003987,
+      "completion_seconds": 3.316290540999944,
+      "new_entries": [
+        "20f14de1620d6d80869e274a78500ce65f3f324fb8f21ece2336f5129b106ca0.cache"
+      ],
+      "removed_entries": [],
+      "store_bytes": 54537436,
+      "finish_reason": "stop",
+      "empty": false
+    },
+    {
+      "phase": "fresh",
+      "label": "zh-1",
+      "answer": "OK. \n",
+      "usage": {
+        "prompt_tokens": 23,
+        "completion_tokens": 5,
+        "total_tokens": 28,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "counters": {
+        "hits": 0,
+        "misses": 1,
+        "writes": 1,
+        "errors": 0,
+        "skippedWrites": 0,
+        "serializedBytes": 27270312
+      },
+      "first_content_seconds": 1.0055658749997747,
+      "completion_seconds": 1.09135170799982,
+      "new_entries": [
+        "e956dfeb392b5d7330b67c87ba71b12fd125fb0ed8af3c7fcf41a741e3e8e34f.cache"
+      ],
+      "removed_entries": [],
+      "store_bytes": 27274416,
+      "finish_reason": "stop",
+      "empty": false
+    },
+    {
+      "phase": "fresh",
+      "label": "zh-2",
+      "answer": "OK. \n",
+      "usage": {
+        "prompt_tokens": 48,
+        "completion_tokens": 5,
+        "total_tokens": 53,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "counters": {
+        "hits": 0,
+        "misses": 1,
+        "writes": 1,
+        "errors": 0,
+        "skippedWrites": 0,
+        "serializedBytes": 27270312
+      },
+      "first_content_seconds": 1.219347000000198,
+      "completion_seconds": 1.3331975410001178,
+      "new_entries": [
+        "1c5afedd6b09121b915b434620b221f2afe9560ae3f20c59a7737fa83a2de0a5.cache"
+      ],
+      "removed_entries": [],
+      "store_bytes": 27274416,
+      "finish_reason": "stop",
+      "empty": false
+    },
+    {
+      "phase": "fresh",
+      "label": "zh-3",
+      "answer": "OK. \n",
+      "usage": {
+        "prompt_tokens": 71,
+        "completion_tokens": 5,
+        "total_tokens": 76,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "counters": {
+        "hits": 0,
+        "misses": 1,
+        "writes": 1,
+        "errors": 0,
+        "skippedWrites": 0,
+        "serializedBytes": 27270312
+      },
+      "first_content_seconds": 0.7624703340006818,
+      "completion_seconds": 0.8496306670003833,
+      "new_entries": [
+        "c956c09f059f01f55d3827f97b029f200e38cc1cec036c64195ed4dc7aafe105.cache"
+      ],
+      "removed_entries": [],
+      "store_bytes": 27274416,
+      "finish_reason": "stop",
+      "empty": false
+    },
+    {
+      "phase": "fresh",
+      "label": "zh-4",
+      "answer": "大阪  \n",
+      "usage": {
+        "prompt_tokens": 92,
+        "completion_tokens": 4,
+        "total_tokens": 96,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "counters": {
+        "hits": 0,
+        "misses": 1,
+        "writes": 1,
+        "errors": 0,
+        "skippedWrites": 0,
+        "serializedBytes": 27270312
+      },
+      "first_content_seconds": 0.7826488330001666,
+      "completion_seconds": 0.8526215000001685,
+      "new_entries": [
+        "fa1a5cc5bd52813910f48601e389433d0562e9732cbda887daf220cce0118245.cache"
+      ],
+      "removed_entries": [],
+      "store_bytes": 27274416,
+      "finish_reason": "stop",
+      "empty": false
+    },
+    {
+      "phase": "fresh",
+      "label": "zh-5",
+      "answer": "09:30 \n",
+      "usage": {
+        "prompt_tokens": 111,
+        "completion_tokens": 8,
+        "total_tokens": 119,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "counters": {
+        "hits": 0,
+        "misses": 1,
+        "writes": 1,
+        "errors": 0,
+        "skippedWrites": 0,
+        "serializedBytes": 27270312
+      },
+      "first_content_seconds": 1.1923445419997734,
+      "completion_seconds": 1.3445010420000472,
+      "new_entries": [
+        "3279bf7aad3e4d4dec8ecceca0d122bfab5933acf2094ea7dac02cd237708194.cache"
+      ],
+      "removed_entries": [],
+      "store_bytes": 27274416,
+      "finish_reason": "stop",
+      "empty": false
+    },
+    {
+      "phase": "fresh",
+      "label": "zh-6",
+      "answer": "大阪 | 09:30 \n",
+      "usage": {
+        "prompt_tokens": 138,
+        "completion_tokens": 11,
+        "total_tokens": 149,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "counters": {
+        "hits": 0,
+        "misses": 1,
+        "writes": 1,
+        "errors": 0,
+        "skippedWrites": 0,
+        "serializedBytes": 27270312
+      },
+      "first_content_seconds": 2.504779290999977,
+      "completion_seconds": 2.9368499580004936,
+      "new_entries": [
+        "28a9c134058d44db7fb657dbb2dfbae42df4e63cfe7b263d5eff60f7d9f53cbc.cache"
+      ],
+      "removed_entries": [],
+      "store_bytes": 27274416,
+      "finish_reason": "stop",
+      "empty": false
+    },
+    {
+      "phase": "fresh",
+      "label": "zh-7",
+      "answer": "大阪  \n",
+      "usage": {
+        "prompt_tokens": 164,
+        "completion_tokens": 4,
+        "total_tokens": 168,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "counters": {
+        "hits": 0,
+        "misses": 1,
+        "writes": 1,
+        "errors": 0,
+        "skippedWrites": 0,
+        "serializedBytes": 27270312
+      },
+      "first_content_seconds": 1.4743960409996362,
+      "completion_seconds": 1.5533714160001182,
+      "new_entries": [
+        "e12a40947ccb70574d6901f7459652c61336a7c4fb027c1924d8f7c7a08a3b30.cache"
+      ],
+      "removed_entries": [],
+      "store_bytes": 27274416,
+      "finish_reason": "stop",
+      "empty": false
+    },
+    {
+      "phase": "fresh",
+      "label": "zh-8",
+      "answer": "09:30 \n",
+      "usage": {
+        "prompt_tokens": 182,
+        "completion_tokens": 8,
+        "total_tokens": 190,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "counters": {
+        "hits": 0,
+        "misses": 1,
+        "writes": 1,
+        "errors": 0,
+        "skippedWrites": 0,
+        "serializedBytes": 27270312
+      },
+      "first_content_seconds": 1.3760207499999524,
+      "completion_seconds": 1.5958034170007522,
+      "new_entries": [
+        "c9404600edf54442aad7f7ae4535702bf29d59838a6fc4822a827c454fe6fa63.cache"
+      ],
+      "removed_entries": [],
+      "store_bytes": 27274416,
+      "finish_reason": "stop",
+      "empty": false
+    },
+    {
+      "phase": "fresh",
+      "label": "zh-9",
+      "answer": "大阪 | 09:30 \n",
+      "usage": {
+        "prompt_tokens": 496,
+        "completion_tokens": 11,
+        "total_tokens": 507,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "counters": {
+        "hits": 0,
+        "misses": 1,
+        "writes": 1,
+        "errors": 0,
+        "skippedWrites": 0,
+        "serializedBytes": 54533332
+      },
+      "first_content_seconds": 3.7048507500003325,
+      "completion_seconds": 3.962308916999973,
+      "new_entries": [
+        "ad85482bfedf65a600b8be8e1033eed20a45d44ce4ebbd18316854386eed4129.cache"
+      ],
+      "removed_entries": [],
+      "store_bytes": 54537436,
+      "finish_reason": "stop",
+      "empty": false
+    }
+  ],
+  "format_checks": [
+    {
+      "label": "en-1",
+      "expected": "OK",
+      "observed": "OK.",
+      "one_line": true,
+      "passed": false
+    },
+    {
+      "label": "en-2",
+      "expected": "OK",
+      "observed": "OK.",
+      "one_line": true,
+      "passed": false
+    },
+    {
+      "label": "en-3",
+      "expected": "OK",
+      "observed": "OK.",
+      "one_line": true,
+      "passed": false
+    },
+    {
+      "label": "en-4",
+      "expected": "Maple",
+      "observed": "Maple",
+      "one_line": true,
+      "passed": true
+    },
+    {
+      "label": "en-5",
+      "expected": "14:00",
+      "observed": "14:00",
+      "one_line": true,
+      "passed": true
+    },
+    {
+      "label": "en-6",
+      "expected": "Maple|14:00",
+      "observed": "Maple|14:00",
+      "one_line": true,
+      "passed": true
+    },
+    {
+      "label": "en-7",
+      "expected": "Maple",
+      "observed": "Maple",
+      "one_line": true,
+      "passed": true
+    },
+    {
+      "label": "en-8",
+      "expected": "14:00",
+      "observed": "14:00",
+      "one_line": true,
+      "passed": true
+    },
+    {
+      "label": "en-9",
+      "expected": "Maple|14:00",
+      "observed": "Maple|14:00",
+      "one_line": true,
+      "passed": true
+    },
+    {
+      "label": "ja-1",
+      "expected": "OK",
+      "observed": "OK",
+      "one_line": true,
+      "passed": true
+    },
+    {
+      "label": "ja-2",
+      "expected": "OK",
+      "observed": "OK",
+      "one_line": true,
+      "passed": true
+    },
+    {
+      "label": "ja-3",
+      "expected": "OK",
+      "observed": "OK",
+      "one_line": true,
+      "passed": true
+    },
+    {
+      "label": "ja-4",
+      "expected": "1",
+      "observed": "1本",
+      "one_line": true,
+      "passed": false
+    },
+    {
+      "label": "ja-5",
+      "expected": "3",
+      "observed": "3個",
+      "one_line": true,
+      "passed": false
+    },
+    {
+      "label": "ja-6",
+      "expected": "牛乳:1/パン:3",
+      "observed": "牛乳:1本/パン:3個",
+      "one_line": true,
+      "passed": false
+    },
+    {
+      "label": "ja-7",
+      "expected": "1",
+      "observed": "1本",
+      "one_line": true,
+      "passed": false
+    },
+    {
+      "label": "ja-8",
+      "expected": "3",
+      "observed": "3個",
+      "one_line": true,
+      "passed": false
+    },
+    {
+      "label": "ja-9",
+      "expected": "牛乳:1/パン:3",
+      "observed": "牛乳:1本/パン:3個",
+      "one_line": true,
+      "passed": false
+    },
+    {
+      "label": "zh-1",
+      "expected": "OK",
+      "observed": "OK.",
+      "one_line": true,
+      "passed": false
+    },
+    {
+      "label": "zh-2",
+      "expected": "OK",
+      "observed": "OK.",
+      "one_line": true,
+      "passed": false
+    },
+    {
+      "label": "zh-3",
+      "expected": "OK",
+      "observed": "OK.",
+      "one_line": true,
+      "passed": false
+    },
+    {
+      "label": "zh-4",
+      "expected": "大阪",
+      "observed": "大阪",
+      "one_line": true,
+      "passed": true
+    },
+    {
+      "label": "zh-5",
+      "expected": "09:30",
+      "observed": "09:30",
+      "one_line": true,
+      "passed": true
+    },
+    {
+      "label": "zh-6",
+      "expected": "大阪|09:30",
+      "observed": "大阪|09:30",
+      "one_line": true,
+      "passed": true
+    },
+    {
+      "label": "zh-7",
+      "expected": "大阪",
+      "observed": "大阪",
+      "one_line": true,
+      "passed": true
+    },
+    {
+      "label": "zh-8",
+      "expected": "09:30",
+      "observed": "09:30",
+      "one_line": true,
+      "passed": true
+    },
+    {
+      "label": "zh-9",
+      "expected": "大阪|09:30",
+      "observed": "大阪|09:30",
+      "one_line": true,
+      "passed": true
+    }
+  ],
+  "format_passed": 15,
+  "format_total": 27,
+  "qualificationEvidenceIssued": false,
+  "format_assessment": "exact-single-line-v2",
+  "truncated_histories": [],
+  "empty_histories": [],
+  "postprocessing": "Raw answers unchanged; format criteria rescored with exact-single-line-v2 and legacy phase labels renamed for automatic eviction. Original raw run report retained privately.",
+  "originalQualificationReverified": {
+    "identity": "b66ba5cf0516500a810e58d8c692e6a22daf7bd31776d70e0c8ab9c8eb7abf0f",
+    "profile": {
+      "schema": 1,
+      "engine": "mlxPrefix",
+      "context": 512,
+      "maximum_output_tokens": 128,
+      "concurrency": 1,
+      "temperature": 0,
+      "seed": 0,
+      "memory_cache_bytes": 67108864,
+      "allocator_cache_bytes": 268435456
+    },
+    "verified": true
+  },
+  "testStateCleanup": {
+    "removedFiles": 33,
+    "removedLogicalBytes": 1029022566,
+    "scope": "Only this run's captured cache receipts in conversation-cache and fresh-0..26; logs/reports/lock files retained; certified cache untouched"
+  }
+}

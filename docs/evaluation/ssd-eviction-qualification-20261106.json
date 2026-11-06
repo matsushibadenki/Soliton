@@ -1,0 +1,226 @@
+{
+  "result": "passed",
+  "identity": "b66ba5cf0516500a810e58d8c692e6a22daf7bd31776d70e0c8ab9c8eb7abf0f",
+  "profile": {
+    "schema": 1,
+    "engine": "mlxPrefix",
+    "context": 512,
+    "maximum_output_tokens": 128,
+    "concurrency": 1,
+    "temperature": 0,
+    "seed": 0,
+    "memory_cache_bytes": 67108864,
+    "allocator_cache_bytes": 268435456
+  },
+  "quota_bytes": 268435456,
+  "created_at": 1793947644.5938492,
+  "duration_seconds": 1800.4271845000003,
+  "successes": 3218,
+  "failures": 0,
+  "requires_eviction": true,
+  "eviction_pressure": {
+    "requests": 22,
+    "saved_writes": 22,
+    "storage_errors": 0,
+    "removed_entries": 23,
+    "samples": [
+      {
+        "index": 0,
+        "used_bytes": 218161171,
+        "entries": 5,
+        "removed_entries": 0
+      },
+      {
+        "index": 1,
+        "used_bytes": 163612339,
+        "entries": 3,
+        "removed_entries": 3
+      },
+      {
+        "index": 2,
+        "used_bytes": 218149775,
+        "entries": 4,
+        "removed_entries": 0
+      },
+      {
+        "index": 3,
+        "used_bytes": 163612339,
+        "entries": 3,
+        "removed_entries": 2
+      },
+      {
+        "index": 4,
+        "used_bytes": 218149775,
+        "entries": 4,
+        "removed_entries": 0
+      },
+      {
+        "index": 5,
+        "used_bytes": 163612339,
+        "entries": 3,
+        "removed_entries": 2
+      },
+      {
+        "index": 6,
+        "used_bytes": 218149775,
+        "entries": 4,
+        "removed_entries": 0
+      },
+      {
+        "index": 7,
+        "used_bytes": 163612339,
+        "entries": 3,
+        "removed_entries": 2
+      },
+      {
+        "index": 8,
+        "used_bytes": 218149775,
+        "entries": 4,
+        "removed_entries": 0
+      },
+      {
+        "index": 9,
+        "used_bytes": 163612339,
+        "entries": 3,
+        "removed_entries": 2
+      },
+      {
+        "index": 10,
+        "used_bytes": 218149775,
+        "entries": 4,
+        "removed_entries": 0
+      },
+      {
+        "index": 11,
+        "used_bytes": 163612339,
+        "entries": 3,
+        "removed_entries": 2
+      },
+      {
+        "index": 12,
+        "used_bytes": 218149775,
+        "entries": 4,
+        "removed_entries": 0
+      },
+      {
+        "index": 13,
+        "used_bytes": 163612339,
+        "entries": 3,
+        "removed_entries": 2
+      },
+      {
+        "index": 14,
+        "used_bytes": 218149775,
+        "entries": 4,
+        "removed_entries": 0
+      },
+      {
+        "index": 15,
+        "used_bytes": 163612339,
+        "entries": 3,
+        "removed_entries": 2
+      },
+      {
+        "index": 16,
+        "used_bytes": 218149775,
+        "entries": 4,
+        "removed_entries": 0
+      },
+      {
+        "index": 17,
+        "used_bytes": 163612339,
+        "entries": 3,
+        "removed_entries": 2
+      },
+      {
+        "index": 18,
+        "used_bytes": 218149775,
+        "entries": 4,
+        "removed_entries": 0
+      },
+      {
+        "index": 19,
+        "used_bytes": 163612339,
+        "entries": 3,
+        "removed_entries": 2
+      },
+      {
+        "index": 20,
+        "used_bytes": 218149775,
+        "entries": 4,
+        "removed_entries": 0
+      },
+      {
+        "index": 21,
+        "used_bytes": 163612339,
+        "entries": 3,
+        "removed_entries": 2
+      }
+    ],
+    "restart_counters": {
+      "hits": 0,
+      "misses": 1,
+      "writes": 1,
+      "errors": 0,
+      "skippedWrites": 1,
+      "serializedBytes": 27270312,
+      "committedBytes": 27270312,
+      "identity": "b66ba5cf0516500a810e58d8c692e6a22daf7bd31776d70e0c8ab9c8eb7abf0f",
+      "profile": {
+        "schema": 1,
+        "engine": "mlxPrefix",
+        "context": 512,
+        "maximum_output_tokens": 128,
+        "concurrency": 1,
+        "temperature": 0,
+        "seed": 0,
+        "memory_cache_bytes": 67108864,
+        "allocator_cache_bytes": 268435456
+      },
+      "quota_bytes": 268435456,
+      "experimental": true,
+      "productionIntegration": false
+    }
+  },
+  "rss_growth_bytes": 0,
+  "gates": {
+    "authentication": true,
+    "request_rejection": true,
+    "cold": true,
+    "restart_hit": true,
+    "corruption_fallback": true,
+    "duplicate_write_suppression": true,
+    "live_entry_repair": true,
+    "disconnect_recovery": true,
+    "quota_fallback": true,
+    "protected_quota_preservation": true,
+    "quota_retry": true,
+    "context_boundary": true,
+    "automatic_eviction": true,
+    "eviction_restart_recompute": true
+  },
+  "final_counters": {
+    "hits": 0,
+    "misses": 1,
+    "writes": 3,
+    "errors": 0,
+    "skippedWrites": 3176,
+    "serializedBytes": 81810936,
+    "committedBytes": 81810936,
+    "identity": "b66ba5cf0516500a810e58d8c692e6a22daf7bd31776d70e0c8ab9c8eb7abf0f",
+    "profile": {
+      "schema": 1,
+      "engine": "mlxPrefix",
+      "context": 512,
+      "maximum_output_tokens": 128,
+      "concurrency": 1,
+      "temperature": 0,
+      "seed": 0,
+      "memory_cache_bytes": 67108864,
+      "allocator_cache_bytes": 268435456
+    },
+    "quota_bytes": 268435456,
+    "experimental": true,
+    "productionIntegration": false
+  }
+}

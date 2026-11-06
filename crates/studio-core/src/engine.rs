@@ -10,6 +10,7 @@ pub enum Engine {
     Strata,
     VllmApple,
     Lfm3Omni,
+    MlxPrefix,
 }
 impl Engine {
     pub fn label(self) -> &'static str {
@@ -17,6 +18,7 @@ impl Engine {
             Self::Strata => "Strata",
             Self::VllmApple => "vLLM-Apple",
             Self::Lfm3Omni => "LFM3-Omni",
+            Self::MlxPrefix => "MLX SSD",
         }
     }
 }

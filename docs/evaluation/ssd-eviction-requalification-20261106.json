@@ -1,0 +1,71 @@
+{
+  "date": "2026-11-06",
+  "scope": "Isolated PyPI MLX-LM0.32.0 /MLX0.32.4 Gemma2 2B automatic SSD eviction",
+  "result": "passed",
+  "certificateIdentity": "b66ba5cf0516500a810e58d8c692e6a22daf7bd31776d70e0c8ab9c8eb7abf0f",
+  "privateCertificateSha256": "4187e92c090313fc9c95e943dfed6f7e428ea934551f4285fd09fcf820b6d260",
+  "privateCertificateMode": "0o600",
+  "qualification": {
+    "seconds": 1800.4271845000003,
+    "successes": 3218,
+    "failures": 0,
+    "sampledRssGrowthBytes": 0,
+    "allGatesPassed": true,
+    "pressureRequests": 22,
+    "savedPressureStates": 22,
+    "removedOlderEntries": 23,
+    "storageErrors": 0
+  },
+  "checks": {
+    "qualifiedStartup": true,
+    "capacityInspection": true,
+    "liveTrimRefused": true,
+    "diskReuse": true,
+    "exclusiveStart": true,
+    "settingsLocked": true,
+    "admissionRefusals": true,
+    "sse": true,
+    "duplicateWriteSuppression": true,
+    "ownedProcessCleanup": true,
+    "restartReuse": true,
+    "wrongQuotaRefused": true,
+    "expiredEvidenceRefused": true,
+    "engineSwitch": true,
+    "recovery": true,
+    "conversationsPreserved": true,
+    "stoppedMaintenance": true
+  },
+  "oldCertificateRefused": true,
+  "tests": {
+    "rustCore": 156,
+    "admissionAndHttpDiagnostics": 4,
+    "evidenceContract": 5,
+    "writeReceipts": 3
+  },
+  "ordinarySettingsMigrated": false,
+  "attempts": [
+    {
+      "id": 1,
+      "result": "failed",
+      "lastSuccessfulSoakProgressSeconds": 1123.3,
+      "reason": "HTTP503; original body unavailable; handoff race hypothesized"
+    },
+    {
+      "id": 2,
+      "result": "failed",
+      "reason": "Diagnostic-helper read-only reason assignment during initial auth gate; no soak"
+    },
+    {
+      "id": 3,
+      "result": "passed",
+      "seconds": 1800.4271845000003
+    }
+  ],
+  "limits": [
+    "fixed Gemma text profile only",
+    "installed development MLX-LM build not adopted",
+    "prior approved source bytes unavailable; selected-source review recorded",
+    "no new native-window or other-Mac test",
+    "no latency/NAND-write/whole-process memory improvement claim"
+  ]
+}

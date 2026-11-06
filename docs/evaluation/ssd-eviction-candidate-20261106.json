@@ -1,0 +1,52 @@
+{
+  "date": "2026-11-06",
+  "scope": "Opt-in pressure-eviction store candidate; no managed adoption",
+  "rustTests": {
+    "passed": 156,
+    "failed": 0
+  },
+  "cliPressure": {
+    "opaquePayloadBytes": 20480,
+    "quotaBytes": 100000,
+    "requests": 10,
+    "refuse": {
+      "writes": 4,
+      "refusedWrites": 6,
+      "evictedEntries": 0
+    },
+    "candidate": {
+      "writes": 10,
+      "refusedWrites": 0,
+      "evictedEntries": 6
+    },
+    "reinsertAndGetSha256": "passed",
+    "receiptInvalidation": "passed",
+    "protectedUnknownFile": "preserved"
+  },
+  "realInference": {
+    "status": "pending; startup refused",
+    "installedMlxLm": "0.32.3.dev12+g4cfc64784",
+    "installedMlx": "0.32.4",
+    "isolatedMlxLm": "0.32.0",
+    "isolatedSourceHashes": {
+      "server": "57392576de114af80ede723976b9dd156dc234f856b9943b8b44b8b78bc27f79",
+      "generate": "4a3bf57f5679dac73791f069268866ab5b9336e58582d436b31133984e4b6971",
+      "models.cache": "c96cb169fd5e0ec4584a162dd61dc62ab08ccdca03a9850f8a491ce6809145e6"
+    },
+    "guardsBypassed": false,
+    "qualificationCompleted": false
+  },
+  "artifactsSha256": {
+    "qualifiedOriginalExecutable": "b25d7b002e3163b4e4451db4bd9a9a64cd41397dd1d5093f5a1c42eac0dbcfcf",
+    "candidateExecutable": "1b7dba7efc03df065b0b6e52b846224310e2a78c53601b86bb82b97f5333e589",
+    "unchangedWorker": "2ce653005e7ec33d9d735c9ac25d7a245f7a373bb73d055e95250923c41a0c81"
+  },
+  "limits": [
+    "not production adoption",
+    "oldest save, not LRU",
+    "write failure can follow eviction of other recomputable states",
+    "logical quota not physical blocks",
+    "no real-model success or latency claim",
+    "candidate requires reviewed backend and fresh 30-minute qualification"
+  ]
+}

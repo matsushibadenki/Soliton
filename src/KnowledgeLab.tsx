@@ -20,9 +20,11 @@ import {
 } from "lucide-react";
 import { desktop, request } from "./client";
 import type { Language } from "./i18n";
+import { KnowledgePlanner, type GeneratedPlan } from "./KnowledgePlanner";
 import { knowledgeWords } from "./knowledge-i18n";
+import type { EvaluationCase, EvaluationKind } from "./knowledge-types";
 
-type Category = "target" | "paraphrase" | "locality";
+type Category = EvaluationKind;
 type Draft = {
   name: string;
   model: string;
@@ -30,12 +32,7 @@ type Draft = {
   source: string;
   operation: "add" | "suppress";
   training: { prompt: string; response: string }[];
-  evaluation: {
-    kind: Category;
-    prompt: string;
-    expected: string;
-    forbidden: string;
-  }[];
+  evaluation: EvaluationCase[];
   steps: number;
   layers: number;
   learningRate: number;
@@ -47,9 +44,11 @@ type Answer = {
   elapsedMs: number;
   truncated: boolean;
   passed: boolean;
+  reasons?: string[];
 };
 type Status = keyof typeof knowledgeWords.en.status;
 type Experiment = {
+  assessmentVersion?: number;
   id: string;
   createdAt: number;
   draft: Draft;
@@ -67,6 +66,7 @@ type Experiment = {
 };
 type LabState = {
   workspace: {
+    plan: GeneratedPlan | null;
     revision: number;
     view: string;
     draft: Draft;
@@ -161,7 +161,9 @@ export function KnowledgeLab({
     try {
       ++sequence.current;
       await request("/studio/knowledge", { action, ...data });
-      await refresh(action === "save" || action === "run");
+      await refresh(
+        action === "save" || action === "run" || action === "importPlan",
+      );
     } catch (e) {
       setError(String(e));
     } finally {
@@ -240,6 +242,7 @@ export function KnowledgeLab({
         </div>
         <p>{a.text || "—"}</p>
         {a.truncated && <small>{t.truncated}</small>}
+        {!!a.reasons?.length && <ul className="knowledge-reasons">{a.reasons.map((reason) => <li key={reason}>{(t.reasons as Record<string,string>)[reason] || reason}</li>)}</ul>}
       </>
     ) : (
       <span className="muted">{t.waiting}</span>
@@ -322,6 +325,18 @@ export function KnowledgeLab({
                 void command("run", { draft, revision: revision.current });
               }}
             >
+              <KnowledgePlanner
+                language={language}
+                operation={draft.operation}
+                revision={revision.current}
+                plan={state.workspace.plan}
+                disabled={locked}
+                dirty={unsaved}
+                onRefresh={() => refresh()}
+                onImport={(id) =>
+                  command("importPlan", { id, revision: revision.current })
+                }
+              />
               <div className="knowledge-actions">
                 <span className="muted">{unsaved ? t.unsaved : t.saved}</span>
                 <button
@@ -529,6 +544,9 @@ export function KnowledgeLab({
                               prompt: "",
                               expected: "",
                               forbidden: "",
+                              matchMode: "exact",
+                              aliases: [],
+                              language,
                             },
                           ],
                         })
@@ -546,7 +564,7 @@ export function KnowledgeLab({
                       });
                     return (
                       <div className="knowledge-test-row" key={index}>
-                        <label className="knowledge-category">
+                        <div className="knowledge-case-meta"><label className="knowledge-category">
                           {index + 1}
                           <select
                             aria-label={`${t.tests} ${index + 1}`}
@@ -556,14 +574,18 @@ export function KnowledgeLab({
                             }
                           >
                             {(
-                              ["target", "paraphrase", "locality"] as const
+                              ["target", "paraphrase", "indirect", "locality"] as const
                             ).map((k) => (
                               <option key={k} value={k}>
                                 {t[k]}
                               </option>
                             ))}
                           </select>
-                        </label>
+                        </label><label>{t.language}<select aria-label={`${t.language} ${index+1}`} value={row.language || "und"} onChange={e=>update({language:e.target.value as EvaluationCase["language"]})}>
+                          <option value="und">—</option><option value="en">English</option><option value="ja">日本語</option><option value="zh">简体中文</option>
+                        </select></label><label>{t.matchMode}{info(t.matchHelp)}<select aria-label={`${t.matchMode} ${index+1}`} value={row.matchMode || "contains"} onChange={e=>update({matchMode:e.target.value as EvaluationCase["matchMode"]})}>
+                          <option value="exact">{t.exact}</option><option value="contains">{t.contains}</option>
+                        </select></label></div>
                         <label>
                           {t.question}
                           <textarea
@@ -586,6 +608,9 @@ export function KnowledgeLab({
                               }
                             />
                           </label>
+                          <label>{t.aliases}{info(t.aliasesHelp)}<textarea rows={2} maxLength={32768} aria-label={`${t.aliases} ${index+1}`} value={(row.aliases || []).join("\n")}
+                            onChange={e=>update({aliases:e.target.value ? e.target.value.split("\n") : []})}
+                            onBlur={()=>{const aliases=(row.aliases || []).map(s=>s.trim()).filter(Boolean);if(JSON.stringify(aliases)!==JSON.stringify(row.aliases || [])) update({aliases});}} /></label>
                           <label>
                             {t.forbidden}
                             <input
@@ -606,7 +631,7 @@ export function KnowledgeLab({
                           className="icon-button"
                           aria-label={`${t.remove}: ${t.tests} ${index + 1}`}
                           title={t.remove}
-                          disabled={draft.evaluation.length <= 3}
+                          disabled={draft.evaluation.length <= 4}
                           onClick={() =>
                             change({
                               evaluation: draft.evaluation.filter(
@@ -710,7 +735,9 @@ export function KnowledgeLab({
                     </button>
                   )}
                   <button
-                disabled={pending || state.busy || selected.status !== "passed"}
+                    disabled={
+                      pending || state.busy || selected.status !== "passed" || selected.assessmentVersion !== 1
+                    }
                     title={t.gates}
                     onClick={() => void command("retain", { id: selected.id })}
                   >
@@ -760,11 +787,11 @@ export function KnowledgeLab({
                   </div>
                 )}
                 <p className="knowledge-hint">
-                  {t.assessment}
+                  {selected.assessmentVersion === 1 ? t.assessment : t.legacyAssessment}
                   {info(t.gates + " " + t.testsHelp)}
                 </p>
                 <div className="knowledge-scorecards">
-                  {(["target", "paraphrase", "locality"] as const).map(
+                  {(["target", "paraphrase", "indirect", "locality"] as const).map(
                     (kind) => {
                       const rows = selected.results.filter(
                         (_, i) => selected.draft.evaluation[i].kind === kind,
@@ -789,6 +816,7 @@ export function KnowledgeLab({
                       <span>{t[test.kind]}</span>
                       <h3>{test.prompt}</h3>
                     </header>
+                    <p className="knowledge-rule-summary">{test.language !== "und" && test.language ? `${test.language.toUpperCase()} · ` : ""}{test.matchMode === "exact" ? t.exact : t.contains} · {test.expected}{test.aliases?.length ? ` / ${test.aliases.join(" / ")}` : ""}</p>
                     <div className="knowledge-comparison-grid">
                       <section>
                         <h4>{t.baseline}</h4>

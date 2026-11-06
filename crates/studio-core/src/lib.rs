@@ -1,21 +1,25 @@
 mod allocation_report;
-pub mod knowledge;
 mod backend_budget;
 pub mod catalog;
 pub mod conversations;
 pub mod docking;
 pub mod engine;
 pub mod inference;
+pub mod knowledge;
+mod knowledge_planner;
 pub mod layout;
 pub mod local_model;
 pub mod memory_usage;
 pub mod metal_policy;
-pub mod model_plan;
 mod model_budget;
+pub mod model_plan;
 pub mod omni;
-pub mod omni_runtime;
 pub mod omni_realtime;
+pub mod omni_runtime;
 mod owned_process;
+pub mod prefix_engine;
+mod prefix_staging;
+pub mod prefix_store;
 pub mod preparation;
 mod token_budget;
 pub mod vllm_inspect;
@@ -63,6 +67,8 @@ pub struct Settings {
     #[serde(default)]
     pub engine: engine::Engine,
     #[serde(default)]
+    pub prefix_cache: prefix_engine::Settings,
+    #[serde(default)]
     pub vllm: engine::VllmSettings,
     #[serde(default)]
     pub omni: omni_runtime::Settings,
@@ -86,6 +92,7 @@ impl Default for Settings {
     fn default() -> Self {
         Self {
             engine: engine::Engine::default(),
+            prefix_cache: prefix_engine::Settings::default(),
             vllm: engine::VllmSettings::default(),
             omni: omni_runtime::Settings::default(),
             strata_root: String::new(),
@@ -178,6 +185,7 @@ struct Process {
     startup: Option<Startup>,
 }
 pub struct Studio {
+    planner: Mutex<()>,
     knowledge_job: Mutex<Option<tokio::sync::watch::Sender<bool>>>,
     pub root: PathBuf,
     pub port: u16,
@@ -199,6 +207,7 @@ pub struct Studio {
     token_counter: Mutex<token_budget::Counter>,
     omni_assets: Mutex<()>,
     omni_counter_failed: std::sync::atomic::AtomicBool,
+    prefix_counter_failed: std::sync::atomic::AtomicBool,
     active_requests: AtomicUsize,
 }
 impl Studio {
@@ -262,6 +271,7 @@ impl Studio {
             }),
             logs: Arc::new(Mutex::new(VecDeque::new())),
             knowledge_job: Mutex::new(None),
+            planner: Mutex::new(()),
             client: reqwest::Client::new(),
             storage: Mutex::new(None),
             preparation: Mutex::new(preparation::Preparation::default()),
@@ -271,6 +281,7 @@ impl Studio {
             token_counter: Mutex::new(token_budget::Counter::default()),
             omni_assets: Mutex::new(()),
             omni_counter_failed: std::sync::atomic::AtomicBool::new(false),
+            prefix_counter_failed: std::sync::atomic::AtomicBool::new(false),
             active_requests: AtomicUsize::new(0),
             memory_usage: Mutex::new(memory_usage::Monitor::default()),
             requests: Mutex::new(VecDeque::new()),
@@ -476,9 +487,66 @@ impl Studio {
         }
         result
     }
+    async fn check_prefix(&self, port: u16, key: &str, body: &Value) -> Result<(), Response> {
+        if let Err(message) = prefix_engine::validate_body(body) {
+            return Err(error(StatusCode::UNPROCESSABLE_ENTITY, message));
+        }
+        if self.prefix_counter_failed.load(Ordering::SeqCst) {
+            return Err(error(
+                StatusCode::SERVICE_UNAVAILABLE,
+                "MLX SSD token admission failed; restart the engine",
+            ));
+        }
+        let identity = self
+            .process
+            .lock()
+            .await
+            .memory
+            .as_ref()
+            .and_then(|m| m["prefixIdentity"].as_str())
+            .map(str::to_string);
+        let reply = self
+            .client
+            .post(format!("http://127.0.0.1:{port}/tokenize"))
+            .bearer_auth(key)
+            .timeout(Duration::from_secs(15))
+            .json(body)
+            .send()
+            .await;
+        if let Ok(response) = reply {
+            if response.status() == StatusCode::UNPROCESSABLE_ENTITY {
+                return Err(error(
+                    StatusCode::UNPROCESSABLE_ENTITY,
+                    "Prompt plus output exceeds the qualified 512-token context",
+                ));
+            }
+            if response.status().is_success() {
+                if let Ok(value) = response.json::<Value>().await {
+                    if value["identity"].as_str() == identity.as_deref()
+                        && identity.is_some()
+                        && value["context"] == 512
+                        && value["count"].as_u64().is_some_and(|n| {
+                            n >= 2
+                                && n.checked_add(body["max_tokens"].as_u64().unwrap_or(129))
+                                    .is_some_and(|total| total <= 512)
+                        })
+                    {
+                        return Ok(());
+                    }
+                }
+            }
+        }
+        self.prefix_counter_failed.store(true, Ordering::SeqCst);
+        Err(error(
+            StatusCode::SERVICE_UNAVAILABLE,
+            "MLX SSD token admission failed; restart the engine",
+        ))
+    }
     pub async fn start(&self) -> Result<(), String> {
         if self.knowledge_job.lock().await.is_some() {
-            return Err("Finish or cancel the knowledge experiment before starting inference".into());
+            return Err(
+                "Finish or cancel the knowledge experiment before starting inference".into(),
+            );
         }
         let _lifecycle = self.lifecycle.lock().await;
         self.start_inner().await
@@ -502,6 +570,40 @@ impl Studio {
         let mut p = self.process.lock().await;
         let s = self.settings.read().await.clone();
         p.startup = None;
+        if s.engine == engine::Engine::MlxPrefix {
+            let reserve = std::net::TcpListener::bind("127.0.0.1:0").map_err(|e| e.to_string())?;
+            let port = reserve.local_addr().map_err(|e| e.to_string())?.port();
+            let key = uuid::Uuid::new_v4().to_string();
+            let (mut cmd, identity) = s.prefix_cache.command(port, &key).await?;
+            cmd.kill_on_drop(true)
+                .stdout(std::process::Stdio::piped())
+                .stderr(std::process::Stdio::piped());
+            #[cfg(unix)]
+            cmd.process_group(0);
+            drop(reserve);
+            let mut child = cmd
+                .spawn()
+                .map_err(|e| format!("Cannot launch MLX SSD: {e}"))?;
+            if let Some(out) = child.stdout.take() {
+                pump(out, self.logs.clone());
+            }
+            if let Some(out) = child.stderr.take() {
+                pump(out, self.logs.clone());
+            }
+            p.startup = Some(Startup::new());
+            p.group = child.id();
+            p.child = Some(child);
+            p.port = port;
+            p.key = key;
+            p.memory = Some(json!({"engine":"mlxPrefix","prefixIdentity":identity,"context":512}));
+            self.prefix_counter_failed.store(false, Ordering::SeqCst);
+            push_log(
+                &self.logs,
+                "[soliton] Starting qualified exclusive MLX SSD runtime".into(),
+            )
+            .await;
+            return Ok(());
+        }
         if s.engine == engine::Engine::Lfm3Omni {
             let reserve = std::net::TcpListener::bind("127.0.0.1:0").map_err(|e| e.to_string())?;
             let port = reserve.local_addr().map_err(|e| e.to_string())?.port();
@@ -957,7 +1059,10 @@ impl Studio {
         } else if health.as_ref().is_some_and(|h| {
             settings.engine == engine::Engine::Strata
                 || h["inference_ready"] == true
-                || (settings.engine == engine::Engine::Lfm3Omni && h["status"] == "ok")
+                || (matches!(
+                    settings.engine,
+                    engine::Engine::Lfm3Omni | engine::Engine::MlxPrefix
+                ) && h["status"] == "ok")
         }) {
             "ready"
         } else {
@@ -1021,7 +1126,7 @@ impl Studio {
                 }
             }
         }
-        json!({"modelPlan":model_plan,"omniCounterFailed":self.omni_counter_failed.load(Ordering::SeqCst),"startup":startup,"vllmInspection":vllm_inspection,"dockingDiagnostics":*self.docking_diagnostics.lock().await,"requests":requests,"memoryUsage":memory_usage,"memoryTuning":memory_tuning,"preparation":self.preparation.lock().await.snapshot(),"status":status,"health":health,"settings":*self.settings.read().await,"document":document,"logs":*self.logs.lock().await,"architecture":std::env::consts::ARCH,"memoryBytes":self.memory_bytes,"selectedEngine":settings.engine,"backend":if settings.engine == engine::Engine::Lfm3Omni {"LFM3-Omni"}else if settings.engine == engine::Engine::VllmApple {"vLLM-Apple"} else if preparation::inspect_config(std::path::Path::new(&settings.config), std::path::Path::new(&settings.strata_root)).backend == "strata-gemma3-metal" {"Gemma 3 Metal"} else if cfg!(all(target_os="macos",target_arch="aarch64")){"Metal"}else{"Strata"},"endpoint":format!("http://127.0.0.1:{}/v1",self.port),"root":self.root})
+        json!({"modelPlan":model_plan,"omniCounterFailed":self.omni_counter_failed.load(Ordering::SeqCst),"startup":startup,"vllmInspection":vllm_inspection,"dockingDiagnostics":*self.docking_diagnostics.lock().await,"requests":requests,"memoryUsage":memory_usage,"memoryTuning":memory_tuning,"preparation":self.preparation.lock().await.snapshot(),"status":status,"health":health,"settings":*self.settings.read().await,"document":document,"logs":*self.logs.lock().await,"architecture":std::env::consts::ARCH,"memoryBytes":self.memory_bytes,"selectedEngine":settings.engine,"backend":if settings.engine == engine::Engine::MlxPrefix {"MLX SSD"}else if settings.engine == engine::Engine::Lfm3Omni {"LFM3-Omni"}else if settings.engine == engine::Engine::VllmApple {"vLLM-Apple"} else if preparation::inspect_config(std::path::Path::new(&settings.config), std::path::Path::new(&settings.strata_root)).backend == "strata-gemma3-metal" {"Gemma 3 Metal"} else if cfg!(all(target_os="macos",target_arch="aarch64")){"Metal"}else{"Strata"},"endpoint":format!("http://127.0.0.1:{}/v1",self.port),"root":self.root})
     }
 }
 fn pump<T: tokio::io::AsyncRead + Unpin + Send + 'static>(
@@ -1078,11 +1183,109 @@ async fn inspect(State(s): State<Arc<Studio>>, h: HeaderMap) -> Response {
     }
     Json(s.inspect().await).into_response()
 }
+async fn prefix_stats(State(s): State<Arc<Studio>>, h: HeaderMap) -> Response {
+    if !authorized(&h, &s) {
+        return error(StatusCode::UNAUTHORIZED, "Studio token required");
+    }
+    let _lifecycle = s.lifecycle.lock().await;
+    if s.settings.read().await.engine != engine::Engine::MlxPrefix {
+        return error(StatusCode::CONFLICT, "Select MLX SSD");
+    }
+    let (port, key, identity) = {
+        let mut p = s.process.lock().await;
+        if !p
+            .child
+            .as_mut()
+            .is_some_and(|c| matches!(c.try_wait(), Ok(None)))
+        {
+            return error(StatusCode::SERVICE_UNAVAILABLE, "Engine is offline");
+        }
+        (
+            p.port,
+            p.key.clone(),
+            p.memory
+                .as_ref()
+                .and_then(|m| m["prefixIdentity"].as_str())
+                .map(str::to_string),
+        )
+    };
+    match s
+        .client
+        .get(format!("http://127.0.0.1:{port}/studio/ssd-cache"))
+        .bearer_auth(key)
+        .timeout(Duration::from_secs(2))
+        .send()
+        .await
+    {
+        Ok(reply) if reply.status().is_success() => match reply.json::<Value>().await {
+            Ok(value)
+                if identity.is_some() && value["identity"].as_str() == identity.as_deref() =>
+            {
+                Json(value).into_response()
+            }
+            _ => error(StatusCode::BAD_GATEWAY, "MLX SSD metrics identity mismatch"),
+        },
+        _ => error(
+            StatusCode::SERVICE_UNAVAILABLE,
+            "MLX SSD metrics unavailable",
+        ),
+    }
+}
 async fn snapshot(State(s): State<Arc<Studio>>, h: HeaderMap) -> Response {
     if !authorized(&h, &s) {
         return error(StatusCode::UNAUTHORIZED, "Studio token required");
     }
     Json(s.snapshot().await).into_response()
+}
+async fn maintain_prefix(s: &Arc<Studio>, trim: bool) -> Response {
+    maintain_prefix_operation(s, trim, false).await
+}
+async fn maintain_prefix_operation(s: &Arc<Studio>, trim: bool, cleanup: bool) -> Response {
+    let _lifecycle = s.lifecycle.lock().await;
+    let settings = s.settings.read().await.clone();
+    if settings.engine != engine::Engine::MlxPrefix {
+        return error(StatusCode::CONFLICT, "Select MLX SSD");
+    }
+    if trim || cleanup {
+        let process = s.process.lock().await;
+        if process.child.is_some()
+            || process.group.is_some()
+            || process.workers.iter().any(|w| w.alive())
+            || s.active_requests.load(Ordering::SeqCst) > 0
+            || s.document.read().await.generating
+        {
+            return error(
+                StatusCode::CONFLICT,
+                "Stop the engine before SSD cache maintenance",
+            );
+        }
+    }
+    match tokio::task::spawn_blocking(move || {
+        if cleanup {
+            settings.prefix_cache.cleanup_staging()
+        } else {
+            settings.prefix_cache.storage(trim)
+        }
+    })
+    .await
+    {
+        Ok(Ok(value)) => Json(value).into_response(),
+        Ok(Err(e)) if e.kind() == std::io::ErrorKind::WouldBlock => error(
+            StatusCode::CONFLICT,
+            "SSD cache is busy; retry after the current operation",
+        ),
+        Ok(Err(e)) => error(StatusCode::BAD_REQUEST, e.to_string()),
+        Err(_) => error(
+            StatusCode::INTERNAL_SERVER_ERROR,
+            "SSD capacity inspection failed",
+        ),
+    }
+}
+async fn prefix_capacity(State(s): State<Arc<Studio>>, h: HeaderMap) -> Response {
+    if !authorized(&h, &s) {
+        return error(StatusCode::UNAUTHORIZED, "Studio token required");
+    }
+    maintain_prefix(&s, false).await
 }
 async fn action(State(s): State<Arc<Studio>>, h: HeaderMap, Json(v): Json<Value>) -> Response {
     if !authorized(&h, &s) {
@@ -1095,19 +1298,29 @@ async fn action(State(s): State<Arc<Studio>>, h: HeaderMap, Json(v): Json<Value>
         return Json(json!({"ok":true})).into_response();
     }
     let result = match v["action"].as_str().unwrap_or("") {
-        "workspaceMode" => {
-            match v["mode"].as_str() {
-                Some(mode @ ("inference" | "knowledge")) => {
-                    s.document.write().await.workspace_mode = mode.into();
-                    Ok(())
-                }
-                _ => Err("Unknown workspace mode".into()),
+        "workspaceMode" => match v["mode"].as_str() {
+            Some(mode @ ("inference" | "knowledge")) => {
+                s.document.write().await.workspace_mode = mode.into();
+                Ok(())
             }
-        }
+            _ => Err("Unknown workspace mode".into()),
+        },
         "switchEngine" => match serde_json::from_value(v["engine"].clone()) {
             Ok(engine) => s.switch_engine(engine).await,
             Err(_) => Err("Invalid engine".into()),
         },
+        "inspectPrefix" => {
+            let settings = s.settings.read().await.clone();
+            if settings.engine != engine::Engine::MlxPrefix {
+                return error(StatusCode::CONFLICT, "Select MLX SSD");
+            }
+            return match settings.prefix_cache.inspect().await {
+                Ok(value) => Json(value).into_response(),
+                Err(e) => error(StatusCode::BAD_REQUEST, e),
+            };
+        }
+        "trimPrefixCache" => return maintain_prefix(&s, true).await,
+        "cleanupPrefixStaging" => return maintain_prefix_operation(&s, false, true).await,
         "inspectVllm" => s.inspect_vllm().await,
         "refreshBackendBudget" => s.refresh_backend_budget().await,
         "start" => s.start().await,
@@ -1216,7 +1429,8 @@ async fn action(State(s): State<Arc<Studio>>, h: HeaderMap, Json(v): Json<Value>
                     && catalog::valid_directories(&settings.model_directories)
                     && settings.metal_memory.valid(s.memory_bytes)
                     && settings.vllm.valid()
-                    && (settings.engine != engine::Engine::Lfm3Omni || settings.omni.valid()) =>
+                    && (settings.engine != engine::Engine::Lfm3Omni || settings.omni.valid())
+                    && settings.prefix_cache.valid() =>
             {
                 let _lifecycle = s.lifecycle.lock().await;
                 if s.preparation.lock().await.busy() {
@@ -1229,7 +1443,10 @@ async fn action(State(s): State<Arc<Studio>>, h: HeaderMap, Json(v): Json<Value>
                 if settings.engine != current.engine {
                     return error(StatusCode::CONFLICT, "Use switchEngine to change engines");
                 }
-                if settings.vllm != current.vllm || settings.omni != current.omni {
+                if settings.vllm != current.vllm
+                    || settings.omni != current.omni
+                    || settings.prefix_cache != current.prefix_cache
+                {
                     let mut process = s.process.lock().await;
                     if process
                         .child
@@ -1238,7 +1455,7 @@ async fn action(State(s): State<Arc<Studio>>, h: HeaderMap, Json(v): Json<Value>
                     {
                         return error(
                             StatusCode::CONFLICT,
-                            "Stop the engine before changing vLLM-Apple settings",
+                            "Stop the engine before changing runtime settings",
                         );
                     }
                 }
@@ -1361,6 +1578,29 @@ async fn proxy(State(s): State<Arc<Studio>>, req: Request) -> Response {
         Err(_) => return error(StatusCode::PAYLOAD_TOO_LARGE, "Request exceeds 16 MiB"),
     };
     let omni_config = s.settings.read().await.clone();
+    if omni_config.engine == engine::Engine::MlxPrefix {
+        if s.active_requests.load(Ordering::SeqCst) != 0 {
+            return error(StatusCode::CONFLICT, "MLX SSD inference is busy");
+        }
+        match path.split('?').next() {
+            Some("/v1/models" | "/studio/ssd-cache") => (),
+            Some("/v1/chat/completions") => {
+                let value: Value = match serde_json::from_slice(&body) {
+                    Ok(v) => v,
+                    Err(_) => return error(StatusCode::BAD_REQUEST, "Invalid inference JSON"),
+                };
+                if let Err(response) = s.check_prefix(port, &key, &value).await {
+                    return response;
+                }
+            }
+            _ => {
+                return error(
+                    StatusCode::UNPROCESSABLE_ENTITY,
+                    "MLX SSD supports text chat and model discovery only",
+                )
+            }
+        }
+    }
     if omni_config.engine == engine::Engine::Lfm3Omni {
         if s.active_requests.load(Ordering::SeqCst) != 0 {
             return error(
@@ -1585,6 +1825,14 @@ async fn chat(State(s): State<Arc<Studio>>, h: HeaderMap, Json(mut body): Json<V
         });
         body["stream_options"] = json!({"include_usage":true});
     }
+    let is_prefix = settings.engine == engine::Engine::MlxPrefix;
+    if is_prefix {
+        body["model"] = json!("default_model");
+        body["temperature"] = json!(0);
+        body["seed"] = json!(0);
+        body["max_tokens"] = json!(body["max_tokens"].as_u64().unwrap_or(128).clamp(1, 128));
+        body["stream_options"] = json!({"include_usage":true});
+    }
     let is_omni = settings.engine == engine::Engine::Lfm3Omni;
     let omni_settings = settings.omni.clone();
     if is_omni {
@@ -1652,6 +1900,15 @@ async fn chat(State(s): State<Arc<Studio>>, h: HeaderMap, Json(mut body): Json<V
                 .iter()
                 .map(|m| json!({"role":m.role,"content":m.content}))
                 .collect::<Vec<_>>());
+            if is_prefix {
+                body.as_object_mut().unwrap().remove("conversationId");
+                if s.active_requests.load(Ordering::SeqCst) != 0 {
+                    return error(StatusCode::CONFLICT, "MLX SSD inference is busy");
+                }
+                if let Err(response) = s.check_prefix(port, &key, &body).await {
+                    return response;
+                }
+            }
             if let Err(rejection) = s
                 .token_counter
                 .lock()
@@ -1862,7 +2119,12 @@ pub fn router(s: Arc<Studio>) -> Router {
     Router::new()
         .route("/studio/session", post(session))
         .route("/studio/state", get(snapshot))
-        .route("/studio/knowledge", get(knowledge::snapshot).post(knowledge::action))
+        .route("/studio/prefix-cache", get(prefix_stats))
+        .route("/studio/prefix-capacity", get(prefix_capacity))
+        .route(
+            "/studio/knowledge",
+            get(knowledge::snapshot).post(knowledge::action),
+        )
         .route("/studio/inspect", get(inspect))
         .route("/studio/models", get(catalog::scan_handler))
         .route("/studio/omni/capabilities", get(omni_capabilities))

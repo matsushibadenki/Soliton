@@ -2391,6 +2391,9 @@ button:focus-visible {
 .knowledge-category {
   padding-top: 1px;
 }
+.knowledge-case-meta { display: grid; gap: 6px; min-width: 0; }
+.knowledge-reasons { margin: 6px 0 0; padding-left: 16px; font-size: 11px; color: var(--warning); }
+.knowledge-rule-summary { font-size: 11px; color: var(--muted); overflow-wrap: anywhere; }
 .knowledge-settings {
   border-top: 1px solid var(--line);
   margin-top: 14px;
@@ -2472,6 +2475,7 @@ button:focus-visible {
   margin-bottom: 16px;
 }
 .knowledge-result-header h1 {
+  text-wrap: balance;
   font-size: 18px;
   margin: 0 0 5px;
   overflow-wrap: anywhere;
@@ -2498,7 +2502,7 @@ button:focus-visible {
 }
 .knowledge-scorecards {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 12px;
   margin: 16px 0;
 }
@@ -2656,6 +2660,8 @@ button:focus-visible {
   .knowledge-test-row > div {
     grid-column: 1;
   }
+  .knowledge-case-meta { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .knowledge-case-meta > label:last-child { grid-column: 1 / -1; }
   .knowledge-test-row > button {
     grid-column: 2;
     grid-row: 1 / 4;
@@ -2672,6 +2678,7 @@ button:focus-visible {
   }
   .knowledge-scorecards {
     gap: 6px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
   .knowledge-scorecards > div {
     padding: 8px;
@@ -2905,3 +2912,26 @@ body > .dock-menu-items {
 .disk-budget { min-width: 0; }
 .disk-budget code { overflow-wrap: anywhere; white-space: normal; text-align: right; min-width: 0; }
 .disk-budget .value-row { gap: 12px; }
+
+.knowledge-planner { margin-bottom: 18px; overflow-wrap: anywhere; }
+.knowledge-planner > summary { display: flex; align-items: center; gap: 6px; }
+.knowledge-planner > fieldset > label { margin: 12px 0; }
+.knowledge-planner article { padding: 8px 0; border-bottom: 1px solid var(--line); white-space: pre-wrap; }
+.knowledge-planner button { display: inline-flex; gap: 6px; align-items: center; margin: 10px 0; }
+
+.prefix-settings { min-width: 0; }
+.prefix-settings > label { margin: 12px 0; }
+.prefix-settings > button { display: inline-flex; align-items: center; gap: 6px; }
+.prefix-stats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.prefix-stats div { min-width: 0; border: 1px solid var(--line); padding: 10px; border-radius: 5px; }
+.prefix-stats dt { color: var(--muted); font-size: 11px; }
+.prefix-stats dd { margin: 5px 0 0; font: 16px var(--mono); }
+.prefix-capacity { border-top: 1px solid var(--line); padding-top: 10px; min-width: 0; }
+.prefix-capacity-heading { display: flex; align-items: center; gap: 8px; }
+.prefix-capacity-heading > span:first-child { display: flex; align-items: center; gap: 5px; margin-right: auto; }
+.prefix-capacity-total { margin: 8px 0; font: 12px var(--mono); overflow-wrap: anywhere; }
+.prefix-capacity progress { width: 100%; accent-color: var(--accent); }
+.prefix-capacity > p { font-size: 11px; overflow-wrap: anywhere; }
+
+.prefix-staging { margin-top: 10px; border-top: 1px solid var(--line); padding-top: 10px; }
+.prefix-stats dd { overflow-wrap: anywhere; }

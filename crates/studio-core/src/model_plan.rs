@@ -219,6 +219,11 @@ pub fn inspect(settings: &Settings, memory: Option<u64>, inspection: &Value) -> 
             }
             PathBuf::from(&settings.vllm.model)
         }
+        Engine::MlxPrefix => {
+            p.backend = "MLX SSD".into();
+            p.context = Some(512);
+            PathBuf::from(&settings.prefix_cache.cache_root)
+        }
         Engine::Lfm3Omni => {
             p.context = Some(settings.omni.context as u64);
             PathBuf::from(&settings.omni.model)

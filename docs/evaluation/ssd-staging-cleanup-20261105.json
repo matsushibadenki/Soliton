@@ -1,0 +1,80 @@
+{
+  "date": "2026-11-05",
+  "feature": "Explicit stopped-engine SSD staging cleanup",
+  "rustTests": {
+    "passed": 151,
+    "failed": 0
+  },
+  "builds": {
+    "frontend": "passed; existing Lucide directive warning",
+    "tauri": "cargo build -p soliton passed"
+  },
+  "browser": {
+    "runtime": "installed Playwright/Chrome; browser skill absent",
+    "languages": [
+      "en",
+      "ja",
+      "zh"
+    ],
+    "widths": [
+      1280,
+      390,
+      320
+    ],
+    "fixture": "synthetic private cache root via real isolated Rust API",
+    "perLanguage": {
+      "removedBytes": 2097510,
+      "removedFiles": 2,
+      "removedDirectories": 1,
+      "failedDirectories": 0,
+      "repeatRemovedBytes": 0
+    },
+    "remainingStaging": {
+      "bytes": 4195330,
+      "directories": 2,
+      "staleBytes": 4194306,
+      "staleDirectories": 1,
+      "cleanableBytes": 0,
+      "cleanableDirectories": 0,
+      "otherBytes": 4,
+      "otherEntries": 1
+    },
+    "checks": [
+      "old invalid identity remains",
+      "recent staging remains",
+      "protected saved-store file remains",
+      "other root file remains",
+      "unauthenticated cleanup refused 401",
+      "link refusal clears stale UI then recovers",
+      "no unexpected console/page errors or overlay",
+      "no horizontal overflow",
+      "history unchanged",
+      "settings restored"
+    ]
+  },
+  "unitChecks": [
+    "active managed engine/API request/GUI generation refuse cleanup",
+    "nonblocking directory lock refuses concurrent maintenance",
+    "bounded manifest and format/hash guards",
+    "manifest-only interrupted restore cleanup",
+    "modified file and swapped folder refused",
+    "hardlinked files remain",
+    "unknown/nested/link/over-limit inventories refuse before deletion",
+    "cleanup idempotence",
+    "no saved-store trim as side effect"
+  ],
+  "unchangedQualifiedArtifactSha256": {
+    "target/debug/examples/prefix-store": "b25d7b002e3163b4e4451db4bd9a9a64cd41397dd1d5093f5a1c42eac0dbcfcf",
+    "scripts/prefix-cache-http.py": "2ce653005e7ec33d9d735c9ac25d7a245f7a373bb73d055e95250923c41a0c81",
+    "scripts/prefix_cache_writes.py": "3be92dd6ba4698ee43df6d782341112807593f7481e6f2e6cbc398b820d1daa7"
+  },
+  "limits": [
+    "explicit cleanup only; no automatic live eviction",
+    "all external workers using the root must also be stopped",
+    "nontransactional operation; partial failures require refresh",
+    "valid identity syntax is not proof of origin",
+    "logical bytes only",
+    "no new qualification or inference performance claim",
+    "no actual worker crash or native-window interaction tested"
+  ]
+}

@@ -1,5 +1,15 @@
 export const knowledgeWords = {
   en: {
+    indirect: "Indirect probe",
+    language: "Question language",
+    matchMode: "Answer match",
+    exact: "Exact",
+    contains: "Substring",
+    aliases: "Allowed alternatives",
+    aliasesHelp: "One explicitly approved answer per line, up to 8. Only listed alternatives can pass; translations are not inferred.",
+    matchHelp: "Exact ignores case and outer whitespace only; extra units, punctuation, negation and internal spacing can fail. Substring is a weaker literal check. Neither mode is a semantic judge.",
+    legacyAssessment: "Legacy report · rerun with current rules and indirect probes before keeping",
+    reasons: { empty: "Empty answer", truncated: "Output limit reached", notExact: "Not an allowed complete answer", missingExpected: "Required phrase missing", forbiddenPresent: "Forbidden phrase detected" },
     loss: "Loss",
     inference: "Inference",
     knowledge: "Knowledge Lab",
@@ -21,7 +31,7 @@ export const knowledgeWords = {
     suppression: "Response suppression · not verified erasure",
     method: "LoRA / QLoRA",
     methodHelp:
-      "Trains a separate adapter locally with MLX. Base weights stay unchanged. This is fine-tuning, not gradient-free weight-space programming. No data is sent to an external API.",
+      "Trains a separate adapter locally with MLX. Base weights stay unchanged. This is fine-tuning, not gradient-free weight-space programming. Training runs locally. The optional planner sends entered source material to OpenAI.",
     source: "Source / reason for edit",
     sourceHint:
       "Record an approved fact, document reference or reason for suppression.",
@@ -32,11 +42,11 @@ export const knowledgeWords = {
     remove: "Remove row",
     tests: "Held-out tests",
     testsHelp:
-      "Use questions not present in training. Every answer must include the required phrase and exclude the forbidden phrase (case-insensitive). A token-limit answer fails. These checks do not establish semantic correctness or complete erasure.",
+      "Use questions not present in training. Choose exact or substring matching and explicit alternatives; forbidden phrases always reject (case-insensitive). Include target, paraphrase, indirect and locality probes. A token-limit answer fails. These checks do not establish semantic correctness or complete erasure.",
     target: "Target",
     paraphrase: "Paraphrase",
     locality: "Locality",
-    expected: "Required phrase",
+    expected: "Expected answer / phrase",
     forbidden: "Forbidden phrase",
     addTest: "Add test",
     settings: "Training settings",
@@ -60,8 +70,8 @@ export const knowledgeWords = {
     copy: "Copy path",
     copied: "Copied",
     gates:
-      "All target, paraphrase and locality checks must pass. Base-model locality checks must also pass.",
-    assessment: "Phrase checks only · review every answer",
+      "Current-version target, paraphrase, indirect and locality checks must all pass, including base-model locality. Retention recomputes raw-answer scores.",
+    assessment: "Deterministic rules · review meaning",
     invalid: "Could not complete this action",
     loading: "Loading…",
     refresh: "Refresh",
@@ -69,7 +79,7 @@ export const knowledgeWords = {
     logs: "Worker log",
     fingerprint: "Source SHA-256",
     adapterHash: "Adapter SHA-256",
-    localOnly: "Local · separate adapter",
+    localOnly: "MLX · OpenAI planner",
     trainHelp:
       "1–64 examples, 512 tokens each. Evaluation questions are never used for training. Maximum run time: one hour.",
     status: {
@@ -88,6 +98,16 @@ export const knowledgeWords = {
     },
   },
   ja: {
+    indirect: "間接質問",
+    language: "質問の言語",
+    matchMode: "回答の判定",
+    exact: "完全一致",
+    contains: "部分一致",
+    aliases: "許容する別表記",
+    aliasesHelp: "確認済みの回答を1行に1件、最大8件まで指定します。指定した表記だけを許容し、翻訳は推測しません。",
+    matchHelp: "完全一致は大文字・小文字と前後の空白だけを無視します。余分な単位・句読点・否定表現・内部の空白は不合格になります。部分一致はより弱い語句判定です。意味を判断する評価器ではありません。",
+    legacyAssessment: "旧形式の評価 · 保持する前に現行規則と間接質問で再実行してください",
+    reasons: { empty: "回答が空です", truncated: "出力上限に到達", notExact: "許容された回答全体と一致しません", missingExpected: "必須の語句がありません", forbiddenPresent: "禁止する語句を検出しました" },
     loss: "損失",
     inference: "推論",
     knowledge: "知識ラボ",
@@ -109,7 +129,7 @@ export const knowledgeWords = {
     suppression: "回答抑制 · 知識の完全削除は未検証",
     method: "LoRA / QLoRA",
     methodHelp:
-      "MLXで別アダプターをローカル学習します。元の重みは変更しません。勾配を使わない直接重み編集ではなく、追加学習です。外部APIへデータは送信しません。",
+      "MLXで別アダプターをローカル学習します。元の重みは変更しません。勾配を使わない直接重み編集ではなく、追加学習です。学習はローカルです。プランナーは入力資料をOpenAIへ送信します。",
     source: "出典・編集理由",
     sourceHint:
       "確認済みの事実、資料の参照先、または抑制する理由を記録します。",
@@ -120,11 +140,11 @@ export const knowledgeWords = {
     remove: "行を削除",
     tests: "独立した評価質問",
     testsHelp:
-      "学習に含めない質問を使います。必須の語句を含み、禁止する語句を含まない回答を合格にします（大文字・小文字を区別しません）。出力上限に達した回答は不合格です。意味の正しさや完全削除を証明する評価ではありません。",
+      "学習に含めない質問を使います。完全一致または部分一致と、許容する別表記を選びます。禁止語句は常に不合格です（大文字・小文字は区別しません）。対象・言い換え・間接質問・周辺知識を含めます。出力上限に達した回答は不合格です。意味の正しさや完全削除を証明する評価ではありません。",
     target: "対象知識",
     paraphrase: "言い換え",
     locality: "周辺知識",
-    expected: "必須の語句",
+    expected: "期待する回答・語句",
     forbidden: "禁止する語句",
     addTest: "評価質問を追加",
     settings: "学習設定",
@@ -148,8 +168,8 @@ export const knowledgeWords = {
     copy: "パスをコピー",
     copied: "コピー済み",
     gates:
-      "対象・言い換え・周辺知識の全問合格が必要です。元モデルの周辺知識テストも合格している必要があります。",
-    assessment: "語句による判定 · 回答内容を確認してください",
+      "現行版の対象・言い換え・間接質問・周辺知識の全問合格と、元モデルの周辺知識の合格が必要です。保持時にも回答から再判定します。",
+    assessment: "規則による判定 · 回答の意味も確認してください",
     invalid: "操作を完了できませんでした",
     loading: "読み込み中…",
     refresh: "更新",
@@ -158,7 +178,7 @@ export const knowledgeWords = {
     logs: "実行ログ",
     fingerprint: "元モデルのSHA-256",
     adapterHash: "アダプターのSHA-256",
-    localOnly: "ローカル処理 · 別アダプター",
+    localOnly: "MLX · OpenAIプランナー",
     trainHelp:
       "学習例は1〜64件、各512トークン以内です。評価質問は学習に使いません。実行上限は1時間です。",
     status: {
@@ -177,6 +197,16 @@ export const knowledgeWords = {
     },
   },
   zh: {
+    indirect: "间接问题",
+    language: "问题语言",
+    matchMode: "回答判定",
+    exact: "完全匹配",
+    contains: "子串匹配",
+    aliases: "允许的其他表述",
+    aliasesHelp: "每行一个经过确认的答案，最多8个。只接受明确列出的表述，不推测翻译。",
+    matchHelp: "完全匹配仅忽略大小写及首尾空白；额外单位、标点、否定或内部空白可能不通过。子串匹配是较弱的字面检查。两者都不是语义评判器。",
+    legacyAssessment: "旧版报告 · 保留前请使用现行规则与间接问题重新运行",
+    reasons: { empty: "答案为空", truncated: "达到输出上限", notExact: "与允许的完整答案不符", missingExpected: "缺少所需短语", forbiddenPresent: "检测到禁止短语" },
     loss: "损失",
     inference: "推理",
     knowledge: "知识实验室",
@@ -198,7 +228,7 @@ export const knowledgeWords = {
     suppression: "回答抑制 · 未验证彻底遗忘",
     method: "LoRA / QLoRA",
     methodHelp:
-      "使用MLX在本地训练独立适配器，原始权重保持不变。这是微调，不是无梯度权重编程。不会向外部API发送数据。",
+      "使用MLX在本地训练独立适配器，原始权重保持不变。这是微调，不是无梯度权重编程。训练在本地运行。可选规划器会将输入材料发送给OpenAI。",
     source: "来源 / 编辑原因",
     sourceHint: "记录已确认的事实、文档来源或抑制原因。",
     training: "训练样本",
@@ -208,11 +238,11 @@ export const knowledgeWords = {
     remove: "删除行",
     tests: "独立评估问题",
     testsHelp:
-      "使用训练中未出现的问题。回答必须包含所需短语且不包含禁止短语（忽略大小写）。达到输出上限的回答不通过。此评估不能证明语义正确性或彻底遗忘。",
+      "使用训练中未出现的问题。可选择完全匹配或子串匹配并明确列出其他允许答案；禁止短语始终导致不通过（忽略大小写）。请包含目标、改述、间接问题及周边知识。达到输出上限的回答不通过。此评估不能证明语义正确性或彻底遗忘。",
     target: "目标知识",
     paraphrase: "改述",
     locality: "周边知识",
-    expected: "所需短语",
+    expected: "期望答案 / 短语",
     forbidden: "禁止短语",
     addTest: "添加评估问题",
     settings: "训练设置",
@@ -236,8 +266,8 @@ export const knowledgeWords = {
     copy: "复制路径",
     copied: "已复制",
     gates:
-      "目标、改述和周边知识必须全部通过。原始模型的周边知识测试也必须通过。",
-    assessment: "仅短语检查 · 请审核每个回答",
+      "现行版本的目标、改述、间接问题、周边知识及原始模型的周边知识都必须通过。保留时会重新检查原始回答。",
+    assessment: "规则判定 · 请审核回答含义",
     invalid: "无法完成操作",
     loading: "加载中…",
     refresh: "刷新",
@@ -245,7 +275,7 @@ export const knowledgeWords = {
     logs: "运行日志",
     fingerprint: "原始模型SHA-256",
     adapterHash: "适配器SHA-256",
-    localOnly: "本地处理 · 独立适配器",
+    localOnly: "MLX · OpenAI规划器",
     trainHelp:
       "1–64个样本，每个不超过512个令牌。评估问题不会用于训练。最长运行时间为一小时。",
     status: {

@@ -20,10 +20,18 @@ use tokio::{
     process::Command,
     sync::watch,
 };
+pub const ASSESSMENT_VERSION: u32 = 1;
+fn legacy_match_mode() -> String {
+    "contains".into()
+}
+fn unknown_language() -> String {
+    "und".into()
+}
 
 #[derive(Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase", default)]
 pub struct Workspace {
+    pub plan: Option<crate::knowledge_planner::Plan>,
     pub view: String,
     pub revision: u64,
     pub draft: Draft,
@@ -33,6 +41,7 @@ pub struct Workspace {
 impl Default for Workspace {
     fn default() -> Self {
         Self {
+            plan: None,
             view: "edit".into(),
             revision: 0,
             draft: Draft::default(),
@@ -44,6 +53,7 @@ impl Default for Workspace {
 #[derive(Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase", default, deny_unknown_fields)]
 pub struct Draft {
+    pub planning: Option<crate::knowledge_planner::Plan>,
     pub name: String,
     pub model: String,
     pub python: String,
@@ -59,13 +69,14 @@ pub struct Draft {
 impl Default for Draft {
     fn default() -> Self {
         Self {
+            planning: None,
             name: String::new(),
             model: String::new(),
             python: String::new(),
             operation: "add".into(),
             source: String::new(),
             training: vec![Example::default()],
-            evaluation: ["target", "paraphrase", "locality"]
+            evaluation: ["target", "paraphrase", "indirect", "locality"]
                 .into_iter()
                 .map(|kind| Case {
                     kind: kind.into(),
@@ -85,17 +96,38 @@ pub struct Example {
     pub prompt: String,
     pub response: String,
 }
-#[derive(Clone, Default, Serialize, Deserialize)]
+#[derive(Clone, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct Case {
     pub kind: String,
     pub prompt: String,
     pub expected: String,
     pub forbidden: String,
+    #[serde(rename = "matchMode", default = "legacy_match_mode")]
+    pub match_mode: String,
+    #[serde(default)]
+    pub aliases: Vec<String>,
+    #[serde(default = "unknown_language")]
+    pub language: String,
+}
+impl Default for Case {
+    fn default() -> Self {
+        Self {
+            kind: String::new(),
+            prompt: String::new(),
+            expected: String::new(),
+            forbidden: String::new(),
+            match_mode: "exact".into(),
+            aliases: Vec::new(),
+            language: unknown_language(),
+        }
+    }
 }
 #[derive(Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Experiment {
+    #[serde(default)]
+    pub assessment_version: u32,
     pub id: String,
     pub created_at: u64,
     pub draft: Draft,
@@ -121,6 +153,8 @@ pub struct Answer {
     pub elapsed_ms: u64,
     pub truncated: bool,
     pub passed: bool,
+    #[serde(default)]
+    pub reasons: Vec<String>,
 }
 fn terminal(status: &str) -> bool {
     matches!(
@@ -140,6 +174,13 @@ impl Workspace {
     }
 }
 fn normalized(value: &str) -> String {
+    value
+        .split_whitespace()
+        .collect::<Vec<_>>()
+        .join(" ")
+        .to_lowercase()
+}
+fn answer_key(value: &str) -> String {
     value.trim().to_lowercase()
 }
 fn bounded(s: &str, max: usize) -> Result<(), String> {
@@ -150,7 +191,7 @@ fn bounded(s: &str, max: usize) -> Result<(), String> {
     }
 }
 impl Draft {
-    fn validate(&self, run: bool) -> Result<(), String> {
+    pub(crate) fn validate(&self, run: bool) -> Result<(), String> {
         if !["add", "suppress"].contains(&self.operation.as_str()) {
             return Err("Unknown knowledge operation".into());
         }
@@ -159,10 +200,10 @@ impl Draft {
         }
         if self.training.is_empty()
             || self.training.len() > 64
-            || self.evaluation.len() < 3
+            || self.evaluation.len() < if run { 4 } else { 3 }
             || self.evaluation.len() > 32
         {
-            return Err("Use 1–64 training examples and 3–32 evaluation cases".into());
+            return Err("Use 1–64 training examples and 4–32 evaluation cases (saved legacy drafts may have 3)".into());
         }
         if !(1..=500).contains(&self.steps)
             || !(1..=32).contains(&self.layers)
@@ -183,8 +224,22 @@ impl Draft {
         }
         let mut prompts = BTreeSet::new();
         for case in &self.evaluation {
-            if !["target", "paraphrase", "locality"].contains(&case.kind.as_str()) {
+            if !["target", "paraphrase", "indirect", "locality"].contains(&case.kind.as_str()) {
                 return Err("Unknown evaluation category".into());
+            }
+            if !["contains", "exact"].contains(&case.match_mode.as_str())
+                || !["und", "en", "ja", "zh"].contains(&case.language.as_str())
+                || case.aliases.len() > 8
+            {
+                return Err("Invalid answer rule, language or alias count (maximum 8)".into());
+            }
+            let mut variants = BTreeSet::new();
+            variants.insert(answer_key(&case.expected));
+            for alias in &case.aliases {
+                bounded(alias, 4096)?;
+                if alias.trim().is_empty() || !variants.insert(answer_key(alias)) {
+                    return Err("Answer aliases must be nonempty and unique".into());
+                }
             }
             for text in [&case.prompt, &case.expected, &case.forbidden] {
                 bounded(text, 4096)?;
@@ -208,7 +263,9 @@ impl Draft {
                     return Err("Suppression tests need both a required refusal phrase and a forbidden knowledge phrase".into());
                 }
                 if !case.forbidden.trim().is_empty()
-                    && normalized(&case.expected).contains(&normalized(&case.forbidden))
+                    && std::iter::once(&case.expected)
+                        .chain(case.aliases.iter())
+                        .any(|s| answer_key(s).contains(&answer_key(&case.forbidden)))
                 {
                     return Err("Required and forbidden phrases conflict".into());
                 }
@@ -220,9 +277,11 @@ impl Draft {
                     "Give the experiment a name and record the source or reason for editing".into(),
                 );
             }
-            for kind in ["target", "paraphrase", "locality"] {
+            for kind in ["target", "paraphrase", "indirect", "locality"] {
                 if !self.evaluation.iter().any(|c| c.kind == kind) {
-                    return Err("Include target, paraphrase and locality evaluation cases".into());
+                    return Err(
+                        "Include target, paraphrase, indirect and locality evaluation cases".into(),
+                    );
                 }
             }
         }
@@ -230,15 +289,48 @@ impl Draft {
     }
 }
 fn score(case: &Case, text: &str, truncated: bool) -> bool {
-    let text = normalized(text);
-    !truncated
-        && !text.is_empty()
-        && !case.expected.trim().is_empty()
-        && text.contains(&normalized(&case.expected))
-        && (case.forbidden.trim().is_empty() || !text.contains(&normalized(&case.forbidden)))
+    assessment(case, text, truncated).is_empty()
+}
+fn assessment(case: &Case, text: &str, truncated: bool) -> Vec<String> {
+    // Answer matching preserves punctuation and internal whitespace in exact mode.
+    let answer = answer_key(text);
+    let mut reasons = Vec::new();
+    if truncated {
+        reasons.push("truncated".into());
+    }
+    if answer.is_empty() {
+        reasons.push("empty".into());
+    }
+    let matched = std::iter::once(&case.expected)
+        .chain(case.aliases.iter())
+        .any(|expected| {
+            let expected = answer_key(expected);
+            !expected.is_empty()
+                && match case.match_mode.as_str() {
+                    "exact" => answer == expected,
+                    "contains" => answer.contains(&expected),
+                    _ => false,
+                }
+        });
+    if !matched {
+        reasons.push(
+            if case.match_mode == "exact" {
+                "notExact"
+            } else {
+                "missingExpected"
+            }
+            .into(),
+        );
+    }
+    if !case.forbidden.trim().is_empty() && answer.contains(&answer_key(&case.forbidden)) {
+        reasons.push("forbiddenPresent".into());
+    }
+    reasons
 }
 fn quality_passed(experiment: &Experiment) -> bool {
-    experiment.provenance.is_some()
+    experiment.assessment_version == ASSESSMENT_VERSION
+        && experiment.draft.validate(true).is_ok()
+        && experiment.provenance.is_some()
         && experiment.results.len() == experiment.draft.evaluation.len()
         && experiment
             .results
@@ -246,8 +338,15 @@ fn quality_passed(experiment: &Experiment) -> bool {
             .zip(&experiment.draft.evaluation)
             .all(|(row, case)| {
                 row.baseline.is_some()
-                    && row.candidate.as_ref().is_some_and(|a| a.passed)
-                    && (case.kind != "locality" || row.baseline.as_ref().is_some_and(|a| a.passed))
+                    && row
+                        .candidate
+                        .as_ref()
+                        .is_some_and(|a| a.passed && score(case, &a.text, a.truncated))
+                    && (case.kind != "locality"
+                        || row
+                            .baseline
+                            .as_ref()
+                            .is_some_and(|a| a.passed && score(case, &a.text, a.truncated)))
             })
 }
 
@@ -277,7 +376,12 @@ pub async fn action(State(s): State<Arc<Studio>>, h: HeaderMap, Json(v): Json<Va
     if !authorized(&h, &s) {
         return error(StatusCode::UNAUTHORIZED, "Studio token required");
     }
-    match apply(s, v).await {
+    let result = if matches!(v["action"].as_str(), Some("generatePlan" | "importPlan")) {
+        crate::knowledge_planner::apply(s, v).await
+    } else {
+        apply(s, v).await
+    };
+    match result {
         Ok(value) => Json(value).into_response(),
         Err(e) => error(StatusCode::BAD_REQUEST, e),
     }
@@ -380,6 +484,7 @@ async fn apply(s: Arc<Studio>, v: Value) -> Result<Value, String> {
                 let directory = std::path::absolute(parent.join(".soliton-knowledge").join(&id))
                     .map_err(|e| e.to_string())?;
                 let experiment = Experiment {
+                    assessment_version: ASSESSMENT_VERSION,
                     id: id.clone(),
                     created_at: std::time::SystemTime::now()
                         .duration_since(std::time::UNIX_EPOCH)
@@ -584,7 +689,8 @@ impl Studio {
                                         if !["baseline", "candidate"].contains(&phase) { return Err("Invalid answer phase".into()); }
                                         let text = event["text"].as_str().ok_or("Missing answer text")?.to_string();
                                         let truncated = event["truncated"].as_bool().ok_or("Missing truncation state")?;
-                                        let answer = Answer { passed: score(case, &text, truncated), text, truncated,
+                                        let reasons=assessment(case,&text,truncated);
+                                        let answer = Answer { passed: reasons.is_empty(), text, truncated, reasons,
                                             tokens: event["tokens"].as_u64().unwrap_or(0) as u32, elapsed_ms: event["elapsedMs"].as_u64().unwrap_or(0) };
                                         self.update_knowledge(&experiment.id, |e| {
                                             if phase == "baseline" { e.results[index].baseline = Some(answer); }
@@ -647,6 +753,64 @@ impl Studio {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn exact_rules_reject_substrings_negations_and_extra_units_with_reviewed_aliases() {
+        let mut case = Case {
+            expected: "4".into(),
+            ..Case::default()
+        };
+        assert!(score(&case, " 4\n", false));
+        for text in ["14", "4個", "4, but the answer is 5", "The answer is not 4"] {
+            assert!(!score(&case, text, false));
+        }
+        assert_eq!(assessment(&case, "14", false), vec!["notExact"]);
+        case.expected = "Amber".into();
+        case.aliases = vec!["琥珀色".into(), "Amber.".into()];
+        assert!(score(&case, "AMBER.", false));
+        assert!(score(&case, "琥珀色", false));
+        assert!(!score(&case, "It is not amber", false));
+        assert!(!score(&case, "琥珀色ではありません", false));
+        case.forbidden = "secret".into();
+        case.aliases.push("secret amber".into());
+        assert!(!score(&case, "secret amber", false));
+        assert!(assessment(&case, "secret amber", false).contains(&"forbiddenPresent".into()));
+        assert!(!score(&case, "Amber", true));
+        assert!(!score(&case, " ", false));
+    }
+    #[test]
+    fn legacy_cases_preserve_contains_but_new_defaults_are_exact() {
+        let case: Case = serde_json::from_value(
+            json!({"kind":"target","prompt":"q","expected":"4","forbidden":""}),
+        )
+        .unwrap();
+        assert_eq!(case.match_mode, "contains");
+        assert_eq!(case.language, "und");
+        assert!(case.aliases.is_empty());
+        assert!(score(&case, "14", false));
+        assert_eq!(Case::default().match_mode, "exact");
+        assert_eq!(Draft::default().evaluation.len(), 4);
+    }
+    #[test]
+    fn alias_conflicts_bounds_and_indirect_coverage_are_enforced() {
+        let mut d = draft();
+        d.evaluation.retain(|c| c.kind != "indirect");
+        assert!(d.validate(false).is_ok());
+        assert!(d.validate(true).is_err());
+        d = draft();
+        d.evaluation[0].aliases = vec!["other".into(), " OTHER ".into()];
+        assert!(d.validate(true).is_err());
+        d.evaluation[0].aliases = vec![" ".into()];
+        assert!(d.validate(false).is_err());
+        d.evaluation[0].aliases = vec!["leak".into()];
+        d.evaluation[0].forbidden = "LEAK".into();
+        assert!(d.validate(true).is_err());
+        d = draft();
+        d.evaluation[0].prompt = "Training\n  question".into();
+        assert!(d.validate(true).is_err());
+        d = draft();
+        d.evaluation[0].language = "unknown".into();
+        assert!(d.validate(false).is_err());
+    }
     fn draft() -> Draft {
         Draft {
             name: "Local fact".into(),
@@ -655,13 +819,15 @@ mod tests {
                 prompt: "Training question".into(),
                 response: "Answer".into(),
             }],
-            evaluation: ["target", "paraphrase", "locality"]
+            evaluation: ["target", "paraphrase", "indirect", "locality"]
                 .into_iter()
                 .map(|kind| Case {
                     kind: kind.into(),
                     prompt: format!("Held-out {kind}"),
                     expected: "answer".into(),
                     forbidden: String::new(),
+                    match_mode: "contains".into(),
+                    ..Case::default()
                 })
                 .collect(),
             ..Draft::default()
@@ -711,12 +877,13 @@ mod tests {
     #[test]
     fn acceptance_needs_complete_results_and_passing_baseline_locality() {
         let mut e = Experiment {
+            assessment_version: ASSESSMENT_VERSION,
             id: "id".into(),
             created_at: 0,
             draft: draft(),
             status: "verifying".into(),
             directory: String::new(),
-            results: vec![Comparison::default(); 3],
+            results: vec![Comparison::default(); 4],
             logs: vec![],
             error: None,
             provenance: Some(json!({})),
@@ -729,16 +896,34 @@ mod tests {
             tokens: 1,
             elapsed_ms: 1,
             truncated: false,
+            reasons: vec![],
         };
         e.results = vec![
             Comparison {
                 baseline: Some(a.clone()),
                 candidate: Some(a)
             };
-            3
+            4
         ];
         assert!(quality_passed(&e));
-        e.results[2].baseline.as_mut().unwrap().passed = false;
+        let mut forged = e.clone();
+        forged.results[0].candidate.as_mut().unwrap().text = "wrong".into();
+        assert!(!quality_passed(&forged));
+        let mut historical = e.clone();
+        historical.assessment_version = 0;
+        assert!(!quality_passed(&historical));
+        let mut serialized = serde_json::to_value(&e).unwrap();
+        serialized
+            .as_object_mut()
+            .unwrap()
+            .remove("assessmentVersion");
+        assert_eq!(
+            serde_json::from_value::<Experiment>(serialized)
+                .unwrap()
+                .assessment_version,
+            0
+        );
+        e.results[3].baseline.as_mut().unwrap().passed = false;
         assert!(!quality_passed(&e));
         let mut w = Workspace {
             experiments: vec![e],

@@ -1,0 +1,14 @@
+{
+  "result": "failed",
+  "reason": "HTTP503 during soak; no certificate issued",
+  "lastProgress": {
+    "status": "soaking",
+    "elapsed_seconds": 1123.3,
+    "successes": 2079,
+    "rss_growth_bytes": 0
+  },
+  "logSha256": "c4c786a167ddb108d36f4a082efb099808db60cd30b4d616ffabae672c34ee10",
+  "generationTracebacks": 0,
+  "diagnosticLimit": "Original HTTP error body was not preserved, so admission handoff is a supported hypothesis, not a proven attribution.",
+  "correction": "Bounded100ms admission handoff; strict mutual exclusion and no client retries. Error responses now retain bounded diagnostics."
+}

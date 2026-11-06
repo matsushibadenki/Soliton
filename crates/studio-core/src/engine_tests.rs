@@ -336,3 +336,231 @@ async fn omni_bad_count_latches_before_retrying_or_mutating_history() {
     assert!(s.document.read().await.messages.is_empty());
     task.abort();
 }
+
+#[cfg(unix)]
+fn prefix_fixture() -> (Arc<Studio>, PathBuf) {
+    use std::os::unix::fs::PermissionsExt;
+    let dir = std::env::temp_dir().join(format!("soliton-prefix-host-{}", uuid::Uuid::new_v4()));
+    std::fs::create_dir_all(dir.join("runtime")).unwrap();
+    std::fs::create_dir_all(dir.join("model")).unwrap();
+    for name in [
+        "prefix-cache-http.py",
+        "prefix_cache_contract.py",
+        "prefix_cache_roundtrip_support.py",
+        "prefix_cache_writes.py",
+    ] {
+        std::fs::write(dir.join("runtime").join(name), "# fixture").unwrap();
+    }
+    std::fs::write(dir.join("evidence.json"), "{}").unwrap();
+    let python = dir.join("python-fixture");
+    std::fs::write(&python,"#!/bin/sh\ncase \"$*\" in *--verify-only*) printf '{\"verified\":true,\"identity\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\"}\\n';; *) exec /bin/sleep 60;; esac\n").unwrap();
+    std::fs::set_permissions(&python, std::fs::Permissions::from_mode(0o700)).unwrap();
+    let s = studio();
+    (s, dir)
+}
+#[cfg(unix)]
+async fn set_prefix(s: &Studio, dir: &std::path::Path) {
+    let mut settings = s.settings.write().await;
+    settings.engine = Engine::MlxPrefix;
+    settings.prefix_cache = prefix_engine::Settings {
+        python: dir.join("python-fixture").to_string_lossy().into(),
+        model: dir.join("model").to_string_lossy().into(),
+        runtime_dir: dir.join("runtime").to_string_lossy().into(),
+        store_executable: "/usr/bin/true".into(),
+        cache_root: dir.join("cache").to_string_lossy().into(),
+        quota_mib: 256,
+        evidence: dir.join("evidence.json").to_string_lossy().into(),
+    };
+}
+#[cfg(unix)]
+#[tokio::test]
+async fn prefix_lifecycle_is_exclusive_private_and_settings_are_locked() {
+    let (s, dir) = prefix_fixture();
+    set_prefix(&s, &dir).await;
+    s.document.write().await.messages.push(Message {
+        role: "user".into(),
+        content: "Preserve me".into(),
+        ..Default::default()
+    });
+    let config = s.settings.read().await.prefix_cache.clone();
+    let (command, _) = config
+        .command(18084, "secret-not-an-argument")
+        .await
+        .unwrap();
+    let arguments = command
+        .as_std()
+        .get_args()
+        .map(|a| a.to_string_lossy().into_owned())
+        .collect::<Vec<_>>();
+    assert!(!arguments
+        .iter()
+        .any(|a| a.contains("secret-not-an-argument") || a == "--qualification-mode"));
+    assert!(arguments.iter().any(|a| a == "--evidence"));
+    s.start().await.unwrap();
+    assert!(s.start().await.is_err());
+    let pid = s.process.lock().await.child.as_ref().unwrap().id().unwrap();
+    let mut changed = s.settings.read().await.clone();
+    changed.prefix_cache.quota_mib = 512;
+    let mut headers = HeaderMap::new();
+    headers.insert("x-studio-token", s.token.parse().unwrap());
+    let result = action(
+        State(s.clone()),
+        headers,
+        Json(json!({"action":"settings","settings":changed})),
+    )
+    .await;
+    assert_eq!(result.status(), StatusCode::CONFLICT);
+    assert_eq!(s.settings.read().await.prefix_cache.quota_mib, 256);
+    s.switch_engine(Engine::Strata).await.unwrap();
+    assert!(s.process.lock().await.child.is_none());
+    assert!(!owned_process::capture(pid)
+        .unwrap()
+        .iter()
+        .any(|p| p.alive()));
+    assert_eq!(s.document.read().await.messages[0].content, "Preserve me");
+    std::fs::remove_dir_all(dir).unwrap();
+}
+#[cfg(unix)]
+#[tokio::test]
+async fn prefix_missing_evidence_cannot_spawn_and_failed_counts_latch() {
+    let (s, dir) = prefix_fixture();
+    set_prefix(&s, &dir).await;
+    std::fs::remove_file(dir.join("evidence.json")).unwrap();
+    assert!(s.start().await.is_err());
+    assert!(s.process.lock().await.child.is_none());
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let port = listener.local_addr().unwrap().port();
+    let router = Router::new().route(
+        "/tokenize",
+        post(|| async { Json(json!({"identity":"wrong","count":10,"context":512})) }),
+    );
+    let task = tokio::spawn(async move {
+        axum::serve(listener, router).await.unwrap();
+    });
+    s.process.lock().await.memory = Some(json!({"prefixIdentity":"expected"}));
+    let body = json!({"model":"default_model","messages":[{"role":"user","content":"hello"}],"max_tokens":16});
+    assert!(s.check_prefix(port, "key", &body).await.is_err());
+    assert!(s.prefix_counter_failed.load(Ordering::SeqCst));
+    assert!(s.check_prefix(1, "key", &body).await.is_err());
+    task.abort();
+    std::fs::remove_dir_all(dir).unwrap();
+}
+#[cfg(unix)]
+#[tokio::test]
+async fn prefix_capacity_requires_auth_and_stopped_engine_without_changing_history() {
+    use std::os::unix::fs::PermissionsExt;
+    let (s, dir) = prefix_fixture();
+    set_prefix(&s, &dir).await;
+    assert_eq!(
+        prefix_capacity(State(s.clone()), HeaderMap::new())
+            .await
+            .status(),
+        StatusCode::UNAUTHORIZED
+    );
+    let missing = s.settings.read().await.prefix_cache.storage(false).unwrap();
+    assert_eq!(missing["exists"], false);
+    assert!(!dir.join("cache").exists());
+    std::fs::create_dir(dir.join("cache")).unwrap();
+    std::fs::set_permissions(dir.join("cache"), std::fs::Permissions::from_mode(0o700)).unwrap();
+    // Interrupted worker staging is outside the store quota and remains visible even before store creation.
+    let stage = dir.join("cache/stage-abcdefgh");
+    std::fs::create_dir(&stage).unwrap();
+    std::fs::set_permissions(&stage, std::fs::Permissions::from_mode(0o700)).unwrap();
+    std::fs::write(stage.join("state.safetensors"), b"staged state").unwrap();
+    let report = s.settings.read().await.prefix_cache.storage(false).unwrap();
+    assert_eq!(report["exists"], false);
+    assert_eq!(report["staging"]["bytes"], 12);
+    assert_eq!(report["staging"]["directories"], 1);
+    assert_eq!(report["staging"]["staleDirectories"], 0);
+    let cleanable = dir.join("cache/stage-ijklmnop");
+    std::fs::create_dir(&cleanable).unwrap();
+    std::fs::set_permissions(&cleanable, std::fs::Permissions::from_mode(0o700)).unwrap();
+    let identity = prefix_store::Identity {
+        model: "a".repeat(64),
+        tokenizer: "b".repeat(64),
+        runtime: "c".repeat(64),
+        prefix: "d".repeat(64),
+        format: "mlx-lm/0.32.0/gemma2-2b/http-prefix-v1".into(),
+    };
+    std::fs::write(
+        cleanable.join("identity.json"),
+        serde_json::to_vec(&identity).unwrap(),
+    )
+    .unwrap();
+    std::fs::write(cleanable.join("state.safetensors"), "old state").unwrap();
+    for path in [
+        cleanable.join("identity.json"),
+        cleanable.join("state.safetensors"),
+        cleanable.clone(),
+    ] {
+        std::fs::File::open(path)
+            .unwrap()
+            .set_modified(std::time::UNIX_EPOCH)
+            .unwrap();
+    }
+    let store = prefix_store::Store::open(&dir.join("cache/store"), 256 * 1024 * 1024).unwrap();
+    let orphan = dir
+        .join("cache/store")
+        .join(format!("{}.tmp", uuid::Uuid::new_v4()));
+    std::fs::write(&orphan, b"temporary").unwrap();
+    std::fs::set_permissions(&orphan, std::fs::Permissions::from_mode(0o600)).unwrap();
+    std::fs::File::open(&orphan)
+        .unwrap()
+        .set_times(std::fs::FileTimes::new().set_modified(std::time::UNIX_EPOCH))
+        .unwrap();
+    s.document.write().await.messages.push(Message {
+        role: "user".into(),
+        content: "Keep conversation".into(),
+        ..Default::default()
+    });
+    let settings_before = serde_json::to_value(&*s.settings.read().await).unwrap();
+    s.start().await.unwrap();
+    assert_eq!(
+        maintain_prefix(&s, true).await.status(),
+        StatusCode::CONFLICT
+    );
+    assert!(orphan.exists());
+    assert_eq!(
+        maintain_prefix_operation(&s, false, true).await.status(),
+        StatusCode::CONFLICT
+    );
+    assert!(cleanable.exists());
+    s.stop().await.unwrap();
+    s.active_requests.store(1, Ordering::SeqCst);
+    assert_eq!(
+        maintain_prefix_operation(&s, false, true).await.status(),
+        StatusCode::CONFLICT
+    );
+    s.active_requests.store(0, Ordering::SeqCst);
+    s.document.write().await.generating = true;
+    assert_eq!(
+        maintain_prefix_operation(&s, false, true).await.status(),
+        StatusCode::CONFLICT
+    );
+    s.document.write().await.generating = false;
+    assert_eq!(
+        maintain_prefix_operation(&s, false, true).await.status(),
+        StatusCode::OK
+    );
+    assert!(!cleanable.exists());
+    assert!(orphan.exists()); // Cleanup does not trim committed-store temporary files.
+    assert_eq!(maintain_prefix(&s, true).await.status(), StatusCode::OK);
+    assert!(!orphan.exists());
+    assert_eq!(store.capacity().unwrap().used_bytes, 0);
+    assert_eq!(
+        std::fs::read(stage.join("state.safetensors")).unwrap(),
+        b"staged state"
+    );
+    let report = s.settings.read().await.prefix_cache.storage(false).unwrap();
+    assert_eq!(report["staging"]["bytes"], 12);
+    assert_eq!(report["capacity"]["usedBytes"], 0);
+    assert_eq!(
+        s.document.read().await.messages[0].content,
+        "Keep conversation"
+    );
+    assert_eq!(
+        serde_json::to_value(&*s.settings.read().await).unwrap(),
+        settings_before
+    );
+    std::fs::remove_dir_all(dir).unwrap();
+}
