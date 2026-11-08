@@ -1,6 +1,6 @@
 # Soliton
 
-Version0.1.2 adds a qualified optional1.5GiB retained-KV profile and scoped long-history comparison. Ordinary settings remain unchanged; see [results and tradeoffs](docs/INFERENCE.md#optional-retained-kv-15-gib--2026-11-08) and [release notes](CHANGELOG.md).
+Version 0.1.3 prepares the CPU tokenizer during Rust-managed engine startup, including API-only use. In a scoped four-start comparison without state polling, first-request admission medians changed from 298ms to 5ms. Initialization moves earlier; this is not a GPU speedup. See [results and limits](docs/INFERENCE.md#autonomous-startup-prewarm--2026-11-08) and [release notes](CHANGELOG.md).
 
 ![Soliton](docs/images/stratastudio-image.png)
 

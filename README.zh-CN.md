@@ -1,6 +1,6 @@
 # Soliton
 
-0.1.2验证了面向长历史的可选1.5GiB保留KV配置，记录其收益与额外内存；普通设置未改动。参阅[结果和取舍](docs/INFERENCE.md#optional-retained-kv-15-gib--2026-11-08)及[更新记录](CHANGELOG.md)。
+0.1.3在Rust管理的引擎启动过程中预备CPU分词器，也支持仅使用API的场景。在不轮询状态的四次启动比较中，首次请求准入时间中位数从298ms降至5ms。这是提前初始化，并非GPU加速。参阅[结果与范围](docs/INFERENCE.md#autonomous-startup-prewarm--2026-11-08)及[更新记录](CHANGELOG.md)。
 
 ![Soliton](docs/images/stratastudio-image.png)
 

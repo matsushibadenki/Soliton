@@ -684,3 +684,167 @@ async fn gateway_records_admission_for_api_and_chat_without_changing_refused_his
     s.stop().await.unwrap();
     task.abort();
 }
+
+#[cfg(unix)]
+async fn prewarm_fixture(with_python: bool) -> (Arc<Studio>, PathBuf, tokio::task::JoinHandle<()>) {
+    use std::os::unix::fs::PermissionsExt;
+    let dir = std::env::temp_dir().join(format!("soliton-autoprewarm-{}", uuid::Uuid::new_v4()));
+    std::fs::create_dir(&dir).unwrap();
+    if with_python {
+        let path = dir.join("python");
+        std::fs::write(
+            &path,
+            format!(
+                "#!/bin/sh\nexec /bin/cat > '{}'\n",
+                dir.join("input").display()
+            ),
+        )
+        .unwrap();
+        std::fs::set_permissions(path, std::fs::Permissions::from_mode(0o700)).unwrap();
+    }
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let port = listener.local_addr().unwrap().port();
+    let router = Router::new().route(
+        "/health",
+        get(|| async { Json(json!({"control_ready":true,"inference_ready":true})) }),
+    );
+    let task = tokio::spawn(async move { axum::serve(listener, router).await.unwrap() });
+    let s = studio();
+    {
+        let mut settings = s.settings.write().await;
+        settings.engine = Engine::VllmApple;
+        settings.vllm.executable = dir.join("mlx_lm.server").to_string_lossy().into();
+        settings.vllm.evidence = "fixture".into();
+    }
+    let child = Command::new("/bin/sleep")
+        .arg("60")
+        .process_group(0)
+        .spawn()
+        .unwrap();
+    {
+        let mut p = s.process.lock().await;
+        p.group = child.id();
+        p.child = Some(child);
+        p.port = port;
+        p.key = "private".into();
+        p.startup = Some(Startup::new());
+    }
+    (s, dir, task)
+}
+#[cfg(unix)]
+#[tokio::test]
+async fn state_read_does_not_prepare_but_serve_monitor_does_without_prompts() {
+    let (s, dir, backend) = prewarm_fixture(true).await;
+    let snapshot = s.snapshot().await;
+    assert!(snapshot["startup"]["counterPreparation"].is_null());
+    assert!(!dir.join("input").exists());
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let (tx, rx) = tokio::sync::oneshot::channel();
+    let host = s.clone();
+    let serving = tokio::spawn(async move {
+        serve(listener, host, async {
+            let _ = rx.await;
+        })
+        .await
+        .unwrap()
+    });
+    for _ in 0..100 {
+        if dir.join("input").exists() {
+            break;
+        }
+        tokio::time::sleep(Duration::from_millis(10)).await;
+    }
+    assert!(dir.join("input").exists());
+    assert_eq!(std::fs::metadata(dir.join("input")).unwrap().len(), 0);
+    assert_eq!(
+        s.process
+            .lock()
+            .await
+            .startup
+            .as_ref()
+            .unwrap()
+            .counter_preparation,
+        Some("spawned")
+    );
+    assert!(s.requests.lock().await.is_empty());
+    s.stop().await.unwrap();
+    let _ = tx.send(());
+    serving.await.unwrap();
+    backend.abort();
+    std::fs::remove_dir_all(dir).unwrap();
+}
+#[cfg(unix)]
+#[tokio::test]
+async fn stale_health_or_failed_spawn_cannot_prepare_again() {
+    let (s, dir, backend) = prewarm_fixture(false).await;
+    let settings = s.settings.read().await.clone();
+    let port = s.process.lock().await.port;
+    s.observe_startup_health(
+        &settings,
+        port,
+        "stale-key",
+        Some(&json!({"control_ready":true,"inference_ready":true})),
+        true,
+    )
+    .await;
+    assert!(s
+        .process
+        .lock()
+        .await
+        .startup
+        .as_ref()
+        .unwrap()
+        .counter_preparation
+        .is_none());
+    s.observe_startup_health(
+        &settings,
+        port,
+        "private",
+        Some(&json!({"control_ready":false})),
+        true,
+    )
+    .await;
+    assert!(s
+        .process
+        .lock()
+        .await
+        .startup
+        .as_ref()
+        .unwrap()
+        .counter_preparation
+        .is_none());
+    s.poll_startup().await;
+    assert_eq!(
+        s.process
+            .lock()
+            .await
+            .startup
+            .as_ref()
+            .unwrap()
+            .counter_preparation,
+        Some("failed")
+    );
+    s.poll_startup().await;
+    assert_eq!(
+        s.process
+            .lock()
+            .await
+            .startup
+            .as_ref()
+            .unwrap()
+            .counter_preparation,
+        Some("failed")
+    );
+    s.stop().await.unwrap();
+    s.observe_startup_health(
+        &settings,
+        port,
+        "private",
+        Some(&json!({"control_ready":true})),
+        true,
+    )
+    .await;
+    assert!(!dir.join("input").exists());
+    backend.abort();
+    std::fs::remove_dir_all(dir).unwrap();
+}

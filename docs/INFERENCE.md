@@ -349,3 +349,28 @@ English: A fixed private MLX runtime completed the original4096-token30-minute q
 English: The optional1.5GiB retained-KV profile passed the original30-minute qualification,36 shared-API cases, exact4096/4097 gates, five-history pressure/recompute/reheat and wrong-budget evidence refusal/recovery. It preserved answers and counts. The pilot's12/12 long-history hits cost about476MiB additional sampled footprint, with small short/decode timing tradeoffs; default settings are unchanged.
 
 简体中文：可选1.5GiB保留KV配置通过原有30分钟资格验证、36个公共API用例、4096/4097边界、五历史压力重算/再热及错误预算记录拒绝/恢复。答案和计数保持一致；试验中12/12长历史复用，额外采样占用约476MiB，同时存在短请求/生成计时取舍。默认设置未变。
+
+## Autonomous startup prewarm — 2026-11-08
+
+0.1.3ではP0の起動経路を見直し、CPUトークンカウンターの準備を`/studio/state`からRustの`serve()`が所有する起動監視へ移した。従来はWebViewなどが状態を取得しないAPI単独利用では、初回入力までCPUワーカーが起動しなかった。新経路は100ms間隔で未完了の所有セッションだけを確認し、認証付き`control_ready`後に準備する。inference readyと準備の確定後は追加のhealth通信を行わず、サーバー終了で監視も終了する。
+
+応答を受けた後にも現在設定・ポート・私有キー・プロセス生存・lifecycle lockを照合する。停止後や旧セッションの応答から準備せず、spawn失敗はその起動中に反復しない。従来の資格確認・完全identity・入力数の検査と要求時のカウンター検証は維持した。準備中に推論要求やカウント用フレームは送らず、GPU warmupもしない。
+
+`startup.counterPreparation`は`spawned`/`existing`/`failed`/`notRequired`または未観測のnull。`counterSpawnedMs`はプロセス生成の観測時刻であり、tokenizer読込完了ではない。`controlReadyObservedMs`/`inferenceReadyObservedMs`の観測頻度も変わるため、旧版との差をモデル読込の高速化と扱わない。完全な資格確認時間やbackend内部のprefill/decode spanはまだNext。
+
+旧0.1.2と候補実装をbefore/after/after/beforeの順で4回独立起動し、Start後6秒間は状態を取得せず、同じ178-token入力を2回ずつ送った。固定Gemma 2 2B 4bit、context4096、保持KV1536MiB、allocator512MiB、既存の完全資格確認済み環境、temperature0/max16で比較した。公開版0.1.3による[最終確認の生データ](evaluation/startup-prewarm-release-20261108.json)にbinary/evidence SHA、全要求の入力・出力数・計測値を保存した。
+
+| 観測値（各版2起動の中央値） | 旧版 | 候補 |
+| --- | ---: | ---: |
+| 初回より前のCPUカウンター数（各起動） | 0 | 1 |
+| 初回受付 | 297.57ms | 4.98ms |
+| 初回first content（Rust gateway） | 682.88ms | 428.38ms |
+| 同一入力の反復受付 | 6.32ms | 8.89ms |
+
+版番号更新前の[最初の4起動](evaluation/startup-prewarm-20261108.json)では初回受付405.38→5.34ms、first content766.97→354.75ms、反復受付4.10→4.10msだった。測定間の絶対時間は変動しており、反復要求の高速化は主張しない。最終確認も含め、各runの全8回答が完全一致、入力178/出力11、初回cached0/反復cached177が一致した。各候補起動の停止後に所有カウンターの消滅を確認した。通常デスクトップ負荷、各版2起動だけの記述的比較で、tail latencyや他Macの保証ではない。6秒のアイドル中へ初期化を移す改善であり、Startからの総処理をなくしたわけではない。即時入力なら初期化待ちが残り得る。従来から状態取得を続けるGUIで同じ短縮が得られるとは主張しない。初期化に伴うCPU・メモリ常駐（既存軽量構成の別計測では約202MiB）もAPI単独利用で早く発生する。
+
+比較ツールは`node scripts/benchmark-startup-prewarm.mjs --isolated --before /absolute/old-studio-server --after /absolute/new-studio-server --settings /absolute/dedicated-state.json --output-dir /absolute/new-private-directory`。私有state・空の会話・所有host/modelだけを使い、port18098を使う。別のQAモデルと同時実行しない。public JSONは起動許可証ではなく、再現には期限内で完全identityの一致するprivate証跡が必要。
+
+バックエンド/Python/modelの内容と保持量は変更していない。既存1536MiBの30分資格確認を利用し、新たに30分を実行したとは扱わない。通常アプリの設定は変更せず、署名・公証・別Mac検証はPending。
+
+0.1.3の最終回帰では、共通Rust APIの36ケースとEN/JA/ZHの4096ちょうど3件/4097拒否3件が通過し、0.1.2の同じfixture matrixと全36回答・入力数が一致した。空の会話を保持し、QAホストと所有モデルを停止した。[全記録](evaluation/startup-prewarm-gateway-20261108.json)。Rust162 tests、baseline tool5 tests、frontend/server/Tauri buildが通過した。UI表示の変更や新たなGUI速度検証はない。

@@ -1,0 +1,373 @@
+{
+  "result": "passed",
+  "scope": "No state polling after Start; six-second idle before first request. Normal desktop load; initialized work is moved earlier, not eliminated. No GPU-kernel speedup claim.",
+  "trials": [
+    {
+      "mode": "before",
+      "index": 0,
+      "counterBeforeFirstRequest": 0,
+      "metrics": [
+        {
+          "elapsedMs": 544,
+          "engine": "vLLM-Apple",
+          "finishReason": "stop",
+          "firstAnswerMs": 358,
+          "firstOutputMs": 358,
+          "gateway": {
+            "admissionMs": 298.17366699999997,
+            "admissionRejected": false,
+            "dispatchMs": 298.2115,
+            "elapsedMs": 842.757291,
+            "engineSession": "45858f46-858c-4a26-aa0b-6044a8ddfaa7",
+            "firstContentMs": 656.313916,
+            "lifecycleWaitMs": 0.0018750000000000001,
+            "upstreamHeadersMs": 4.635292
+          },
+          "id": "f966977d-97ce-4ce9-8b9a-594a44b73470",
+          "model": "default_model",
+          "promptProcessing": {
+            "cacheHitPercent": 0,
+            "tokensPerSecond": null,
+            "uncachedTokens": 178
+          },
+          "source": "api",
+          "startedAt": 1794126663415,
+          "status": "completed",
+          "timings": null,
+          "usage": {
+            "cacheCreation": null,
+            "cached": 0,
+            "completion": 11,
+            "prompt": 178,
+            "reasoning": null,
+            "total": 189
+          }
+        },
+        {
+          "elapsedMs": 234,
+          "engine": "vLLM-Apple",
+          "finishReason": "stop",
+          "firstAnswerMs": 47,
+          "firstOutputMs": 47,
+          "gateway": {
+            "admissionMs": 4.2842080000000005,
+            "admissionRejected": false,
+            "dispatchMs": 4.301875,
+            "elapsedMs": 239.220666,
+            "engineSession": "45858f46-858c-4a26-aa0b-6044a8ddfaa7",
+            "firstContentMs": 51.77825,
+            "lifecycleWaitMs": 0.001209,
+            "upstreamHeadersMs": 1.691625
+          },
+          "id": "b52abc6c-5397-43cb-839c-3af30bc0b17b",
+          "model": "default_model",
+          "promptProcessing": {
+            "cacheHitPercent": 99.43820224719101,
+            "tokensPerSecond": null,
+            "uncachedTokens": 1
+          },
+          "source": "api",
+          "startedAt": 1794126663967,
+          "status": "completed",
+          "timings": null,
+          "usage": {
+            "cacheCreation": null,
+            "cached": 177,
+            "completion": 11,
+            "prompt": 178,
+            "reasoning": null,
+            "total": 189
+          }
+        }
+      ],
+      "startup": {
+        "controlReadyObservedMs": 6908,
+        "counterSpawnedMs": null,
+        "inferenceReadyObservedMs": 6908,
+        "modelLoadingObservedMs": 0
+      },
+      "answer": "The code word is **soliton**. \n",
+      "passed": true
+    },
+    {
+      "mode": "after",
+      "index": 1,
+      "counterBeforeFirstRequest": 1,
+      "metrics": [
+        {
+          "elapsedMs": 620,
+          "engine": "vLLM-Apple",
+          "finishReason": "stop",
+          "firstAnswerMs": 420,
+          "firstOutputMs": 420,
+          "gateway": {
+            "admissionMs": 4.8415,
+            "admissionRejected": false,
+            "dispatchMs": 4.86525,
+            "elapsedMs": 625.366417,
+            "engineSession": "4f55fc9c-00d5-485c-b456-ae48128f579b",
+            "firstContentMs": 425.52662499999997,
+            "lifecycleWaitMs": 0.001792,
+            "upstreamHeadersMs": 4.472709
+          },
+          "id": "aa3d1a3b-b71e-4d3f-a5e7-f4eb33c6e2d9",
+          "model": "default_model",
+          "promptProcessing": {
+            "cacheHitPercent": 0,
+            "tokensPerSecond": null,
+            "uncachedTokens": 178
+          },
+          "source": "api",
+          "startedAt": 1794126671598,
+          "status": "completed",
+          "timings": null,
+          "usage": {
+            "cacheCreation": null,
+            "cached": 0,
+            "completion": 11,
+            "prompt": 178,
+            "reasoning": null,
+            "total": 189
+          }
+        },
+        {
+          "elapsedMs": 249,
+          "engine": "vLLM-Apple",
+          "finishReason": "stop",
+          "firstAnswerMs": 51,
+          "firstOutputMs": 51,
+          "gateway": {
+            "admissionMs": 8.988042,
+            "admissionRejected": false,
+            "dispatchMs": 9.021167,
+            "elapsedMs": 258.9025,
+            "engineSession": "4f55fc9c-00d5-485c-b456-ae48128f579b",
+            "firstContentMs": 60.432209,
+            "lifecycleWaitMs": 0.001625,
+            "upstreamHeadersMs": 3.329958
+          },
+          "id": "141b0633-988a-41cf-a9e9-a9f77af60d07",
+          "model": "default_model",
+          "promptProcessing": {
+            "cacheHitPercent": 99.43820224719101,
+            "tokensPerSecond": null,
+            "uncachedTokens": 1
+          },
+          "source": "api",
+          "startedAt": 1794126672233,
+          "status": "completed",
+          "timings": null,
+          "usage": {
+            "cacheCreation": null,
+            "cached": 177,
+            "completion": 11,
+            "prompt": 178,
+            "reasoning": null,
+            "total": 189
+          }
+        }
+      ],
+      "startup": {
+        "controlReadyObservedMs": 2054,
+        "counterPreparation": "spawned",
+        "counterSpawnedMs": 2054,
+        "inferenceReadyObservedMs": 2854,
+        "modelLoadingObservedMs": 800
+      },
+      "answer": "The code word is **soliton**. \n",
+      "passed": true
+    },
+    {
+      "mode": "after",
+      "index": 2,
+      "counterBeforeFirstRequest": 1,
+      "metrics": [
+        {
+          "elapsedMs": 630,
+          "engine": "vLLM-Apple",
+          "finishReason": "stop",
+          "firstAnswerMs": 426,
+          "firstOutputMs": 426,
+          "gateway": {
+            "admissionMs": 5.116542,
+            "admissionRejected": false,
+            "dispatchMs": 5.1424579999999995,
+            "elapsedMs": 635.2373329999999,
+            "engineSession": "80c61ca8-aa75-4bbc-84b7-6ce015140e7b",
+            "firstContentMs": 431.242,
+            "lifecycleWaitMs": 0.002458,
+            "upstreamHeadersMs": 4.593083
+          },
+          "id": "8608197a-4163-46bf-891a-c256c062f08a",
+          "model": "default_model",
+          "promptProcessing": {
+            "cacheHitPercent": 0,
+            "tokensPerSecond": null,
+            "uncachedTokens": 178
+          },
+          "source": "api",
+          "startedAt": 1794126679942,
+          "status": "completed",
+          "timings": null,
+          "usage": {
+            "cacheCreation": null,
+            "cached": 0,
+            "completion": 11,
+            "prompt": 178,
+            "reasoning": null,
+            "total": 189
+          }
+        },
+        {
+          "elapsedMs": 250,
+          "engine": "vLLM-Apple",
+          "finishReason": "stop",
+          "firstAnswerMs": 51,
+          "firstOutputMs": 51,
+          "gateway": {
+            "admissionMs": 8.798459,
+            "admissionRejected": false,
+            "dispatchMs": 8.832459,
+            "elapsedMs": 259.207167,
+            "engineSession": "80c61ca8-aa75-4bbc-84b7-6ce015140e7b",
+            "firstContentMs": 60.688959000000004,
+            "lifecycleWaitMs": 0.003,
+            "upstreamHeadersMs": 3.322583
+          },
+          "id": "4ad28621-27d0-4f6d-b349-eba4211b424c",
+          "model": "default_model",
+          "promptProcessing": {
+            "cacheHitPercent": 99.43820224719101,
+            "tokensPerSecond": null,
+            "uncachedTokens": 1
+          },
+          "source": "api",
+          "startedAt": 1794126680586,
+          "status": "completed",
+          "timings": null,
+          "usage": {
+            "cacheCreation": null,
+            "cached": 177,
+            "completion": 11,
+            "prompt": 178,
+            "reasoning": null,
+            "total": 189
+          }
+        }
+      ],
+      "startup": {
+        "controlReadyObservedMs": 2155,
+        "counterPreparation": "spawned",
+        "counterSpawnedMs": 2155,
+        "inferenceReadyObservedMs": 2854,
+        "modelLoadingObservedMs": 699
+      },
+      "answer": "The code word is **soliton**. \n",
+      "passed": true
+    },
+    {
+      "mode": "before",
+      "index": 3,
+      "counterBeforeFirstRequest": 0,
+      "metrics": [
+        {
+          "elapsedMs": 617,
+          "engine": "vLLM-Apple",
+          "finishReason": "stop",
+          "firstAnswerMs": 412,
+          "firstOutputMs": 412,
+          "gateway": {
+            "admissionMs": 296.973,
+            "admissionRejected": false,
+            "dispatchMs": 296.999958,
+            "elapsedMs": 914.555583,
+            "engineSession": "78a3dc2b-5adb-4338-8e44-c40a92b70f2c",
+            "firstContentMs": 709.4505,
+            "lifecycleWaitMs": 0.002042,
+            "upstreamHeadersMs": 4.5628329999999995
+          },
+          "id": "f3b76106-2b93-40f5-b454-f8370beffa2e",
+          "model": "default_model",
+          "promptProcessing": {
+            "cacheHitPercent": 0,
+            "tokensPerSecond": null,
+            "uncachedTokens": 178
+          },
+          "source": "api",
+          "startedAt": 1794126688616,
+          "status": "completed",
+          "timings": null,
+          "usage": {
+            "cacheCreation": null,
+            "cached": 0,
+            "completion": 11,
+            "prompt": 178,
+            "reasoning": null,
+            "total": 189
+          }
+        },
+        {
+          "elapsedMs": 248,
+          "engine": "vLLM-Apple",
+          "finishReason": "stop",
+          "firstAnswerMs": 50,
+          "firstOutputMs": 50,
+          "gateway": {
+            "admissionMs": 8.362667,
+            "admissionRejected": false,
+            "dispatchMs": 8.398582999999999,
+            "elapsedMs": 257.107041,
+            "engineSession": "78a3dc2b-5adb-4338-8e44-c40a92b70f2c",
+            "firstContentMs": 59.271125,
+            "lifecycleWaitMs": 0.0022500000000000003,
+            "upstreamHeadersMs": 3.141209
+          },
+          "id": "39c1a2ee-0a36-42d5-9fe6-165f915d3f89",
+          "model": "default_model",
+          "promptProcessing": {
+            "cacheHitPercent": 99.43820224719101,
+            "tokensPerSecond": null,
+            "uncachedTokens": 1
+          },
+          "source": "api",
+          "startedAt": 1794126689247,
+          "status": "completed",
+          "timings": null,
+          "usage": {
+            "cacheCreation": null,
+            "cached": 177,
+            "completion": 11,
+            "prompt": 178,
+            "reasoning": null,
+            "total": 189
+          }
+        }
+      ],
+      "startup": {
+        "controlReadyObservedMs": 6979,
+        "counterSpawnedMs": null,
+        "inferenceReadyObservedMs": 6979,
+        "modelLoadingObservedMs": 0
+      },
+      "answer": "The code word is **soliton**. \n",
+      "passed": true
+    }
+  ],
+  "binarySha256": {
+    "before": "0d7ba0593fcb44fa5d0ece7d02f1fdfe8195007e412bea011d5c647400b6e1df",
+    "after": "5a7f7b325dc9d00f09e4fa10cca3d43b4c67ea252c885af7017bd86e59aac8ea"
+  },
+  "evidenceSha256": "fb9a55d594d49332d4195cf01736fc7a87b920233439f728221350d84bbe9b83",
+  "summary": {
+    "before": {
+      "firstAdmissionMedianMs": 297.5733335,
+      "firstContentMedianMs": 682.882208,
+      "repeatAdmissionMedianMs": 6.323437500000001
+    },
+    "after": {
+      "firstAdmissionMedianMs": 4.9790209999999995,
+      "firstContentMedianMs": 428.38431249999996,
+      "repeatAdmissionMedianMs": 8.8932505
+    }
+  }
+}

@@ -155,6 +155,7 @@ struct Startup {
     control_ms: Option<u64>,
     inference_ms: Option<u64>,
     counter_ms: Option<u64>,
+    counter_preparation: Option<&'static str>,
 }
 impl Startup {
     fn new() -> Self {
@@ -163,11 +164,13 @@ impl Startup {
             control_ms: None,
             inference_ms: None,
             counter_ms: None,
+            counter_preparation: None,
         }
     }
     fn snapshot(&self) -> Value {
         json!({"controlReadyObservedMs":self.control_ms,"inferenceReadyObservedMs":self.inference_ms,
-            "counterSpawnedMs":self.counter_ms,"modelLoadingObservedMs":self.inference_ms.zip(self.control_ms).map(|(ready,control)|ready.saturating_sub(control))})
+            "counterSpawnedMs":self.counter_ms,"counterPreparation":self.counter_preparation,
+            "modelLoadingObservedMs":self.inference_ms.zip(self.control_ms).map(|(ready,control)|ready.saturating_sub(control))})
     }
 }
 struct Process {
@@ -972,6 +975,99 @@ impl Studio {
         }
         records.push_back(metrics);
     }
+    /// Startup observations may race a stop/restart; only the owned session can prepare.
+    async fn observe_startup_health(
+        &self,
+        settings: &Settings,
+        port: u16,
+        key: &str,
+        health: Option<&Value>,
+        prepare_counter: bool,
+    ) {
+        // A health response is observed outside the lifecycle lock. Recheck the
+        // exact owned session before preparing anything; never act on stale health.
+        if settings.engine == engine::Engine::VllmApple
+            && health.as_ref().is_some_and(|h| h["control_ready"] == true)
+        {
+            if let Ok(_lifecycle) = self.lifecycle.try_lock() {
+                let current = self.settings.read().await.clone();
+                let mut process = self.process.lock().await;
+                if current.engine == settings.engine
+                    && current.vllm == settings.vllm
+                    && process.port == port
+                    && process.key == key
+                    && process
+                        .child
+                        .as_mut()
+                        .is_some_and(|c| matches!(c.try_wait(), Ok(None)))
+                {
+                    if let Some(startup) = process.startup.as_mut() {
+                        let elapsed = startup.started.elapsed().as_millis() as u64;
+                        startup.control_ms.get_or_insert(elapsed);
+                        if health
+                            .as_ref()
+                            .is_some_and(|h| h["inference_ready"] == true)
+                        {
+                            startup.inference_ms.get_or_insert(elapsed);
+                        }
+                        if prepare_counter && startup.counter_preparation.is_none() {
+                            if settings.vllm.evidence.is_empty()
+                                || settings.vllm.backend != "mlx_lm"
+                            {
+                                startup.counter_preparation = Some("notRequired");
+                            } else if let Ok(mut counter) = self.token_counter.try_lock() {
+                                startup.counter_preparation =
+                                    Some(match counter.prepare(settings) {
+                                        Ok(true) => {
+                                            startup.counter_ms = Some(elapsed);
+                                            "spawned"
+                                        }
+                                        Ok(false) => "existing",
+                                        Err(_) => "failed",
+                                    });
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    /// Independent of WebView/HTTP state polling. No prompts or protocol frames are sent.
+    async fn poll_startup(&self) {
+        let settings = self.settings.read().await.clone();
+        if settings.engine != engine::Engine::VllmApple {
+            return;
+        }
+        let (port, key) = {
+            let mut p = self.process.lock().await;
+            let pending = p
+                .startup
+                .as_ref()
+                .is_some_and(|s| s.inference_ms.is_none() || s.counter_preparation.is_none());
+            if !pending
+                || !p
+                    .child
+                    .as_mut()
+                    .is_some_and(|c| matches!(c.try_wait(), Ok(None)))
+            {
+                return;
+            }
+            (p.port, p.key.clone())
+        };
+        let health = match self
+            .client
+            .get(format!("http://127.0.0.1:{port}/health"))
+            .bearer_auth(&key)
+            .timeout(Duration::from_secs(1))
+            .send()
+            .await
+        {
+            Ok(response) if response.status().is_success() => response.json::<Value>().await.ok(),
+            _ => None,
+        };
+        self.observe_startup_health(&settings, port, &key, health.as_ref(), true)
+            .await;
+    }
     pub async fn snapshot(&self) -> Value {
         let (running, upstream, key, engine_session) = {
             let mut p = self.process.lock().await;
@@ -1021,41 +1117,8 @@ impl Studio {
             None => None,
         };
         let settings = self.settings.read().await.clone();
-        // A health response is observed outside the lifecycle lock. Recheck the
-        // exact owned session before preparing anything; never act on stale health.
-        if settings.engine == engine::Engine::VllmApple
-            && health.as_ref().is_some_and(|h| h["control_ready"] == true)
-        {
-            if let Ok(_lifecycle) = self.lifecycle.try_lock() {
-                let current = self.settings.read().await.clone();
-                let mut process = self.process.lock().await;
-                if current.engine == settings.engine
-                    && current.vllm == settings.vllm
-                    && process.port == upstream
-                    && process.key == key
-                    && process
-                        .child
-                        .as_mut()
-                        .is_some_and(|c| matches!(c.try_wait(), Ok(None)))
-                {
-                    if let Some(startup) = process.startup.as_mut() {
-                        let elapsed = startup.started.elapsed().as_millis() as u64;
-                        startup.control_ms.get_or_insert(elapsed);
-                        if health
-                            .as_ref()
-                            .is_some_and(|h| h["inference_ready"] == true)
-                        {
-                            startup.inference_ms.get_or_insert(elapsed);
-                        }
-                        if let Ok(mut counter) = self.token_counter.try_lock() {
-                            if matches!(counter.prepare(&settings), Ok(true)) {
-                                startup.counter_ms = Some(elapsed);
-                            }
-                        }
-                    }
-                }
-            }
-        }
+        self.observe_startup_health(&settings, upstream, &key, health.as_ref(), false)
+            .await;
         let startup = if running {
             self.process
                 .lock()
@@ -2239,9 +2302,18 @@ pub async fn serve(
             s.memory_usage.lock().await.refresh(s.memory_bytes, pid);
         }
     };
+    let startup_monitor = async {
+        let mut tick = tokio::time::interval(Duration::from_millis(100));
+        tick.set_missed_tick_behavior(tokio::time::MissedTickBehavior::Skip);
+        loop {
+            tick.tick().await;
+            s.poll_startup().await;
+        }
+    };
     tokio::select! {
         result = axum::serve(listener, router(s.clone())).with_graceful_shutdown(shutdown) => result,
         _ = monitor => unreachable!(),
+        _ = startup_monitor => unreachable!(),
     }
 }
 

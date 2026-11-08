@@ -1,0 +1,2240 @@
+{
+  "schema": 1,
+  "fixtureMatrixSha256": "e700fb814bd08dc5fe0fde6e1db7bc5f262c59e92ea562ab038a8cc40e468d4d",
+  "plannedCases": 36,
+  "result": "passed",
+  "scope": "4096-token shared Rust API baseline under ordinary desktop load; descriptive observations, no controlled comparison",
+  "samples": [
+    {
+      "label": "en-new-input",
+      "phase": "new-input",
+      "language": "en",
+      "maxTokens": 64,
+      "expected": "STRATA-7391",
+      "answer": "STRATA-7391 \n",
+      "metrics": {
+        "elapsedMs": 974,
+        "engine": "vLLM-Apple",
+        "finishReason": "stop",
+        "firstAnswerMs": 801,
+        "firstOutputMs": 801,
+        "gateway": {
+          "admissionMs": 4.387625,
+          "admissionRejected": false,
+          "dispatchMs": 4.409416,
+          "elapsedMs": 978.409791,
+          "engineSession": "9fc7cafa-7406-45af-a262-32a90d363c81",
+          "firstContentMs": 805.5102499999999,
+          "lifecycleWaitMs": 0.000958,
+          "upstreamHeadersMs": 665.793875
+        },
+        "id": "792d8f73-da48-4060-91e7-665da9c1c24a",
+        "model": "default_model",
+        "promptProcessing": {
+          "cacheHitPercent": 0,
+          "tokensPerSecond": null,
+          "uncachedTokens": 32
+        },
+        "source": "api",
+        "startedAt": 1794126525612,
+        "status": "completed",
+        "timings": null,
+        "usage": {
+          "cacheCreation": null,
+          "cached": 0,
+          "completion": 10,
+          "prompt": 32,
+          "reasoning": null,
+          "total": 42
+        }
+      },
+      "memory": {
+        "system": {
+          "availableBytes": 10881957888,
+          "freeBytes": 167591936,
+          "sampledAt": 1794126526588,
+          "totalBytes": 34359738368,
+          "usedBytes": 23477780480
+        },
+        "engine": {
+          "pid": 52717,
+          "processCount": 2,
+          "rootBytes": 69239408,
+          "sampledAt": 1794126526588,
+          "usedBytes": 2059176792
+        }
+      }
+    },
+    {
+      "label": "en-repeat",
+      "phase": "repeat",
+      "language": "en",
+      "maxTokens": 64,
+      "expected": "STRATA-7391",
+      "answer": "STRATA-7391 \n",
+      "metrics": {
+        "elapsedMs": 227,
+        "engine": "vLLM-Apple",
+        "finishReason": "stop",
+        "firstAnswerMs": 49,
+        "firstOutputMs": 49,
+        "gateway": {
+          "admissionMs": 7.614,
+          "admissionRejected": false,
+          "dispatchMs": 7.651167,
+          "elapsedMs": 234.735417,
+          "engineSession": "9fc7cafa-7406-45af-a262-32a90d363c81",
+          "firstContentMs": 57.071542,
+          "lifecycleWaitMs": 0.0024590000000000002,
+          "upstreamHeadersMs": 2.921125
+        },
+        "id": "20385ebc-8a3f-405c-a1b9-01a3f7edc3aa",
+        "model": "default_model",
+        "promptProcessing": {
+          "cacheHitPercent": 96.875,
+          "tokensPerSecond": null,
+          "uncachedTokens": 1
+        },
+        "source": "api",
+        "startedAt": 1794126526599,
+        "status": "completed",
+        "timings": null,
+        "usage": {
+          "cacheCreation": null,
+          "cached": 31,
+          "completion": 10,
+          "prompt": 32,
+          "reasoning": null,
+          "total": 42
+        }
+      },
+      "memory": {
+        "system": {
+          "availableBytes": 10844618752,
+          "freeBytes": 130220032,
+          "sampledAt": 1794126526828,
+          "totalBytes": 34359738368,
+          "usedBytes": 23515119616
+        },
+        "engine": {
+          "pid": 52717,
+          "processCount": 2,
+          "rootBytes": 69239408,
+          "sampledAt": 1794126526828,
+          "usedBytes": 2096286552
+        }
+      }
+    },
+    {
+      "label": "en-growth-32",
+      "phase": "length-scaled-history",
+      "language": "en",
+      "maxTokens": 64,
+      "expected": "STRATA-7391",
+      "answer": "STRATA-7391 \n",
+      "metrics": {
+        "elapsedMs": 1114,
+        "engine": "vLLM-Apple",
+        "finishReason": "stop",
+        "firstAnswerMs": 938,
+        "firstOutputMs": 938,
+        "gateway": {
+          "admissionMs": 9.470042,
+          "admissionRejected": false,
+          "dispatchMs": 9.505875,
+          "elapsedMs": 1124.127792,
+          "engineSession": "9fc7cafa-7406-45af-a262-32a90d363c81",
+          "firstContentMs": 948.022375,
+          "lifecycleWaitMs": 0.002375,
+          "upstreamHeadersMs": 3.648291
+        },
+        "id": "b2442616-b1f7-4569-8045-772c43946922",
+        "model": "default_model",
+        "promptProcessing": {
+          "cacheHitPercent": 0.6722689075630253,
+          "tokensPerSecond": null,
+          "uncachedTokens": 591
+        },
+        "source": "api",
+        "startedAt": 1794126526841,
+        "status": "completed",
+        "timings": null,
+        "usage": {
+          "cacheCreation": null,
+          "cached": 4,
+          "completion": 10,
+          "prompt": 595,
+          "reasoning": null,
+          "total": 605
+        }
+      },
+      "memory": {
+        "system": {
+          "availableBytes": 10724933632,
+          "freeBytes": 698138624,
+          "sampledAt": 1794126527957,
+          "totalBytes": 34359738368,
+          "usedBytes": 23634804736
+        },
+        "engine": {
+          "pid": 52717,
+          "processCount": 2,
+          "rootBytes": 69239408,
+          "sampledAt": 1794126527957,
+          "usedBytes": 2214185816
+        }
+      }
+    },
+    {
+      "label": "en-growth-96",
+      "phase": "length-scaled-history",
+      "language": "en",
+      "maxTokens": 64,
+      "expected": "STRATA-7391",
+      "answer": "STRATA-7391 \n",
+      "metrics": {
+        "elapsedMs": 2651,
+        "engine": "vLLM-Apple",
+        "finishReason": "stop",
+        "firstAnswerMs": 2466,
+        "firstOutputMs": 2466,
+        "gateway": {
+          "admissionMs": 5.283833,
+          "admissionRejected": false,
+          "dispatchMs": 5.298541999999999,
+          "elapsedMs": 2656.5324170000004,
+          "engineSession": "9fc7cafa-7406-45af-a262-32a90d363c81",
+          "firstContentMs": 2471.424417,
+          "lifecycleWaitMs": 0.000875,
+          "upstreamHeadersMs": 2.4388330000000003
+        },
+        "id": "ab05dfc7-c500-4d12-bd47-7307b75fd96a",
+        "model": "default_model",
+        "promptProcessing": {
+          "cacheHitPercent": 5.744286596664608,
+          "tokensPerSecond": null,
+          "uncachedTokens": 1526
+        },
+        "source": "api",
+        "startedAt": 1794126527963,
+        "status": "completed",
+        "timings": null,
+        "usage": {
+          "cacheCreation": null,
+          "cached": 93,
+          "completion": 10,
+          "prompt": 1619,
+          "reasoning": null,
+          "total": 1629
+        }
+      },
+      "memory": {
+        "system": {
+          "availableBytes": 10526556160,
+          "freeBytes": 682868736,
+          "sampledAt": 1794126530616,
+          "totalBytes": 34359738368,
+          "usedBytes": 23833182208
+        },
+        "engine": {
+          "pid": 52717,
+          "processCount": 2,
+          "rootBytes": 69239408,
+          "sampledAt": 1794126530616,
+          "usedBytes": 2447543128
+        }
+      }
+    },
+    {
+      "label": "en-growth-160",
+      "phase": "length-scaled-history",
+      "language": "en",
+      "maxTokens": 64,
+      "expected": "STRATA-7391",
+      "answer": "STRATA-7391 \n",
+      "metrics": {
+        "elapsedMs": 4390,
+        "engine": "vLLM-Apple",
+        "finishReason": "stop",
+        "firstAnswerMs": 4159,
+        "firstOutputMs": 4159,
+        "gateway": {
+          "admissionMs": 5.494167,
+          "admissionRejected": false,
+          "dispatchMs": 5.508833,
+          "elapsedMs": 4395.5565,
+          "engineSession": "9fc7cafa-7406-45af-a262-32a90d363c81",
+          "firstContentMs": 4165.070917,
+          "lifecycleWaitMs": 0.000834,
+          "upstreamHeadersMs": 3.878
+        },
+        "id": "13b89374-a623-4dea-965a-c75f43e90ee0",
+        "model": "default_model",
+        "promptProcessing": {
+          "cacheHitPercent": 9.837278106508876,
+          "tokensPerSecond": null,
+          "uncachedTokens": 2438
+        },
+        "source": "api",
+        "startedAt": 1794126530623,
+        "status": "completed",
+        "timings": null,
+        "usage": {
+          "cacheCreation": null,
+          "cached": 266,
+          "completion": 10,
+          "prompt": 2704,
+          "reasoning": null,
+          "total": 2714
+        }
+      },
+      "memory": {
+        "system": {
+          "availableBytes": 9960980480,
+          "freeBytes": 507641856,
+          "sampledAt": 1794126535017,
+          "totalBytes": 34359738368,
+          "usedBytes": 24398757888
+        },
+        "engine": {
+          "pid": 52717,
+          "processCount": 2,
+          "rootBytes": 69255792,
+          "sampledAt": 1794126535017,
+          "usedBytes": 2884176728
+        }
+      }
+    },
+    {
+      "label": "en-growth-232",
+      "phase": "length-scaled-history",
+      "language": "en",
+      "maxTokens": 64,
+      "expected": "STRATA-7391",
+      "answer": "STRATA-7391 \n",
+      "metrics": {
+        "elapsedMs": 6445,
+        "engine": "vLLM-Apple",
+        "finishReason": "stop",
+        "firstAnswerMs": 6203,
+        "firstOutputMs": 6203,
+        "gateway": {
+          "admissionMs": 12.337209,
+          "admissionRejected": false,
+          "dispatchMs": 12.418417,
+          "elapsedMs": 6458.084959,
+          "engineSession": "9fc7cafa-7406-45af-a262-32a90d363c81",
+          "firstContentMs": 6215.610875,
+          "lifecycleWaitMs": 0.002959,
+          "upstreamHeadersMs": 10.611625
+        },
+        "id": "bd251161-b836-4c70-bf04-47549118af9a",
+        "model": "default_model",
+        "promptProcessing": {
+          "cacheHitPercent": 10.84521384928717,
+          "tokensPerSecond": null,
+          "uncachedTokens": 3502
+        },
+        "source": "api",
+        "startedAt": 1794126535033,
+        "status": "completed",
+        "timings": null,
+        "usage": {
+          "cacheCreation": null,
+          "cached": 426,
+          "completion": 10,
+          "prompt": 3928,
+          "reasoning": null,
+          "total": 3938
+        }
+      },
+      "memory": {
+        "system": {
+          "availableBytes": 9526378496,
+          "freeBytes": 407191552,
+          "sampledAt": 1794126541483,
+          "totalBytes": 34359738368,
+          "usedBytes": 24833359872
+        },
+        "engine": {
+          "pid": 52717,
+          "processCount": 2,
+          "rootBytes": 69272176,
+          "sampledAt": 1794126541484,
+          "usedBytes": 3413134168
+        }
+      }
+    },
+    {
+      "label": "ja-new-input",
+      "phase": "new-input",
+      "language": "ja",
+      "maxTokens": 64,
+      "expected": "STRATA-7391",
+      "answer": "STRATA-7391 \n",
+      "metrics": {
+        "elapsedMs": 307,
+        "engine": "vLLM-Apple",
+        "finishReason": "stop",
+        "firstAnswerMs": 130,
+        "firstOutputMs": 130,
+        "gateway": {
+          "admissionMs": 7.996209,
+          "admissionRejected": false,
+          "dispatchMs": 8.030416,
+          "elapsedMs": 315.406791,
+          "engineSession": "9fc7cafa-7406-45af-a262-32a90d363c81",
+          "firstContentMs": 138.67487500000001,
+          "lifecycleWaitMs": 0.002208,
+          "upstreamHeadersMs": 29.850334
+        },
+        "id": "08721adc-c233-4c8e-a269-352aadbbbaa9",
+        "model": "default_model",
+        "promptProcessing": {
+          "cacheHitPercent": 11.76470588235294,
+          "tokensPerSecond": null,
+          "uncachedTokens": 30
+        },
+        "source": "api",
+        "startedAt": 1794126541496,
+        "status": "completed",
+        "timings": null,
+        "usage": {
+          "cacheCreation": null,
+          "cached": 4,
+          "completion": 10,
+          "prompt": 34,
+          "reasoning": null,
+          "total": 44
+        }
+      },
+      "memory": {
+        "system": {
+          "availableBytes": 9916973056,
+          "freeBytes": 797769728,
+          "sampledAt": 1794126541805,
+          "totalBytes": 34359738368,
+          "usedBytes": 24442765312
+        },
+        "engine": {
+          "pid": 52717,
+          "processCount": 2,
+          "rootBytes": 69272176,
+          "sampledAt": 1794126541805,
+          "usedBytes": 3021867864
+        }
+      }
+    },
+    {
+      "label": "ja-repeat",
+      "phase": "repeat",
+      "language": "ja",
+      "maxTokens": 64,
+      "expected": "STRATA-7391",
+      "answer": "STRATA-7391 \n",
+      "metrics": {
+        "elapsedMs": 227,
+        "engine": "vLLM-Apple",
+        "finishReason": "stop",
+        "firstAnswerMs": 49,
+        "firstOutputMs": 49,
+        "gateway": {
+          "admissionMs": 7.5665000000000004,
+          "admissionRejected": false,
+          "dispatchMs": 7.599833,
+          "elapsedMs": 235.182708,
+          "engineSession": "9fc7cafa-7406-45af-a262-32a90d363c81",
+          "firstContentMs": 56.852292,
+          "lifecycleWaitMs": 0.0022919999999999998,
+          "upstreamHeadersMs": 3.002125
+        },
+        "id": "3b74d45a-5c30-48b3-97de-68eb9c69035d",
+        "model": "default_model",
+        "promptProcessing": {
+          "cacheHitPercent": 97.05882352941177,
+          "tokensPerSecond": null,
+          "uncachedTokens": 1
+        },
+        "source": "api",
+        "startedAt": 1794126541816,
+        "status": "completed",
+        "timings": null,
+        "usage": {
+          "cacheCreation": null,
+          "cached": 33,
+          "completion": 10,
+          "prompt": 34,
+          "reasoning": null,
+          "total": 44
+        }
+      },
+      "memory": {
+        "system": {
+          "availableBytes": 9916973056,
+          "freeBytes": 797769728,
+          "sampledAt": 1794126542046,
+          "totalBytes": 34359738368,
+          "usedBytes": 24442765312
+        },
+        "engine": {
+          "pid": 52717,
+          "processCount": 2,
+          "rootBytes": 69272176,
+          "sampledAt": 1794126542046,
+          "usedBytes": 3060337496
+        }
+      }
+    },
+    {
+      "label": "ja-growth-32",
+      "phase": "length-scaled-history",
+      "language": "ja",
+      "maxTokens": 64,
+      "expected": "STRATA-7391",
+      "answer": "STRATA-7391 \n",
+      "metrics": {
+        "elapsedMs": 745,
+        "engine": "vLLM-Apple",
+        "finishReason": "stop",
+        "firstAnswerMs": 570,
+        "firstOutputMs": 570,
+        "gateway": {
+          "admissionMs": 9.03875,
+          "admissionRejected": false,
+          "dispatchMs": 9.079958000000001,
+          "elapsedMs": 754.1435829999999,
+          "engineSession": "9fc7cafa-7406-45af-a262-32a90d363c81",
+          "firstContentMs": 579.7186250000001,
+          "lifecycleWaitMs": 0.003209,
+          "upstreamHeadersMs": 3.717541
+        },
+        "id": "db150ba1-c387-455c-ba1c-e2794251cc67",
+        "model": "default_model",
+        "promptProcessing": {
+          "cacheHitPercent": 45.39363484087102,
+          "tokensPerSecond": null,
+          "uncachedTokens": 326
+        },
+        "source": "api",
+        "startedAt": 1794126542059,
+        "status": "completed",
+        "timings": null,
+        "usage": {
+          "cacheCreation": null,
+          "cached": 271,
+          "completion": 10,
+          "prompt": 597,
+          "reasoning": null,
+          "total": 607
+        }
+      },
+      "memory": {
+        "system": {
+          "availableBytes": 9695838208,
+          "freeBytes": 621215744,
+          "sampledAt": 1794126542806,
+          "totalBytes": 34359738368,
+          "usedBytes": 24663900160
+        },
+        "engine": {
+          "pid": 52717,
+          "processCount": 2,
+          "rootBytes": 69272176,
+          "sampledAt": 1794126542806,
+          "usedBytes": 3193375576
+        }
+      }
+    },
+    {
+      "label": "ja-growth-96",
+      "phase": "length-scaled-history",
+      "language": "ja",
+      "maxTokens": 64,
+      "expected": "STRATA-7391",
+      "answer": "STRATA-7391 \n",
+      "metrics": {
+        "elapsedMs": 1610,
+        "engine": "vLLM-Apple",
+        "finishReason": "stop",
+        "firstAnswerMs": 1422,
+        "firstOutputMs": 1422,
+        "gateway": {
+          "admissionMs": 4.843167,
+          "admissionRejected": false,
+          "dispatchMs": 4.857959,
+          "elapsedMs": 1615.3947090000001,
+          "engineSession": "9fc7cafa-7406-45af-a262-32a90d363c81",
+          "firstContentMs": 1427.688,
+          "lifecycleWaitMs": 0.001333,
+          "upstreamHeadersMs": 2.7109159999999997
+        },
+        "id": "ca3fce75-5936-4565-bb14-fc6377dc6458",
+        "model": "default_model",
+        "promptProcessing": {
+          "cacheHitPercent": 48.303516347933375,
+          "tokensPerSecond": null,
+          "uncachedTokens": 838
+        },
+        "source": "api",
+        "startedAt": 1794126542812,
+        "status": "completed",
+        "timings": null,
+        "usage": {
+          "cacheCreation": null,
+          "cached": 783,
+          "completion": 10,
+          "prompt": 1621,
+          "reasoning": null,
+          "total": 1631
+        }
+      },
+      "memory": {
+        "system": {
+          "availableBytes": 9460858880,
+          "freeBytes": 648380416,
+          "sampledAt": 1794126544424,
+          "totalBytes": 34359738368,
+          "usedBytes": 24898879488
+        },
+        "engine": {
+          "pid": 52717,
+          "processCount": 2,
+          "rootBytes": 64209520,
+          "sampledAt": 1794126544424,
+          "usedBytes": 3487370072
+        }
+      }
+    },
+    {
+      "label": "ja-growth-160",
+      "phase": "length-scaled-history",
+      "language": "ja",
+      "maxTokens": 64,
+      "expected": "STRATA-7391",
+      "answer": "STRATA-7391 \n",
+      "metrics": {
+        "elapsedMs": 2730,
+        "engine": "vLLM-Apple",
+        "finishReason": "stop",
+        "firstAnswerMs": 2520,
+        "firstOutputMs": 2520,
+        "gateway": {
+          "admissionMs": 5.5135000000000005,
+          "admissionRejected": false,
+          "dispatchMs": 5.5285,
+          "elapsedMs": 2735.9555,
+          "engineSession": "9fc7cafa-7406-45af-a262-32a90d363c81",
+          "firstContentMs": 2526.000458,
+          "lifecycleWaitMs": 0.001,
+          "upstreamHeadersMs": 4.098208
+        },
+        "id": "bf6aa95b-bf50-4ba4-babe-46137ef9766c",
+        "model": "default_model",
+        "promptProcessing": {
+          "cacheHitPercent": 47.856614929785664,
+          "tokensPerSecond": null,
+          "uncachedTokens": 1411
+        },
+        "source": "api",
+        "startedAt": 1794126544431,
+        "status": "completed",
+        "timings": null,
+        "usage": {
+          "cacheCreation": null,
+          "cached": 1295,
+          "completion": 10,
+          "prompt": 2706,
+          "reasoning": null,
+          "total": 2716
+        }
+      },
+      "memory": {
+        "system": {
+          "availableBytes": 9156345856,
+          "freeBytes": 676560896,
+          "sampledAt": 1794126547165,
+          "totalBytes": 34359738368,
+          "usedBytes": 25203392512
+        },
+        "engine": {
+          "pid": 52717,
+          "processCount": 2,
+          "rootBytes": 64209520,
+          "sampledAt": 1794126547165,
+          "usedBytes": 3877735256
+        }
+      }
+    },
+    {
+      "label": "ja-growth-232",
+      "phase": "length-scaled-history",
+      "language": "ja",
+      "maxTokens": 64,
+      "expected": "STRATA-7391",
+      "answer": "STRATA-7391 \n",
+      "metrics": {
+        "elapsedMs": 4343,
+        "engine": "vLLM-Apple",
+        "finishReason": "stop",
+        "firstAnswerMs": 4072,
+        "firstOutputMs": 4072,
+        "gateway": {
+          "admissionMs": 11.331000000000001,
+          "admissionRejected": false,
+          "dispatchMs": 11.409417,
+          "elapsedMs": 4355.27625,
+          "engineSession": "9fc7cafa-7406-45af-a262-32a90d363c81",
+          "firstContentMs": 4083.6778750000003,
+          "lifecycleWaitMs": 0.0022919999999999998,
+          "upstreamHeadersMs": 13.866292000000001
+        },
+        "id": "dbd7f321-ce6d-43cc-ace4-70ea6d102c30",
+        "model": "default_model",
+        "promptProcessing": {
+          "cacheHitPercent": 48.040712468193384,
+          "tokensPerSecond": null,
+          "uncachedTokens": 2042
+        },
+        "source": "api",
+        "startedAt": 1794126547181,
+        "status": "completed",
+        "timings": null,
+        "usage": {
+          "cacheCreation": null,
+          "cached": 1888,
+          "completion": 10,
+          "prompt": 3930,
+          "reasoning": null,
+          "total": 3940
+        }
+      },
+      "memory": {
+        "system": {
+          "availableBytes": 7381450752,
+          "freeBytes": 102137856,
+          "sampledAt": 1794126551527,
+          "totalBytes": 34359738368,
+          "usedBytes": 26978287616
+        },
+        "engine": {
+          "pid": 52717,
+          "processCount": 2,
+          "rootBytes": 64225904,
+          "sampledAt": 1794126551527,
+          "usedBytes": 4345940824
+        }
+      }
+    },
+    {
+      "label": "zh-new-input",
+      "phase": "new-input",
+      "language": "zh",
+      "maxTokens": 64,
+      "expected": "STRATA-7391",
+      "answer": "STRATA-7391 \n",
+      "metrics": {
+        "elapsedMs": 294,
+        "engine": "vLLM-Apple",
+        "finishReason": "stop",
+        "firstAnswerMs": 110,
+        "firstOutputMs": 110,
+        "gateway": {
+          "admissionMs": 6.6214580000000005,
+          "admissionRejected": false,
+          "dispatchMs": 6.682792,
+          "elapsedMs": 300.74025,
+          "engineSession": "9fc7cafa-7406-45af-a262-32a90d363c81",
+          "firstContentMs": 117.151458,
+          "lifecycleWaitMs": 0.005332999999999999,
+          "upstreamHeadersMs": 4.496125
+        },
+        "id": "6850b7dc-769f-4f6f-ad50-143848c5a6a7",
+        "model": "default_model",
+        "promptProcessing": {
+          "cacheHitPercent": 14.814814814814813,
+          "tokensPerSecond": null,
+          "uncachedTokens": 23
+        },
+        "source": "api",
+        "startedAt": 1794126551538,
+        "status": "completed",
+        "timings": null,
+        "usage": {
+          "cacheCreation": null,
+          "cached": 4,
+          "completion": 10,
+          "prompt": 27,
+          "reasoning": null,
+          "total": 37
+        }
+      },
+      "memory": {
+        "system": {
+          "availableBytes": 8159854592,
+          "freeBytes": 917110784,
+          "sampledAt": 1794126551835,
+          "totalBytes": 34359738368,
+          "usedBytes": 26199883776
+        },
+        "engine": {
+          "pid": 52717,
+          "processCount": 2,
+          "rootBytes": 64242288,
+          "sampledAt": 1794126551835,
+          "usedBytes": 3507096408
+        }
+      }
+    },
+    {
+      "label": "zh-repeat",
+      "phase": "repeat",
+      "language": "zh",
+      "maxTokens": 64,
+      "expected": "STRATA-7391",
+      "answer": "STRATA-7391 \n",
+      "metrics": {
+        "elapsedMs": 239,
+        "engine": "vLLM-Apple",
+        "finishReason": "stop",
+        "firstAnswerMs": 51,
+        "firstOutputMs": 51,
+        "gateway": {
+          "admissionMs": 7.887167000000001,
+          "admissionRejected": false,
+          "dispatchMs": 7.9219170000000005,
+          "elapsedMs": 247.673792,
+          "engineSession": "9fc7cafa-7406-45af-a262-32a90d363c81",
+          "firstContentMs": 59.174749999999996,
+          "lifecycleWaitMs": 0.002291,
+          "upstreamHeadersMs": 2.7127499999999998
+        },
+        "id": "703a1564-bc54-4fb9-8b78-a593380c09cc",
+        "model": "default_model",
+        "promptProcessing": {
+          "cacheHitPercent": 96.29629629629629,
+          "tokensPerSecond": null,
+          "uncachedTokens": 1
+        },
+        "source": "api",
+        "startedAt": 1794126551847,
+        "status": "completed",
+        "timings": null,
+        "usage": {
+          "cacheCreation": null,
+          "cached": 26,
+          "completion": 10,
+          "prompt": 27,
+          "reasoning": null,
+          "total": 37
+        }
+      },
+      "memory": {
+        "system": {
+          "availableBytes": 8128430080,
+          "freeBytes": 886538240,
+          "sampledAt": 1794126552091,
+          "totalBytes": 34359738368,
+          "usedBytes": 26231308288
+        },
+        "engine": {
+          "pid": 52717,
+          "processCount": 2,
+          "rootBytes": 64242288,
+          "sampledAt": 1794126552091,
+          "usedBytes": 3543108440
+        }
+      }
+    },
+    {
+      "label": "zh-growth-32",
+      "phase": "length-scaled-history",
+      "language": "zh",
+      "maxTokens": 64,
+      "expected": "STRATA-7391",
+      "answer": "STRATA-7391 \n",
+      "metrics": {
+        "elapsedMs": 707,
+        "engine": "vLLM-Apple",
+        "finishReason": "stop",
+        "firstAnswerMs": 532,
+        "firstOutputMs": 532,
+        "gateway": {
+          "admissionMs": 14.069625,
+          "admissionRejected": false,
+          "dispatchMs": 14.12325,
+          "elapsedMs": 721.820625,
+          "engineSession": "9fc7cafa-7406-45af-a262-32a90d363c81",
+          "firstContentMs": 546.645625,
+          "lifecycleWaitMs": 0.0047079999999999995,
+          "upstreamHeadersMs": 4.048792
+        },
+        "id": "b06cc6e2-b342-4823-95a7-90d97cdba8d7",
+        "model": "default_model",
+        "promptProcessing": {
+          "cacheHitPercent": 45.932203389830505,
+          "tokensPerSecond": null,
+          "uncachedTokens": 319
+        },
+        "source": "api",
+        "startedAt": 1794126552111,
+        "status": "completed",
+        "timings": null,
+        "usage": {
+          "cacheCreation": null,
+          "cached": 271,
+          "completion": 10,
+          "prompt": 590,
+          "reasoning": null,
+          "total": 600
+        }
+      },
+      "memory": {
+        "system": {
+          "availableBytes": 8013365248,
+          "freeBytes": 780042240,
+          "sampledAt": 1794126552820,
+          "totalBytes": 34359738368,
+          "usedBytes": 26346373120
+        },
+        "engine": {
+          "pid": 52717,
+          "processCount": 2,
+          "rootBytes": 64242288,
+          "sampledAt": 1794126552820,
+          "usedBytes": 3657059160
+        }
+      }
+    },
+    {
+      "label": "zh-growth-96",
+      "phase": "length-scaled-history",
+      "language": "zh",
+      "maxTokens": 64,
+      "expected": "STRATA-7391",
+      "answer": "STRATA-7391 \n",
+      "metrics": {
+        "elapsedMs": 1630,
+        "engine": "vLLM-Apple",
+        "finishReason": "stop",
+        "firstAnswerMs": 1424,
+        "firstOutputMs": 1424,
+        "gateway": {
+          "admissionMs": 4.8919999999999995,
+          "admissionRejected": false,
+          "dispatchMs": 4.909791,
+          "elapsedMs": 1634.9762079999998,
+          "engineSession": "9fc7cafa-7406-45af-a262-32a90d363c81",
+          "firstContentMs": 1429.161708,
+          "lifecycleWaitMs": 0.0015,
+          "upstreamHeadersMs": 2.81625
+        },
+        "id": "c0115b75-1ae4-446f-96f0-944412ba1687",
+        "model": "default_model",
+        "promptProcessing": {
+          "cacheHitPercent": 48.51301115241636,
+          "tokensPerSecond": null,
+          "uncachedTokens": 831
+        },
+        "source": "api",
+        "startedAt": 1794126552827,
+        "status": "completed",
+        "timings": null,
+        "usage": {
+          "cacheCreation": null,
+          "cached": 783,
+          "completion": 10,
+          "prompt": 1614,
+          "reasoning": null,
+          "total": 1624
+        }
+      },
+      "memory": {
+        "system": {
+          "availableBytes": 8282521600,
+          "freeBytes": 1056505856,
+          "sampledAt": 1794126554460,
+          "totalBytes": 34359738368,
+          "usedBytes": 26077216768
+        },
+        "engine": {
+          "pid": 52717,
+          "processCount": 2,
+          "rootBytes": 64242288,
+          "sampledAt": 1794126554460,
+          "usedBytes": 3494202200
+        }
+      }
+    },
+    {
+      "label": "zh-growth-160",
+      "phase": "length-scaled-history",
+      "language": "zh",
+      "maxTokens": 64,
+      "expected": "STRATA-7391",
+      "answer": "STRATA-7391 \n",
+      "metrics": {
+        "elapsedMs": 2720,
+        "engine": "vLLM-Apple",
+        "finishReason": "stop",
+        "firstAnswerMs": 2522,
+        "firstOutputMs": 2522,
+        "gateway": {
+          "admissionMs": 10.794,
+          "admissionRejected": false,
+          "dispatchMs": 10.845541,
+          "elapsedMs": 2731.615916,
+          "engineSession": "9fc7cafa-7406-45af-a262-32a90d363c81",
+          "firstContentMs": 2533.580916,
+          "lifecycleWaitMs": 0.003416,
+          "upstreamHeadersMs": 7.276833
+        },
+        "id": "91fc420a-d74b-4c8b-a12f-ef25417aac4f",
+        "model": "default_model",
+        "promptProcessing": {
+          "cacheHitPercent": 47.98073360503891,
+          "tokensPerSecond": null,
+          "uncachedTokens": 1404
+        },
+        "source": "api",
+        "startedAt": 1794126554476,
+        "status": "completed",
+        "timings": null,
+        "usage": {
+          "cacheCreation": null,
+          "cached": 1295,
+          "completion": 10,
+          "prompt": 2699,
+          "reasoning": null,
+          "total": 2709
+        }
+      },
+      "memory": {
+        "system": {
+          "availableBytes": 7879835648,
+          "freeBytes": 673841152,
+          "sampledAt": 1794126557199,
+          "totalBytes": 34359738368,
+          "usedBytes": 26479902720
+        },
+        "engine": {
+          "pid": 52717,
+          "processCount": 2,
+          "rootBytes": 64242288,
+          "sampledAt": 1794126557199,
+          "usedBytes": 3898919768
+        }
+      }
+    },
+    {
+      "label": "zh-growth-232",
+      "phase": "length-scaled-history",
+      "language": "zh",
+      "maxTokens": 64,
+      "expected": "STRATA-7391",
+      "answer": "STRATA-7391 \n",
+      "metrics": {
+        "elapsedMs": 4228,
+        "engine": "vLLM-Apple",
+        "finishReason": "stop",
+        "firstAnswerMs": 3989,
+        "firstOutputMs": 3989,
+        "gateway": {
+          "admissionMs": 5.805917,
+          "admissionRejected": false,
+          "dispatchMs": 5.836667,
+          "elapsedMs": 4234.53125,
+          "engineSession": "9fc7cafa-7406-45af-a262-32a90d363c81",
+          "firstContentMs": 3995.253875,
+          "lifecycleWaitMs": 0.000959,
+          "upstreamHeadersMs": 5.965708
+        },
+        "id": "9bea0609-bc2f-4852-be1c-dbd53621d6a0",
+        "model": "default_model",
+        "promptProcessing": {
+          "cacheHitPercent": 48.12643385164415,
+          "tokensPerSecond": null,
+          "uncachedTokens": 2035
+        },
+        "source": "api",
+        "startedAt": 1794126557207,
+        "status": "completed",
+        "timings": null,
+        "usage": {
+          "cacheCreation": null,
+          "cached": 1888,
+          "completion": 10,
+          "prompt": 3923,
+          "reasoning": null,
+          "total": 3933
+        }
+      },
+      "memory": {
+        "system": {
+          "availableBytes": 7678345216,
+          "freeBytes": 490881024,
+          "sampledAt": 1794126561439,
+          "totalBytes": 34359738368,
+          "usedBytes": 26681393152
+        },
+        "engine": {
+          "pid": 52717,
+          "processCount": 2,
+          "rootBytes": 64242288,
+          "sampledAt": 1794126561439,
+          "usedBytes": 3890678616
+        }
+      }
+    },
+    {
+      "label": "en-append-1",
+      "phase": "appended-history",
+      "language": "en",
+      "maxTokens": 64,
+      "expected": "STRATA-7391",
+      "answer": "STRATA-7391 \n",
+      "metrics": {
+        "elapsedMs": 1134,
+        "engine": "vLLM-Apple",
+        "finishReason": "stop",
+        "firstAnswerMs": 955,
+        "firstOutputMs": 955,
+        "gateway": {
+          "admissionMs": 8.599,
+          "admissionRejected": false,
+          "dispatchMs": 8.64475,
+          "elapsedMs": 1143.563417,
+          "engineSession": "9fc7cafa-7406-45af-a262-32a90d363c81",
+          "firstContentMs": 963.891083,
+          "lifecycleWaitMs": 0.003375,
+          "upstreamHeadersMs": 25.653459
+        },
+        "id": "237ab3bc-ddc9-402d-8767-c015a8377525",
+        "model": "default_model",
+        "promptProcessing": {
+          "cacheHitPercent": 48.42406876790831,
+          "tokensPerSecond": null,
+          "uncachedTokens": 540
+        },
+        "source": "api",
+        "startedAt": 1794126561453,
+        "status": "completed",
+        "timings": null,
+        "usage": {
+          "cacheCreation": null,
+          "cached": 507,
+          "completion": 10,
+          "prompt": 1047,
+          "reasoning": null,
+          "total": 1057
+        }
+      },
+      "memory": {
+        "system": {
+          "availableBytes": 8397897728,
+          "freeBytes": 1253720064,
+          "sampledAt": 1794126562589,
+          "totalBytes": 34359738368,
+          "usedBytes": 25961840640
+        },
+        "engine": {
+          "pid": 52717,
+          "processCount": 2,
+          "rootBytes": 64242288,
+          "sampledAt": 1794126562589,
+          "usedBytes": 3300510552
+        }
+      }
+    },
+    {
+      "label": "en-append-2",
+      "phase": "appended-history",
+      "language": "en",
+      "maxTokens": 64,
+      "expected": "STRATA-7391",
+      "answer": "STRATA-7391 \n",
+      "metrics": {
+        "elapsedMs": 2086,
+        "engine": "vLLM-Apple",
+        "finishReason": "stop",
+        "firstAnswerMs": 1882,
+        "firstOutputMs": 1882,
+        "gateway": {
+          "admissionMs": 5.0218750000000005,
+          "admissionRejected": false,
+          "dispatchMs": 5.0375000000000005,
+          "elapsedMs": 2091.184666,
+          "engineSession": "9fc7cafa-7406-45af-a262-32a90d363c81",
+          "firstContentMs": 1887.8597080000002,
+          "lifecycleWaitMs": 0.000959,
+          "upstreamHeadersMs": 2.314708
+        },
+        "id": "34ac047b-84e8-4520-87dd-091ab67e9118",
+        "model": "default_model",
+        "promptProcessing": {
+          "cacheHitPercent": 50.45476304451891,
+          "tokensPerSecond": null,
+          "uncachedTokens": 1035
+        },
+        "source": "api",
+        "startedAt": 1794126562597,
+        "status": "completed",
+        "timings": null,
+        "usage": {
+          "cacheCreation": null,
+          "cached": 1054,
+          "completion": 10,
+          "prompt": 2089,
+          "reasoning": null,
+          "total": 2099
+        }
+      },
+      "memory": {
+        "system": {
+          "availableBytes": 8219492352,
+          "freeBytes": 926187520,
+          "sampledAt": 1794126564684,
+          "totalBytes": 34359738368,
+          "usedBytes": 26140246016
+        },
+        "engine": {
+          "pid": 52717,
+          "processCount": 2,
+          "rootBytes": 64242288,
+          "sampledAt": 1794126564684,
+          "usedBytes": 3644181336
+        }
+      }
+    },
+    {
+      "label": "en-append-3",
+      "phase": "appended-history",
+      "language": "en",
+      "maxTokens": 64,
+      "expected": "STRATA-7391",
+      "answer": "STRATA-7391 \n",
+      "metrics": {
+        "elapsedMs": 2255,
+        "engine": "vLLM-Apple",
+        "finishReason": "stop",
+        "firstAnswerMs": 2022,
+        "firstOutputMs": 2022,
+        "gateway": {
+          "admissionMs": 5.645042,
+          "admissionRejected": false,
+          "dispatchMs": 5.673083,
+          "elapsedMs": 2260.911708,
+          "engineSession": "9fc7cafa-7406-45af-a262-32a90d363c81",
+          "firstContentMs": 2028.640417,
+          "lifecycleWaitMs": 0.000833,
+          "upstreamHeadersMs": 2.6765
+        },
+        "id": "9273bfb5-7bd1-46d5-bd5a-3916812251e0",
+        "model": "default_model",
+        "promptProcessing": {
+          "cacheHitPercent": 66.94346854040243,
+          "tokensPerSecond": null,
+          "uncachedTokens": 1035
+        },
+        "source": "api",
+        "startedAt": 1794126564692,
+        "status": "completed",
+        "timings": null,
+        "usage": {
+          "cacheCreation": null,
+          "cached": 2096,
+          "completion": 10,
+          "prompt": 3131,
+          "reasoning": null,
+          "total": 3141
+        }
+      },
+      "memory": {
+        "system": {
+          "availableBytes": 7828684800,
+          "freeBytes": 869679104,
+          "sampledAt": 1794126566950,
+          "totalBytes": 34359738368,
+          "usedBytes": 26531053568
+        },
+        "engine": {
+          "pid": 52717,
+          "processCount": 2,
+          "rootBytes": 64242288,
+          "sampledAt": 1794126566950,
+          "usedBytes": 4095019864
+        }
+      }
+    },
+    {
+      "label": "ja-append-1",
+      "phase": "appended-history",
+      "language": "ja",
+      "maxTokens": 64,
+      "expected": "STRATA-7391",
+      "answer": "STRATA-7391 \n",
+      "metrics": {
+        "elapsedMs": 1176,
+        "engine": "vLLM-Apple",
+        "finishReason": "stop",
+        "firstAnswerMs": 953,
+        "firstOutputMs": 953,
+        "gateway": {
+          "admissionMs": 8.207542,
+          "admissionRejected": false,
+          "dispatchMs": 8.234041,
+          "elapsedMs": 1184.4944580000001,
+          "engineSession": "9fc7cafa-7406-45af-a262-32a90d363c81",
+          "firstContentMs": 961.696208,
+          "lifecycleWaitMs": 0.001666,
+          "upstreamHeadersMs": 10.481291
+        },
+        "id": "862c975d-e6f4-4c77-a74b-557d6748787f",
+        "model": "default_model",
+        "promptProcessing": {
+          "cacheHitPercent": 48.33174451858913,
+          "tokensPerSecond": null,
+          "uncachedTokens": 542
+        },
+        "source": "api",
+        "startedAt": 1794126566962,
+        "status": "completed",
+        "timings": null,
+        "usage": {
+          "cacheCreation": null,
+          "cached": 507,
+          "completion": 10,
+          "prompt": 1049,
+          "reasoning": null,
+          "total": 1059
+        }
+      },
+      "memory": {
+        "system": {
+          "availableBytes": 8439201792,
+          "freeBytes": 1372160000,
+          "sampledAt": 1794126568142,
+          "totalBytes": 34359738368,
+          "usedBytes": 25920536576
+        },
+        "engine": {
+          "pid": 52717,
+          "processCount": 2,
+          "rootBytes": 64242288,
+          "sampledAt": 1794126568143,
+          "usedBytes": 3725839192
+        }
+      }
+    },
+    {
+      "label": "ja-append-2",
+      "phase": "appended-history",
+      "language": "ja",
+      "maxTokens": 64,
+      "expected": "STRATA-7391",
+      "answer": "STRATA-7391 \n",
+      "metrics": {
+        "elapsedMs": 2100,
+        "engine": "vLLM-Apple",
+        "finishReason": "stop",
+        "firstAnswerMs": 1885,
+        "firstOutputMs": 1885,
+        "gateway": {
+          "admissionMs": 9.882541,
+          "admissionRejected": false,
+          "dispatchMs": 9.920959,
+          "elapsedMs": 2110.5788749999997,
+          "engineSession": "9fc7cafa-7406-45af-a262-32a90d363c81",
+          "firstContentMs": 1895.776125,
+          "lifecycleWaitMs": 0.002458,
+          "upstreamHeadersMs": 5.2575
+        },
+        "id": "8015e5d1-2224-4da5-889f-93d091f7352c",
+        "model": "default_model",
+        "promptProcessing": {
+          "cacheHitPercent": 50.453893932154806,
+          "tokensPerSecond": null,
+          "uncachedTokens": 1037
+        },
+        "source": "api",
+        "startedAt": 1794126568159,
+        "status": "completed",
+        "timings": null,
+        "usage": {
+          "cacheCreation": null,
+          "cached": 1056,
+          "completion": 10,
+          "prompt": 2093,
+          "reasoning": null,
+          "total": 2103
+        }
+      },
+      "memory": {
+        "system": {
+          "availableBytes": 8064024576,
+          "freeBytes": 1099186176,
+          "sampledAt": 1794126570263,
+          "totalBytes": 34359738368,
+          "usedBytes": 26295713792
+        },
+        "engine": {
+          "pid": 52717,
+          "processCount": 2,
+          "rootBytes": 64242288,
+          "sampledAt": 1794126570263,
+          "usedBytes": 4039805784
+        }
+      }
+    },
+    {
+      "label": "ja-append-3",
+      "phase": "appended-history",
+      "language": "ja",
+      "maxTokens": 64,
+      "expected": "STRATA-7391",
+      "answer": "STRATA-7391 \n",
+      "metrics": {
+        "elapsedMs": 2228,
+        "engine": "vLLM-Apple",
+        "finishReason": "stop",
+        "firstAnswerMs": 2000,
+        "firstOutputMs": 2000,
+        "gateway": {
+          "admissionMs": 10.311499999999999,
+          "admissionRejected": false,
+          "dispatchMs": 10.372084000000001,
+          "elapsedMs": 2239.2684169999998,
+          "engineSession": "9fc7cafa-7406-45af-a262-32a90d363c81",
+          "firstContentMs": 2010.4808749999997,
+          "lifecycleWaitMs": 0.0025,
+          "upstreamHeadersMs": 5.891541999999999
+        },
+        "id": "2df828ee-1205-4d99-a197-e9b562057061",
+        "model": "default_model",
+        "promptProcessing": {
+          "cacheHitPercent": 66.942939113803,
+          "tokensPerSecond": null,
+          "uncachedTokens": 1037
+        },
+        "source": "api",
+        "startedAt": 1794126570279,
+        "status": "completed",
+        "timings": null,
+        "usage": {
+          "cacheCreation": null,
+          "cached": 2100,
+          "completion": 10,
+          "prompt": 3137,
+          "reasoning": null,
+          "total": 3147
+        }
+      },
+      "memory": {
+        "system": {
+          "availableBytes": 8732082176,
+          "freeBytes": 1795162112,
+          "sampledAt": 1794126572512,
+          "totalBytes": 34359738368,
+          "usedBytes": 25627656192
+        },
+        "engine": {
+          "pid": 52717,
+          "processCount": 2,
+          "rootBytes": 64258672,
+          "sampledAt": 1794126572512,
+          "usedBytes": 3780610904
+        }
+      }
+    },
+    {
+      "label": "zh-append-1",
+      "phase": "appended-history",
+      "language": "zh",
+      "maxTokens": 64,
+      "expected": "STRATA-7391",
+      "answer": "STRATA-7391 \n",
+      "metrics": {
+        "elapsedMs": 1116,
+        "engine": "vLLM-Apple",
+        "finishReason": "stop",
+        "firstAnswerMs": 930,
+        "firstOutputMs": 930,
+        "gateway": {
+          "admissionMs": 8.930957999999999,
+          "admissionRejected": false,
+          "dispatchMs": 8.978541,
+          "elapsedMs": 1125.3820409999998,
+          "engineSession": "9fc7cafa-7406-45af-a262-32a90d363c81",
+          "firstContentMs": 939.0198330000001,
+          "lifecycleWaitMs": 0.003416,
+          "upstreamHeadersMs": 11.431000000000001
+        },
+        "id": "7cc76933-dffd-48af-8408-fd9e2af46d25",
+        "model": "default_model",
+        "promptProcessing": {
+          "cacheHitPercent": 48.65642994241843,
+          "tokensPerSecond": null,
+          "uncachedTokens": 535
+        },
+        "source": "api",
+        "startedAt": 1794126572527,
+        "status": "completed",
+        "timings": null,
+        "usage": {
+          "cacheCreation": null,
+          "cached": 507,
+          "completion": 10,
+          "prompt": 1042,
+          "reasoning": null,
+          "total": 1052
+        }
+      },
+      "memory": {
+        "system": {
+          "availableBytes": 8769699840,
+          "freeBytes": 1832665088,
+          "sampledAt": 1794126573644,
+          "totalBytes": 34359738368,
+          "usedBytes": 25590038528
+        },
+        "engine": {
+          "pid": 52717,
+          "processCount": 2,
+          "rootBytes": 64258672,
+          "sampledAt": 1794126573644,
+          "usedBytes": 3702426456
+        }
+      }
+    },
+    {
+      "label": "zh-append-2",
+      "phase": "appended-history",
+      "language": "zh",
+      "maxTokens": 64,
+      "expected": "STRATA-7391",
+      "answer": "STRATA-7391 \n",
+      "metrics": {
+        "elapsedMs": 2060,
+        "engine": "vLLM-Apple",
+        "finishReason": "stop",
+        "firstAnswerMs": 1869,
+        "firstOutputMs": 1869,
+        "gateway": {
+          "admissionMs": 4.975208,
+          "admissionRejected": false,
+          "dispatchMs": 4.990125,
+          "elapsedMs": 2065.8232500000004,
+          "engineSession": "9fc7cafa-7406-45af-a262-32a90d363c81",
+          "firstContentMs": 1874.0385,
+          "lifecycleWaitMs": 0.000875,
+          "upstreamHeadersMs": 2.254667
+        },
+        "id": "0b91e9b9-478e-4e64-aec6-013a8db18ae3",
+        "model": "default_model",
+        "promptProcessing": {
+          "cacheHitPercent": 50.40845747236905,
+          "tokensPerSecond": null,
+          "uncachedTokens": 1032
+        },
+        "source": "api",
+        "startedAt": 1794126573652,
+        "status": "completed",
+        "timings": null,
+        "usage": {
+          "cacheCreation": null,
+          "cached": 1049,
+          "completion": 10,
+          "prompt": 2081,
+          "reasoning": null,
+          "total": 2091
+        }
+      },
+      "memory": {
+        "system": {
+          "availableBytes": 8465399808,
+          "freeBytes": 1528299520,
+          "sampledAt": 1794126575714,
+          "totalBytes": 34359738368,
+          "usedBytes": 25894338560
+        },
+        "engine": {
+          "pid": 52717,
+          "processCount": 2,
+          "rootBytes": 64258672,
+          "sampledAt": 1794126575714,
+          "usedBytes": 4010707800
+        }
+      }
+    },
+    {
+      "label": "zh-append-3",
+      "phase": "appended-history",
+      "language": "zh",
+      "maxTokens": 64,
+      "expected": "STRATA-7391",
+      "answer": "STRATA-7391 \n",
+      "metrics": {
+        "elapsedMs": 2202,
+        "engine": "vLLM-Apple",
+        "finishReason": "stop",
+        "firstAnswerMs": 1999,
+        "firstOutputMs": 1999,
+        "gateway": {
+          "admissionMs": 5.616584,
+          "admissionRejected": false,
+          "dispatchMs": 5.6458330000000005,
+          "elapsedMs": 2207.867667,
+          "engineSession": "9fc7cafa-7406-45af-a262-32a90d363c81",
+          "firstContentMs": 2004.8357079999998,
+          "lifecycleWaitMs": 0.000917,
+          "upstreamHeadersMs": 2.6525
+        },
+        "id": "f9cd5c94-dcc8-4feb-bbde-d82e05dc9396",
+        "model": "default_model",
+        "promptProcessing": {
+          "cacheHitPercent": 66.92307692307692,
+          "tokensPerSecond": null,
+          "uncachedTokens": 1032
+        },
+        "source": "api",
+        "startedAt": 1794126575722,
+        "status": "completed",
+        "timings": null,
+        "usage": {
+          "cacheCreation": null,
+          "cached": 2088,
+          "completion": 10,
+          "prompt": 3120,
+          "reasoning": null,
+          "total": 3130
+        }
+      },
+      "memory": {
+        "system": {
+          "availableBytes": 8729968640,
+          "freeBytes": 1792442368,
+          "sampledAt": 1794126577926,
+          "totalBytes": 34359738368,
+          "usedBytes": 25629769728
+        },
+        "engine": {
+          "pid": 52717,
+          "processCount": 2,
+          "rootBytes": 64258672,
+          "sampledAt": 1794126577926,
+          "usedBytes": 3777743704
+        }
+      }
+    },
+    {
+      "label": "switch-27",
+      "phase": "session-switch",
+      "language": "en",
+      "maxTokens": 64,
+      "expected": "STRATA-7391",
+      "answer": "STRATA-7391 \n",
+      "metrics": {
+        "elapsedMs": 7515,
+        "engine": "vLLM-Apple",
+        "finishReason": "stop",
+        "firstAnswerMs": 7281,
+        "firstOutputMs": 7281,
+        "gateway": {
+          "admissionMs": 5.836250000000001,
+          "admissionRejected": false,
+          "dispatchMs": 5.850834,
+          "elapsedMs": 7521.160875,
+          "engineSession": "9fc7cafa-7406-45af-a262-32a90d363c81",
+          "firstContentMs": 7287.76925,
+          "lifecycleWaitMs": 0.001084,
+          "upstreamHeadersMs": 10.559291
+        },
+        "id": "d5c2c0e8-9921-423f-b828-3c68425f184b",
+        "model": "default_model",
+        "promptProcessing": {
+          "cacheHitPercent": 0.10165184243964422,
+          "tokensPerSecond": null,
+          "uncachedTokens": 3931
+        },
+        "source": "api",
+        "startedAt": 1794126577934,
+        "status": "completed",
+        "timings": null,
+        "usage": {
+          "cacheCreation": null,
+          "cached": 4,
+          "completion": 10,
+          "prompt": 3935,
+          "reasoning": null,
+          "total": 3945
+        }
+      },
+      "memory": {
+        "system": {
+          "availableBytes": 8193671168,
+          "freeBytes": 1240006656,
+          "sampledAt": 1794126585454,
+          "totalBytes": 34359738368,
+          "usedBytes": 26166067200
+        },
+        "engine": {
+          "pid": 52717,
+          "processCount": 2,
+          "rootBytes": 64275056,
+          "sampledAt": 1794126585454,
+          "usedBytes": 4299656024
+        }
+      }
+    },
+    {
+      "label": "switch-28",
+      "phase": "session-switch",
+      "language": "ja",
+      "maxTokens": 64,
+      "expected": "STRATA-7391",
+      "answer": "STRATA-7391 \n",
+      "metrics": {
+        "elapsedMs": 7517,
+        "engine": "vLLM-Apple",
+        "finishReason": "stop",
+        "firstAnswerMs": 7289,
+        "firstOutputMs": 7289,
+        "gateway": {
+          "admissionMs": 10.845208,
+          "admissionRejected": false,
+          "dispatchMs": 10.88625,
+          "elapsedMs": 7528.116,
+          "engineSession": "9fc7cafa-7406-45af-a262-32a90d363c81",
+          "firstContentMs": 7300.266334,
+          "lifecycleWaitMs": 0.002667,
+          "upstreamHeadersMs": 23.1105
+        },
+        "id": "44d616d4-0569-456c-a8a7-25a3f359120e",
+        "model": "default_model",
+        "promptProcessing": {
+          "cacheHitPercent": 0.20320040640081277,
+          "tokensPerSecond": null,
+          "uncachedTokens": 3929
+        },
+        "source": "api",
+        "startedAt": 1794126585472,
+        "status": "completed",
+        "timings": null,
+        "usage": {
+          "cacheCreation": null,
+          "cached": 8,
+          "completion": 10,
+          "prompt": 3937,
+          "reasoning": null,
+          "total": 3947
+        }
+      },
+      "memory": {
+        "system": {
+          "availableBytes": 9332883456,
+          "freeBytes": 2435481600,
+          "sampledAt": 1794126592993,
+          "totalBytes": 34359738368,
+          "usedBytes": 25026854912
+        },
+        "engine": {
+          "pid": 52717,
+          "processCount": 2,
+          "rootBytes": 64275056,
+          "sampledAt": 1794126592993,
+          "usedBytes": 4022815576
+        }
+      }
+    },
+    {
+      "label": "switch-29",
+      "phase": "session-switch",
+      "language": "en",
+      "maxTokens": 64,
+      "expected": "STRATA-7391",
+      "answer": "STRATA-7391 \n",
+      "metrics": {
+        "elapsedMs": 318,
+        "engine": "vLLM-Apple",
+        "finishReason": "stop",
+        "firstAnswerMs": 92,
+        "firstOutputMs": 92,
+        "gateway": {
+          "admissionMs": 10.914458,
+          "admissionRejected": false,
+          "dispatchMs": 10.949042,
+          "elapsedMs": 329.610875,
+          "engineSession": "9fc7cafa-7406-45af-a262-32a90d363c81",
+          "firstContentMs": 103.764459,
+          "lifecycleWaitMs": 0.002125,
+          "upstreamHeadersMs": 5.681792
+        },
+        "id": "eb583985-3aa2-4dfa-b754-2ff368eb7c2c",
+        "model": "default_model",
+        "promptProcessing": {
+          "cacheHitPercent": 99.97458703939009,
+          "tokensPerSecond": null,
+          "uncachedTokens": 1
+        },
+        "source": "api",
+        "startedAt": 1794126593010,
+        "status": "completed",
+        "timings": null,
+        "usage": {
+          "cacheCreation": null,
+          "cached": 3934,
+          "completion": 10,
+          "prompt": 3935,
+          "reasoning": null,
+          "total": 3945
+        }
+      },
+      "memory": {
+        "system": {
+          "availableBytes": 9290055680,
+          "freeBytes": 2392621056,
+          "sampledAt": 1794126593332,
+          "totalBytes": 34359738368,
+          "usedBytes": 25069682688
+        },
+        "engine": {
+          "pid": 52717,
+          "processCount": 2,
+          "rootBytes": 64275056,
+          "sampledAt": 1794126593332,
+          "usedBytes": 4056632152
+        }
+      }
+    },
+    {
+      "label": "switch-30",
+      "phase": "session-switch",
+      "language": "zh",
+      "maxTokens": 64,
+      "expected": "STRATA-7391",
+      "answer": "STRATA-7391 \n",
+      "metrics": {
+        "elapsedMs": 7550,
+        "engine": "vLLM-Apple",
+        "finishReason": "stop",
+        "firstAnswerMs": 7325,
+        "firstOutputMs": 7325,
+        "gateway": {
+          "admissionMs": 10.54075,
+          "admissionRejected": false,
+          "dispatchMs": 10.577083,
+          "elapsedMs": 7561.517083,
+          "engineSession": "9fc7cafa-7406-45af-a262-32a90d363c81",
+          "firstContentMs": 7336.496333,
+          "lifecycleWaitMs": 0.0022500000000000003,
+          "upstreamHeadersMs": 35.834042000000004
+        },
+        "id": "a9c79a93-dc87-4662-988d-30aa290237d2",
+        "model": "default_model",
+        "promptProcessing": {
+          "cacheHitPercent": 0.2035623409669211,
+          "tokensPerSecond": null,
+          "uncachedTokens": 3922
+        },
+        "source": "api",
+        "startedAt": 1794126593349,
+        "status": "completed",
+        "timings": null,
+        "usage": {
+          "cacheCreation": null,
+          "cached": 8,
+          "completion": 10,
+          "prompt": 3930,
+          "reasoning": null,
+          "total": 3940
+        }
+      },
+      "memory": {
+        "system": {
+          "availableBytes": 9142796288,
+          "freeBytes": 2227159040,
+          "sampledAt": 1794126600902,
+          "totalBytes": 34359738368,
+          "usedBytes": 25216942080
+        },
+        "engine": {
+          "pid": 52717,
+          "processCount": 2,
+          "rootBytes": 44352112,
+          "sampledAt": 1794126600903,
+          "usedBytes": 4103785304
+        }
+      }
+    },
+    {
+      "label": "switch-31",
+      "phase": "session-switch",
+      "language": "ja",
+      "maxTokens": 64,
+      "expected": "STRATA-7391",
+      "answer": "STRATA-7391 \n",
+      "metrics": {
+        "elapsedMs": 322,
+        "engine": "vLLM-Apple",
+        "finishReason": "stop",
+        "firstAnswerMs": 102,
+        "firstOutputMs": 102,
+        "gateway": {
+          "admissionMs": 9.747083,
+          "admissionRejected": false,
+          "dispatchMs": 9.775832999999999,
+          "elapsedMs": 332.70945800000004,
+          "engineSession": "9fc7cafa-7406-45af-a262-32a90d363c81",
+          "firstContentMs": 112.22825,
+          "lifecycleWaitMs": 0.001833,
+          "upstreamHeadersMs": 4.478417
+        },
+        "id": "355d3cb7-2346-4e67-956e-2c1c8b8179ab",
+        "model": "default_model",
+        "promptProcessing": {
+          "cacheHitPercent": 99.9745999491999,
+          "tokensPerSecond": null,
+          "uncachedTokens": 1
+        },
+        "source": "api",
+        "startedAt": 1794126600918,
+        "status": "completed",
+        "timings": null,
+        "usage": {
+          "cacheCreation": null,
+          "cached": 3936,
+          "completion": 10,
+          "prompt": 3937,
+          "reasoning": null,
+          "total": 3947
+        }
+      },
+      "memory": {
+        "system": {
+          "availableBytes": 9423536128,
+          "freeBytes": 2462466048,
+          "sampledAt": 1794126601244,
+          "totalBytes": 34359738368,
+          "usedBytes": 24936202240
+        },
+        "engine": {
+          "pid": 52717,
+          "processCount": 2,
+          "rootBytes": 44352112,
+          "sampledAt": 1794126601244,
+          "usedBytes": 3810511704
+        }
+      }
+    },
+    {
+      "label": "switch-32",
+      "phase": "session-switch",
+      "language": "zh",
+      "maxTokens": 64,
+      "expected": "STRATA-7391",
+      "answer": "STRATA-7391 \n",
+      "metrics": {
+        "elapsedMs": 324,
+        "engine": "vLLM-Apple",
+        "finishReason": "stop",
+        "firstAnswerMs": 103,
+        "firstOutputMs": 103,
+        "gateway": {
+          "admissionMs": 10.596833,
+          "admissionRejected": false,
+          "dispatchMs": 10.639,
+          "elapsedMs": 334.93424999999996,
+          "engineSession": "9fc7cafa-7406-45af-a262-32a90d363c81",
+          "firstContentMs": 114.218625,
+          "lifecycleWaitMs": 0.0027080000000000003,
+          "upstreamHeadersMs": 4.5755
+        },
+        "id": "97516c99-8782-4a6c-abc8-d20a63ffe4c0",
+        "model": "default_model",
+        "promptProcessing": {
+          "cacheHitPercent": 99.97455470737914,
+          "tokensPerSecond": null,
+          "uncachedTokens": 1
+        },
+        "source": "api",
+        "startedAt": 1794126601263,
+        "status": "completed",
+        "timings": null,
+        "usage": {
+          "cacheCreation": null,
+          "cached": 3929,
+          "completion": 10,
+          "prompt": 3930,
+          "reasoning": null,
+          "total": 3940
+        }
+      },
+      "memory": {
+        "system": {
+          "availableBytes": 9549627392,
+          "freeBytes": 2599043072,
+          "sampledAt": 1794126601590,
+          "totalBytes": 34359738368,
+          "usedBytes": 24810110976
+        },
+        "engine": {
+          "pid": 52717,
+          "processCount": 2,
+          "rootBytes": 44352112,
+          "sampledAt": 1794126601590,
+          "usedBytes": 3686714200
+        }
+      }
+    },
+    {
+      "label": "en-decode",
+      "phase": "decode",
+      "language": "en",
+      "maxTokens": 128,
+      "expected": null,
+      "answer": "The garden was a symphony of azure, a living canvas splashed with the deepest, most vibrant blue imaginable.  The grass, a shade of cerulean, shimmered under the sun, its blades so fine they seemed to dance in the breeze.  A gentle, constant hum vibrated through the air, a melody of buzzing bees and chirping crickets, all harmonizing with the rustling leaves of the blue hydrangeas that dotted the landscape.  \n\nThe trees, a majestic grove of ancient oaks, were draped in a canopy of sapphire leaves, their branches reaching towards the sky like outstretched arms.  Each leaf, a miniature masterpiece",
+      "metrics": {
+        "elapsedMs": 2750,
+        "engine": "vLLM-Apple",
+        "finishReason": "length",
+        "firstAnswerMs": 143,
+        "firstOutputMs": 143,
+        "gateway": {
+          "admissionMs": 7.553209,
+          "admissionRejected": false,
+          "dispatchMs": 7.585667,
+          "elapsedMs": 2758.381292,
+          "engineSession": "9fc7cafa-7406-45af-a262-32a90d363c81",
+          "firstContentMs": 151.207792,
+          "lifecycleWaitMs": 0.002208,
+          "upstreamHeadersMs": 34.380250000000004
+        },
+        "id": "b4fa0cc6-0902-4c00-9070-92708e82ee4c",
+        "model": "default_model",
+        "promptProcessing": {
+          "cacheHitPercent": 13.793103448275861,
+          "tokensPerSecond": null,
+          "uncachedTokens": 25
+        },
+        "source": "api",
+        "startedAt": 1794126601604,
+        "status": "completed",
+        "timings": null,
+        "usage": {
+          "cacheCreation": null,
+          "cached": 4,
+          "completion": 128,
+          "prompt": 29,
+          "reasoning": null,
+          "total": 157
+        }
+      },
+      "memory": {
+        "system": {
+          "availableBytes": 10448388096,
+          "freeBytes": 3437379584,
+          "sampledAt": 1794126604356,
+          "totalBytes": 34359738368,
+          "usedBytes": 23911350272
+        },
+        "engine": {
+          "pid": 52717,
+          "processCount": 2,
+          "rootBytes": 44352112,
+          "sampledAt": 1794126604356,
+          "usedBytes": 2930166616
+        }
+      }
+    },
+    {
+      "label": "ja-decode",
+      "phase": "decode",
+      "language": "ja",
+      "maxTokens": 128,
+      "expected": null,
+      "answer": "青い庭は、まるで宝石のように輝く。その青は、太陽の光を反射したような、透明感のある青色だった。その庭には、緑の葉の茂る木々、花々、そして、静かな湖が浮かんでいた。湖の向こうには、青い空と、白い雲が浮かび上がる。  \n\n\n",
+      "metrics": {
+        "elapsedMs": 1472,
+        "engine": "vLLM-Apple",
+        "finishReason": "stop",
+        "firstAnswerMs": 99,
+        "firstOutputMs": 99,
+        "gateway": {
+          "admissionMs": 5.319083,
+          "admissionRejected": false,
+          "dispatchMs": 5.34975,
+          "elapsedMs": 1477.929458,
+          "engineSession": "9fc7cafa-7406-45af-a262-32a90d363c81",
+          "firstContentMs": 105.275916,
+          "lifecycleWaitMs": 0.003292,
+          "upstreamHeadersMs": 2.331541
+        },
+        "id": "72dcee56-9aee-4ff9-bfd8-cfe385ea4e7b",
+        "model": "default_model",
+        "promptProcessing": {
+          "cacheHitPercent": 14.285714285714285,
+          "tokensPerSecond": null,
+          "uncachedTokens": 24
+        },
+        "source": "api",
+        "startedAt": 1794126604365,
+        "status": "completed",
+        "timings": null,
+        "usage": {
+          "cacheCreation": null,
+          "cached": 4,
+          "completion": 70,
+          "prompt": 28,
+          "reasoning": null,
+          "total": 98
+        }
+      },
+      "memory": {
+        "system": {
+          "availableBytes": 10463969280,
+          "freeBytes": 3488268288,
+          "sampledAt": 1794126605840,
+          "totalBytes": 34359738368,
+          "usedBytes": 23895769088
+        },
+        "engine": {
+          "pid": 52717,
+          "processCount": 2,
+          "rootBytes": 44352112,
+          "sampledAt": 1794126605841,
+          "usedBytes": 2914323288
+        }
+      }
+    },
+    {
+      "label": "zh-decode",
+      "phase": "decode",
+      "language": "zh",
+      "maxTokens": 128,
+      "expected": null,
+      "answer": "The air hummed with a gentle, iridescent melody, a symphony of buzzing bees and chirping crickets that seemed to dance in the twilight.  This was no ordinary garden, no, this was the Azure Garden, a place where the sky met the earth in a breathtaking tapestry of cerulean.  Towering, luminescent flora, each petal a swirling, iridescent blue, stretched towards the heavens, their leaves shimmering with an internal, ethereal light.  \n\nThe ground was a soft, moss-like carpet, a vibrant green that seemed to absorb the sunlight, leaving only a faint, blue glow that permeated the air.  ",
+      "metrics": {
+        "elapsedMs": 2754,
+        "engine": "vLLM-Apple",
+        "finishReason": "length",
+        "firstAnswerMs": 102,
+        "firstOutputMs": 102,
+        "gateway": {
+          "admissionMs": 8.942375,
+          "admissionRejected": false,
+          "dispatchMs": 8.979667000000001,
+          "elapsedMs": 2763.684209,
+          "engineSession": "9fc7cafa-7406-45af-a262-32a90d363c81",
+          "firstContentMs": 111.544959,
+          "lifecycleWaitMs": 0.002333,
+          "upstreamHeadersMs": 2.64175
+        },
+        "id": "ba86a40c-5892-43b5-bcfb-be6e37c7a081",
+        "model": "default_model",
+        "promptProcessing": {
+          "cacheHitPercent": 14.285714285714285,
+          "tokensPerSecond": null,
+          "uncachedTokens": 24
+        },
+        "source": "api",
+        "startedAt": 1794126605857,
+        "status": "completed",
+        "timings": null,
+        "usage": {
+          "cacheCreation": null,
+          "cached": 4,
+          "completion": 128,
+          "prompt": 28,
+          "reasoning": null,
+          "total": 156
+        }
+      },
+      "memory": {
+        "system": {
+          "availableBytes": 10430185472,
+          "freeBytes": 3485122560,
+          "sampledAt": 1794126608615,
+          "totalBytes": 34359738368,
+          "usedBytes": 23929552896
+        },
+        "engine": {
+          "pid": 52717,
+          "processCount": 2,
+          "rootBytes": 44352112,
+          "sampledAt": 1794126608615,
+          "usedBytes": 2932345688
+        }
+      }
+    }
+  ],
+  "limits": [
+    "Few samples per scenario; no tail-latency or speedup inference",
+    "Decode responses have different actual lengths; no inferred GPU rate",
+    "Synthetic conversations; API session-switch fixtures do not exercise GUI library switching"
+  ],
+  "profile": {
+    "allocatorCacheMiB": 512,
+    "backend": "mlx_lm",
+    "context": 4096,
+    "evidence": "/Users/Shared/Program/Tauri/Soliton/.soliton-runtime/kv-retention-20261108/qualification-1536.json",
+    "executable": "/Users/Shared/Program/Tauri/Soliton/.soliton-runtime/engine4096-20261108/python/bin/mlx_lm.server",
+    "kvCacheMiB": 1536,
+    "model": "/Users/Shared/Program/Tauri/Soliton/vLLM-apple/models/gemma-2-2b-it-4bit",
+    "mpsFallback": true,
+    "python": "/Users/Shared/Program/Tauri/Soliton/vLLM-apple/.venv/bin/python",
+    "root": "/Users/Shared/Program/Tauri/Soliton/vLLM-apple"
+  },
+  "evidenceSha256": "fb9a55d594d49332d4195cf01736fc7a87b920233439f728221350d84bbe9b83",
+  "startupObservedMs": 2790.376583,
+  "startup": {
+    "controlReadyObservedMs": 2028,
+    "counterPreparation": "spawned",
+    "counterSpawnedMs": 2028,
+    "inferenceReadyObservedMs": 2729,
+    "modelLoadingObservedMs": 701
+  },
+  "engineSession": "9fc7cafa-7406-45af-a262-32a90d363c81",
+  "initialMemory": {
+    "system": {
+      "availableBytes": 13429964800,
+      "freeBytes": 1117028352,
+      "sampledAt": 1794126524847,
+      "totalBytes": 34359738368,
+      "usedBytes": 20929773568
+    },
+    "engine": {
+      "pid": 52717,
+      "processCount": 2,
+      "rootBytes": 69173848,
+      "sampledAt": 1794126524847,
+      "usedBytes": 82101256
+    }
+  },
+  "boundaries": [
+    {
+      "language": "en",
+      "inputTokens": 3928,
+      "exactReservation": 168,
+      "acceptedTotal": 4096,
+      "rejectedTotal": 4097,
+      "exact": true
+    },
+    {
+      "language": "ja",
+      "inputTokens": 3930,
+      "exactReservation": 166,
+      "acceptedTotal": 4096,
+      "rejectedTotal": 4097,
+      "exact": true
+    },
+    {
+      "language": "zh",
+      "inputTokens": 3923,
+      "exactReservation": 173,
+      "acceptedTotal": 4096,
+      "rejectedTotal": 4097,
+      "exact": true
+    }
+  ],
+  "completedAt": "2026-11-08T08:30:24.951Z",
+  "conversationPreserved": true
+}

@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.1.3 — 2026-11-08
+
+- Moved qualified MLX CPU-tokenizer preparation from state reads to a Rust-owned startup monitor, covering API-only clients without UI polling. No inference or token-count frames are sent during preparation.
+- Added terminal preparation status and tests for stale health, stopped sessions, failed preparation and server-owned cleanup. Qualification checks and request admission remain enforced.
+- Four-start before/after/after/before real-model comparison with six seconds idle: first admission median297.57→4.98ms; first-content median682.88→428.38ms. Answers and token/cache counts match; initialization moves earlier, with no GPU speedup claim.
+- Source release; ordinary settings remain unchanged. See [measurement scope](docs/INFERENCE.md#autonomous-startup-prewarm--2026-11-08).
+
 ## 0.1.2 — 2026-11-08
 
 - Added a reproducible symmetric retained-KV pilot with original candidate preflight, complete identity/count/answer checks, CPU eligibility and native owned-tree memory samples.
