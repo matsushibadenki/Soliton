@@ -1,6 +1,6 @@
 # Soliton
 
-0.1.1记录了独立4096 token环境的资格验证、36个公共API基线用例和轻量计数改进；普通设置未改动。参阅[结果及运行环境](docs/INFERENCE.md#4096トークン主経路の基準値と0112026-11-08)和[更新记录](CHANGELOG.md)。
+0.1.2验证了面向长历史的可选1.5GiB保留KV配置，记录其收益与额外内存；普通设置未改动。参阅[结果和取舍](docs/INFERENCE.md#optional-retained-kv-15-gib--2026-11-08)及[更新记录](CHANGELOG.md)。
 
 ![Soliton](docs/images/stratastudio-image.png)
 

@@ -1,6 +1,6 @@
 # Soliton
 
-Version0.1.1 records a qualified private4,096-token runtime, a36-case shared-API baseline and the tokenizer improvement. Ordinary settings remain unchanged; see [results and runtime setup](docs/INFERENCE.md#4096トークン主経路の基準値と0112026-11-08) and [release notes](CHANGELOG.md).
+Version0.1.2 adds a qualified optional1.5GiB retained-KV profile and scoped long-history comparison. Ordinary settings remain unchanged; see [results and tradeoffs](docs/INFERENCE.md#optional-retained-kv-15-gib--2026-11-08) and [release notes](CHANGELOG.md).
 
 ![Soliton](docs/images/stratastudio-image.png)
 

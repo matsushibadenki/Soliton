@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.1.2 — 2026-11-08
+
+- Added a reproducible symmetric retained-KV pilot with original candidate preflight, complete identity/count/answer checks, CPU eligibility and native owned-tree memory samples.
+- Qualified an optional1536MiB retained-KV profile for the fixed4096-token MLX runtime:1800.123s,12167 successes,zero failures. Shared API36 cases, boundaries, five-history pressure/reheat and mismatched-evidence refusal/recovery passed.
+- In the scoped direct pilot, long-history full reuse changed0/12→12/12 with about476MiB additional sampled footprint. Short/decode tradeoffs and the ineligible2GiB timing window remain recorded. Ordinary/default settings are unchanged.
+- This remains a source release; signed/native cross-Mac distribution is pending. See docs/INFERENCE.md and docs/ROADMAP.md for exact scope.
+
 ## 0.1.1 — 2026-11-08
 
 - Added correlated Rust gateway wall times and per-start engine session IDs, preserving legacy timing fields.

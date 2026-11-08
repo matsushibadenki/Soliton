@@ -1,6 +1,6 @@
 {
   "name": "soliton",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "private": true,
   "type": "module",
   "scripts": {
@@ -35,7 +35,9 @@
     "postdesktop:build": "npm run check:distribution",
     "package:validation": "node scripts/package-validation.mjs",
     "benchmark:engine": "node scripts/benchmark-engine-gateway.mjs",
-    "test:engine-baseline": "node --test scripts/benchmark-engine-gateway.test.mjs"
+    "test:engine-baseline": "node --test scripts/benchmark-engine-gateway.test.mjs",
+    "benchmark:kv-retention": "vLLM-apple/.venv/bin/python scripts/compare-kv-retention.py",
+    "test:kv-retention": "python3 scripts/compare-kv-retention.test.py"
   },
   "dependencies": {
     "@tauri-apps/api": "^2.12.4",

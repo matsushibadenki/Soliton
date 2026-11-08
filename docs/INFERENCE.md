@@ -313,3 +313,39 @@ English: Optional gateway wall-time spans now cover lifecycle wait, admission, d
 English: A fixed private MLX runtime completed the original4096-token30-minute qualification. Thirty-six shared-API cases plus three exact-boundary admissions/refusals passed before and after the tokenizer selector update, with identical answers and counts. CPU-worker first count/RSS improved in five paired observations; no controlled whole-engine speedup is claimed. Long-history recomputation is the next priority. Ordinary preferences are unchanged.
 
 简体中文：固定的独立MLX环境完成原有4096 token、30分钟资格验证。修改计数器前后，各36个公共API用例及三语言边界受理/拒绝均通过，答案与计数一致。五组CPU计数器观测显示首次计数及RSS下降，但不宣称整机推理加速。下一步优先减少长历史重算；普通设置未改动。
+
+
+## Optional retained KV 1.5 GiB — 2026-11-08
+
+既存の保持KV設定を使い、1GiBをcontrolに1.5GiB/2GiBを隔離比較した。モデル・重み・context4,096・allocator512MiB・sampling・runtime sourceは固定し、保持量に対応する環境identityだけを変えた。各trialの前に元のcandidate compatibility/品質/phase/短時間soakを通したが、短時間結果に起動証跡は発行していない。通常アプリの設定は変更せず、完全資格確認まで任意candidateとして扱った。
+
+比較順は1→1.5→2→2→1.5→1GiB。各trialはprime短文3、異なる長履歴3、同じ履歴の再訪6、短文再訪3、自由文生成3の18件、計108件。全trialで全回答・入力数・出力数と、保持量以外のidentityが一致した。独立CPU計数とbackend usageも一致し、各要求後のretained bytesは実行中のcap以内、システムのavailableは4GiB以上を維持した。所有プロセスtreeのphysical footprint/RSS、別々のMLX allocator/KV scalarsを記録した。[全trialとCPU判定](evaluation/kv-retention-pilot-20261108.json)、[候補選定と交換条件](evaluation/kv-retention-selection-20261108.json)。
+
+| Retained KV | 長履歴のfull hit | 再計算対象token | 再訪first content中央値 | sampled owned physical最大 |
+| --- | ---: | ---: | ---: | ---: |
+| 1GiB | 0/12 | 47,112 | 8,351.75ms | 3,299,379,480 bytes |
+| 1.5GiB | 12/12 | 12 | 94.79ms | 3,798,108,392 bytes |
+| 2GiB | 12/12 | 12 | CPU条件不適格、採用比較に使わない | 3,998,714,064 bytes |
+
+1.5GiBはcontrolよりsampled physicalが約475.62MiB増えた。対象3履歴を全再利用できる最小の試験候補であり、2GiBは再利用数を増やさず約191MiB余分に使った。2GiBの復路にbackground CPU average78.3%のwindowがあり、50% guardを外れたので、その速度値で採用判断しない。保持量を多くすれば常に良いという結果ではない。
+
+1.5GiBの短文first medianは107.62ms（control102.52ms、+4.97%）、decode-firstは111.03ms（101.04ms、+9.89%/約10ms増）、stream tail中央値は2483.63ms（2388.39ms、+3.99%）だった。stream tailはクライアント観測であり純GPU decode時間ではない。この交換条件があるため、全用途の新既定値へ自動昇格しない。長履歴の再計算削減を重視する任意profileとして、1.5GiBを完全資格確認へ進めた。5%等の探索目安を全指標で満たしたという主張もしない。
+
+これは2 trialずつのguarded ordinary-desktop観測である。独立GPU負荷・温度・クロックの制御やpopulation inferenceは行っていない。source/generation/count一致と、0→12 full hitsが主要な根拠で、98.87%の対象first-content短縮をアプリ全体や別workloadへ一般化しない。physicalは要求後の所有treeの標本最大で、真のpeak/unique memoryではない。KV・allocator・physicalは重複するため加算しない。CPU counterの別groupもこのphysical値には含めない。より大きなworking setでは再び追い出しが発生する。
+
+1.5GiBは元の完全検証を**1800.123秒、12,167成功、失敗0、正常終了、RSS peak growth671,744 bytes**で完走した。EN/JA/ZH品質、greedy/stream整合と開始/終了identity一致を含む。context4,096/concurrency1/allocator512MiB/MPS fallback1を維持した。soak request/sは比較性能値に使わない。[元の資格証跡の公開記録](evaluation/kv-retention-1536-qualification-20261108.json)。
+
+再現用fixtureは`node scripts/kv-retention-fixtures.mjs /absolute/new-fixtures.json`で生成し、実験入力とbyte一致を確認した。`scripts/physical-footprint.c`をmacOSでcompileし、frontend Pythonで`compare-kv-retention.py --settings /absolute/dedicated-state.json --fixtures /absolute/new-fixtures.json --memory-probe /absolute/physical-footprint --output-dir /absolute/new-pilot-directory`を実行する。settingsは0.1.1で固定した専用MLX runtimeを使い、他のSoliton/model ownerを同時起動しない。旧グローバルHomebrew環境へ戻したり、短時間結果を通常起動の証跡に使ったりしない。
+
+
+資格確認後、0.1.2の共通Rust APIで既存36ケースとEN/JA/ZHの4,096ちょうど3件/4,097拒否3件が通過した。0.1.1の同じfixture matrixと、全36回答・入力数が一致した。混合workloadの長履歴切替はfull hit3/6（旧1GiB基準は2/6）で、cyclic3履歴だけを再訪するdirect pilotとは異なる。caseごとのcached数を残し、別cohortの秒単位差を保持量だけの効果と断定しない。[共通API全記録](evaluation/kv-retention-1536-gateway-20261108.json)。
+
+別の起動で5つの長履歴を入れ、古いanchorの再訪は8/3935 cachedで再計算、直後の再加熱は3934/3935 cachedに戻った。9要求すべてでrefreshしたretained capは1,610,612,736 bytes、観測retained最大1,260,593,152 bytes以内、システムavailable4GiB以上。正しいbyte上限を守る追い出しと再利用が両立した。1GiBの元証跡を1.5GiB設定で使う起動はidentity mismatchで拒否され、新証跡へ戻すと復旧した。会話は空のまま保持し、QA設定を復元して所有モデル/ホストを停止した。[圧迫・拒否・復旧](evaluation/kv-retention-1536-pressure-20261108.json)。
+
+0.1.2は、これらの比較ツール/生データと資格確認済み任意profileをまとめるソースリリースとする。比較7 tests、baseline5 tests、Rust160 tests、frontend/server/Tauri buildが通過した。通常の設定と既定保持量は変更していない。ユーザーがこの測定済み環境で長履歴用profileを選ぶ場合は、保持KV1536MiB、allocator512MiB、context4096、MPS fallback1と、専用launcher `.soliton-runtime/engine4096-20261108/python/bin/mlx_lm.server`、対応private証跡 `.soliton-runtime/kv-retention-20261108/qualification-1536.json`を組にする。public JSONはポータブルな起動許可ではなく、別Mac/モデル/実装/期限切れには元の完全資格確認が必要。1GiB証跡を編集して流用しない。
+
+次は、より多い実用履歴と短文/長文の混在でのworking-set評価を優先する。保持量の自動切替や別GPU/モデルへの適用は未実装・未検証であり、無資格の値へ動的に変更しない。2GiBの性能再確認、別Mac、署名・公証はPending。現在の候補を全用途の新しい既定値にする判断は行わない。
+
+English: The optional1.5GiB retained-KV profile passed the original30-minute qualification,36 shared-API cases, exact4096/4097 gates, five-history pressure/recompute/reheat and wrong-budget evidence refusal/recovery. It preserved answers and counts. The pilot's12/12 long-history hits cost about476MiB additional sampled footprint, with small short/decode timing tradeoffs; default settings are unchanged.
+
+简体中文：可选1.5GiB保留KV配置通过原有30分钟资格验证、36个公共API用例、4096/4097边界、五历史压力重算/再热及错误预算记录拒绝/恢复。答案和计数保持一致；试验中12/12长历史复用，额外采样占用约476MiB，同时存在短请求/生成计时取舍。默认设置未变。

@@ -1,0 +1,4117 @@
+{
+  "passed": true,
+  "certification": false,
+  "scope": "Direct supervised backend under guarded ordinary desktop load; not Rust gateway latency or startup approval",
+  "order": [
+    1024,
+    1536,
+    2048,
+    2048,
+    1536,
+    1024
+  ],
+  "trials": [
+    {
+      "passed": true,
+      "budgetMiB": 1024,
+      "fixturesSha256": "f37c5eac10bdd7124b56362b34b0e13c4102339ce2a38569845f9cb407f45728",
+      "cases": [
+        {
+          "label": "prime-en",
+          "phase": "prime",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 32,
+          "cachedTokens": 0,
+          "completionTokens": 10,
+          "firstContentMs": 136.11108300028718,
+          "elapsedMs": 295.7287080025708,
+          "cpu": {
+            "averageBusyPercent": 19.065023516160245,
+            "peakBusyPercent": 32.70107037207553,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 7.941053672578613
+        },
+        {
+          "label": "prime-ja",
+          "phase": "prime",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 34,
+          "cachedTokens": 4,
+          "completionTokens": 10,
+          "firstContentMs": 97.3662090000289,
+          "elapsedMs": 255.25329200172564,
+          "cpu": {
+            "averageBusyPercent": 7.69561030448765,
+            "peakBusyPercent": 32.70107037207553,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 32.70107037207553
+        },
+        {
+          "label": "prime-zh",
+          "phase": "prime",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 27,
+          "cachedTokens": 4,
+          "completionTokens": 10,
+          "firstContentMs": 94.80529199936427,
+          "elapsedMs": 253.62533400038956,
+          "cpu": {
+            "averageBusyPercent": 6.104707379674877,
+            "peakBusyPercent": 8.812515721205628,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 8.812515721205628
+        },
+        {
+          "label": "history-3",
+          "phase": "seed",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 3935,
+          "cachedTokens": 4,
+          "completionTokens": 10,
+          "firstContentMs": 6918.387458001234,
+          "elapsedMs": 7125.256750001427,
+          "cpu": {
+            "averageBusyPercent": 5.172367268049273,
+            "peakBusyPercent": 10.413268982979286,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 5.791432158926517
+        },
+        {
+          "label": "history-4",
+          "phase": "seed",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 3937,
+          "cachedTokens": 8,
+          "completionTokens": 10,
+          "firstContentMs": 6911.275499998737,
+          "elapsedMs": 7118.6299590008275,
+          "cpu": {
+            "averageBusyPercent": 4.545223362764781,
+            "peakBusyPercent": 9.134827264263901,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 6.9441281977009846
+        },
+        {
+          "label": "history-5",
+          "phase": "seed",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 3930,
+          "cachedTokens": 8,
+          "completionTokens": 10,
+          "firstContentMs": 6967.335167002602,
+          "elapsedMs": 7183.764332999999,
+          "cpu": {
+            "averageBusyPercent": 5.335614833431483,
+            "peakBusyPercent": 8.444086162148785,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 5.028410996671142
+        },
+        {
+          "label": "history-6",
+          "phase": "revisit",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 3935,
+          "cachedTokens": 8,
+          "completionTokens": 10,
+          "firstContentMs": 6977.826000002096,
+          "elapsedMs": 7191.43695800085,
+          "cpu": {
+            "averageBusyPercent": 4.609430575604252,
+            "peakBusyPercent": 18.987322984755505,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 5.318287474380272
+        },
+        {
+          "label": "history-7",
+          "phase": "revisit",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 3937,
+          "cachedTokens": 8,
+          "completionTokens": 10,
+          "firstContentMs": 7003.564957998606,
+          "elapsedMs": 7221.4634159972775,
+          "cpu": {
+            "averageBusyPercent": 4.134274241692337,
+            "peakBusyPercent": 8.897619162368583,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 4.8479633505593505
+        },
+        {
+          "label": "history-8",
+          "phase": "revisit",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 3930,
+          "cachedTokens": 8,
+          "completionTokens": 10,
+          "firstContentMs": 7036.393207999936,
+          "elapsedMs": 7251.579083000252,
+          "cpu": {
+            "averageBusyPercent": 3.8442602128194054,
+            "peakBusyPercent": 6.169189304616913,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 4.19095851768963
+        },
+        {
+          "label": "history-9",
+          "phase": "revisit",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 3935,
+          "cachedTokens": 8,
+          "completionTokens": 10,
+          "firstContentMs": 7045.792875000188,
+          "elapsedMs": 7264.54612499947,
+          "cpu": {
+            "averageBusyPercent": 4.105101332731298,
+            "peakBusyPercent": 6.169189304616913,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 6.169189304616913
+        },
+        {
+          "label": "history-10",
+          "phase": "revisit",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 3937,
+          "cachedTokens": 8,
+          "completionTokens": 10,
+          "firstContentMs": 7089.380000001256,
+          "elapsedMs": 7294.368791001034,
+          "cpu": {
+            "averageBusyPercent": 4.369749153527046,
+            "peakBusyPercent": 9.68173101110651,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 5.749691820318835
+        },
+        {
+          "label": "history-11",
+          "phase": "revisit",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 3930,
+          "cachedTokens": 8,
+          "completionTokens": 10,
+          "firstContentMs": 7119.009583999286,
+          "elapsedMs": 7323.733374996664,
+          "cpu": {
+            "averageBusyPercent": 4.667640226775939,
+            "peakBusyPercent": 9.798882413189641,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 5.63741689965237
+        },
+        {
+          "label": "short-en",
+          "phase": "short",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 32,
+          "cachedTokens": 4,
+          "completionTokens": 10,
+          "firstContentMs": 136.26491700051702,
+          "elapsedMs": 294.6669170014502,
+          "cpu": {
+            "averageBusyPercent": 6.137027369088938,
+            "peakBusyPercent": 6.414251699238674,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 4.02091482201627
+        },
+        {
+          "label": "short-ja",
+          "phase": "short",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 34,
+          "cachedTokens": 4,
+          "completionTokens": 10,
+          "firstContentMs": 97.62529200088466,
+          "elapsedMs": 257.0956669987936,
+          "cpu": {
+            "averageBusyPercent": 4.084142670599027,
+            "peakBusyPercent": 6.414251699238674,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 6.414251699238674
+        },
+        {
+          "label": "short-zh",
+          "phase": "short",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 27,
+          "cachedTokens": 4,
+          "completionTokens": 10,
+          "firstContentMs": 97.30658300031791,
+          "elapsedMs": 258.6657499996363,
+          "cpu": {
+            "averageBusyPercent": 5.957238142084145,
+            "peakBusyPercent": 7.281359088876917,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 5.343921417915437
+        },
+        {
+          "label": "en-decode",
+          "phase": "decode",
+          "answer": "The garden was a symphony of azure, a living canvas splashed with the deepest, most vibrant blue imaginable.  The grass, a shade of cerulean, shimmered under the sun, its blades so fine they seemed to dance in the breeze.  A gentle, constant hum vibrated through the air, a melody of buzzing bees and chirping crickets, all harmonizing with the rustling leaves of the blue hydrangeas that dotted the landscape.  \n\nThe trees, a majestic grove of ancient oaks, were draped in a canopy of sapphire leaves, their branches reaching towards the sky like outstretched arms.  Each leaf, a miniature masterpiece",
+          "promptTokens": 29,
+          "cachedTokens": 4,
+          "completionTokens": 128,
+          "firstContentMs": 97.19741599838017,
+          "elapsedMs": 2477.9804159989,
+          "cpu": {
+            "averageBusyPercent": 4.418439365153356,
+            "peakBusyPercent": 7.626152064286332,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 7.281359088876917
+        },
+        {
+          "label": "ja-decode",
+          "phase": "decode",
+          "answer": "青い庭は、まるで宝石のように輝く。その青は、太陽の光を反射したような、透明感のある青色だった。その庭には、緑の葉の茂る木々、花々、そして、静かな湖が浮かんでいた。湖の向こうには、青い空と、白い雲が浮かび上がる。  \n\n\n",
+          "promptTokens": 28,
+          "cachedTokens": 4,
+          "completionTokens": 70,
+          "firstContentMs": 97.12604100059252,
+          "elapsedMs": 1379.884583002422,
+          "cpu": {
+            "averageBusyPercent": 5.070974214986896,
+            "peakBusyPercent": 6.099361660447704,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 4.097994037734302
+        },
+        {
+          "label": "zh-decode",
+          "phase": "decode",
+          "answer": "The air hummed with a gentle, iridescent melody, a symphony of buzzing bees and chirping crickets that seemed to dance in the twilight.  This was no ordinary garden, no, this was the Azure Garden, a place where the sky met the earth in a breathtaking tapestry of cerulean.  Towering, luminescent flora, each petal a swirling, iridescent blue, stretched towards the heavens, their leaves shimmering with an internal, ethereal light.  \n\nThe ground was a soft, moss-like carpet, a vibrant green that seemed to absorb the sunlight, leaving only a faint, blue glow that permeated the air.  ",
+          "promptTokens": 28,
+          "cachedTokens": 4,
+          "completionTokens": 128,
+          "firstContentMs": 97.59904200109304,
+          "elapsedMs": 2493.5949589998927,
+          "cpu": {
+            "averageBusyPercent": 6.05681728459506,
+            "peakBusyPercent": 10.497904916437689,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 5.344735955726575
+        }
+      ],
+      "memory": [
+        {
+          "physicalBytes": 1990150400,
+          "rssBytes": 1923940352,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 4472832,
+            "max_bytes": 1073741824,
+            "entries": 1,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 1528095262,
+              "cache_bytes": 12418880,
+              "peak_bytes": 1616957761,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 12776882176
+        },
+        {
+          "physicalBytes": 1996785920,
+          "rssBytes": 1924448256,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 9158656,
+            "max_bytes": 1073741824,
+            "entries": 2,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 1534911006,
+              "cache_bytes": 12110756,
+              "peak_bytes": 1624566702,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 12775620608
+        },
+        {
+          "physicalBytes": 2022787328,
+          "rssBytes": 1924202496,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 13099008,
+            "max_bytes": 1073741824,
+            "entries": 3,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 1563025950,
+              "cache_bytes": 9951830,
+              "peak_bytes": 1624566702,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 12778143744
+        },
+        {
+          "physicalBytes": 2878441728,
+          "rssBytes": 1925709824,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 433225728,
+            "max_bytes": 1073741824,
+            "entries": 4,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 2385207838,
+              "cache_bytes": 41858376,
+              "peak_bytes": 2435066090,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 12382027776
+        },
+        {
+          "physicalBytes": 3299379456,
+          "rssBytes": 1925922816,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 853565440,
+            "max_bytes": 1073741824,
+            "entries": 5,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 2806080030,
+              "cache_bytes": 41792940,
+              "peak_bytes": 2855364834,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 12203638784
+        },
+        {
+          "physicalBytes": 3278162176,
+          "rssBytes": 1926201344,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 839933952,
+            "max_bytes": 1073741824,
+            "entries": 2,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 2784748062,
+              "cache_bytes": 41763410,
+              "peak_bytes": 2951386518,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 12358844416
+        },
+        {
+          "physicalBytes": 3261253888,
+          "rssBytes": 1926168576,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 839720960,
+            "max_bytes": 1073741824,
+            "entries": 2,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 2767708702,
+              "cache_bytes": 41796444,
+              "peak_bytes": 2951386518,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 12366479360
+        },
+        {
+          "physicalBytes": 3278309632,
+          "rssBytes": 1926184960,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 840466432,
+            "max_bytes": 1073741824,
+            "entries": 2,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 2784748062,
+              "cache_bytes": 41798064,
+              "peak_bytes": 2951386518,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 12308807680
+        },
+        {
+          "physicalBytes": 3278260480,
+          "rssBytes": 1926168576,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 839933952,
+            "max_bytes": 1073741824,
+            "entries": 2,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 2784748062,
+              "cache_bytes": 41763938,
+              "peak_bytes": 2951386518,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 12301549568
+        },
+        {
+          "physicalBytes": 3261253888,
+          "rssBytes": 1926168576,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 839720960,
+            "max_bytes": 1073741824,
+            "entries": 2,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 2767708702,
+              "cache_bytes": 41796944,
+              "peak_bytes": 2951386518,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 12328124416
+        },
+        {
+          "physicalBytes": 3278293248,
+          "rssBytes": 1926299648,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 840466432,
+            "max_bytes": 1073741824,
+            "entries": 2,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 2784748062,
+              "cache_bytes": 41793984,
+              "peak_bytes": 2951386518,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 12288278528
+        },
+        {
+          "physicalBytes": 3278260480,
+          "rssBytes": 1926168576,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 839933952,
+            "max_bytes": 1073741824,
+            "entries": 2,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 2784748062,
+              "cache_bytes": 41762894,
+              "peak_bytes": 2951386518,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 12386238464
+        },
+        {
+          "physicalBytes": 2438351104,
+          "rssBytes": 1926299648,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 424067072,
+            "max_bytes": 1073741824,
+            "entries": 2,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 1949819422,
+              "cache_bytes": 36812216,
+              "peak_bytes": 2951386518,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 13226147840
+        },
+        {
+          "physicalBytes": 2417199360,
+          "rssBytes": 1926430720,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 428752896,
+            "max_bytes": 1073741824,
+            "entries": 3,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 1954947614,
+              "cache_bytes": 10536356,
+              "peak_bytes": 2951386518,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 13165756416
+        },
+        {
+          "physicalBytes": 2444773632,
+          "rssBytes": 1926447104,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 432693248,
+            "max_bytes": 1073741824,
+            "entries": 4,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 1983062558,
+              "cache_bytes": 9951830,
+              "peak_bytes": 2951386518,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 13138116608
+        },
+        {
+          "physicalBytes": 2450786560,
+          "rssBytes": 1926627328,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 449413120,
+            "max_bytes": 1073741824,
+            "entries": 5,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 1987600926,
+              "cache_bytes": 11120367,
+              "peak_bytes": 2951386518,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 13215252480
+        },
+        {
+          "physicalBytes": 2478147840,
+          "rssBytes": 1926676480,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 459849728,
+            "max_bytes": 1073741824,
+            "entries": 6,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 2015715870,
+              "cache_bytes": 10188425,
+              "peak_bytes": 2951386518,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 13104070656
+        },
+        {
+          "physicalBytes": 2507000064,
+          "rssBytes": 1926840320,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 476463104,
+            "max_bytes": 1073741824,
+            "entries": 7,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 2043830814,
+              "cache_bytes": 10787093,
+              "peak_bytes": 2951386518,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 13150519296
+        }
+      ],
+      "preflightSha256": "6abc2cbee04112379300edeec026651c383c2ae8825f5eb83d01e00d1a66cb9c",
+      "identityBefore": {
+        "config_sha256": "9279e9a8c58d7656782dc02f787feaa45118f37109281acb88144b6a44093401",
+        "model_root_sha256": "4f69654cb373cc4392fd048acf60d51d39d67e8176648a3e52a7936b0776cd14",
+        "backend": "mlx_lm",
+        "backend_sha256": "30fed668cd1f88b73527e0ce20942685ccccfd1eb104d0175bd6d0524b375e07",
+        "environment_sha256": "dd85ef85e863c42aa69d163e4dd701040d7c9d4178040999603a3f0c4d7693e6",
+        "hardware_sha256": "c8baa7d3ff988ba85885da228624da76c5a85818ef2f1daa3b1d3128e4b95d6c",
+        "runtime_sha256": "9a2df32245169daa7f71bb0167ae1275fe2cd19b6087f677635d736cd96e76eb"
+      },
+      "identityAfter": {
+        "config_sha256": "9279e9a8c58d7656782dc02f787feaa45118f37109281acb88144b6a44093401",
+        "model_root_sha256": "4f69654cb373cc4392fd048acf60d51d39d67e8176648a3e52a7936b0776cd14",
+        "backend": "mlx_lm",
+        "backend_sha256": "30fed668cd1f88b73527e0ce20942685ccccfd1eb104d0175bd6d0524b375e07",
+        "environment_sha256": "dd85ef85e863c42aa69d163e4dd701040d7c9d4178040999603a3f0c4d7693e6",
+        "hardware_sha256": "c8baa7d3ff988ba85885da228624da76c5a85818ef2f1daa3b1d3128e4b95d6c",
+        "runtime_sha256": "9a2df32245169daa7f71bb0167ae1275fe2cd19b6087f677635d736cd96e76eb"
+      },
+      "shutdownClean": true,
+      "counterStopped": true
+    },
+    {
+      "passed": true,
+      "budgetMiB": 1536,
+      "fixturesSha256": "f37c5eac10bdd7124b56362b34b0e13c4102339ce2a38569845f9cb407f45728",
+      "cases": [
+        {
+          "label": "prime-en",
+          "phase": "prime",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 32,
+          "cachedTokens": 0,
+          "completionTokens": 10,
+          "firstContentMs": 127.46941700243042,
+          "elapsedMs": 289.0712500011432,
+          "cpu": {
+            "averageBusyPercent": 4.293448155683518,
+            "peakBusyPercent": 4.293448155683518,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 1.9327341355149947
+        },
+        {
+          "label": "prime-ja",
+          "phase": "prime",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 34,
+          "cachedTokens": 4,
+          "completionTokens": 10,
+          "firstContentMs": 98.77708400017582,
+          "elapsedMs": 255.20416700237547,
+          "cpu": {
+            "averageBusyPercent": 3.281158631521942,
+            "peakBusyPercent": 5.8873020048732325,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 3.560534804978442
+        },
+        {
+          "label": "prime-zh",
+          "phase": "prime",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 27,
+          "cachedTokens": 4,
+          "completionTokens": 10,
+          "firstContentMs": 94.09045900247293,
+          "elapsedMs": 248.02583400014555,
+          "cpu": {
+            "averageBusyPercent": 3.6966213789119755,
+            "peakBusyPercent": 5.8873020048732325,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 5.8873020048732325
+        },
+        {
+          "label": "history-3",
+          "phase": "seed",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 3935,
+          "cachedTokens": 4,
+          "completionTokens": 10,
+          "firstContentMs": 6836.931834001007,
+          "elapsedMs": 7050.039249999827,
+          "cpu": {
+            "averageBusyPercent": 3.4336328255271376,
+            "peakBusyPercent": 25.000271202550294,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 2.704480373567919
+        },
+        {
+          "label": "history-4",
+          "phase": "seed",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 3937,
+          "cachedTokens": 8,
+          "completionTokens": 10,
+          "firstContentMs": 6920.846458000597,
+          "elapsedMs": 7132.369750001089,
+          "cpu": {
+            "averageBusyPercent": 1.4799636899050024,
+            "peakBusyPercent": 5.059096933638986,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 1.7534642945757586
+        },
+        {
+          "label": "history-5",
+          "phase": "seed",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 3930,
+          "cachedTokens": 8,
+          "completionTokens": 10,
+          "firstContentMs": 7062.8413329977775,
+          "elapsedMs": 7297.789041000215,
+          "cpu": {
+            "averageBusyPercent": 11.963682037837774,
+            "peakBusyPercent": 47.210021593745346,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 0.6118323211791594
+        },
+        {
+          "label": "history-6",
+          "phase": "revisit",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 3935,
+          "cachedTokens": 3934,
+          "completionTokens": 10,
+          "firstContentMs": 88.06491699942853,
+          "elapsedMs": 301.88908299896866,
+          "cpu": {
+            "averageBusyPercent": 25.492868665564842,
+            "peakBusyPercent": 25.492868665564842,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 24.685892368226774
+        },
+        {
+          "label": "history-7",
+          "phase": "revisit",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 3937,
+          "cachedTokens": 3936,
+          "completionTokens": 10,
+          "firstContentMs": 111.84954100099276,
+          "elapsedMs": 377.7965410008619,
+          "cpu": {
+            "averageBusyPercent": 27.0631448611662,
+            "peakBusyPercent": 27.0631448611662,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 25.114544451315467
+        },
+        {
+          "label": "history-8",
+          "phase": "revisit",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 3930,
+          "cachedTokens": 3929,
+          "completionTokens": 10,
+          "firstContentMs": 107.05820799921639,
+          "elapsedMs": 321.2771670005168,
+          "cpu": {
+            "averageBusyPercent": 24.045158298589588,
+            "peakBusyPercent": 27.84747139357746,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 26.16630395429153
+        },
+        {
+          "label": "history-9",
+          "phase": "revisit",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 3935,
+          "cachedTokens": 3934,
+          "completionTokens": 10,
+          "firstContentMs": 103.85099999984959,
+          "elapsedMs": 321.8970830021135,
+          "cpu": {
+            "averageBusyPercent": 24.965452317711787,
+            "peakBusyPercent": 25.493967244229232,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 25.493967244229232
+        },
+        {
+          "label": "history-10",
+          "phase": "revisit",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 3937,
+          "cachedTokens": 3936,
+          "completionTokens": 10,
+          "firstContentMs": 94.25687499970081,
+          "elapsedMs": 318.81041700034984,
+          "cpu": {
+            "averageBusyPercent": 29.180687454406,
+            "peakBusyPercent": 29.180687454406,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 24.8918153190923
+        },
+        {
+          "label": "history-11",
+          "phase": "revisit",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 3930,
+          "cachedTokens": 3929,
+          "completionTokens": 10,
+          "firstContentMs": 90.50112499971874,
+          "elapsedMs": 306.9335830005002,
+          "cpu": {
+            "averageBusyPercent": 25.62923705317571,
+            "peakBusyPercent": 32.19264134370362,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 32.19264134370362
+        },
+        {
+          "label": "short-en",
+          "phase": "short",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 32,
+          "cachedTokens": 4,
+          "completionTokens": 10,
+          "firstContentMs": 175.8442919999652,
+          "elapsedMs": 349.0994999992836,
+          "cpu": {
+            "averageBusyPercent": 28.375461202484516,
+            "peakBusyPercent": 29.55542030484638,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 24.806927009218143
+        },
+        {
+          "label": "short-ja",
+          "phase": "short",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 34,
+          "cachedTokens": 4,
+          "completionTokens": 10,
+          "firstContentMs": 97.60562500014203,
+          "elapsedMs": 264.0424589990289,
+          "cpu": {
+            "averageBusyPercent": 24.9305378385783,
+            "peakBusyPercent": 29.55542030484638,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 29.55542030484638
+        },
+        {
+          "label": "short-zh",
+          "phase": "short",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 27,
+          "cachedTokens": 4,
+          "completionTokens": 10,
+          "firstContentMs": 113.0762920001871,
+          "elapsedMs": 291.1261250010284,
+          "cpu": {
+            "averageBusyPercent": 25.04660230539739,
+            "peakBusyPercent": 25.04660230539739,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 24.465132213703605
+        },
+        {
+          "label": "en-decode",
+          "phase": "decode",
+          "answer": "The garden was a symphony of azure, a living canvas splashed with the deepest, most vibrant blue imaginable.  The grass, a shade of cerulean, shimmered under the sun, its blades so fine they seemed to dance in the breeze.  A gentle, constant hum vibrated through the air, a melody of buzzing bees and chirping crickets, all harmonizing with the rustling leaves of the blue hydrangeas that dotted the landscape.  \n\nThe trees, a majestic grove of ancient oaks, were draped in a canopy of sapphire leaves, their branches reaching towards the sky like outstretched arms.  Each leaf, a miniature masterpiece",
+          "promptTokens": 29,
+          "cachedTokens": 4,
+          "completionTokens": 128,
+          "firstContentMs": 109.83191600098507,
+          "elapsedMs": 2714.7431660014263,
+          "cpu": {
+            "averageBusyPercent": 24.80536435035056,
+            "peakBusyPercent": 30.38909201451395,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 25.12051113176966
+        },
+        {
+          "label": "ja-decode",
+          "phase": "decode",
+          "answer": "青い庭は、まるで宝石のように輝く。その青は、太陽の光を反射したような、透明感のある青色だった。その庭には、緑の葉の茂る木々、花々、そして、静かな湖が浮かんでいた。湖の向こうには、青い空と、白い雲が浮かび上がる。  \n\n\n",
+          "promptTokens": 28,
+          "cachedTokens": 4,
+          "completionTokens": 70,
+          "firstContentMs": 97.48349999790662,
+          "elapsedMs": 1501.687749998382,
+          "cpu": {
+            "averageBusyPercent": 25.34247634003833,
+            "peakBusyPercent": 26.059076173096848,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 24.820864243202095
+        },
+        {
+          "label": "zh-decode",
+          "phase": "decode",
+          "answer": "The air hummed with a gentle, iridescent melody, a symphony of buzzing bees and chirping crickets that seemed to dance in the twilight.  This was no ordinary garden, no, this was the Azure Garden, a place where the sky met the earth in a breathtaking tapestry of cerulean.  Towering, luminescent flora, each petal a swirling, iridescent blue, stretched towards the heavens, their leaves shimmering with an internal, ethereal light.  \n\nThe ground was a soft, moss-like carpet, a vibrant green that seemed to absorb the sunlight, leaving only a faint, blue glow that permeated the air.  ",
+          "promptTokens": 28,
+          "cachedTokens": 4,
+          "completionTokens": 128,
+          "firstContentMs": 98.23024999786867,
+          "elapsedMs": 2460.57833300074,
+          "cpu": {
+            "averageBusyPercent": 25.098669711166323,
+            "peakBusyPercent": 26.400736820454995,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 24.97939425695477
+        }
+      ],
+      "memory": [
+        {
+          "physicalBytes": 1989953768,
+          "rssBytes": 1923530752,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 4472832,
+            "max_bytes": 1610612736,
+            "entries": 1,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 1528095262,
+              "cache_bytes": 12418346,
+              "peak_bytes": 1616957761,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 13429669888
+        },
+        {
+          "physicalBytes": 1995426024,
+          "rssBytes": 1923858432,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 9158656,
+            "max_bytes": 1610612736,
+            "entries": 2,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 1534911006,
+              "cache_bytes": 10864548,
+              "peak_bytes": 1624599470,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 13424345088
+        },
+        {
+          "physicalBytes": 2022672616,
+          "rssBytes": 1923874816,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 13099008,
+            "max_bytes": 1610612736,
+            "entries": 3,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 1563025950,
+              "cache_bytes": 9952346,
+              "peak_bytes": 1624599470,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 13400031232
+        },
+        {
+          "physicalBytes": 2878294248,
+          "rssBytes": 1925365760,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 433225728,
+            "max_bytes": 1610612736,
+            "entries": 4,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 2385207838,
+              "cache_bytes": 41862496,
+              "peak_bytes": 2435066090,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 12602130432
+        },
+        {
+          "physicalBytes": 3299231976,
+          "rssBytes": 1925578752,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 853565440,
+            "max_bytes": 1610612736,
+            "entries": 5,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 2806080030,
+              "cache_bytes": 41797572,
+              "peak_bytes": 2855364834,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 12203835392
+        },
+        {
+          "physicalBytes": 3736406248,
+          "rssBytes": 1925857280,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 1273159680,
+            "max_bytes": 1610612736,
+            "entries": 6,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 3243139614,
+              "cache_bytes": 41763942,
+              "peak_bytes": 3290439042,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 11947212800
+        },
+        {
+          "physicalBytes": 3782707432,
+          "rssBytes": 1926430720,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 1260060672,
+            "max_bytes": 1610612736,
+            "entries": 3,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 2794136094,
+              "cache_bytes": 537025640,
+              "peak_bytes": 3290439042,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 11929010176
+        },
+        {
+          "physicalBytes": 3792193768,
+          "rssBytes": 1926709248,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 1260060672,
+            "max_bytes": 1610612736,
+            "entries": 3,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 2803491358,
+              "cache_bytes": 536747264,
+              "peak_bytes": 3308818070,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 11983126528
+        },
+        {
+          "physicalBytes": 3797190888,
+          "rssBytes": 1926725632,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 1260060672,
+            "max_bytes": 1610612736,
+            "entries": 3,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 2812863006,
+              "cache_bytes": 532355408,
+              "peak_bytes": 3318587534,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 11983552512
+        },
+        {
+          "physicalBytes": 3798108392,
+          "rssBytes": 1926742016,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 1260060672,
+            "max_bytes": 1610612736,
+            "entries": 3,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 2812863006,
+              "cache_bytes": 533226408,
+              "peak_bytes": 3320366512,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 11982749696
+        },
+        {
+          "physicalBytes": 3796863208,
+          "rssBytes": 1926742016,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 1260060672,
+            "max_bytes": 1610612736,
+            "entries": 3,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 2812863006,
+              "cache_bytes": 531981254,
+              "peak_bytes": 3320366512,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 11983192064
+        },
+        {
+          "physicalBytes": 3797584104,
+          "rssBytes": 1926742016,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 1260060672,
+            "max_bytes": 1610612736,
+            "entries": 3,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 2812863006,
+              "cache_bytes": 532701720,
+              "peak_bytes": 3320366512,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 11982389248
+        },
+        {
+          "physicalBytes": 2885552360,
+          "rssBytes": 1926234112,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 844406784,
+            "max_bytes": 1610612736,
+            "entries": 3,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 2396332574,
+              "cache_bytes": 37351868,
+              "peak_bytes": 3320366512,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 12894388224
+        },
+        {
+          "physicalBytes": 2863876328,
+          "rssBytes": 1926119424,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 849092608,
+            "max_bytes": 1610612736,
+            "entries": 4,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 2401460766,
+              "cache_bytes": 10536872,
+              "peak_bytes": 3320366512,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 12916162560
+        },
+        {
+          "physicalBytes": 2891172072,
+          "rssBytes": 1926119424,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 853032960,
+            "max_bytes": 1610612736,
+            "entries": 5,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 2429575710,
+              "cache_bytes": 9903194,
+              "peak_bytes": 3320366512,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 12889210880
+        },
+        {
+          "physicalBytes": 2897496296,
+          "rssBytes": 1926463488,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 869752832,
+            "max_bytes": 1610612736,
+            "entries": 6,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 2434163230,
+              "cache_bytes": 11161871,
+              "peak_bytes": 3320366512,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 12879527936
+        },
+        {
+          "physicalBytes": 2925005032,
+          "rssBytes": 1926529024,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 880189440,
+            "max_bytes": 1610612736,
+            "entries": 7,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 2462278174,
+              "cache_bytes": 10515881,
+              "peak_bytes": 3320366512,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 12764659712
+        },
+        {
+          "physicalBytes": 2953562344,
+          "rssBytes": 1926709248,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 896802816,
+            "max_bytes": 1610612736,
+            "entries": 8,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 2490393118,
+              "cache_bytes": 10787849,
+              "peak_bytes": 3320366512,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 12789858304
+        }
+      ],
+      "preflightSha256": "3fede2b51aecc507fb842e3d422ce41f1c985755589f84ffc1804b8cbff13d2c",
+      "identityBefore": {
+        "config_sha256": "9279e9a8c58d7656782dc02f787feaa45118f37109281acb88144b6a44093401",
+        "model_root_sha256": "4f69654cb373cc4392fd048acf60d51d39d67e8176648a3e52a7936b0776cd14",
+        "backend": "mlx_lm",
+        "backend_sha256": "30fed668cd1f88b73527e0ce20942685ccccfd1eb104d0175bd6d0524b375e07",
+        "environment_sha256": "0baf97c88f050b96f80609c8fcdb859dfcf509523574e15e78a3e77cfab5d508",
+        "hardware_sha256": "c8baa7d3ff988ba85885da228624da76c5a85818ef2f1daa3b1d3128e4b95d6c",
+        "runtime_sha256": "9a2df32245169daa7f71bb0167ae1275fe2cd19b6087f677635d736cd96e76eb"
+      },
+      "identityAfter": {
+        "config_sha256": "9279e9a8c58d7656782dc02f787feaa45118f37109281acb88144b6a44093401",
+        "model_root_sha256": "4f69654cb373cc4392fd048acf60d51d39d67e8176648a3e52a7936b0776cd14",
+        "backend": "mlx_lm",
+        "backend_sha256": "30fed668cd1f88b73527e0ce20942685ccccfd1eb104d0175bd6d0524b375e07",
+        "environment_sha256": "0baf97c88f050b96f80609c8fcdb859dfcf509523574e15e78a3e77cfab5d508",
+        "hardware_sha256": "c8baa7d3ff988ba85885da228624da76c5a85818ef2f1daa3b1d3128e4b95d6c",
+        "runtime_sha256": "9a2df32245169daa7f71bb0167ae1275fe2cd19b6087f677635d736cd96e76eb"
+      },
+      "shutdownClean": true,
+      "counterStopped": true
+    },
+    {
+      "passed": true,
+      "budgetMiB": 2048,
+      "fixturesSha256": "f37c5eac10bdd7124b56362b34b0e13c4102339ce2a38569845f9cb407f45728",
+      "cases": [
+        {
+          "label": "prime-en",
+          "phase": "prime",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 32,
+          "cachedTokens": 0,
+          "completionTokens": 10,
+          "firstContentMs": 146.33633300036308,
+          "elapsedMs": 317.75329100128147,
+          "cpu": {
+            "averageBusyPercent": 25.299799405764617,
+            "peakBusyPercent": 27.270629322342614,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 27.270629322342614
+        },
+        {
+          "label": "prime-ja",
+          "phase": "prime",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 34,
+          "cachedTokens": 4,
+          "completionTokens": 10,
+          "firstContentMs": 99.96216699801153,
+          "elapsedMs": 265.0395839991688,
+          "cpu": {
+            "averageBusyPercent": 26.214869993128417,
+            "peakBusyPercent": 26.663714763649622,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 25.121633985052625
+        },
+        {
+          "label": "prime-zh",
+          "phase": "prime",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 27,
+          "cachedTokens": 4,
+          "completionTokens": 10,
+          "firstContentMs": 95.90112499790848,
+          "elapsedMs": 260.998624999047,
+          "cpu": {
+            "averageBusyPercent": 23.23979199242086,
+            "peakBusyPercent": 26.663714763649622,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 26.663714763649622
+        },
+        {
+          "label": "history-3",
+          "phase": "seed",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 3935,
+          "cachedTokens": 4,
+          "completionTokens": 10,
+          "firstContentMs": 7575.117833999684,
+          "elapsedMs": 7798.487292002392,
+          "cpu": {
+            "averageBusyPercent": 24.225037223942874,
+            "peakBusyPercent": 36.307286567245214,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 25.79881777632193
+        },
+        {
+          "label": "history-4",
+          "phase": "seed",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 3937,
+          "cachedTokens": 8,
+          "completionTokens": 10,
+          "firstContentMs": 7819.9214999986,
+          "elapsedMs": 8057.109916000627,
+          "cpu": {
+            "averageBusyPercent": 23.929203963874695,
+            "peakBusyPercent": 36.307286567245214,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 36.307286567245214
+        },
+        {
+          "label": "history-5",
+          "phase": "seed",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 3930,
+          "cachedTokens": 8,
+          "completionTokens": 10,
+          "firstContentMs": 7839.556000002631,
+          "elapsedMs": 8073.850625001796,
+          "cpu": {
+            "averageBusyPercent": 23.571628719123247,
+            "peakBusyPercent": 27.68759937639915,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 23.799650132297472
+        },
+        {
+          "label": "history-6",
+          "phase": "revisit",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 3935,
+          "cachedTokens": 3934,
+          "completionTokens": 10,
+          "firstContentMs": 87.86516699910862,
+          "elapsedMs": 302.05916699924273,
+          "cpu": {
+            "averageBusyPercent": 25.02053210029766,
+            "peakBusyPercent": 26.420627314937143,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 24.141136479380123
+        },
+        {
+          "label": "history-7",
+          "phase": "revisit",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 3937,
+          "cachedTokens": 3936,
+          "completionTokens": 10,
+          "firstContentMs": 98.14225000081933,
+          "elapsedMs": 312.80537500060746,
+          "cpu": {
+            "averageBusyPercent": 26.08953054039671,
+            "peakBusyPercent": 26.08953054039671,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 23.699365213775494
+        },
+        {
+          "label": "history-8",
+          "phase": "revisit",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 3930,
+          "cachedTokens": 3929,
+          "completionTokens": 10,
+          "firstContentMs": 114.6900830026425,
+          "elapsedMs": 332.4737080001796,
+          "cpu": {
+            "averageBusyPercent": 24.502315872644925,
+            "peakBusyPercent": 26.13301153120715,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 26.13301153120715
+        },
+        {
+          "label": "history-9",
+          "phase": "revisit",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 3935,
+          "cachedTokens": 3934,
+          "completionTokens": 10,
+          "firstContentMs": 98.94604200235335,
+          "elapsedMs": 324.1371670010267,
+          "cpu": {
+            "averageBusyPercent": 31.325040756323805,
+            "peakBusyPercent": 33.14857149456174,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 25.96516914421523
+        },
+        {
+          "label": "history-10",
+          "phase": "revisit",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 3937,
+          "cachedTokens": 3936,
+          "completionTokens": 10,
+          "firstContentMs": 96.9934579989058,
+          "elapsedMs": 321.34970799961593,
+          "cpu": {
+            "averageBusyPercent": 35.18521729087346,
+            "peakBusyPercent": 37.03600774692339,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 33.14857149456174
+        },
+        {
+          "label": "history-11",
+          "phase": "revisit",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 3930,
+          "cachedTokens": 3929,
+          "completionTokens": 10,
+          "firstContentMs": 95.78304200113053,
+          "elapsedMs": 324.5012500010489,
+          "cpu": {
+            "averageBusyPercent": 27.62525291923538,
+            "peakBusyPercent": 37.03600774692339,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 37.03600774692339
+        },
+        {
+          "label": "short-en",
+          "phase": "short",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 32,
+          "cachedTokens": 31,
+          "completionTokens": 10,
+          "firstContentMs": 61.3077499983774,
+          "elapsedMs": 231.4584579980874,
+          "cpu": {
+            "averageBusyPercent": 22.539846648912363,
+            "peakBusyPercent": 27.872972379802707,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 27.872972379802707
+        },
+        {
+          "label": "short-ja",
+          "phase": "short",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 34,
+          "cachedTokens": 33,
+          "completionTokens": 10,
+          "firstContentMs": 44.74866600139649,
+          "elapsedMs": 210.876625002129,
+          "cpu": {
+            "averageBusyPercent": 25.453573653324085,
+            "peakBusyPercent": 25.453573653324085,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 24.651583574866763
+        },
+        {
+          "label": "short-zh",
+          "phase": "short",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 27,
+          "cachedTokens": 26,
+          "completionTokens": 10,
+          "firstContentMs": 60.47200000102748,
+          "elapsedMs": 232.62454200084903,
+          "cpu": {
+            "averageBusyPercent": 23.493426399516817,
+            "peakBusyPercent": 26.369687146077283,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 26.369687146077283
+        },
+        {
+          "label": "en-decode",
+          "phase": "decode",
+          "answer": "The garden was a symphony of azure, a living canvas splashed with the deepest, most vibrant blue imaginable.  The grass, a shade of cerulean, shimmered under the sun, its blades so fine they seemed to dance in the breeze.  A gentle, constant hum vibrated through the air, a melody of buzzing bees and chirping crickets, all harmonizing with the rustling leaves of the blue hydrangeas that dotted the landscape.  \n\nThe trees, a majestic grove of ancient oaks, were draped in a canopy of sapphire leaves, their branches reaching towards the sky like outstretched arms.  Each leaf, a miniature masterpiece",
+          "promptTokens": 29,
+          "cachedTokens": 4,
+          "completionTokens": 128,
+          "firstContentMs": 144.17779200084624,
+          "elapsedMs": 2731.631209000625,
+          "cpu": {
+            "averageBusyPercent": 23.84671963218603,
+            "peakBusyPercent": 26.105629522284772,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 23.742329427835735
+        },
+        {
+          "label": "ja-decode",
+          "phase": "decode",
+          "answer": "青い庭は、まるで宝石のように輝く。その青は、太陽の光を反射したような、透明感のある青色だった。その庭には、緑の葉の茂る木々、花々、そして、静かな湖が浮かんでいた。湖の向こうには、青い空と、白い雲が浮かび上がる。  \n\n\n",
+          "promptTokens": 28,
+          "cachedTokens": 4,
+          "completionTokens": 70,
+          "firstContentMs": 97.57491699929233,
+          "elapsedMs": 1494.5003339998948,
+          "cpu": {
+            "averageBusyPercent": 24.210510885397323,
+            "peakBusyPercent": 27.2630852887415,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 24.276129183158393
+        },
+        {
+          "label": "zh-decode",
+          "phase": "decode",
+          "answer": "The air hummed with a gentle, iridescent melody, a symphony of buzzing bees and chirping crickets that seemed to dance in the twilight.  This was no ordinary garden, no, this was the Azure Garden, a place where the sky met the earth in a breathtaking tapestry of cerulean.  Towering, luminescent flora, each petal a swirling, iridescent blue, stretched towards the heavens, their leaves shimmering with an internal, ethereal light.  \n\nThe ground was a soft, moss-like carpet, a vibrant green that seemed to absorb the sunlight, leaving only a faint, blue glow that permeated the air.  ",
+          "promptTokens": 28,
+          "cachedTokens": 4,
+          "completionTokens": 128,
+          "firstContentMs": 98.44741699998849,
+          "elapsedMs": 2698.364167001273,
+          "cpu": {
+            "averageBusyPercent": 23.849281097089843,
+            "peakBusyPercent": 25.69336070282257,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 22.82974357584783
+        }
+      ],
+      "memory": [
+        {
+          "physicalBytes": 1989920976,
+          "rssBytes": 1923530752,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 4472832,
+            "max_bytes": 2147483648,
+            "entries": 1,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 1528095262,
+              "cache_bytes": 12419374,
+              "peak_bytes": 1616957761,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 13248954368
+        },
+        {
+          "physicalBytes": 1996622032,
+          "rssBytes": 1924104192,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 9158656,
+            "max_bytes": 2147483648,
+            "entries": 2,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 1534911006,
+              "cache_bytes": 12109732,
+              "peak_bytes": 1624615854,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 13242040320
+        },
+        {
+          "physicalBytes": 2022607056,
+          "rssBytes": 1923842048,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 13099008,
+            "max_bytes": 2147483648,
+            "entries": 3,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 1563025950,
+              "cache_bytes": 9950814,
+              "peak_bytes": 1624615854,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 13216088064
+        },
+        {
+          "physicalBytes": 2878310608,
+          "rssBytes": 1925398528,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 433225728,
+            "max_bytes": 2147483648,
+            "entries": 4,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 2385207838,
+              "cache_bytes": 41857376,
+              "peak_bytes": 2435066090,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 12293636096
+        },
+        {
+          "physicalBytes": 3299297488,
+          "rssBytes": 1925660672,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 853565440,
+            "max_bytes": 2147483648,
+            "entries": 5,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 2806080030,
+              "cache_bytes": 41797060,
+              "peak_bytes": 2855364834,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 12073304064
+        },
+        {
+          "physicalBytes": 3736586448,
+          "rssBytes": 1926053888,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 1273159680,
+            "max_bytes": 2147483648,
+            "entries": 6,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 3243139614,
+              "cache_bytes": 41758822,
+              "peak_bytes": 3290439042,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 11863064576
+        },
+        {
+          "physicalBytes": 3977185488,
+          "rssBytes": 1926447104,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 1273159680,
+            "max_bytes": 2147483648,
+            "entries": 6,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 2831639070,
+              "cache_bytes": 539828464,
+              "peak_bytes": 3443821768,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 11913904128
+        },
+        {
+          "physicalBytes": 3987327184,
+          "rssBytes": 1926856704,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 1273159680,
+            "max_bytes": 2147483648,
+            "entries": 6,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 2841010718,
+              "cache_bytes": 540515008,
+              "peak_bytes": 3603847318,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 12010733568
+        },
+        {
+          "physicalBytes": 3996551376,
+          "rssBytes": 1926905856,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 1273159680,
+            "max_bytes": 2147483648,
+            "entries": 6,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 2850382366,
+              "cache_bytes": 540646708,
+              "peak_bytes": 3612383886,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 11847483392
+        },
+        {
+          "physicalBytes": 3844032720,
+          "rssBytes": 1926905856,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 1273159680,
+            "max_bytes": 2147483648,
+            "entries": 6,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 2850382366,
+              "cache_bytes": 541615528,
+              "peak_bytes": 3616835214,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 11999821824
+        },
+        {
+          "physicalBytes": 3998714064,
+          "rssBytes": 1926905856,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 1273159680,
+            "max_bytes": 2147483648,
+            "entries": 6,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 2850382366,
+              "cache_bytes": 542516244,
+              "peak_bytes": 3616837270,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 11845140480
+        },
+        {
+          "physicalBytes": 3847047376,
+          "rssBytes": 1926905856,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 1273159680,
+            "max_bytes": 2147483648,
+            "entries": 6,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 2850382366,
+              "cache_bytes": 544631394,
+              "peak_bytes": 3616837270,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 11996659712
+        },
+        {
+          "physicalBytes": 3866249424,
+          "rssBytes": 1926938624,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 1273159680,
+            "max_bytes": 2147483648,
+            "entries": 6,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 2875941406,
+              "cache_bytes": 536917610,
+              "peak_bytes": 3616837270,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 11977424896
+        },
+        {
+          "physicalBytes": 3868641488,
+          "rssBytes": 1926971392,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 1273159680,
+            "max_bytes": 2147483648,
+            "entries": 6,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 2879349278,
+              "cache_bytes": 537163994,
+              "peak_bytes": 3616837270,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 11978129408
+        },
+        {
+          "physicalBytes": 3890727120,
+          "rssBytes": 1927004160,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 1273159680,
+            "max_bytes": 2147483648,
+            "entries": 6,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 2905727518,
+              "cache_bytes": 533051660,
+              "peak_bytes": 3616837270,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 11955961856
+        },
+        {
+          "physicalBytes": 3400927440,
+          "rssBytes": 1927020544,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 1289879552,
+            "max_bytes": 2147483648,
+            "entries": 7,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 2935546398,
+              "cache_bytes": 13046479,
+              "peak_bytes": 3616837270,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 12443926528
+        },
+        {
+          "physicalBytes": 3426781392,
+          "rssBytes": 1926971392,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 1300316160,
+            "max_bytes": 2147483648,
+            "entries": 8,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 2963661342,
+              "cache_bytes": 10551873,
+              "peak_bytes": 3616837270,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 12418777088
+        },
+        {
+          "physicalBytes": 3455338704,
+          "rssBytes": 1927069696,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 1316929536,
+            "max_bytes": 2147483648,
+            "entries": 9,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 2991776286,
+              "cache_bytes": 10812557,
+              "peak_bytes": 3616837270,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 12413124608
+        }
+      ],
+      "preflightSha256": "2c327c6c8c0b010b6ae9c87f0471868251821a857c5f18c10ef5a51148ffd8e6",
+      "identityBefore": {
+        "config_sha256": "9279e9a8c58d7656782dc02f787feaa45118f37109281acb88144b6a44093401",
+        "model_root_sha256": "4f69654cb373cc4392fd048acf60d51d39d67e8176648a3e52a7936b0776cd14",
+        "backend": "mlx_lm",
+        "backend_sha256": "30fed668cd1f88b73527e0ce20942685ccccfd1eb104d0175bd6d0524b375e07",
+        "environment_sha256": "7760f5b4e7b8b3dd369f4077a1e32498ad8c80dee71a11252a26a50c6af505d7",
+        "hardware_sha256": "c8baa7d3ff988ba85885da228624da76c5a85818ef2f1daa3b1d3128e4b95d6c",
+        "runtime_sha256": "9a2df32245169daa7f71bb0167ae1275fe2cd19b6087f677635d736cd96e76eb"
+      },
+      "identityAfter": {
+        "config_sha256": "9279e9a8c58d7656782dc02f787feaa45118f37109281acb88144b6a44093401",
+        "model_root_sha256": "4f69654cb373cc4392fd048acf60d51d39d67e8176648a3e52a7936b0776cd14",
+        "backend": "mlx_lm",
+        "backend_sha256": "30fed668cd1f88b73527e0ce20942685ccccfd1eb104d0175bd6d0524b375e07",
+        "environment_sha256": "7760f5b4e7b8b3dd369f4077a1e32498ad8c80dee71a11252a26a50c6af505d7",
+        "hardware_sha256": "c8baa7d3ff988ba85885da228624da76c5a85818ef2f1daa3b1d3128e4b95d6c",
+        "runtime_sha256": "9a2df32245169daa7f71bb0167ae1275fe2cd19b6087f677635d736cd96e76eb"
+      },
+      "shutdownClean": true,
+      "counterStopped": true
+    },
+    {
+      "passed": true,
+      "budgetMiB": 2048,
+      "fixturesSha256": "f37c5eac10bdd7124b56362b34b0e13c4102339ce2a38569845f9cb407f45728",
+      "cases": [
+        {
+          "label": "prime-en",
+          "phase": "prime",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 32,
+          "cachedTokens": 0,
+          "completionTokens": 10,
+          "firstContentMs": 139.6828329998243,
+          "elapsedMs": 347.3954159999266,
+          "cpu": {
+            "averageBusyPercent": 62.43774954267665,
+            "peakBusyPercent": 62.71872782450782,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 57.17584525134415
+        },
+        {
+          "label": "prime-ja",
+          "phase": "prime",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 34,
+          "cachedTokens": 4,
+          "completionTokens": 10,
+          "firstContentMs": 115.34983299861779,
+          "elapsedMs": 305.96020799930557,
+          "cpu": {
+            "averageBusyPercent": 78.25756977134357,
+            "peakBusyPercent": 78.25756977134357,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 62.71872782450782
+        },
+        {
+          "label": "prime-zh",
+          "phase": "prime",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 27,
+          "cachedTokens": 4,
+          "completionTokens": 10,
+          "firstContentMs": 105.93683399929432,
+          "elapsedMs": 312.53791699782596,
+          "cpu": {
+            "averageBusyPercent": 62.67500821429485,
+            "peakBusyPercent": 77.93322562158502,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 77.93322562158502
+        },
+        {
+          "label": "history-3",
+          "phase": "seed",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 3935,
+          "cachedTokens": 4,
+          "completionTokens": 10,
+          "firstContentMs": 9175.792083999113,
+          "elapsedMs": 9412.959792000038,
+          "cpu": {
+            "averageBusyPercent": 40.39690017112314,
+            "peakBusyPercent": 67.96824298717662,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 64.50127363781996
+        },
+        {
+          "label": "history-4",
+          "phase": "seed",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 3937,
+          "cachedTokens": 8,
+          "completionTokens": 10,
+          "firstContentMs": 8635.781291999592,
+          "elapsedMs": 8876.797041997634,
+          "cpu": {
+            "averageBusyPercent": 27.957093084049852,
+            "peakBusyPercent": 50.19091363987287,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 24.30124344634671
+        },
+        {
+          "label": "history-5",
+          "phase": "seed",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 3930,
+          "cachedTokens": 8,
+          "completionTokens": 10,
+          "firstContentMs": 8520.06620800239,
+          "elapsedMs": 8759.56245800262,
+          "cpu": {
+            "averageBusyPercent": 24.452685143291525,
+            "peakBusyPercent": 34.42524610243966,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 23.477357906179584
+        },
+        {
+          "label": "history-6",
+          "phase": "revisit",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 3935,
+          "cachedTokens": 3934,
+          "completionTokens": 10,
+          "firstContentMs": 90.06437499920139,
+          "elapsedMs": 312.76558399986243,
+          "cpu": {
+            "averageBusyPercent": 23.985321464076236,
+            "peakBusyPercent": 24.90088218049518,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 24.90088218049518
+        },
+        {
+          "label": "history-7",
+          "phase": "revisit",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 3937,
+          "cachedTokens": 3936,
+          "completionTokens": 10,
+          "firstContentMs": 98.4054170003219,
+          "elapsedMs": 318.08912500127917,
+          "cpu": {
+            "averageBusyPercent": 25.69202515570801,
+            "peakBusyPercent": 26.18171085252193,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 24.07431281574148
+        },
+        {
+          "label": "history-8",
+          "phase": "revisit",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 3930,
+          "cachedTokens": 3929,
+          "completionTokens": 10,
+          "firstContentMs": 103.27983299794141,
+          "elapsedMs": 322.9930419984157,
+          "cpu": {
+            "averageBusyPercent": 25.240305774370057,
+            "peakBusyPercent": 27.8936645998929,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 26.18171085252193
+        },
+        {
+          "label": "history-9",
+          "phase": "revisit",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 3935,
+          "cachedTokens": 3934,
+          "completionTokens": 10,
+          "firstContentMs": 99.46137499719043,
+          "elapsedMs": 315.8077919979405,
+          "cpu": {
+            "averageBusyPercent": 27.461468810929706,
+            "peakBusyPercent": 29.521773673901414,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 25.091157977024658
+        },
+        {
+          "label": "history-10",
+          "phase": "revisit",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 3937,
+          "cachedTokens": 3936,
+          "completionTokens": 10,
+          "firstContentMs": 97.2660410006938,
+          "elapsedMs": 330.08683300067787,
+          "cpu": {
+            "averageBusyPercent": 30.58769016374933,
+            "peakBusyPercent": 32.074525418367465,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 29.521773673901414
+        },
+        {
+          "label": "history-11",
+          "phase": "revisit",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 3930,
+          "cachedTokens": 3929,
+          "completionTokens": 10,
+          "firstContentMs": 94.92945799865993,
+          "elapsedMs": 320.9607499993581,
+          "cpu": {
+            "averageBusyPercent": 27.153844566363993,
+            "peakBusyPercent": 32.074525418367465,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 32.074525418367465
+        },
+        {
+          "label": "short-en",
+          "phase": "short",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 32,
+          "cachedTokens": 31,
+          "completionTokens": 10,
+          "firstContentMs": 59.89916699763853,
+          "elapsedMs": 236.11258399978396,
+          "cpu": {
+            "averageBusyPercent": 30.382642896628443,
+            "peakBusyPercent": 30.382642896628443,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 29.225679799968347
+        },
+        {
+          "label": "short-ja",
+          "phase": "short",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 34,
+          "cachedTokens": 33,
+          "completionTokens": 10,
+          "firstContentMs": 45.6704170028388,
+          "elapsedMs": 215.40087500034133,
+          "cpu": {
+            "averageBusyPercent": 25.653239633189727,
+            "peakBusyPercent": 30.01290007651838,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 30.01290007651838
+        },
+        {
+          "label": "short-zh",
+          "phase": "short",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 27,
+          "cachedTokens": 26,
+          "completionTokens": 10,
+          "firstContentMs": 45.158042001276044,
+          "elapsedMs": 215.33800000179326,
+          "cpu": {
+            "averageBusyPercent": 25.407212988766677,
+            "peakBusyPercent": 30.030516818972444,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 26.171606247360028
+        },
+        {
+          "label": "en-decode",
+          "phase": "decode",
+          "answer": "The garden was a symphony of azure, a living canvas splashed with the deepest, most vibrant blue imaginable.  The grass, a shade of cerulean, shimmered under the sun, its blades so fine they seemed to dance in the breeze.  A gentle, constant hum vibrated through the air, a melody of buzzing bees and chirping crickets, all harmonizing with the rustling leaves of the blue hydrangeas that dotted the landscape.  \n\nThe trees, a majestic grove of ancient oaks, were draped in a canopy of sapphire leaves, their branches reaching towards the sky like outstretched arms.  Each leaf, a miniature masterpiece",
+          "promptTokens": 29,
+          "cachedTokens": 4,
+          "completionTokens": 128,
+          "firstContentMs": 147.30220799901872,
+          "elapsedMs": 2778.0729579972103,
+          "cpu": {
+            "averageBusyPercent": 24.67416671498394,
+            "peakBusyPercent": 30.030516818972444,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 30.030516818972444
+        },
+        {
+          "label": "ja-decode",
+          "phase": "decode",
+          "answer": "青い庭は、まるで宝石のように輝く。その青は、太陽の光を反射したような、透明感のある青色だった。その庭には、緑の葉の茂る木々、花々、そして、静かな湖が浮かんでいた。湖の向こうには、青い空と、白い雲が浮かび上がる。  \n\n\n",
+          "promptTokens": 28,
+          "cachedTokens": 4,
+          "completionTokens": 70,
+          "firstContentMs": 122.54658299934817,
+          "elapsedMs": 1560.97808299819,
+          "cpu": {
+            "averageBusyPercent": 24.845762297514515,
+            "peakBusyPercent": 31.45552865588407,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 24.507386766249404
+        },
+        {
+          "label": "zh-decode",
+          "phase": "decode",
+          "answer": "The air hummed with a gentle, iridescent melody, a symphony of buzzing bees and chirping crickets that seemed to dance in the twilight.  This was no ordinary garden, no, this was the Azure Garden, a place where the sky met the earth in a breathtaking tapestry of cerulean.  Towering, luminescent flora, each petal a swirling, iridescent blue, stretched towards the heavens, their leaves shimmering with an internal, ethereal light.  \n\nThe ground was a soft, moss-like carpet, a vibrant green that seemed to absorb the sunlight, leaving only a faint, blue glow that permeated the air.  ",
+          "promptTokens": 28,
+          "cachedTokens": 4,
+          "completionTokens": 128,
+          "firstContentMs": 130.63320799847133,
+          "elapsedMs": 2962.9534580017207,
+          "cpu": {
+            "averageBusyPercent": 23.8784474641676,
+            "peakBusyPercent": 26.111998129852438,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 25.283686274447852
+        }
+      ],
+      "memory": [
+        {
+          "physicalBytes": 1986398440,
+          "rssBytes": 1919860736,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 4472832,
+            "max_bytes": 2147483648,
+            "entries": 1,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 1528095262,
+              "cache_bytes": 12418316,
+              "peak_bytes": 1616957761,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 12726337536
+        },
+        {
+          "physicalBytes": 1993050344,
+          "rssBytes": 1920106496,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 9158656,
+            "max_bytes": 2147483648,
+            "entries": 2,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 1534911006,
+              "cache_bytes": 12125604,
+              "peak_bytes": 1624637894,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 12627247104
+        },
+        {
+          "physicalBytes": 2019051752,
+          "rssBytes": 1920139264,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 13099008,
+            "max_bytes": 2147483648,
+            "entries": 3,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 1563025950,
+              "cache_bytes": 9951322,
+              "peak_bytes": 1624637894,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 12539822080
+        },
+        {
+          "physicalBytes": 2874624232,
+          "rssBytes": 1921581056,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 433225728,
+            "max_bytes": 2147483648,
+            "entries": 4,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 2385207838,
+              "cache_bytes": 41862496,
+              "peak_bytes": 2435066090,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 12191694848
+        },
+        {
+          "physicalBytes": 3295529192,
+          "rssBytes": 1921761280,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 853565440,
+            "max_bytes": 2147483648,
+            "entries": 5,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 2806080030,
+              "cache_bytes": 41797056,
+              "peak_bytes": 2855364834,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 12038455296
+        },
+        {
+          "physicalBytes": 3732687080,
+          "rssBytes": 1922023424,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 1273159680,
+            "max_bytes": 2147483648,
+            "entries": 6,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 3243139614,
+              "cache_bytes": 41759334,
+              "peak_bytes": 3290439042,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 11920277504
+        },
+        {
+          "physicalBytes": 3973351656,
+          "rssBytes": 1922498560,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 1273159680,
+            "max_bytes": 2147483648,
+            "entries": 6,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 2831639070,
+              "cache_bytes": 539828976,
+              "peak_bytes": 3443821768,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 11678875648
+        },
+        {
+          "physicalBytes": 3983657192,
+          "rssBytes": 1922940928,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 1273159680,
+            "max_bytes": 2147483648,
+            "entries": 6,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 2841010718,
+              "cache_bytes": 540678336,
+              "peak_bytes": 3603847830,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 11675795456
+        },
+        {
+          "physicalBytes": 3992717544,
+          "rssBytes": 1922940928,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 1273159680,
+            "max_bytes": 2147483648,
+            "entries": 6,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 2850382366,
+              "cache_bytes": 540646196,
+              "peak_bytes": 3612383374,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 11677220864
+        },
+        {
+          "physicalBytes": 3993602280,
+          "rssBytes": 1922940928,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 1273159680,
+            "max_bytes": 2147483648,
+            "entries": 6,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 2850382366,
+              "cache_bytes": 541451176,
+              "peak_bytes": 3616835214,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 11676844032
+        },
+        {
+          "physicalBytes": 3995388136,
+          "rssBytes": 1922957312,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 1273159680,
+            "max_bytes": 2147483648,
+            "entries": 6,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 2850382366,
+              "cache_bytes": 543220250,
+              "peak_bytes": 3616836758,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 11688460288
+        },
+        {
+          "physicalBytes": 3835463912,
+          "rssBytes": 1922957312,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 1273159680,
+            "max_bytes": 2147483648,
+            "entries": 6,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 2850382366,
+              "cache_bytes": 537077344,
+              "peak_bytes": 3616836758,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 11840651264
+        },
+        {
+          "physicalBytes": 3863136488,
+          "rssBytes": 1922990080,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 1273159680,
+            "max_bytes": 2147483648,
+            "entries": 6,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 2875941406,
+              "cache_bytes": 536953458,
+              "peak_bytes": 3616836758,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 11819614208
+        },
+        {
+          "physicalBytes": 3887974632,
+          "rssBytes": 1923039232,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 1273159680,
+            "max_bytes": 2147483648,
+            "entries": 6,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 2879349278,
+              "cache_bytes": 535300904,
+              "peak_bytes": 3616836758,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 11794415616
+        },
+        {
+          "physicalBytes": 3890874600,
+          "rssBytes": 1923088384,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 1273159680,
+            "max_bytes": 2147483648,
+            "entries": 6,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 2905727518,
+              "cache_bytes": 536939304,
+              "peak_bytes": 3616836758,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 11766366208
+        },
+        {
+          "physicalBytes": 3397339368,
+          "rssBytes": 1923072000,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 1289879552,
+            "max_bytes": 2147483648,
+            "entries": 7,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 2935775774,
+              "cache_bytes": 13037715,
+              "peak_bytes": 3616836758,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 12257280000
+        },
+        {
+          "physicalBytes": 3423144168,
+          "rssBytes": 1923104768,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 1300316160,
+            "max_bytes": 2147483648,
+            "entries": 8,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 2963890718,
+              "cache_bytes": 10545563,
+              "peak_bytes": 3616836758,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 12230443008
+        },
+        {
+          "physicalBytes": 3451570408,
+          "rssBytes": 1922940928,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 1316929536,
+            "max_bytes": 2147483648,
+            "entries": 9,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 2992005662,
+              "cache_bytes": 10699325,
+              "peak_bytes": 3616836758,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 12213567488
+        }
+      ],
+      "preflightSha256": "97baae8034bedbe0302d91b7687bba65893d6377e84fc0d6f0b9dade24a6ec04",
+      "identityBefore": {
+        "config_sha256": "9279e9a8c58d7656782dc02f787feaa45118f37109281acb88144b6a44093401",
+        "model_root_sha256": "4f69654cb373cc4392fd048acf60d51d39d67e8176648a3e52a7936b0776cd14",
+        "backend": "mlx_lm",
+        "backend_sha256": "30fed668cd1f88b73527e0ce20942685ccccfd1eb104d0175bd6d0524b375e07",
+        "environment_sha256": "7760f5b4e7b8b3dd369f4077a1e32498ad8c80dee71a11252a26a50c6af505d7",
+        "hardware_sha256": "c8baa7d3ff988ba85885da228624da76c5a85818ef2f1daa3b1d3128e4b95d6c",
+        "runtime_sha256": "9a2df32245169daa7f71bb0167ae1275fe2cd19b6087f677635d736cd96e76eb"
+      },
+      "identityAfter": {
+        "config_sha256": "9279e9a8c58d7656782dc02f787feaa45118f37109281acb88144b6a44093401",
+        "model_root_sha256": "4f69654cb373cc4392fd048acf60d51d39d67e8176648a3e52a7936b0776cd14",
+        "backend": "mlx_lm",
+        "backend_sha256": "30fed668cd1f88b73527e0ce20942685ccccfd1eb104d0175bd6d0524b375e07",
+        "environment_sha256": "7760f5b4e7b8b3dd369f4077a1e32498ad8c80dee71a11252a26a50c6af505d7",
+        "hardware_sha256": "c8baa7d3ff988ba85885da228624da76c5a85818ef2f1daa3b1d3128e4b95d6c",
+        "runtime_sha256": "9a2df32245169daa7f71bb0167ae1275fe2cd19b6087f677635d736cd96e76eb"
+      },
+      "shutdownClean": true,
+      "counterStopped": true
+    },
+    {
+      "passed": true,
+      "budgetMiB": 1536,
+      "fixturesSha256": "f37c5eac10bdd7124b56362b34b0e13c4102339ce2a38569845f9cb407f45728",
+      "cases": [
+        {
+          "label": "prime-en",
+          "phase": "prime",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 32,
+          "cachedTokens": 0,
+          "completionTokens": 10,
+          "firstContentMs": 136.6859170011594,
+          "elapsedMs": 317.5746250017255,
+          "cpu": {
+            "averageBusyPercent": 26.62298055058725,
+            "peakBusyPercent": 26.62298055058725,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 24.860823298394514
+        },
+        {
+          "label": "prime-ja",
+          "phase": "prime",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 34,
+          "cachedTokens": 4,
+          "completionTokens": 10,
+          "firstContentMs": 101.7882499982079,
+          "elapsedMs": 276.6242500001681,
+          "cpu": {
+            "averageBusyPercent": 25.036186787411605,
+            "peakBusyPercent": 30.92234630257463,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 25.323846595618285
+        },
+        {
+          "label": "prime-zh",
+          "phase": "prime",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 27,
+          "cachedTokens": 4,
+          "completionTokens": 10,
+          "firstContentMs": 115.62550000235206,
+          "elapsedMs": 291.0591670006397,
+          "cpu": {
+            "averageBusyPercent": 24.33218224907411,
+            "peakBusyPercent": 31.893843642457135,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 25.271161376733
+        },
+        {
+          "label": "history-3",
+          "phase": "seed",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 3935,
+          "cachedTokens": 4,
+          "completionTokens": 10,
+          "firstContentMs": 7977.505750001001,
+          "elapsedMs": 8214.104124999722,
+          "cpu": {
+            "averageBusyPercent": 24.74601313367868,
+            "peakBusyPercent": 47.40065689795341,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 24.847450197102646
+        },
+        {
+          "label": "history-4",
+          "phase": "seed",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 3937,
+          "cachedTokens": 8,
+          "completionTokens": 10,
+          "firstContentMs": 8857.906165998429,
+          "elapsedMs": 9102.240208001604,
+          "cpu": {
+            "averageBusyPercent": 23.507553198862492,
+            "peakBusyPercent": 35.196033220717865,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 25.15311408834302
+        },
+        {
+          "label": "history-5",
+          "phase": "seed",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 3930,
+          "cachedTokens": 8,
+          "completionTokens": 10,
+          "firstContentMs": 9095.172207998985,
+          "elapsedMs": 9334.240374999354,
+          "cpu": {
+            "averageBusyPercent": 23.58121427400061,
+            "peakBusyPercent": 27.805797649857503,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 24.602143324429477
+        },
+        {
+          "label": "history-6",
+          "phase": "revisit",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 3935,
+          "cachedTokens": 3934,
+          "completionTokens": 10,
+          "firstContentMs": 88.78691700010677,
+          "elapsedMs": 303.11295799765503,
+          "cpu": {
+            "averageBusyPercent": 25.823681970249126,
+            "peakBusyPercent": 27.088184511812983,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 24.01108786497407
+        },
+        {
+          "label": "history-7",
+          "phase": "revisit",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 3937,
+          "cachedTokens": 3936,
+          "completionTokens": 10,
+          "firstContentMs": 94.5477919995028,
+          "elapsedMs": 344.34908399998676,
+          "cpu": {
+            "averageBusyPercent": 23.752421121543556,
+            "peakBusyPercent": 27.31915462999465,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 25.81034667239143
+        },
+        {
+          "label": "history-8",
+          "phase": "revisit",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 3930,
+          "cachedTokens": 3929,
+          "completionTokens": 10,
+          "firstContentMs": 111.71529200146324,
+          "elapsedMs": 327.96925000002375,
+          "cpu": {
+            "averageBusyPercent": 24.027872852948757,
+            "peakBusyPercent": 25.43608638034394,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 24.599302544887735
+        },
+        {
+          "label": "history-9",
+          "phase": "revisit",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 3935,
+          "cachedTokens": 3934,
+          "completionTokens": 10,
+          "firstContentMs": 95.03004200087162,
+          "elapsedMs": 309.2712079997,
+          "cpu": {
+            "averageBusyPercent": 23.779441665495643,
+            "peakBusyPercent": 25.821408457837805,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 25.43608638034394
+        },
+        {
+          "label": "history-10",
+          "phase": "revisit",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 3937,
+          "cachedTokens": 3936,
+          "completionTokens": 10,
+          "firstContentMs": 93.23579199917731,
+          "elapsedMs": 312.7172499989683,
+          "cpu": {
+            "averageBusyPercent": 25.24700484008583,
+            "peakBusyPercent": 26.158345502255337,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 23.637947825440666
+        },
+        {
+          "label": "history-11",
+          "phase": "revisit",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 3930,
+          "cachedTokens": 3929,
+          "completionTokens": 10,
+          "firstContentMs": 96.54016700005741,
+          "elapsedMs": 316.32770899886964,
+          "cpu": {
+            "averageBusyPercent": 24.455224625228418,
+            "peakBusyPercent": 26.158345502255337,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 26.158345502255337
+        },
+        {
+          "label": "short-en",
+          "phase": "short",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 32,
+          "cachedTokens": 4,
+          "completionTokens": 10,
+          "firstContentMs": 172.63083400030155,
+          "elapsedMs": 343.4762920005596,
+          "cpu": {
+            "averageBusyPercent": 25.818548700812308,
+            "peakBusyPercent": 27.007403036266098,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 25.09893258970923
+        },
+        {
+          "label": "short-ja",
+          "phase": "short",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 34,
+          "cachedTokens": 4,
+          "completionTokens": 10,
+          "firstContentMs": 98.91970800163108,
+          "elapsedMs": 266.6276250020019,
+          "cpu": {
+            "averageBusyPercent": 24.44170294322845,
+            "peakBusyPercent": 27.007403036266098,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 27.007403036266098
+        },
+        {
+          "label": "short-zh",
+          "phase": "short",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 27,
+          "cachedTokens": 4,
+          "completionTokens": 10,
+          "firstContentMs": 102.15774999960558,
+          "elapsedMs": 271.77683300033095,
+          "cpu": {
+            "averageBusyPercent": 23.398842974645543,
+            "peakBusyPercent": 25.186610190091614,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 24.754799776541738
+        },
+        {
+          "label": "en-decode",
+          "phase": "decode",
+          "answer": "The garden was a symphony of azure, a living canvas splashed with the deepest, most vibrant blue imaginable.  The grass, a shade of cerulean, shimmered under the sun, its blades so fine they seemed to dance in the breeze.  A gentle, constant hum vibrated through the air, a melody of buzzing bees and chirping crickets, all harmonizing with the rustling leaves of the blue hydrangeas that dotted the landscape.  \n\nThe trees, a majestic grove of ancient oaks, were draped in a canopy of sapphire leaves, their branches reaching towards the sky like outstretched arms.  Each leaf, a miniature masterpiece",
+          "promptTokens": 29,
+          "cachedTokens": 4,
+          "completionTokens": 128,
+          "firstContentMs": 112.23724999945262,
+          "elapsedMs": 2746.880082999269,
+          "cpu": {
+            "averageBusyPercent": 23.96337005193388,
+            "peakBusyPercent": 25.09913213455075,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 24.01026172249563
+        },
+        {
+          "label": "ja-decode",
+          "phase": "decode",
+          "answer": "青い庭は、まるで宝石のように輝く。その青は、太陽の光を反射したような、透明感のある青色だった。その庭には、緑の葉の茂る木々、花々、そして、静かな湖が浮かんでいた。湖の向こうには、青い空と、白い雲が浮かび上がる。  \n\n\n",
+          "promptTokens": 28,
+          "cachedTokens": 4,
+          "completionTokens": 70,
+          "firstContentMs": 127.69116699928418,
+          "elapsedMs": 1809.2373330000555,
+          "cpu": {
+            "averageBusyPercent": 24.029098100072446,
+            "peakBusyPercent": 25.7781471348922,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 24.795179560412745
+        },
+        {
+          "label": "zh-decode",
+          "phase": "decode",
+          "answer": "The air hummed with a gentle, iridescent melody, a symphony of buzzing bees and chirping crickets that seemed to dance in the twilight.  This was no ordinary garden, no, this was the Azure Garden, a place where the sky met the earth in a breathtaking tapestry of cerulean.  Towering, luminescent flora, each petal a swirling, iridescent blue, stretched towards the heavens, their leaves shimmering with an internal, ethereal light.  \n\nThe ground was a soft, moss-like carpet, a vibrant green that seemed to absorb the sunlight, leaving only a faint, blue glow that permeated the air.  ",
+          "promptTokens": 28,
+          "cachedTokens": 4,
+          "completionTokens": 128,
+          "firstContentMs": 138.48125000004075,
+          "elapsedMs": 2815.285249998851,
+          "cpu": {
+            "averageBusyPercent": 24.194561220572155,
+            "peakBusyPercent": 27.471031737188127,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 23.735201014749418
+        }
+      ],
+      "memory": [
+        {
+          "physicalBytes": 1990052048,
+          "rssBytes": 1923678208,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 4472832,
+            "max_bytes": 1610612736,
+            "entries": 1,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 1528095262,
+              "cache_bytes": 12418862,
+              "peak_bytes": 1616957761,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 13343260672
+        },
+        {
+          "physicalBytes": 1996703952,
+          "rssBytes": 1924202496,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 9158656,
+            "max_bytes": 1610612736,
+            "entries": 2,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 1534911006,
+              "cache_bytes": 12109220,
+              "peak_bytes": 1624599470,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 13360398336
+        },
+        {
+          "physicalBytes": 2022688976,
+          "rssBytes": 1924071424,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 13099008,
+            "max_bytes": 1610612736,
+            "entries": 3,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 1563025950,
+              "cache_bytes": 9951322,
+              "peak_bytes": 1624599470,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 13405421568
+        },
+        {
+          "physicalBytes": 2878277840,
+          "rssBytes": 1925382144,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 433225728,
+            "max_bytes": 1610612736,
+            "entries": 4,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 2385207838,
+              "cache_bytes": 41857872,
+              "peak_bytes": 2435066090,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 12547555328
+        },
+        {
+          "physicalBytes": 3299264720,
+          "rssBytes": 1925644288,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 853565440,
+            "max_bytes": 1610612736,
+            "entries": 5,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 2806080030,
+              "cache_bytes": 41797060,
+              "peak_bytes": 2855364834,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 12115640320
+        },
+        {
+          "physicalBytes": 3736324304,
+          "rssBytes": 1925677056,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 1273159680,
+            "max_bytes": 1610612736,
+            "entries": 6,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 3243139614,
+              "cache_bytes": 41759846,
+              "peak_bytes": 3290439042,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 11750801408
+        },
+        {
+          "physicalBytes": 3782871248,
+          "rssBytes": 1926381568,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 1260060672,
+            "max_bytes": 1610612736,
+            "entries": 3,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 2794136094,
+              "cache_bytes": 537255012,
+              "peak_bytes": 3290439042,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 11703894016
+        },
+        {
+          "physicalBytes": 3791571152,
+          "rssBytes": 1926594560,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 1260060672,
+            "max_bytes": 1610612736,
+            "entries": 3,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 2803491358,
+              "cache_bytes": 536386788,
+              "peak_bytes": 3309178518,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 11746885632
+        },
+        {
+          "physicalBytes": 3796928720,
+          "rssBytes": 1926610944,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 1260060672,
+            "max_bytes": 1610612736,
+            "entries": 3,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 2812863006,
+              "cache_bytes": 532355406,
+              "peak_bytes": 3318603918,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 11755356160
+        },
+        {
+          "physicalBytes": 3797944528,
+          "rssBytes": 1926660096,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 1260060672,
+            "max_bytes": 1610612736,
+            "entries": 3,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 2812863006,
+              "cache_bytes": 533210012,
+              "peak_bytes": 3320366512,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 11753881600
+        },
+        {
+          "physicalBytes": 3796502736,
+          "rssBytes": 1926529024,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 1260060672,
+            "max_bytes": 1610612736,
+            "entries": 3,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 2812863006,
+              "cache_bytes": 531899342,
+              "peak_bytes": 3320366512,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 11755323392
+        },
+        {
+          "physicalBytes": 3797305552,
+          "rssBytes": 1926627328,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 1260060672,
+            "max_bytes": 1610612736,
+            "entries": 3,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 2812863006,
+              "cache_bytes": 532652564,
+              "peak_bytes": 3320366512,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 11754684416
+        },
+        {
+          "physicalBytes": 2885470416,
+          "rssBytes": 1926168576,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 844406784,
+            "max_bytes": 1610612736,
+            "entries": 3,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 2396348958,
+              "cache_bytes": 37352888,
+              "peak_bytes": 3320366512,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 12666585088
+        },
+        {
+          "physicalBytes": 2863794384,
+          "rssBytes": 1926316032,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 849092608,
+            "max_bytes": 1610612736,
+            "entries": 4,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 2401477150,
+              "cache_bytes": 10537544,
+              "peak_bytes": 3320366512,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 12688048128
+        },
+        {
+          "physicalBytes": 2891139280,
+          "rssBytes": 1925922816,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 853032960,
+            "max_bytes": 1610612736,
+            "entries": 5,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 2429592094,
+              "cache_bytes": 9950814,
+              "peak_bytes": 3320366512,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 12660703232
+        },
+        {
+          "physicalBytes": 2897463504,
+          "rssBytes": 1926578176,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 869752832,
+            "max_bytes": 1610612736,
+            "entries": 6,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 2434179614,
+              "cache_bytes": 11159387,
+              "peak_bytes": 3320366512,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 12655214592
+        },
+        {
+          "physicalBytes": 2925021392,
+          "rssBytes": 1926774784,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 880189440,
+            "max_bytes": 1610612736,
+            "entries": 7,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 2462294558,
+              "cache_bytes": 10495953,
+              "peak_bytes": 3320366512,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 12627755008
+        },
+        {
+          "physicalBytes": 2953545936,
+          "rssBytes": 1926807552,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 896802816,
+            "max_bytes": 1610612736,
+            "entries": 8,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 2490409502,
+              "cache_bytes": 10812511,
+              "peak_bytes": 3320366512,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 12600000512
+        }
+      ],
+      "preflightSha256": "2373319b3bbd8c88a5616293784616d7d5832238c6255a1653c8aca5f31b0eac",
+      "identityBefore": {
+        "config_sha256": "9279e9a8c58d7656782dc02f787feaa45118f37109281acb88144b6a44093401",
+        "model_root_sha256": "4f69654cb373cc4392fd048acf60d51d39d67e8176648a3e52a7936b0776cd14",
+        "backend": "mlx_lm",
+        "backend_sha256": "30fed668cd1f88b73527e0ce20942685ccccfd1eb104d0175bd6d0524b375e07",
+        "environment_sha256": "0baf97c88f050b96f80609c8fcdb859dfcf509523574e15e78a3e77cfab5d508",
+        "hardware_sha256": "c8baa7d3ff988ba85885da228624da76c5a85818ef2f1daa3b1d3128e4b95d6c",
+        "runtime_sha256": "9a2df32245169daa7f71bb0167ae1275fe2cd19b6087f677635d736cd96e76eb"
+      },
+      "identityAfter": {
+        "config_sha256": "9279e9a8c58d7656782dc02f787feaa45118f37109281acb88144b6a44093401",
+        "model_root_sha256": "4f69654cb373cc4392fd048acf60d51d39d67e8176648a3e52a7936b0776cd14",
+        "backend": "mlx_lm",
+        "backend_sha256": "30fed668cd1f88b73527e0ce20942685ccccfd1eb104d0175bd6d0524b375e07",
+        "environment_sha256": "0baf97c88f050b96f80609c8fcdb859dfcf509523574e15e78a3e77cfab5d508",
+        "hardware_sha256": "c8baa7d3ff988ba85885da228624da76c5a85818ef2f1daa3b1d3128e4b95d6c",
+        "runtime_sha256": "9a2df32245169daa7f71bb0167ae1275fe2cd19b6087f677635d736cd96e76eb"
+      },
+      "shutdownClean": true,
+      "counterStopped": true
+    },
+    {
+      "passed": true,
+      "budgetMiB": 1024,
+      "fixturesSha256": "f37c5eac10bdd7124b56362b34b0e13c4102339ce2a38569845f9cb407f45728",
+      "cases": [
+        {
+          "label": "prime-en",
+          "phase": "prime",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 32,
+          "cachedTokens": 0,
+          "completionTokens": 10,
+          "firstContentMs": 143.79316700069467,
+          "elapsedMs": 321.12612499986426,
+          "cpu": {
+            "averageBusyPercent": 24.537058245130073,
+            "peakBusyPercent": 26.330598001575307,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 26.330598001575307
+        },
+        {
+          "label": "prime-ja",
+          "phase": "prime",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 34,
+          "cachedTokens": 4,
+          "completionTokens": 10,
+          "firstContentMs": 101.11262500140583,
+          "elapsedMs": 271.99504199961666,
+          "cpu": {
+            "averageBusyPercent": 23.919362530107556,
+            "peakBusyPercent": 26.180535181386176,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 25.374008654332044
+        },
+        {
+          "label": "prime-zh",
+          "phase": "prime",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 27,
+          "cachedTokens": 4,
+          "completionTokens": 10,
+          "firstContentMs": 105.46858300222084,
+          "elapsedMs": 279.597916000057,
+          "cpu": {
+            "averageBusyPercent": 23.803811072581944,
+            "peakBusyPercent": 25.844424062442418,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 24.400944385436425
+        },
+        {
+          "label": "history-3",
+          "phase": "seed",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 3935,
+          "cachedTokens": 4,
+          "completionTokens": 10,
+          "firstContentMs": 8809.845457999472,
+          "elapsedMs": 9054.535207997105,
+          "cpu": {
+            "averageBusyPercent": 24.01674902587251,
+            "peakBusyPercent": 29.865788252818387,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 25.844424062442418
+        },
+        {
+          "label": "history-4",
+          "phase": "seed",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 3937,
+          "cachedTokens": 8,
+          "completionTokens": 10,
+          "firstContentMs": 9378.913459000614,
+          "elapsedMs": 9601.32049999811,
+          "cpu": {
+            "averageBusyPercent": 23.792812441994023,
+            "peakBusyPercent": 27.415247279452128,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 23.998494905780788
+        },
+        {
+          "label": "history-5",
+          "phase": "seed",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 3930,
+          "cachedTokens": 8,
+          "completionTokens": 10,
+          "firstContentMs": 9538.880832998984,
+          "elapsedMs": 9781.844042001467,
+          "cpu": {
+            "averageBusyPercent": 23.668604249248222,
+            "peakBusyPercent": 29.327640664259523,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 27.415247279452128
+        },
+        {
+          "label": "history-6",
+          "phase": "revisit",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 3935,
+          "cachedTokens": 8,
+          "completionTokens": 10,
+          "firstContentMs": 9584.491999998136,
+          "elapsedMs": 9828.471291999449,
+          "cpu": {
+            "averageBusyPercent": 25.38842345439212,
+            "peakBusyPercent": 48.1853078623824,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 24.650146635281793
+        },
+        {
+          "label": "history-7",
+          "phase": "revisit",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 3937,
+          "cachedTokens": 8,
+          "completionTokens": 10,
+          "firstContentMs": 9589.802457998303,
+          "elapsedMs": 9833.59945799748,
+          "cpu": {
+            "averageBusyPercent": 23.46778595364038,
+            "peakBusyPercent": 26.895215564401642,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 24.271469098071925
+        },
+        {
+          "label": "history-8",
+          "phase": "revisit",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 3930,
+          "cachedTokens": 8,
+          "completionTokens": 10,
+          "firstContentMs": 9754.606375001458,
+          "elapsedMs": 9994.528125000215,
+          "cpu": {
+            "averageBusyPercent": 24.454243683025254,
+            "peakBusyPercent": 34.56607341354091,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 24.829915742992032
+        },
+        {
+          "label": "history-9",
+          "phase": "revisit",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 3935,
+          "cachedTokens": 8,
+          "completionTokens": 10,
+          "firstContentMs": 9714.597417001642,
+          "elapsedMs": 9960.017792000144,
+          "cpu": {
+            "averageBusyPercent": 23.799790122177615,
+            "peakBusyPercent": 26.745548351831932,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 24.40151161031511
+        },
+        {
+          "label": "history-10",
+          "phase": "revisit",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 3937,
+          "cachedTokens": 8,
+          "completionTokens": 10,
+          "firstContentMs": 9698.867834002158,
+          "elapsedMs": 9937.218084000051,
+          "cpu": {
+            "averageBusyPercent": 23.37299086020994,
+            "peakBusyPercent": 26.206628981889665,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 24.034459369252797
+        },
+        {
+          "label": "history-11",
+          "phase": "revisit",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 3930,
+          "cachedTokens": 8,
+          "completionTokens": 10,
+          "firstContentMs": 10201.725499999156,
+          "elapsedMs": 10445.593707998341,
+          "cpu": {
+            "averageBusyPercent": 29.94731816237737,
+            "peakBusyPercent": 43.272505495277585,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 25.164639398565445
+        },
+        {
+          "label": "short-en",
+          "phase": "short",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 32,
+          "cachedTokens": 4,
+          "completionTokens": 10,
+          "firstContentMs": 176.46241699912935,
+          "elapsedMs": 358.1384169992816,
+          "cpu": {
+            "averageBusyPercent": 34.908735577895555,
+            "peakBusyPercent": 34.908735577895555,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 26.435756847460915
+        },
+        {
+          "label": "short-ja",
+          "phase": "short",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 34,
+          "cachedTokens": 4,
+          "completionTokens": 10,
+          "firstContentMs": 103.0033330025617,
+          "elapsedMs": 278.69100000316394,
+          "cpu": {
+            "averageBusyPercent": 27.05315708203038,
+            "peakBusyPercent": 37.26746014639702,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 37.26746014639702
+        },
+        {
+          "label": "short-zh",
+          "phase": "short",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 27,
+          "cachedTokens": 4,
+          "completionTokens": 10,
+          "firstContentMs": 102.0397079992108,
+          "elapsedMs": 277.7404580010625,
+          "cpu": {
+            "averageBusyPercent": 27.962109679081316,
+            "peakBusyPercent": 30.67977243986298,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 30.67977243986298
+        },
+        {
+          "label": "en-decode",
+          "phase": "decode",
+          "answer": "The garden was a symphony of azure, a living canvas splashed with the deepest, most vibrant blue imaginable.  The grass, a shade of cerulean, shimmered under the sun, its blades so fine they seemed to dance in the breeze.  A gentle, constant hum vibrated through the air, a melody of buzzing bees and chirping crickets, all harmonizing with the rustling leaves of the blue hydrangeas that dotted the landscape.  \n\nThe trees, a majestic grove of ancient oaks, were draped in a canopy of sapphire leaves, their branches reaching towards the sky like outstretched arms.  Each leaf, a miniature masterpiece",
+          "promptTokens": 29,
+          "cachedTokens": 4,
+          "completionTokens": 128,
+          "firstContentMs": 104.48112499943818,
+          "elapsedMs": 2981.337375000294,
+          "cpu": {
+            "averageBusyPercent": 26.469224003334833,
+            "peakBusyPercent": 38.93973894736062,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 27.38203104795128
+        },
+        {
+          "label": "ja-decode",
+          "phase": "decode",
+          "answer": "青い庭は、まるで宝石のように輝く。その青は、太陽の光を反射したような、透明感のある青色だった。その庭には、緑の葉の茂る木々、花々、そして、静かな湖が浮かんでいた。湖の向こうには、青い空と、白い雲が浮かび上がる。  \n\n\n",
+          "promptTokens": 28,
+          "cachedTokens": 4,
+          "completionTokens": 70,
+          "firstContentMs": 175.17558299732627,
+          "elapsedMs": 1834.4156249986554,
+          "cpu": {
+            "averageBusyPercent": 23.661767030803368,
+            "peakBusyPercent": 25.516990016007888,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 25.348964584620163
+        },
+        {
+          "label": "zh-decode",
+          "phase": "decode",
+          "answer": "The air hummed with a gentle, iridescent melody, a symphony of buzzing bees and chirping crickets that seemed to dance in the twilight.  This was no ordinary garden, no, this was the Azure Garden, a place where the sky met the earth in a breathtaking tapestry of cerulean.  Towering, luminescent flora, each petal a swirling, iridescent blue, stretched towards the heavens, their leaves shimmering with an internal, ethereal light.  \n\nThe ground was a soft, moss-like carpet, a vibrant green that seemed to absorb the sunlight, leaving only a faint, blue glow that permeated the air.  ",
+          "promptTokens": 28,
+          "cachedTokens": 4,
+          "completionTokens": 128,
+          "firstContentMs": 125.95012500241864,
+          "elapsedMs": 3115.42300000292,
+          "cpu": {
+            "averageBusyPercent": 24.722152021549082,
+            "peakBusyPercent": 28.830717373130796,
+            "sustainedHighSeconds": 0
+          },
+          "cpuBeforePercent": 28.830717373130796
+        }
+      ],
+      "memory": [
+        {
+          "physicalBytes": 1990035736,
+          "rssBytes": 1923465216,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 4472832,
+            "max_bytes": 1073741824,
+            "entries": 1,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 1528095262,
+              "cache_bytes": 12418862,
+              "peak_bytes": 1616957761,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 13516898304
+        },
+        {
+          "physicalBytes": 1996704024,
+          "rssBytes": 1924005888,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 9158656,
+            "max_bytes": 1073741824,
+            "entries": 2,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 1534911006,
+              "cache_bytes": 12110244,
+              "peak_bytes": 1624583086,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 13509951488
+        },
+        {
+          "physicalBytes": 2022689048,
+          "rssBytes": 1923874816,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 13099008,
+            "max_bytes": 1073741824,
+            "entries": 3,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 1563025950,
+              "cache_bytes": 9951322,
+              "peak_bytes": 1624583086,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 13484064768
+        },
+        {
+          "physicalBytes": 2878376216,
+          "rssBytes": 1925283840,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 433225728,
+            "max_bytes": 1073741824,
+            "entries": 4,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 2385207838,
+              "cache_bytes": 41857888,
+              "peak_bytes": 2435066090,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 12637192192
+        },
+        {
+          "physicalBytes": 3299379480,
+          "rssBytes": 1925562368,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 853565440,
+            "max_bytes": 1073741824,
+            "entries": 5,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 2806080030,
+              "cache_bytes": 41791940,
+              "peak_bytes": 2855364834,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 12207931392
+        },
+        {
+          "physicalBytes": 3278162200,
+          "rssBytes": 1925709824,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 839933952,
+            "max_bytes": 1073741824,
+            "entries": 2,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 2784748062,
+              "cache_bytes": 41759334,
+              "peak_bytes": 2951386518,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 12287967232
+        },
+        {
+          "physicalBytes": 3261155608,
+          "rssBytes": 1925709824,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 839720960,
+            "max_bytes": 1073741824,
+            "entries": 2,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 2767708702,
+              "cache_bytes": 41796960,
+              "peak_bytes": 2951386518,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 12317523968
+        },
+        {
+          "physicalBytes": 3278194968,
+          "rssBytes": 1925840896,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 840466432,
+            "max_bytes": 1073741824,
+            "entries": 2,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 2784748062,
+              "cache_bytes": 41797044,
+              "peak_bytes": 2951386518,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 12353634304
+        },
+        {
+          "physicalBytes": 3278162200,
+          "rssBytes": 1925709824,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 839933952,
+            "max_bytes": 1073741824,
+            "entries": 2,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 2784748062,
+              "cache_bytes": 41759846,
+              "peak_bytes": 2951386518,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 12312395776
+        },
+        {
+          "physicalBytes": 3261155608,
+          "rssBytes": 1925709824,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 839720960,
+            "max_bytes": 1073741824,
+            "entries": 2,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 2767708702,
+              "cache_bytes": 41796960,
+              "peak_bytes": 2951386518,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 12322996224
+        },
+        {
+          "physicalBytes": 3278194968,
+          "rssBytes": 1925709824,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 840466432,
+            "max_bytes": 1073741824,
+            "entries": 2,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 2784748062,
+              "cache_bytes": 41792948,
+              "peak_bytes": 2951386518,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 12307496960
+        },
+        {
+          "physicalBytes": 3278178584,
+          "rssBytes": 1925726208,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 839933952,
+            "max_bytes": 1073741824,
+            "entries": 2,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 2784748062,
+              "cache_bytes": 41763942,
+              "peak_bytes": 2951386518,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 12238372864
+        },
+        {
+          "physicalBytes": 2438269208,
+          "rssBytes": 1925726208,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 424067072,
+            "max_bytes": 1073741824,
+            "entries": 2,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 1949819422,
+              "cache_bytes": 36811832,
+              "peak_bytes": 2951386518,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 13074055168
+        },
+        {
+          "physicalBytes": 2417117464,
+          "rssBytes": 1925857280,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 428752896,
+            "max_bytes": 1073741824,
+            "entries": 3,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 1954947614,
+              "cache_bytes": 10537044,
+              "peak_bytes": 2951386518,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 13095223296
+        },
+        {
+          "physicalBytes": 2444691736,
+          "rssBytes": 1926004736,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 432693248,
+            "max_bytes": 1073741824,
+            "entries": 4,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 1983062558,
+              "cache_bytes": 9952858,
+              "peak_bytes": 2951386518,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 13067468800
+        },
+        {
+          "physicalBytes": 2450868504,
+          "rssBytes": 1926348800,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 449413120,
+            "max_bytes": 1073741824,
+            "entries": 5,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 1987600926,
+              "cache_bytes": 11175485,
+              "peak_bytes": 2951386518,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 13023412224
+        },
+        {
+          "physicalBytes": 2478410008,
+          "rssBytes": 1926397952,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 459849728,
+            "max_bytes": 1073741824,
+            "entries": 6,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 2015715870,
+              "cache_bytes": 10441909,
+              "peak_bytes": 2951386518,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 12995870720
+        },
+        {
+          "physicalBytes": 2506672408,
+          "rssBytes": 1926545408,
+          "processCount": 1,
+          "kv": {
+            "retained_bytes": 476463104,
+            "max_bytes": 1073741824,
+            "entries": 7,
+            "accounting": "LRU tensor bytes, not unique physical memory",
+            "allocator": {
+              "active_bytes": 2043830814,
+              "cache_bytes": 10629189,
+              "peak_bytes": 2951386518,
+              "consistency": "non_atomic",
+              "configured_limit_bytes": 536870912,
+              "effective_limit_bytes": 536870912
+            }
+          },
+          "availableBytes": 12972507136
+        }
+      ],
+      "preflightSha256": "0ffb80c003f82787b237dc6d39ea0ca81352b82ea38de97b438a2563723747ac",
+      "identityBefore": {
+        "config_sha256": "9279e9a8c58d7656782dc02f787feaa45118f37109281acb88144b6a44093401",
+        "model_root_sha256": "4f69654cb373cc4392fd048acf60d51d39d67e8176648a3e52a7936b0776cd14",
+        "backend": "mlx_lm",
+        "backend_sha256": "30fed668cd1f88b73527e0ce20942685ccccfd1eb104d0175bd6d0524b375e07",
+        "environment_sha256": "dd85ef85e863c42aa69d163e4dd701040d7c9d4178040999603a3f0c4d7693e6",
+        "hardware_sha256": "c8baa7d3ff988ba85885da228624da76c5a85818ef2f1daa3b1d3128e4b95d6c",
+        "runtime_sha256": "9a2df32245169daa7f71bb0167ae1275fe2cd19b6087f677635d736cd96e76eb"
+      },
+      "identityAfter": {
+        "config_sha256": "9279e9a8c58d7656782dc02f787feaa45118f37109281acb88144b6a44093401",
+        "model_root_sha256": "4f69654cb373cc4392fd048acf60d51d39d67e8176648a3e52a7936b0776cd14",
+        "backend": "mlx_lm",
+        "backend_sha256": "30fed668cd1f88b73527e0ce20942685ccccfd1eb104d0175bd6d0524b375e07",
+        "environment_sha256": "dd85ef85e863c42aa69d163e4dd701040d7c9d4178040999603a3f0c4d7693e6",
+        "hardware_sha256": "c8baa7d3ff988ba85885da228624da76c5a85818ef2f1daa3b1d3128e4b95d6c",
+        "runtime_sha256": "9a2df32245169daa7f71bb0167ae1275fe2cd19b6087f677635d736cd96e76eb"
+      },
+      "shutdownClean": true,
+      "counterStopped": true
+    }
+  ],
+  "fixturesSha256": "f37c5eac10bdd7124b56362b34b0e13c4102339ce2a38569845f9cb407f45728",
+  "summary": {
+    "1024": {
+      "fullHits": 0,
+      "revisitRequests": 12,
+      "revisitMedianFirstMs": 8351.750791998711,
+      "recomputedTokens": 47112,
+      "sampledPeakPhysicalBytes": 3299379480,
+      "minimumAvailableBytes": 12203638784,
+      "latencyEligible": true
+    },
+    "1536": {
+      "fullHits": 12,
+      "revisitRequests": 12,
+      "revisitMedianFirstMs": 94.78891700018721,
+      "recomputedTokens": 12,
+      "sampledPeakPhysicalBytes": 3798108392,
+      "minimumAvailableBytes": 11703894016,
+      "latencyEligible": true
+    },
+    "2048": {
+      "fullHits": 12,
+      "revisitRequests": 12,
+      "revisitMedianFirstMs": 97.70414550075657,
+      "recomputedTokens": 12,
+      "sampledPeakPhysicalBytes": 3998714064,
+      "minimumAvailableBytes": 11675795456,
+      "latencyEligible": false
+    }
+  },
+  "workloadSha256": "fe0666c0eb3bcc88e02da9b2e2411a2c559347339dca904d74511c7c681e0940",
+  "memoryProbeSha256": "5ecef8ba921b7e02fa20880cd6f281a6892f08ac907ebd21bed4896495b951d2",
+  "releaseDriverSha256": "a61f7b7323363f86fdb93c308f3b3acd93dfa723fe1e763b158233825d496e30",
+  "releaseDriverNote": "Measured driver used default assertion-enabled Python. Release adds an upfront refusal for python -O only; measured request/control flow is unchanged. Original measured workload SHA is preserved."
+}

@@ -1,6 +1,6 @@
 # Soliton
 
-0.1.1では、専用4,096トークン構成の資格確認、共通APIの36件基準測定、軽量計数の改善を記録しました。通常設定は変更していません。[結果・実行環境](docs/INFERENCE.md#4096トークン主経路の基準値と0112026-11-08)と[変更履歴](CHANGELOG.md)を参照してください。
+0.1.2では、長履歴向けの任意1.5GiB保持KV構成を資格確認し、効果と追加メモリを記録しました。通常設定は変更していません。[結果・交換条件](docs/INFERENCE.md#optional-retained-kv-15-gib--2026-11-08)と[変更履歴](CHANGELOG.md)を参照してください。
 
 ![Soliton](docs/images/stratastudio-image.png)
 

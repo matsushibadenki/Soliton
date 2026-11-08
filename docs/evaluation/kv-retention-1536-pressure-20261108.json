@@ -1,0 +1,174 @@
+{
+  "result": "passed",
+  "scope": "Qualified shared API, more histories than retained capacity; functional cap/recompute/reheat verification, no controlled performance claim",
+  "samples": [
+    {
+      "phase": "cold",
+      "index": 0,
+      "promptTokens": 3935,
+      "cachedTokens": 0,
+      "kv": {
+        "bytes": 420126720,
+        "entries": 1,
+        "limitBytes": 1610612736
+      },
+      "engineMemory": {
+        "pid": 49587,
+        "processCount": 2,
+        "rootBytes": 69354144,
+        "sampledAt": 1794124430624,
+        "usedBytes": 2899610456
+      }
+    },
+    {
+      "phase": "hot",
+      "index": 0,
+      "promptTokens": 3935,
+      "cachedTokens": 3934,
+      "kv": {
+        "bytes": 420126720,
+        "entries": 1,
+        "limitBytes": 1610612736
+      },
+      "engineMemory": {
+        "pid": 49587,
+        "processCount": 2,
+        "rootBytes": 69354144,
+        "sampledAt": 1794124430975,
+        "usedBytes": 3126365016
+      }
+    },
+    {
+      "phase": "churn",
+      "index": 1,
+      "promptTokens": 3937,
+      "cachedTokens": 8,
+      "kv": {
+        "bytes": 840466432,
+        "entries": 2,
+        "limitBytes": 1610612736
+      },
+      "engineMemory": {
+        "pid": 49587,
+        "processCount": 2,
+        "rootBytes": 69370528,
+        "sampledAt": 1794124438245,
+        "usedBytes": 3322743640
+      }
+    },
+    {
+      "phase": "churn",
+      "index": 2,
+      "promptTokens": 3930,
+      "cachedTokens": 8,
+      "kv": {
+        "bytes": 1260060672,
+        "entries": 3,
+        "limitBytes": 1610612736
+      },
+      "engineMemory": {
+        "pid": 49587,
+        "processCount": 2,
+        "rootBytes": 69370528,
+        "sampledAt": 1794124445719,
+        "usedBytes": 3759999832
+      }
+    },
+    {
+      "phase": "churn",
+      "index": 3,
+      "promptTokens": 3935,
+      "cachedTokens": 8,
+      "kv": {
+        "bytes": 1260060672,
+        "entries": 3,
+        "limitBytes": 1610612736
+      },
+      "engineMemory": {
+        "pid": 49587,
+        "processCount": 2,
+        "rootBytes": 69354144,
+        "sampledAt": 1794124454697,
+        "usedBytes": 3759344472
+      }
+    },
+    {
+      "phase": "churn",
+      "index": 4,
+      "promptTokens": 3937,
+      "cachedTokens": 8,
+      "kv": {
+        "bytes": 1260060672,
+        "entries": 3,
+        "limitBytes": 1610612736
+      },
+      "engineMemory": {
+        "pid": 49587,
+        "processCount": 2,
+        "rootBytes": 69337760,
+        "sampledAt": 1794124463179,
+        "usedBytes": 3759344472
+      }
+    },
+    {
+      "phase": "revisit",
+      "index": 0,
+      "promptTokens": 3935,
+      "cachedTokens": 8,
+      "kv": {
+        "bytes": 1260593152,
+        "entries": 3,
+        "limitBytes": 1610612736
+      },
+      "engineMemory": {
+        "pid": 49587,
+        "processCount": 2,
+        "rootBytes": 69337760,
+        "sampledAt": 1794124471933,
+        "usedBytes": 3776269144
+      }
+    },
+    {
+      "phase": "reheat",
+      "index": 0,
+      "promptTokens": 3935,
+      "cachedTokens": 3934,
+      "kv": {
+        "bytes": 840466432,
+        "entries": 2,
+        "limitBytes": 1610612736
+      },
+      "engineMemory": {
+        "pid": 49587,
+        "processCount": 2,
+        "rootBytes": 69337760,
+        "sampledAt": 1794124472285,
+        "usedBytes": 3564161880
+      }
+    },
+    {
+      "phase": "recent",
+      "index": 4,
+      "promptTokens": 3937,
+      "cachedTokens": 3936,
+      "kv": {
+        "bytes": 840466432,
+        "entries": 2,
+        "limitBytes": 1610612736
+      },
+      "engineMemory": {
+        "pid": 49587,
+        "processCount": 2,
+        "rootBytes": 69337760,
+        "sampledAt": 1794124472632,
+        "usedBytes": 3573533528
+      }
+    }
+  ],
+  "engineSession": "55ce34c5-3a50-4b05-a078-56050303bf76",
+  "historyPreserved": true,
+  "controlEvidenceRefused": true,
+  "qualifiedRecovery": true,
+  "historyPreservedAfterRecovery": true,
+  "qaConfigurationRestored": true
+}

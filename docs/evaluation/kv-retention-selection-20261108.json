@@ -1,0 +1,48 @@
+{
+  "scope": "Exploratory minimum-memory long-history candidate, not automatic adoption/default change",
+  "selectedForQualificationMiB": 1536,
+  "reason": "Smallest tested candidate with12/12 full revisits and eligible CPU windows;2GiB uses more memory and has an ineligible window",
+  "summary": {
+    "1024": {
+      "fullHits": 0,
+      "revisitRequests": 12,
+      "revisitMedianFirstMs": 8351.750791998711,
+      "recomputedTokens": 47112,
+      "sampledPeakPhysicalBytes": 3299379480,
+      "minimumAvailableBytes": 12203638784,
+      "latencyEligible": true,
+      "shortMedianFirstMs": 102.52152050088625,
+      "decodeMedianFirstMs": 101.04008350026561,
+      "decodeMedianTailMs": 2388.3894584996597
+    },
+    "1536": {
+      "fullHits": 12,
+      "revisitRequests": 12,
+      "revisitMedianFirstMs": 94.78891700018721,
+      "recomputedTokens": 12,
+      "sampledPeakPhysicalBytes": 3798108392,
+      "minimumAvailableBytes": 11703894016,
+      "latencyEligible": true,
+      "shortMedianFirstMs": 107.61702099989634,
+      "decodeMedianFirstMs": 111.03458300021884,
+      "decodeMedianTailMs": 2483.629666501656
+    },
+    "2048": {
+      "fullHits": 12,
+      "revisitRequests": 12,
+      "revisitMedianFirstMs": 97.70414550075657,
+      "recomputedTokens": 12,
+      "sampledPeakPhysicalBytes": 3998714064,
+      "minimumAvailableBytes": 11675795456,
+      "latencyEligible": false,
+      "shortMedianFirstMs": 52.78479200023867,
+      "decodeMedianFirstMs": 126.58989549890975,
+      "decodeMedianTailMs": 2593.6850835005316
+    }
+  },
+  "tradeoffs": [
+    "Extra sampled process footprint; not a whole-system/unique-memory sum",
+    "1536 short median+4.97%, decode-first median+9.89% (~10ms), decode stream-tail median+3.99% versus control; no claim of faster every scenario",
+    "Ordinary desktop load below the recorded CPU guard, not independent GPU/thermal control; no population confidence interval"
+  ]
+}
