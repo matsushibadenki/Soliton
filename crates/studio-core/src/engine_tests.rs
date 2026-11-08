@@ -353,7 +353,7 @@ fn prefix_fixture() -> (Arc<Studio>, PathBuf) {
     }
     std::fs::write(dir.join("evidence.json"), "{}").unwrap();
     let python = dir.join("python-fixture");
-    std::fs::write(&python,"#!/bin/sh\ncase \"$*\" in *--verify-only*) printf '{\"verified\":true,\"identity\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\"}\\n';; *) exec /bin/sleep 60;; esac\n").unwrap();
+    std::fs::write(&python,"#!/bin/sh\ncase \"$*\" in *--verify-only*) printf '{\"verified\":true,\"binding_schema\":2,\"profile\":{\"schema\":2},\"cache_binding\":{\"binding_schema\":2},\"identity\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\"}\\n';; *) exec /bin/sleep 60;; esac\n").unwrap();
     std::fs::set_permissions(&python, std::fs::Permissions::from_mode(0o700)).unwrap();
     let s = studio();
     (s, dir)
@@ -563,4 +563,124 @@ async fn prefix_capacity_requires_auth_and_stopped_engine_without_changing_histo
         settings_before
     );
     std::fs::remove_dir_all(dir).unwrap();
+}
+
+#[cfg(unix)]
+#[tokio::test]
+async fn gateway_records_admission_for_api_and_chat_without_changing_refused_history() {
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let port = listener.local_addr().unwrap().port();
+    let router=Router::new().route("/tokenize",post(||async {
+        tokio::time::sleep(Duration::from_millis(20)).await;
+        Json(json!({"identity":"a".repeat(64),"count":10,"context":512}))
+    })).route("/v1/chat/completions",post(|Json(_value):Json<Value>|async move {
+        tokio::time::sleep(Duration::from_millis(10)).await;
+        let value=json!({"choices":[{"message":{"content":"fixture"},"delta":{"content":"fixture"},"finish_reason":"stop"}],"usage":{"prompt_tokens":10,"completion_tokens":1,"total_tokens":11}});
+        // This fixture intentionally exercises the same content in JSON and SSE.
+        ([("content-type","text/event-stream")],format!("data: {}\n\ndata: [DONE]\n\n",value)).into_response()
+    }));
+    let task = tokio::spawn(async move { axum::serve(listener, router).await.unwrap() });
+    let s = studio();
+    s.settings.write().await.engine = Engine::MlxPrefix;
+    let mut child = Command::new("/bin/sleep")
+        .arg("60")
+        .process_group(0)
+        .spawn()
+        .unwrap();
+    let pid = child.id().unwrap();
+    assert!(child.try_wait().unwrap().is_none());
+    {
+        let mut p = s.process.lock().await;
+        p.child = Some(child);
+        p.group = Some(pid);
+        p.port = port;
+        p.key = "private-worker-secret".into();
+        p.metrics_session = Some("public-session".into());
+        p.memory = Some(json!({"prefixIdentity":"a".repeat(64)}));
+    }
+    let body = json!({"model":"default_model","messages":[{"role":"user","content":"fixture"}],"max_tokens":16,"stream":true});
+    let request = Request::builder()
+        .uri("/v1/chat/completions")
+        .method("POST")
+        .header("content-type", "application/json")
+        .header("x-studio-token", &s.token)
+        .body(Body::from(body.to_string()))
+        .unwrap();
+    let held = s.lifecycle.lock().await;
+    let release = async {
+        tokio::time::sleep(Duration::from_millis(20)).await;
+        drop(held);
+    };
+    let (response, ()) = tokio::join!(proxy(State(s.clone()), request), release);
+    assert_eq!(response.status(), StatusCode::OK);
+    axum::body::to_bytes(response.into_body(), 65536)
+        .await
+        .unwrap();
+    for _ in 0..100 {
+        if s.requests.lock().await.len() == 1 {
+            break;
+        }
+        tokio::time::sleep(Duration::from_millis(2)).await;
+    }
+    {
+        let rows = s.requests.lock().await;
+        assert_eq!(rows.len(), 1);
+        let m = &rows[0];
+        let g = m.gateway.as_ref().unwrap();
+        assert_eq!(m.status, "completed");
+        assert_eq!(g.engine_session.as_deref(), Some("public-session"));
+        assert!(g.admission_ms.unwrap() >= 20.0);
+        assert!(g.first_content_ms.unwrap() >= g.dispatch_ms.unwrap());
+        assert!(g.upstream_headers_ms.unwrap() >= 10.0);
+        assert!(g.lifecycle_wait_ms.unwrap() >= 20.0);
+        assert!(!serde_json::to_string(m)
+            .unwrap()
+            .contains("private-worker-secret"));
+    }
+    let mut headers = HeaderMap::new();
+    headers.insert("x-studio-token", s.token.parse().unwrap());
+    let response = chat(State(s.clone()), headers.clone(), Json(body.clone())).await;
+    assert_eq!(response.status(), StatusCode::OK);
+    axum::body::to_bytes(response.into_body(), 65536)
+        .await
+        .unwrap();
+    for _ in 0..100 {
+        if s.requests.lock().await.len() == 2 {
+            break;
+        }
+        tokio::time::sleep(Duration::from_millis(2)).await;
+    }
+    let before = serde_json::to_value(&*s.document.read().await).unwrap();
+    let request = Request::builder()
+        .uri("/v1/chat/completions")
+        .method("POST")
+        .header("content-type", "application/json")
+        .header("x-studio-token", &s.token)
+        .body(Body::from(
+            json!({"messages":[],"max_tokens":129}).to_string(),
+        ))
+        .unwrap();
+    assert_eq!(
+        proxy(State(s.clone()), request).await.status(),
+        StatusCode::UNPROCESSABLE_ENTITY
+    );
+    for _ in 0..100 {
+        if s.requests.lock().await.len() == 3 {
+            break;
+        }
+        tokio::time::sleep(Duration::from_millis(2)).await;
+    }
+    let rows = s.requests.lock().await.clone();
+    assert_eq!(rows.len(), 3);
+    assert_eq!(rows[1].source, "chat");
+    assert!(rows[1].gateway.as_ref().unwrap().admission_ms.unwrap() >= 20.0);
+    let refused = rows[2].gateway.as_ref().unwrap();
+    assert_eq!(refused.admission_rejected, Some(true));
+    assert!(refused.dispatch_ms.is_none());
+    assert_eq!(
+        before,
+        serde_json::to_value(&*s.document.read().await).unwrap()
+    );
+    s.stop().await.unwrap();
+    task.abort();
 }

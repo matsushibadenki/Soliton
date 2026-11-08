@@ -1,0 +1,24 @@
+{
+  "result": "diagnosed",
+  "originalStartupRefused": true,
+  "reason": "backend inventory contains an external symlink",
+  "originalBackend": "Homebrew vllm-metal0.33.0 / development mlx-lm0.32.3.dev12+g4cfc64784",
+  "externalMetadataLinks": [
+    "xgrammar-0.2.8.dist-info/RECORD",
+    "apache_tvm_ffi-0.1.15.post2.dist-info/RECORD"
+  ],
+  "globalEnvironmentChanged": false,
+  "guardRelaxed": false,
+  "replacement": {
+    "privateEnvironment": ".soliton-runtime/engine4096-20261108/python",
+    "mlx-lm": "0.32.0",
+    "mlx": "0.32.4",
+    "transformers": "5.20.2",
+    "packageCount": 34,
+    "qualification": "passed:1800.116s /12744 successes /0 failures"
+  },
+  "reviewedSourcePair": {
+    "server": "57392576de114af80ede723976b9dd156dc234f856b9943b8b44b8b78bc27f79",
+    "cache": "c96cb169fd5e0ec4584a162dd61dc62ab08ccdca03a9850f8a491ce6809145e6"
+  }
+}

@@ -28,3 +28,14 @@ Check/apply this patch to a temporary KV-patched baseline first. All three resul
 日本語: KVパッチの後に適用します。再利用用の空きGPUメモリだけに上限を設定し、使用中の重みやKVは解放しません。元の完全な検査と新しい証跡が必要です。
 
 简体中文：在KV补丁之后应用。仅限制可复用空闲GPU内存，不释放使用中的权重或KV；仍需完整检查及新证据。
+
+
+## PyPI MLX-LM0.32.0 source pair — 2026-11-08
+
+`vllm-apple-mlx-0320-pypi.patch` applies after the existing KV/allocator patches. It preserves the legacy pair and admits only the exact reviewed PyPI server/cache pair57392576…27f79 /c96cb169…45e6. Mixed revisions and unknown hashes remain refused. Real LRUPromptCache insert/trim/fetch signatures, byte accounting and max-bytes enforcement were reviewed; the new cache-type accounting does not change the wrapper's lock or byte limit. `scripts/verify-kv-lru.py` tests the exact server/cache pair and real LRU with logical-byte fixtures; no weights are needed. Two source-pair tests reject crossed pairs and mutated hashes. New runtime/source identity still requires full fresh qualification.
+
+The old Homebrew environment currently contains development MLX-LM0.32.3.dev12 and external RECORD links, correctly refused by the full inventory check. Do not remove that guard or modify the global installation. Use a private Python3.12.16 venv and `uv pip sync --python /absolute/private/python scripts/fixtures/mlx-0320-runtime-20261108.txt`; the34-package snapshot pins MLX-LM0.32.0 /MLX0.32.4 and related dependencies. Local model weights are reused; no model download or remote code is required. A new venv/path/content needs its own original qualification before ordinary startup. Package pins do not replace byte fingerprinting.
+
+日本語: グローバル環境は変更せず、固定した専用環境で全ファイル照合と再資格確認を行います。新旧のserver/cacheを混在させる組合せは拒否します。
+
+简体中文：保留全局环境，使用固定的独立环境完成全部文件校验和重新资格验证；拒绝混用新旧server/cache。

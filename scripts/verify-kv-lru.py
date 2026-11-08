@@ -9,10 +9,12 @@ import runpy
 if not __debug__:
     raise RuntimeError('validation assertions must be enabled')
 from mlx_lm.models import cache as module
+from mlx_lm import server
 root = Path(__file__).resolve().parents[1]
 wrapper = runpy.run_path(str(root / 'vLLM-apple/vllm_apple/mlx_kv_budget.py'))
 assert importlib.metadata.version('mlx-lm') == '0.32.0'
-assert hashlib.sha256(Path(module.__file__).read_bytes()).hexdigest() == wrapper['CACHE_SHA256']
+assert wrapper['reviewed_sources'](hashlib.sha256(Path(server.__file__).read_bytes()).hexdigest(),
+                                   hashlib.sha256(Path(module.__file__).read_bytes()).hexdigest())
 class KV:
     nbytes = 400 * 1024**2
     def is_trimmable(self): return False

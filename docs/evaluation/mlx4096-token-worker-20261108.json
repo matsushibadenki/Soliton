@@ -1,0 +1,193 @@
+{
+  "environment": {
+    "python": "3.12.16",
+    "loadAverageAtStart": [
+      3.7099609375,
+      3.30224609375,
+      2.83056640625
+    ]
+  },
+  "schema": 1,
+  "trials": [
+    {
+      "trial": 0,
+      "label": "before",
+      "firstCountMs": 3235.0080410033115,
+      "rssKiB": 322496,
+      "result": {
+        "id": 1,
+        "prompt_tokens": 19
+      },
+      "warmMedianMs": 12.345979001111118,
+      "loadAverageAtStart": [
+        3.7099609375,
+        3.30224609375,
+        2.83056640625
+      ]
+    },
+    {
+      "trial": 0,
+      "label": "after",
+      "firstCountMs": 1055.7399580029596,
+      "rssKiB": 188592,
+      "result": {
+        "id": 1,
+        "prompt_tokens": 19
+      },
+      "warmMedianMs": 12.102291499104467,
+      "loadAverageAtStart": [
+        3.73291015625,
+        3.3134765625,
+        2.83740234375
+      ]
+    },
+    {
+      "trial": 1,
+      "label": "before",
+      "firstCountMs": 3236.4827079982206,
+      "rssKiB": 322736,
+      "result": {
+        "id": 1,
+        "prompt_tokens": 19
+      },
+      "warmMedianMs": 13.302041499628103,
+      "loadAverageAtStart": [
+        3.73291015625,
+        3.3134765625,
+        2.83740234375
+      ]
+    },
+    {
+      "trial": 1,
+      "label": "after",
+      "firstCountMs": 1485.4867089998152,
+      "rssKiB": 206688,
+      "result": {
+        "id": 1,
+        "prompt_tokens": 19
+      },
+      "warmMedianMs": 14.70052049808146,
+      "loadAverageAtStart": [
+        3.59375,
+        3.29150390625,
+        2.83203125
+      ]
+    },
+    {
+      "trial": 2,
+      "label": "before",
+      "firstCountMs": 4050.935457999003,
+      "rssKiB": 324144,
+      "result": {
+        "id": 1,
+        "prompt_tokens": 19
+      },
+      "warmMedianMs": 12.621687001228565,
+      "loadAverageAtStart": [
+        3.59375,
+        3.29150390625,
+        2.83203125
+      ]
+    },
+    {
+      "trial": 2,
+      "label": "after",
+      "firstCountMs": 1118.5931250001886,
+      "rssKiB": 188368,
+      "result": {
+        "id": 1,
+        "prompt_tokens": 19
+      },
+      "warmMedianMs": 12.145228998633684,
+      "loadAverageAtStart": [
+        5.7080078125,
+        3.73486328125,
+        2.9912109375
+      ]
+    },
+    {
+      "trial": 3,
+      "label": "before",
+      "firstCountMs": 2993.881374997727,
+      "rssKiB": 324096,
+      "result": {
+        "id": 1,
+        "prompt_tokens": 19
+      },
+      "warmMedianMs": 12.271020999833127,
+      "loadAverageAtStart": [
+        5.7080078125,
+        3.73486328125,
+        2.9912109375
+      ]
+    },
+    {
+      "trial": 3,
+      "label": "after",
+      "firstCountMs": 1141.6048329992918,
+      "rssKiB": 206896,
+      "result": {
+        "id": 1,
+        "prompt_tokens": 19
+      },
+      "warmMedianMs": 12.219687499964493,
+      "loadAverageAtStart": [
+        5.49072265625,
+        3.72265625,
+        2.9912109375
+      ]
+    },
+    {
+      "trial": 4,
+      "label": "before",
+      "firstCountMs": 3038.837374999275,
+      "rssKiB": 323296,
+      "result": {
+        "id": 1,
+        "prompt_tokens": 19
+      },
+      "warmMedianMs": 12.320812000325532,
+      "loadAverageAtStart": [
+        5.49072265625,
+        3.72265625,
+        2.9912109375
+      ]
+    },
+    {
+      "trial": 4,
+      "label": "after",
+      "firstCountMs": 1120.0006660001236,
+      "rssKiB": 207008,
+      "result": {
+        "id": 1,
+        "prompt_tokens": 19
+      },
+      "warmMedianMs": 12.181041500298306,
+      "loadAverageAtStart": [
+        5.451171875,
+        3.74365234375,
+        3.0029296875
+      ]
+    }
+  ],
+  "sourceSha256": {
+    "before": "a1b7bb5f8f40f0d4a060144a6370e1fcf155e6f0f234a9fecfb5a920e537472d",
+    "after": "fe4eaf83f66a957e0fa92609e1ccd1b1f1de637a61b5542e99dd35edecf6138d"
+  },
+  "rssMeaning": "Resident set sampled after first count; not peak or unique physical pages",
+  "reference": ".soliton-runtime/engine4096-20261108/token-budget-before.py",
+  "summary": {
+    "before": {
+      "medianFirstCountMs": 3235.0080410033115,
+      "medianWarmCountMs": 12.345979001111118,
+      "medianRssMiB": 315.71875
+    },
+    "after": {
+      "medianFirstCountMs": 1120.0006660001236,
+      "medianWarmCountMs": 12.181041500298306,
+      "medianRssMiB": 201.84375
+    }
+  },
+  "passed": true,
+  "scope": "Five alternating CPU-worker pairs under normal desktop load with qualification GPU workload in the background; not a controlled full-engine latency experiment."
+}

@@ -1,0 +1,178 @@
+{
+  "result": "passed",
+  "scope": "Normal desktop-load observations; JSON first-content is full-response observation, not model TTFT; no latency comparison or speedup claim",
+  "qualificationIdentity": "64d3fb013b0b42277557fb9a179391d7e66bcb3efc59857bd48cc92ce4b4dd79",
+  "engineSession": "f9838b94-6bcb-4d5b-aecf-9cdc88475577",
+  "requests": [
+    {
+      "elapsedMs": 520,
+      "engine": "MLX SSD",
+      "finishReason": "stop",
+      "firstAnswerMs": 520,
+      "firstOutputMs": 520,
+      "gateway": {
+        "admissionMs": 5.967417,
+        "admissionRejected": false,
+        "dispatchMs": 6.001625,
+        "elapsedMs": 526.6697919999999,
+        "engineSession": "f9838b94-6bcb-4d5b-aecf-9cdc88475577",
+        "firstContentMs": 526.6642919999999,
+        "lifecycleWaitMs": 0.0026249999999999997,
+        "upstreamHeadersMs": 520.525
+      },
+      "id": "03df648c-1957-4bd5-9e9a-a56b7bbda88a",
+      "model": "default_model",
+      "promptProcessing": {
+        "cacheHitPercent": 99.43820224719101,
+        "tokensPerSecond": null,
+        "uncachedTokens": 1
+      },
+      "source": "api",
+      "startedAt": 1794116831510,
+      "status": "completed",
+      "timings": null,
+      "usage": {
+        "cacheCreation": null,
+        "cached": 177,
+        "completion": 11,
+        "prompt": 178,
+        "reasoning": null,
+        "total": 189
+      }
+    },
+    {
+      "elapsedMs": 223,
+      "engine": "MLX SSD",
+      "finishReason": "stop",
+      "firstAnswerMs": 40,
+      "firstOutputMs": 40,
+      "gateway": {
+        "admissionMs": 1.76275,
+        "admissionRejected": false,
+        "dispatchMs": 1.79875,
+        "elapsedMs": 225.428792,
+        "engineSession": "f9838b94-6bcb-4d5b-aecf-9cdc88475577",
+        "firstContentMs": 41.804833,
+        "lifecycleWaitMs": 0.0022919999999999998,
+        "upstreamHeadersMs": 1.298875
+      },
+      "id": "73812acd-2f94-4859-b8de-2092f1d9a257",
+      "model": "default_model",
+      "promptProcessing": {
+        "cacheHitPercent": 99.43820224719101,
+        "tokensPerSecond": null,
+        "uncachedTokens": 1
+      },
+      "source": "api",
+      "startedAt": 1794116832034,
+      "status": "completed",
+      "timings": null,
+      "usage": {
+        "cacheCreation": null,
+        "cached": 177,
+        "completion": 11,
+        "prompt": 178,
+        "reasoning": null,
+        "total": 189
+      }
+    },
+    {
+      "elapsedMs": 397,
+      "engine": "MLX SSD",
+      "finishReason": "stop",
+      "firstAnswerMs": 345,
+      "firstOutputMs": 345,
+      "gateway": {
+        "admissionMs": 1.450917,
+        "admissionRejected": false,
+        "dispatchMs": 1.496417,
+        "elapsedMs": 397.07270900000003,
+        "engineSession": "f9838b94-6bcb-4d5b-aecf-9cdc88475577",
+        "firstContentMs": 345.753709,
+        "lifecycleWaitMs": 0.001833,
+        "upstreamHeadersMs": 1.093459
+      },
+      "id": "bb9569bf-be47-4f3a-bf72-a887d4005ba5",
+      "model": "default_model",
+      "promptProcessing": {
+        "cacheHitPercent": 18.181818181818183,
+        "tokensPerSecond": null,
+        "uncachedTokens": 18
+      },
+      "source": "chat",
+      "startedAt": 1794116832259,
+      "status": "completed",
+      "timings": null,
+      "usage": {
+        "cacheCreation": null,
+        "cached": 4,
+        "completion": 4,
+        "prompt": 22,
+        "reasoning": null,
+        "total": 26
+      }
+    },
+    {
+      "elapsedMs": 0,
+      "engine": "MLX SSD",
+      "finishReason": null,
+      "firstAnswerMs": null,
+      "firstOutputMs": null,
+      "gateway": {
+        "admissionMs": 0.039833,
+        "admissionRejected": true,
+        "dispatchMs": null,
+        "elapsedMs": 0.062584,
+        "engineSession": "f9838b94-6bcb-4d5b-aecf-9cdc88475577",
+        "firstContentMs": null,
+        "lifecycleWaitMs": 0.0007080000000000001,
+        "upstreamHeadersMs": null
+      },
+      "id": "40b3acb0-96e9-4160-9e28-a787f700c22e",
+      "model": "",
+      "promptProcessing": {
+        "cacheHitPercent": null,
+        "tokensPerSecond": null,
+        "uncachedTokens": null
+      },
+      "source": "api",
+      "startedAt": 1794116832659,
+      "status": "error",
+      "timings": null,
+      "usage": null
+    }
+  ],
+  "sessionChangesOnRestart": true,
+  "sessionClearsWhenStopped": true,
+  "ordinarySettingsChanged": false,
+  "historyPreservedOnRefusal": true,
+  "checks": {
+    "json": true,
+    "sse": true,
+    "chat": true,
+    "refusal": true,
+    "engineSession": true
+  },
+  "qualifiedArtifactsUnchanged": true,
+  "requestModes": {
+    "03df648c-1957-4bd5-9e9a-a56b7bbda88a": "api-json",
+    "73812acd-2f94-4859-b8de-2092f1d9a257": "api-sse",
+    "bb9569bf-be47-4f3a-bf72-a887d4005ba5": "chat-sse",
+    "40b3acb0-96e9-4160-9e28-a787f700c22e": "admission-refusal"
+  },
+  "validation": {
+    "rustTests": 160,
+    "builds": [
+      "studio-server",
+      "soliton"
+    ],
+    "delayedMockLifecycleAdmissionHeaders": true,
+    "legacyClockAndOptionalFieldCompatibility": true
+  },
+  "limitations": [
+    "Gateway wall time is not GPU time; no cache serialization or GPU synchronization spans added.",
+    "API receipt begins at handler entry; chat receipt follows Axum JSON extraction. Neither is client network latency.",
+    "Early chat validation/offline/conversation conflicts remain outside request records; backend count refusals are recorded.",
+    "No controlled speedup comparison or new startup qualification. Main 4096-token MLX-LM workload baseline remains next."
+  ]
+}

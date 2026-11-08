@@ -19,7 +19,7 @@ import threading
 import sys
 from http.server import ThreadingHTTPServer
 from prefix_cache_roundtrip_support import digest_files
-from prefix_cache_contract import PROFILE, identity_digest, verify_evidence
+from prefix_cache_contract import PROFILE, BINDING_SCHEMA, identity_binding, binding_digest, verify_evidence
 from prefix_cache_writes import CommittedPrefixes
 
 REVIEWED = {'server': '57392576de114af80ede723976b9dd156dc234f856b9943b8b44b8b78bc27f79',
@@ -105,7 +105,8 @@ def main():
                     runtime=hashlib.sha256((digest_files(dependency_files + list(Path(mlx_lm.__file__).parent.rglob('*.py')) + [Path(mx.__file__), Path(sys.executable), executable, Path(__file__), Path(__file__).with_name('prefix_cache_roundtrip_support.py'), Path(__file__).with_name('prefix_cache_contract.py'), Path(__file__).with_name('prefix_cache_writes.py')]) + json.dumps({k:v for k,v in os.environ.items() if k.startswith(('MLX_', 'METAL_', 'VECLIB_', 'OMP_', 'TOKENIZERS_')) or k=='PYTORCH_ENABLE_MPS_FALLBACK'}, sort_keys=True) + json.dumps(dependency_versions,sort_keys=True) + platform.machine() + str(platform.mac_ver()) + importlib.metadata.version('mlx') + subprocess.check_output(['/usr/sbin/sysctl','-n','hw.model','hw.memsize','machdep.cpu.brand_string'],text=True).strip()).encode()).hexdigest(),
                     format='mlx-lm/0.32.0/gemma2-2b/http-prefix-v1')
     quota = args.quota_mib * 1024**2
-    binding = identity_digest(identity, root, quota)
+    cache_binding, observed_device = identity_binding(identity, root, quota)
+    binding = binding_digest(cache_binding)
     if args.qualification_mode and args.evidence:
         parser.error('Qualification mode cannot use an evidence file')
     if not args.qualification_mode:
@@ -113,7 +114,7 @@ def main():
             parser.error('Normal startup requires --evidence; explicit --qualification-mode is for isolated certification only')
         verify_evidence(args.evidence, binding, quota)
     if args.verify_only:
-        print(json.dumps(dict(identity=binding,profile=PROFILE,verified=not args.qualification_mode)))
+        print(json.dumps(dict(identity=binding,profile=PROFILE,binding_schema=BINDING_SCHEMA,cache_binding=cache_binding,cache_device_observed=observed_device,verified=not args.qualification_mode)))
         return
     mx.set_cache_limit(256 * 1024**2)
     stats = dict(hits=0, misses=0, writes=0, errors=0, skippedWrites=0, serializedBytes=0, committedBytes=0)
@@ -232,7 +233,7 @@ def main():
             if self.path == '/health':
                 return self.reply(200, {'status':'ok','model':'default_model','inference_ready':True,'identity':binding})
             if self.path == '/studio/ssd-cache':
-                return self.reply(200, dict(stats, identity=binding, profile=PROFILE, quota_bytes=quota, experimental=args.qualification_mode, productionIntegration=not args.qualification_mode))
+                return self.reply(200, dict(stats, identity=binding, profile=PROFILE, binding_schema=BINDING_SCHEMA, cache_binding=cache_binding, cache_device_observed=observed_device, quota_bytes=quota, experimental=args.qualification_mode, productionIntegration=not args.qualification_mode))
             return self.reply(404, {'error': 'Not found'})
         def do_POST(self):
             self.connection.settimeout(30)

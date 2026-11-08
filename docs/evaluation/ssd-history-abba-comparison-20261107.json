@@ -1,0 +1,1463 @@
+{
+  "result": "passed",
+  "scope": "Two-history first-request ABBA pilot; fresh+persist versus SSD restore; no physical-cold-cache or steady-state claim",
+  "quietWindows": [
+    {
+      "phase": "launch",
+      "label": "en-5-0-0-fresh",
+      "samples": [
+        {
+          "busyPercent": 19.285449737522757,
+          "globalBusyPercent": 19.291338582677167,
+          "ownedBusyPercent": 0.005888845154410724
+        },
+        {
+          "busyPercent": 13.067125565443492,
+          "globalBusyPercent": 13.88888888888889,
+          "ownedBusyPercent": 0.8217633234453977
+        },
+        {
+          "busyPercent": 9.647504725328822,
+          "globalBusyPercent": 9.656084656084657,
+          "ownedBusyPercent": 0.008579930755833704
+        }
+      ]
+    },
+    {
+      "phase": "request",
+      "label": "en-5",
+      "round": 0,
+      "slot": 0,
+      "samples": [
+        {
+          "busyPercent": 3.1060189347153426,
+          "globalBusyPercent": 3.125,
+          "ownedBusyPercent": 0.018981065284657407
+        },
+        {
+          "busyPercent": 5.058627619827591,
+          "globalBusyPercent": 5.078125,
+          "ownedBusyPercent": 0.019497380172409096
+        },
+        {
+          "busyPercent": 7.4457176934246325,
+          "globalBusyPercent": 7.480314960629921,
+          "ownedBusyPercent": 0.03459726720528857
+        }
+      ]
+    },
+    {
+      "phase": "launch",
+      "label": "en-5-0-1-restore",
+      "samples": [
+        {
+          "busyPercent": 27.482652125979758,
+          "globalBusyPercent": 27.49003984063745,
+          "ownedBusyPercent": 0.007387714657693702
+        },
+        {
+          "busyPercent": 67.33474754570139,
+          "globalBusyPercent": 67.33870967741936,
+          "ownedBusyPercent": 0.003962131717969744
+        },
+        {
+          "busyPercent": 30.19134980317944,
+          "globalBusyPercent": 30.19607843137255,
+          "ownedBusyPercent": 0.004728628193110315
+        },
+        {
+          "busyPercent": 46.62572713920348,
+          "globalBusyPercent": 46.63143989431968,
+          "ownedBusyPercent": 0.00571275511620359
+        },
+        {
+          "busyPercent": 33.460757703354034,
+          "globalBusyPercent": 33.46613545816733,
+          "ownedBusyPercent": 0.005377754813292211
+        },
+        {
+          "busyPercent": 38.576529225852866,
+          "globalBusyPercent": 38.58267716535433,
+          "ownedBusyPercent": 0.006147939501469297
+        },
+        {
+          "busyPercent": 40.940991373020836,
+          "globalBusyPercent": 40.94488188976378,
+          "ownedBusyPercent": 0.0038905167429417013
+        },
+        {
+          "busyPercent": 43.10741335420664,
+          "globalBusyPercent": 43.11377245508982,
+          "ownedBusyPercent": 0.006359100883178132
+        },
+        {
+          "busyPercent": 19.832666500765672,
+          "globalBusyPercent": 19.841269841269842,
+          "ownedBusyPercent": 0.00860334050417006
+        },
+        {
+          "busyPercent": 15.591439836987247,
+          "globalBusyPercent": 15.6,
+          "ownedBusyPercent": 0.008560163012752867
+        },
+        {
+          "busyPercent": 16.59353870619535,
+          "globalBusyPercent": 16.600790513833992,
+          "ownedBusyPercent": 0.0072518076386420575
+        }
+      ]
+    },
+    {
+      "phase": "request",
+      "label": "en-5",
+      "round": 0,
+      "slot": 1,
+      "samples": [
+        {
+          "busyPercent": 70.46298218678253,
+          "globalBusyPercent": 70.4724409448819,
+          "ownedBusyPercent": 0.00945875809936793
+        },
+        {
+          "busyPercent": 6.990314762849721,
+          "globalBusyPercent": 7.450980392156863,
+          "ownedBusyPercent": 0.46066562930714217
+        },
+        {
+          "busyPercent": 9.465433426043292,
+          "globalBusyPercent": 9.486166007905139,
+          "ownedBusyPercent": 0.020732581861845862
+        },
+        {
+          "busyPercent": 13.069712718740448,
+          "globalBusyPercent": 13.095238095238095,
+          "ownedBusyPercent": 0.025525376497646846
+        }
+      ]
+    },
+    {
+      "phase": "launch",
+      "label": "en-5-0-2-restore",
+      "samples": [
+        {
+          "busyPercent": 27.76979524061297,
+          "globalBusyPercent": 27.77777777777778,
+          "ownedBusyPercent": 0.00798253716480688
+        },
+        {
+          "busyPercent": 25.7723461409587,
+          "globalBusyPercent": 25.78125,
+          "ownedBusyPercent": 0.008903859041301584
+        },
+        {
+          "busyPercent": 3.1517385581448543,
+          "globalBusyPercent": 3.1620553359683794,
+          "ownedBusyPercent": 0.010316777823525232
+        },
+        {
+          "busyPercent": 14.673892302541935,
+          "globalBusyPercent": 14.682539682539682,
+          "ownedBusyPercent": 0.00864737999774632
+        },
+        {
+          "busyPercent": 20.38848070758881,
+          "globalBusyPercent": 20.4,
+          "ownedBusyPercent": 0.01151929241119178
+        },
+        {
+          "busyPercent": 11.246567490304123,
+          "globalBusyPercent": 11.256544502617801,
+          "ownedBusyPercent": 0.009977012313677393
+        },
+        {
+          "busyPercent": 12.64216959814571,
+          "globalBusyPercent": 12.648221343873518,
+          "ownedBusyPercent": 0.0060517457278085555
+        },
+        {
+          "busyPercent": 15.880673893248677,
+          "globalBusyPercent": 15.891472868217054,
+          "ownedBusyPercent": 0.010798974968377296
+        }
+      ]
+    },
+    {
+      "phase": "request",
+      "label": "en-5",
+      "round": 0,
+      "slot": 2,
+      "samples": [
+        {
+          "busyPercent": 18.74100611705179,
+          "globalBusyPercent": 18.766404199475065,
+          "ownedBusyPercent": 0.025398082423276097
+        },
+        {
+          "busyPercent": 7.144965106528561,
+          "globalBusyPercent": 7.171314741035856,
+          "ownedBusyPercent": 0.02634963450729528
+        },
+        {
+          "busyPercent": 7.116631274078462,
+          "globalBusyPercent": 7.142857142857143,
+          "ownedBusyPercent": 0.026225868778681
+        }
+      ]
+    },
+    {
+      "phase": "launch",
+      "label": "en-5-0-3-fresh",
+      "samples": [
+        {
+          "busyPercent": 15.944289219303494,
+          "globalBusyPercent": 15.95330739299611,
+          "ownedBusyPercent": 0.009018173692615808
+        },
+        {
+          "busyPercent": 8.130414030470403,
+          "globalBusyPercent": 8.13953488372093,
+          "ownedBusyPercent": 0.009120853250527305
+        },
+        {
+          "busyPercent": 15.612423794495045,
+          "globalBusyPercent": 15.625,
+          "ownedBusyPercent": 0.012576205504954257
+        }
+      ]
+    },
+    {
+      "phase": "request",
+      "label": "en-5",
+      "round": 0,
+      "slot": 3,
+      "samples": [
+        {
+          "busyPercent": 14.541257636338797,
+          "globalBusyPercent": 14.566929133858268,
+          "ownedBusyPercent": 0.025671497519471224
+        },
+        {
+          "busyPercent": 4.771418119425048,
+          "globalBusyPercent": 4.8,
+          "ownedBusyPercent": 0.02858188057495145
+        },
+        {
+          "busyPercent": 17.252099010193113,
+          "globalBusyPercent": 17.269076305220885,
+          "ownedBusyPercent": 0.016977295027770106
+        }
+      ]
+    },
+    {
+      "phase": "launch",
+      "label": "en-5-1-0-fresh",
+      "samples": [
+        {
+          "busyPercent": 16.792061284282227,
+          "globalBusyPercent": 16.8,
+          "ownedBusyPercent": 0.007938715717773473
+        },
+        {
+          "busyPercent": 7.503583639179458,
+          "globalBusyPercent": 7.509881422924901,
+          "ownedBusyPercent": 0.006297783745443979
+        },
+        {
+          "busyPercent": 9.443090347962526,
+          "globalBusyPercent": 9.448818897637794,
+          "ownedBusyPercent": 0.005728549675267811
+        }
+      ]
+    },
+    {
+      "phase": "request",
+      "label": "en-5",
+      "round": 1,
+      "slot": 0,
+      "samples": [
+        {
+          "busyPercent": 2.3162531695055297,
+          "globalBusyPercent": 2.34375,
+          "ownedBusyPercent": 0.027496830494470447
+        },
+        {
+          "busyPercent": 1.3213333180185525,
+          "globalBusyPercent": 2.42914979757085,
+          "ownedBusyPercent": 1.1078164795522976
+        },
+        {
+          "busyPercent": 9.617474814351363,
+          "globalBusyPercent": 9.63855421686747,
+          "ownedBusyPercent": 0.021079402516108275
+        }
+      ]
+    },
+    {
+      "phase": "launch",
+      "label": "en-5-1-1-restore",
+      "samples": [
+        {
+          "busyPercent": 27.899041395101996,
+          "globalBusyPercent": 27.906976744186046,
+          "ownedBusyPercent": 0.007935349084049482
+        },
+        {
+          "busyPercent": 2.77241813463101,
+          "globalBusyPercent": 2.7777777777777777,
+          "ownedBusyPercent": 0.005359643146767951
+        },
+        {
+          "busyPercent": 12.394387699659777,
+          "globalBusyPercent": 12.4031007751938,
+          "ownedBusyPercent": 0.008713075534021085
+        },
+        {
+          "busyPercent": 9.835940536766755,
+          "globalBusyPercent": 9.84251968503937,
+          "ownedBusyPercent": 0.006579148272615669
+        }
+      ]
+    },
+    {
+      "phase": "request",
+      "label": "en-5",
+      "round": 1,
+      "slot": 1,
+      "samples": [
+        {
+          "busyPercent": 1.5551994274083676,
+          "globalBusyPercent": 1.5810276679841897,
+          "ownedBusyPercent": 0.02582824057582215
+        },
+        {
+          "busyPercent": 4.735193114344581,
+          "globalBusyPercent": 4.761904761904762,
+          "ownedBusyPercent": 0.026711647560180896
+        },
+        {
+          "busyPercent": 1.9423713013720345,
+          "globalBusyPercent": 1.968503937007874,
+          "ownedBusyPercent": 0.026132635635839507
+        }
+      ]
+    },
+    {
+      "phase": "launch",
+      "label": "en-5-1-2-restore",
+      "samples": [
+        {
+          "busyPercent": 31.737655504389476,
+          "globalBusyPercent": 31.746031746031747,
+          "ownedBusyPercent": 0.008376241642271652
+        },
+        {
+          "busyPercent": 2.3547504759515387,
+          "globalBusyPercent": 2.3622047244094486,
+          "ownedBusyPercent": 0.007454248457909941
+        },
+        {
+          "busyPercent": 5.986426858015346,
+          "globalBusyPercent": 6.0,
+          "ownedBusyPercent": 0.013573141984654341
+        },
+        {
+          "busyPercent": 11.55321183802882,
+          "globalBusyPercent": 11.563731931668856,
+          "ownedBusyPercent": 0.010520093640036577
+        }
+      ]
+    },
+    {
+      "phase": "request",
+      "label": "en-5",
+      "round": 1,
+      "slot": 2,
+      "samples": [
+        {
+          "busyPercent": 2.722942001092235,
+          "globalBusyPercent": 2.7450980392156863,
+          "ownedBusyPercent": 0.022156038123451564
+        },
+        {
+          "busyPercent": 1.539261702140761,
+          "globalBusyPercent": 1.556420233463035,
+          "ownedBusyPercent": 0.017158531322273858
+        },
+        {
+          "busyPercent": 3.16377150931768,
+          "globalBusyPercent": 3.187250996015936,
+          "ownedBusyPercent": 0.02347948669825574
+        }
+      ]
+    },
+    {
+      "phase": "launch",
+      "label": "en-5-1-3-fresh",
+      "samples": [
+        {
+          "busyPercent": 14.608416223559097,
+          "globalBusyPercent": 14.615384615384615,
+          "ownedBusyPercent": 0.006968391825517742
+        },
+        {
+          "busyPercent": 20.793076657546198,
+          "globalBusyPercent": 20.8,
+          "ownedBusyPercent": 0.006923342453801812
+        },
+        {
+          "busyPercent": 4.659300071181506,
+          "globalBusyPercent": 4.669260700389105,
+          "ownedBusyPercent": 0.00996062920759945
+        },
+        {
+          "busyPercent": 20.311164899214887,
+          "globalBusyPercent": 20.318725099601593,
+          "ownedBusyPercent": 0.007560200386706588
+        },
+        {
+          "busyPercent": 5.730742809686714,
+          "globalBusyPercent": 5.742574257425742,
+          "ownedBusyPercent": 0.011831447739028
+        },
+        {
+          "busyPercent": 3.52852213307164,
+          "globalBusyPercent": 3.543307086614173,
+          "ownedBusyPercent": 0.014784953542533178
+        },
+        {
+          "busyPercent": 5.566960740378904,
+          "globalBusyPercent": 5.577689243027889,
+          "ownedBusyPercent": 0.010728502648984856
+        }
+      ]
+    },
+    {
+      "phase": "request",
+      "label": "en-5",
+      "round": 1,
+      "slot": 3,
+      "samples": [
+        {
+          "busyPercent": 7.793092437176423,
+          "globalBusyPercent": 7.8125,
+          "ownedBusyPercent": 0.019407562823576925
+        },
+        {
+          "busyPercent": 7.822820221474301,
+          "globalBusyPercent": 7.8431372549019605,
+          "ownedBusyPercent": 0.020317033427659264
+        },
+        {
+          "busyPercent": 3.1378348553833035,
+          "globalBusyPercent": 3.1620553359683794,
+          "ownedBusyPercent": 0.024220480585075845
+        }
+      ]
+    },
+    {
+      "phase": "launch",
+      "label": "ja-9-0-0-fresh",
+      "samples": [
+        {
+          "busyPercent": 31.864723216626746,
+          "globalBusyPercent": 31.872509960159363,
+          "ownedBusyPercent": 0.007786743532616025
+        },
+        {
+          "busyPercent": 5.127072959644423,
+          "globalBusyPercent": 5.138339920948616,
+          "ownedBusyPercent": 0.011266961304193596
+        },
+        {
+          "busyPercent": 2.3504959305161095,
+          "globalBusyPercent": 2.3622047244094486,
+          "ownedBusyPercent": 0.011708793893339052
+        },
+        {
+          "busyPercent": 11.361033076979956,
+          "globalBusyPercent": 11.372549019607844,
+          "ownedBusyPercent": 0.011515942627887186
+        }
+      ]
+    },
+    {
+      "phase": "request",
+      "label": "ja-9",
+      "round": 0,
+      "slot": 0,
+      "samples": [
+        {
+          "busyPercent": 6.802576318069371,
+          "globalBusyPercent": 6.827309236947791,
+          "ownedBusyPercent": 0.024732918878419663
+        },
+        {
+          "busyPercent": 6.411031457699137,
+          "globalBusyPercent": 6.42570281124498,
+          "ownedBusyPercent": 0.014671353545843303
+        },
+        {
+          "busyPercent": 3.4599825538213853,
+          "globalBusyPercent": 3.488372093023256,
+          "ownedBusyPercent": 0.028389539201870446
+        }
+      ]
+    },
+    {
+      "phase": "launch",
+      "label": "ja-9-0-1-restore",
+      "samples": [
+        {
+          "busyPercent": 16.39944331523771,
+          "globalBusyPercent": 16.40625,
+          "ownedBusyPercent": 0.006806684762287928
+        },
+        {
+          "busyPercent": 8.756366046845,
+          "globalBusyPercent": 8.764940239043824,
+          "ownedBusyPercent": 0.008574192198823327
+        },
+        {
+          "busyPercent": 21.504369336626443,
+          "globalBusyPercent": 21.51394422310757,
+          "ownedBusyPercent": 0.009574886481125408
+        },
+        {
+          "busyPercent": 7.381929882973165,
+          "globalBusyPercent": 7.392996108949417,
+          "ownedBusyPercent": 0.011066225976251683
+        },
+        {
+          "busyPercent": 3.488654945923136,
+          "globalBusyPercent": 3.501945525291829,
+          "ownedBusyPercent": 0.013290579368692643
+        },
+        {
+          "busyPercent": 7.589672032330961,
+          "globalBusyPercent": 7.6,
+          "ownedBusyPercent": 0.010327967669038596
+        }
+      ]
+    },
+    {
+      "phase": "request",
+      "label": "ja-9",
+      "round": 0,
+      "slot": 1,
+      "samples": [
+        {
+          "busyPercent": 3.892590830953291,
+          "globalBusyPercent": 3.9215686274509802,
+          "ownedBusyPercent": 0.028977796497689536
+        },
+        {
+          "busyPercent": 8.992874463724183,
+          "globalBusyPercent": 9.019607843137255,
+          "ownedBusyPercent": 0.02673337941307179
+        },
+        {
+          "busyPercent": 7.974076512124546,
+          "globalBusyPercent": 8.0,
+          "ownedBusyPercent": 0.025923487875454666
+        }
+      ]
+    },
+    {
+      "phase": "launch",
+      "label": "ja-9-0-2-restore",
+      "samples": [
+        {
+          "busyPercent": 11.322164242166057,
+          "globalBusyPercent": 11.328125,
+          "ownedBusyPercent": 0.005960757833942282
+        },
+        {
+          "busyPercent": 8.32417475137337,
+          "globalBusyPercent": 8.333333333333334,
+          "ownedBusyPercent": 0.00915858195996357
+        },
+        {
+          "busyPercent": 4.790023078034034,
+          "globalBusyPercent": 4.8,
+          "ownedBusyPercent": 0.009976921965965627
+        }
+      ]
+    },
+    {
+      "phase": "request",
+      "label": "ja-9",
+      "round": 0,
+      "slot": 2,
+      "samples": [
+        {
+          "busyPercent": 11.358076841939244,
+          "globalBusyPercent": 11.382113821138212,
+          "ownedBusyPercent": 0.024036979198967016
+        },
+        {
+          "busyPercent": 7.883799087662696,
+          "globalBusyPercent": 7.905138339920948,
+          "ownedBusyPercent": 0.021339252258252284
+        },
+        {
+          "busyPercent": 2.3336751333749457,
+          "globalBusyPercent": 2.3529411764705883,
+          "ownedBusyPercent": 0.01926604309564279
+        }
+      ]
+    },
+    {
+      "phase": "launch",
+      "label": "ja-9-0-3-fresh",
+      "samples": [
+        {
+          "busyPercent": 11.897252208878015,
+          "globalBusyPercent": 11.904761904761905,
+          "ownedBusyPercent": 0.007509695883889472
+        },
+        {
+          "busyPercent": 4.006641834548927,
+          "globalBusyPercent": 4.016064257028113,
+          "ownedBusyPercent": 0.009422422479185667
+        },
+        {
+          "busyPercent": 8.289517217782457,
+          "globalBusyPercent": 8.300395256916996,
+          "ownedBusyPercent": 0.010878039134539778
+        }
+      ]
+    },
+    {
+      "phase": "request",
+      "label": "ja-9",
+      "round": 0,
+      "slot": 3,
+      "samples": [
+        {
+          "busyPercent": 3.877999642360922,
+          "globalBusyPercent": 3.90625,
+          "ownedBusyPercent": 0.028250357639077645
+        },
+        {
+          "busyPercent": 1.6735963344172406,
+          "globalBusyPercent": 3.543307086614173,
+          "ownedBusyPercent": 1.8697107521969325
+        },
+        {
+          "busyPercent": 2.901771473036074,
+          "globalBusyPercent": 2.925531914893617,
+          "ownedBusyPercent": 0.02376044185754312
+        }
+      ]
+    },
+    {
+      "phase": "launch",
+      "label": "ja-9-1-0-fresh",
+      "samples": [
+        {
+          "busyPercent": 16.463984259964253,
+          "globalBusyPercent": 16.470588235294116,
+          "ownedBusyPercent": 0.006603975329864566
+        },
+        {
+          "busyPercent": 3.129802414691787,
+          "globalBusyPercent": 3.1372549019607843,
+          "ownedBusyPercent": 0.007452487268997353
+        },
+        {
+          "busyPercent": 0.7975233708058362,
+          "globalBusyPercent": 0.8097165991902834,
+          "ownedBusyPercent": 0.012193228384447176
+        }
+      ]
+    },
+    {
+      "phase": "request",
+      "label": "ja-9",
+      "round": 1,
+      "slot": 0,
+      "samples": [
+        {
+          "busyPercent": 2.379682714968597,
+          "globalBusyPercent": 2.4096385542168677,
+          "ownedBusyPercent": 0.029955839248270492
+        },
+        {
+          "busyPercent": 3.885787475025631,
+          "globalBusyPercent": 3.90625,
+          "ownedBusyPercent": 0.02046252497436886
+        },
+        {
+          "busyPercent": 3.899385904977113,
+          "globalBusyPercent": 3.9215686274509802,
+          "ownedBusyPercent": 0.0221827224738675
+        }
+      ]
+    },
+    {
+      "phase": "launch",
+      "label": "ja-9-1-1-restore",
+      "samples": [
+        {
+          "busyPercent": 27.373483043058368,
+          "globalBusyPercent": 27.38095238095238,
+          "ownedBusyPercent": 0.007469337894011279
+        },
+        {
+          "busyPercent": 4.322086487531061,
+          "globalBusyPercent": 4.330708661417323,
+          "ownedBusyPercent": 0.008622173886261795
+        },
+        {
+          "busyPercent": 4.7308048699322285,
+          "globalBusyPercent": 4.743083003952569,
+          "ownedBusyPercent": 0.012278134020340689
+        },
+        {
+          "busyPercent": 4.675378865019217,
+          "globalBusyPercent": 4.6875,
+          "ownedBusyPercent": 0.012121134980782908
+        }
+      ]
+    },
+    {
+      "phase": "request",
+      "label": "ja-9",
+      "round": 1,
+      "slot": 1,
+      "samples": [
+        {
+          "busyPercent": 4.349897178983416,
+          "globalBusyPercent": 4.365079365079365,
+          "ownedBusyPercent": 0.01518218609594831
+        },
+        {
+          "busyPercent": 8.274537713181555,
+          "globalBusyPercent": 8.300395256916996,
+          "ownedBusyPercent": 0.025857543735440486
+        },
+        {
+          "busyPercent": 17.55068174350213,
+          "globalBusyPercent": 17.578125,
+          "ownedBusyPercent": 0.027443256497871583
+        }
+      ]
+    },
+    {
+      "phase": "launch",
+      "label": "ja-9-1-2-restore",
+      "samples": [
+        {
+          "busyPercent": 11.409762106257855,
+          "globalBusyPercent": 11.417322834645669,
+          "ownedBusyPercent": 0.007560728387813234
+        },
+        {
+          "busyPercent": 1.9545342127001502,
+          "globalBusyPercent": 1.9607843137254901,
+          "ownedBusyPercent": 0.006250101025339849
+        },
+        {
+          "busyPercent": 4.752244421726709,
+          "globalBusyPercent": 4.761904761904762,
+          "ownedBusyPercent": 0.00966034017805305
+        }
+      ]
+    },
+    {
+      "phase": "request",
+      "label": "ja-9",
+      "round": 1,
+      "slot": 2,
+      "samples": [
+        {
+          "busyPercent": 9.643470086549888,
+          "globalBusyPercent": 9.673202614379084,
+          "ownedBusyPercent": 0.02973252782919718
+        },
+        {
+          "busyPercent": 14.549196306456802,
+          "globalBusyPercent": 14.574898785425102,
+          "ownedBusyPercent": 0.025702478968299636
+        },
+        {
+          "busyPercent": 6.424868854538912,
+          "globalBusyPercent": 6.451612903225806,
+          "ownedBusyPercent": 0.02674404868689483
+        }
+      ]
+    },
+    {
+      "phase": "launch",
+      "label": "ja-9-1-3-fresh",
+      "samples": [
+        {
+          "busyPercent": 11.365634501864829,
+          "globalBusyPercent": 11.372549019607844,
+          "ownedBusyPercent": 0.006914517743015161
+        },
+        {
+          "busyPercent": 3.9091109365648986,
+          "globalBusyPercent": 3.9215686274509802,
+          "ownedBusyPercent": 0.012457690886081526
+        },
+        {
+          "busyPercent": 8.189057213587404,
+          "globalBusyPercent": 8.203125,
+          "ownedBusyPercent": 0.014067786412596647
+        }
+      ]
+    },
+    {
+      "phase": "request",
+      "label": "ja-9",
+      "round": 1,
+      "slot": 3,
+      "samples": [
+        {
+          "busyPercent": 26.2734636243128,
+          "globalBusyPercent": 26.294820717131476,
+          "ownedBusyPercent": 0.02135709281867373
+        },
+        {
+          "busyPercent": 2.233727295697688,
+          "globalBusyPercent": 3.9840637450199203,
+          "ownedBusyPercent": 1.7503364493222322
+        },
+        {
+          "busyPercent": 3.870201940938956,
+          "globalBusyPercent": 3.8910505836575875,
+          "ownedBusyPercent": 0.02084864271863171
+        },
+        {
+          "busyPercent": 3.538173343357182,
+          "globalBusyPercent": 3.5573122529644268,
+          "ownedBusyPercent": 0.019138909607244854
+        }
+      ]
+    }
+  ],
+  "order": "ABBA",
+  "rounds": 2,
+  "fixtureSha256": "7b61731afd743506829b517a9c0eb95f3f2d6b207ed24b03504355aac57ef5c0",
+  "workerHashes": {
+    "benchmark-prefix-history.py": "43402b64224b0ce0fd3c785b54669c8458e408515e0668c408536b578c57e2cc",
+    "prefix-cache-http.py": "0ddfce6281a01a09d7d3d2f6f35cdddd8672d639d6b582fa063bfefe4d207bc0",
+    "prefix_cache_contract.py": "50bf4a83f6587fc8b4bb335c175269e8229f29ab542413f2ac18890af31f518c",
+    "prefix_cache_writes.py": "3be92dd6ba4698ee43df6d782341112807593f7481e6f2e6cbc398b820d1daa7",
+    "prefix_cache_roundtrip_support.py": "23fc141aa82c900d737b00137df2b72924378d8e468338348d749c3f283a8381",
+    "host_load_guard.py": "5f35f8a34646fd52aa369b07d5871555b3f2492ad469d155a665b17600561b14",
+    "prefix-store-evict": "1b7dba7efc03df065b0b6e52b846224310e2a78c53601b86bb82b97f5333e589"
+  },
+  "samples": [
+    {
+      "label": "en-5",
+      "round": 0,
+      "slot": 0,
+      "mode": "fresh",
+      "firstContentMs": 589.6283330002916,
+      "completionMs": 710.234207996109,
+      "usage": {
+        "prompt_tokens": 126,
+        "completion_tokens": 8,
+        "total_tokens": 134,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "counters": {
+        "hits": 0,
+        "misses": 1,
+        "writes": 1,
+        "errors": 0,
+        "skippedWrites": 0,
+        "serializedBytes": 27270312,
+        "committedBytes": 27270312
+      },
+      "cpu": {
+        "averageBusyPercent": 13.532568226949994,
+        "peakBusyPercent": 13.532568226949994,
+        "sustainedHighSeconds": 0
+      },
+      "quietBeforePercent": 7.4457176934246325,
+      "exact": true,
+      "cacheVerified": true
+    },
+    {
+      "label": "en-5",
+      "round": 0,
+      "slot": 1,
+      "mode": "restore",
+      "firstContentMs": 330.0541670032544,
+      "completionMs": 451.62495900149224,
+      "usage": {
+        "prompt_tokens": 126,
+        "completion_tokens": 8,
+        "total_tokens": 134,
+        "prompt_tokens_details": {
+          "cached_tokens": 125
+        }
+      },
+      "counters": {
+        "hits": 1,
+        "misses": 0,
+        "writes": 0,
+        "errors": 0,
+        "skippedWrites": 0,
+        "serializedBytes": 0,
+        "committedBytes": 0
+      },
+      "cpu": {
+        "averageBusyPercent": 15.31088204797222,
+        "peakBusyPercent": 16.51068445288206,
+        "sustainedHighSeconds": 0
+      },
+      "quietBeforePercent": 13.069712718740448,
+      "exact": true,
+      "cacheVerified": true
+    },
+    {
+      "label": "en-5",
+      "round": 0,
+      "slot": 2,
+      "mode": "restore",
+      "firstContentMs": 337.664541999402,
+      "completionMs": 458.29020899691386,
+      "usage": {
+        "prompt_tokens": 126,
+        "completion_tokens": 8,
+        "total_tokens": 134,
+        "prompt_tokens_details": {
+          "cached_tokens": 125
+        }
+      },
+      "counters": {
+        "hits": 1,
+        "misses": 0,
+        "writes": 0,
+        "errors": 0,
+        "skippedWrites": 0,
+        "serializedBytes": 0,
+        "committedBytes": 0
+      },
+      "cpu": {
+        "averageBusyPercent": 8.329825436341672,
+        "peakBusyPercent": 8.965902291588565,
+        "sustainedHighSeconds": 0
+      },
+      "quietBeforePercent": 7.116631274078462,
+      "exact": true,
+      "cacheVerified": true
+    },
+    {
+      "label": "en-5",
+      "round": 0,
+      "slot": 3,
+      "mode": "fresh",
+      "firstContentMs": 566.628666005272,
+      "completionMs": 690.1266249988112,
+      "usage": {
+        "prompt_tokens": 126,
+        "completion_tokens": 8,
+        "total_tokens": 134,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "counters": {
+        "hits": 0,
+        "misses": 1,
+        "writes": 1,
+        "errors": 0,
+        "skippedWrites": 0,
+        "serializedBytes": 27270312,
+        "committedBytes": 27270312
+      },
+      "cpu": {
+        "averageBusyPercent": 17.195025820326833,
+        "peakBusyPercent": 24.281401705921827,
+        "sustainedHighSeconds": 0
+      },
+      "quietBeforePercent": 17.252099010193113,
+      "exact": true,
+      "cacheVerified": true
+    },
+    {
+      "label": "en-5",
+      "round": 1,
+      "slot": 0,
+      "mode": "fresh",
+      "firstContentMs": 569.8039589988184,
+      "completionMs": 692.7959169988753,
+      "usage": {
+        "prompt_tokens": 126,
+        "completion_tokens": 8,
+        "total_tokens": 134,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "counters": {
+        "hits": 0,
+        "misses": 1,
+        "writes": 1,
+        "errors": 0,
+        "skippedWrites": 0,
+        "serializedBytes": 27270312,
+        "committedBytes": 27270312
+      },
+      "cpu": {
+        "averageBusyPercent": 20.845228442825647,
+        "peakBusyPercent": 33.83351088923973,
+        "sustainedHighSeconds": 0
+      },
+      "quietBeforePercent": 9.617474814351363,
+      "exact": true,
+      "cacheVerified": true
+    },
+    {
+      "label": "en-5",
+      "round": 1,
+      "slot": 1,
+      "mode": "restore",
+      "firstContentMs": 337.33512500475626,
+      "completionMs": 457.6782500007539,
+      "usage": {
+        "prompt_tokens": 126,
+        "completion_tokens": 8,
+        "total_tokens": 134,
+        "prompt_tokens_details": {
+          "cached_tokens": 125
+        }
+      },
+      "counters": {
+        "hits": 1,
+        "misses": 0,
+        "writes": 0,
+        "errors": 0,
+        "skippedWrites": 0,
+        "serializedBytes": 0,
+        "committedBytes": 0
+      },
+      "cpu": {
+        "averageBusyPercent": 7.45370151592741,
+        "peakBusyPercent": 10.19149836820105,
+        "sustainedHighSeconds": 0
+      },
+      "quietBeforePercent": 1.9423713013720345,
+      "exact": true,
+      "cacheVerified": true
+    },
+    {
+      "label": "en-5",
+      "round": 1,
+      "slot": 2,
+      "mode": "restore",
+      "firstContentMs": 335.5367080002907,
+      "completionMs": 456.29495799948927,
+      "usage": {
+        "prompt_tokens": 126,
+        "completion_tokens": 8,
+        "total_tokens": 134,
+        "prompt_tokens_details": {
+          "cached_tokens": 125
+        }
+      },
+      "counters": {
+        "hits": 1,
+        "misses": 0,
+        "writes": 0,
+        "errors": 0,
+        "skippedWrites": 0,
+        "serializedBytes": 0,
+        "committedBytes": 0
+      },
+      "cpu": {
+        "averageBusyPercent": 7.636070536970635,
+        "peakBusyPercent": 8.568634967187544,
+        "sustainedHighSeconds": 0
+      },
+      "quietBeforePercent": 3.16377150931768,
+      "exact": true,
+      "cacheVerified": true
+    },
+    {
+      "label": "en-5",
+      "round": 1,
+      "slot": 3,
+      "mode": "fresh",
+      "firstContentMs": 578.6304159992142,
+      "completionMs": 697.7902079961495,
+      "usage": {
+        "prompt_tokens": 126,
+        "completion_tokens": 8,
+        "total_tokens": 134,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "counters": {
+        "hits": 0,
+        "misses": 1,
+        "writes": 1,
+        "errors": 0,
+        "skippedWrites": 0,
+        "serializedBytes": 27270312,
+        "committedBytes": 27270312
+      },
+      "cpu": {
+        "averageBusyPercent": 7.449366206848744,
+        "peakBusyPercent": 10.433224794451574,
+        "sustainedHighSeconds": 0
+      },
+      "quietBeforePercent": 3.1378348553833035,
+      "exact": true,
+      "cacheVerified": true
+    },
+    {
+      "label": "ja-9",
+      "round": 0,
+      "slot": 0,
+      "mode": "fresh",
+      "firstContentMs": 1327.6183749985648,
+      "completionMs": 1519.183875003364,
+      "usage": {
+        "prompt_tokens": 496,
+        "completion_tokens": 12,
+        "total_tokens": 508,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "counters": {
+        "hits": 0,
+        "misses": 1,
+        "writes": 1,
+        "errors": 0,
+        "skippedWrites": 0,
+        "serializedBytes": 54533332,
+        "committedBytes": 54533332
+      },
+      "cpu": {
+        "averageBusyPercent": 4.564692665415282,
+        "peakBusyPercent": 11.145802703027414,
+        "sustainedHighSeconds": 0
+      },
+      "quietBeforePercent": 3.4599825538213853,
+      "exact": true,
+      "cacheVerified": true
+    },
+    {
+      "label": "ja-9",
+      "round": 0,
+      "slot": 1,
+      "mode": "restore",
+      "firstContentMs": 552.0233340066625,
+      "completionMs": 746.0635420065955,
+      "usage": {
+        "prompt_tokens": 496,
+        "completion_tokens": 12,
+        "total_tokens": 508,
+        "prompt_tokens_details": {
+          "cached_tokens": 495
+        }
+      },
+      "counters": {
+        "hits": 1,
+        "misses": 0,
+        "writes": 0,
+        "errors": 0,
+        "skippedWrites": 0,
+        "serializedBytes": 0,
+        "committedBytes": 0
+      },
+      "cpu": {
+        "averageBusyPercent": 10.22916207819318,
+        "peakBusyPercent": 11.414456067290946,
+        "sustainedHighSeconds": 0
+      },
+      "quietBeforePercent": 7.974076512124546,
+      "exact": true,
+      "cacheVerified": true
+    },
+    {
+      "label": "ja-9",
+      "round": 0,
+      "slot": 2,
+      "mode": "restore",
+      "firstContentMs": 569.6461659972556,
+      "completionMs": 764.5578329975251,
+      "usage": {
+        "prompt_tokens": 496,
+        "completion_tokens": 12,
+        "total_tokens": 508,
+        "prompt_tokens_details": {
+          "cached_tokens": 495
+        }
+      },
+      "counters": {
+        "hits": 1,
+        "misses": 0,
+        "writes": 0,
+        "errors": 0,
+        "skippedWrites": 0,
+        "serializedBytes": 0,
+        "committedBytes": 0
+      },
+      "cpu": {
+        "averageBusyPercent": 9.920201209597504,
+        "peakBusyPercent": 15.303709897796637,
+        "sustainedHighSeconds": 0
+      },
+      "quietBeforePercent": 2.3336751333749457,
+      "exact": true,
+      "cacheVerified": true
+    },
+    {
+      "label": "ja-9",
+      "round": 0,
+      "slot": 3,
+      "mode": "fresh",
+      "firstContentMs": 1311.829417005356,
+      "completionMs": 1503.6595420024241,
+      "usage": {
+        "prompt_tokens": 496,
+        "completion_tokens": 12,
+        "total_tokens": 508,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "counters": {
+        "hits": 0,
+        "misses": 1,
+        "writes": 1,
+        "errors": 0,
+        "skippedWrites": 0,
+        "serializedBytes": 54533332,
+        "committedBytes": 54533332
+      },
+      "cpu": {
+        "averageBusyPercent": 6.160442505385632,
+        "peakBusyPercent": 13.826004390383188,
+        "sustainedHighSeconds": 0
+      },
+      "quietBeforePercent": 2.901771473036074,
+      "exact": true,
+      "cacheVerified": true
+    },
+    {
+      "label": "ja-9",
+      "round": 1,
+      "slot": 0,
+      "mode": "fresh",
+      "firstContentMs": 1330.0403749963152,
+      "completionMs": 1534.2274159993394,
+      "usage": {
+        "prompt_tokens": 496,
+        "completion_tokens": 12,
+        "total_tokens": 508,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "counters": {
+        "hits": 0,
+        "misses": 1,
+        "writes": 1,
+        "errors": 0,
+        "skippedWrites": 0,
+        "serializedBytes": 54533332,
+        "committedBytes": 54533332
+      },
+      "cpu": {
+        "averageBusyPercent": 8.67235770437352,
+        "peakBusyPercent": 17.26047061591512,
+        "sustainedHighSeconds": 0
+      },
+      "quietBeforePercent": 3.899385904977113,
+      "exact": true,
+      "cacheVerified": true
+    },
+    {
+      "label": "ja-9",
+      "round": 1,
+      "slot": 1,
+      "mode": "restore",
+      "firstContentMs": 560.5637500048033,
+      "completionMs": 754.7862920037005,
+      "usage": {
+        "prompt_tokens": 496,
+        "completion_tokens": 12,
+        "total_tokens": 508,
+        "prompt_tokens_details": {
+          "cached_tokens": 495
+        }
+      },
+      "counters": {
+        "hits": 1,
+        "misses": 0,
+        "writes": 0,
+        "errors": 0,
+        "skippedWrites": 0,
+        "serializedBytes": 0,
+        "committedBytes": 0
+      },
+      "cpu": {
+        "averageBusyPercent": 13.644750867622614,
+        "peakBusyPercent": 17.55068174350213,
+        "sustainedHighSeconds": 0
+      },
+      "quietBeforePercent": 17.55068174350213,
+      "exact": true,
+      "cacheVerified": true
+    },
+    {
+      "label": "ja-9",
+      "round": 1,
+      "slot": 2,
+      "mode": "restore",
+      "firstContentMs": 564.4669169996632,
+      "completionMs": 759.4203330008895,
+      "usage": {
+        "prompt_tokens": 496,
+        "completion_tokens": 12,
+        "total_tokens": 508,
+        "prompt_tokens_details": {
+          "cached_tokens": 495
+        }
+      },
+      "counters": {
+        "hits": 1,
+        "misses": 0,
+        "writes": 0,
+        "errors": 0,
+        "skippedWrites": 0,
+        "serializedBytes": 0,
+        "committedBytes": 0
+      },
+      "cpu": {
+        "averageBusyPercent": 9.030435970508478,
+        "peakBusyPercent": 11.762101988060582,
+        "sustainedHighSeconds": 0
+      },
+      "quietBeforePercent": 6.424868854538912,
+      "exact": true,
+      "cacheVerified": true
+    },
+    {
+      "label": "ja-9",
+      "round": 1,
+      "slot": 3,
+      "mode": "fresh",
+      "firstContentMs": 1344.3343330000062,
+      "completionMs": 1548.7717500000144,
+      "usage": {
+        "prompt_tokens": 496,
+        "completion_tokens": 12,
+        "total_tokens": 508,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "counters": {
+        "hits": 0,
+        "misses": 1,
+        "writes": 1,
+        "errors": 0,
+        "skippedWrites": 0,
+        "serializedBytes": 54533332,
+        "committedBytes": 54533332
+      },
+      "cpu": {
+        "averageBusyPercent": 7.922547177595585,
+        "peakBusyPercent": 12.147609167624754,
+        "sustainedHighSeconds": 0
+      },
+      "quietBeforePercent": 3.538173343357182,
+      "exact": true,
+      "cacheVerified": true
+    }
+  ],
+  "seeds": {
+    "en-5": {
+      "entry": "4289ede6fc29568093c9640f1be295ee85698e6ed5cea8377b10e09b11319ead.cache",
+      "archive": "/Users/Shared/Program/Tauri/Soliton/.soliton-runtime/ssd-history-abba-20261107-attempt4/en-5.state",
+      "sha256": "600b834db856c9f6910a77006d2574f40d60530bec3f3111dab9972e22736bfc",
+      "bytes": 27274416,
+      "inputTokens": 126,
+      "restoreVerified": true
+    },
+    "ja-9": {
+      "entry": "20f14de1620d6d80869e274a78500ce65f3f324fb8f21ece2336f5129b106ca0.cache",
+      "archive": "/Users/Shared/Program/Tauri/Soliton/.soliton-runtime/ssd-history-abba-20261107-attempt4/ja-9.state",
+      "sha256": "c321f496da2f99d85abb1408142afbb93245ffe03585ab8abd1b272b70e82b15",
+      "bytes": 54537436,
+      "inputTokens": 496,
+      "restoreVerified": true
+    }
+  },
+  "summary": {
+    "en-5": {
+      "fresh": {
+        "requests": 4,
+        "firstContentMedianMs": 574.2171874990163,
+        "completionMedianMs": 695.2930624975124
+      },
+      "restore": {
+        "requests": 4,
+        "firstContentMedianMs": 336.43591650252347,
+        "completionMedianMs": 456.9866040001216
+      },
+      "restoreFirstContentChangePercent": -41.40964014541974
+    },
+    "ja-9": {
+      "fresh": {
+        "requests": 4,
+        "firstContentMedianMs": 1328.82937499744,
+        "completionMedianMs": 1526.7056455013517
+      },
+      "restore": {
+        "requests": 4,
+        "firstContentMedianMs": 562.5153335022333,
+        "completionMedianMs": 757.103312502295
+      },
+      "restoreFirstContentChangePercent": -57.66835501335024
+    }
+  },
+  "identity": "7051287aec51d9b64819df94b2db85bfa7618a4932af0b77f16ba763f7e72a66",
+  "limits": [
+    "one Mac/two histories/four samples per mode per history at default rounds",
+    "warm-read OS page cache, no purge or physical I/O measurement",
+    "includes fresh serialization/commit versus verified restoration, and first-forward/JIT costs",
+    "CPU guard excludes controller/worker; transient Rust helpers remain conservatively counted as background",
+    "no GPU load/thermal/page-residency guard; not a general speedup certification",
+    "no new qualification or ordinary settings change"
+  ],
+  "simulatorShutdownAuthorized": true,
+  "sourceArtifactsUnchangedAfterRun": true,
+  "cpuSummary": {
+    "maxPreRequestPercent": 17.55068174350213,
+    "maxMeasuredBackgroundAveragePercent": 20.845228442825647,
+    "maxSustainedHighSeconds": 0
+  },
+  "testStateCleanup": {
+    "files": 3,
+    "logicalBytes": 136349288,
+    "logsAndReportsRetained": true,
+    "certifiedCacheUntouched": true
+  },
+  "originalQualificationReverification": {
+    "verified": false,
+    "reason": "Certificate identity mismatch isolated to cache filesystem device number",
+    "currentBinding": "14da3d9ebbac56e61daaa1c476d3ad1b940074e6813334163502637d9189e099",
+    "certificateBinding": "b66ba5cf0516500a810e58d8c692e6a22daf7bd31776d70e0c8ab9c8eb7abf0f",
+    "currentCacheDevice": 16777233,
+    "certificateCacheDevice": 16777231,
+    "allOtherBindingInputsEqual": true,
+    "certificateUnmodified": true,
+    "guardBypassed": false,
+    "newQualificationIssued": false
+  },
+  "simulatorBootedAfterMeasurement": false
+}

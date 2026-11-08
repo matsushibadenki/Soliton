@@ -1,0 +1,46 @@
+{
+  "result": "passed",
+  "fixtureMatrixSha256": "e700fb814bd08dc5fe0fde6e1db7bc5f262c59e92ea562ab038a8cc40e468d4d",
+  "requestsPerRun": 36,
+  "boundaryAcceptancePerRun": 3,
+  "boundaryRefusalsPerRun": 3,
+  "promptAndCacheCountsMatch": true,
+  "exactAnswersMatch": 33,
+  "decodeAnswersMatch": 3,
+  "ordinarySettingsChanged": false,
+  "controlledEngineSpeedupClaim": false,
+  "workerComparison": {
+    "before": {
+      "medianFirstCountMs": 3235.0080410033115,
+      "medianWarmCountMs": 12.345979001111118,
+      "medianRssMiB": 315.71875
+    },
+    "after": {
+      "medianFirstCountMs": 1120.0006660001236,
+      "medianWarmCountMs": 12.181041500298306,
+      "medianRssMiB": 201.84375
+    }
+  },
+  "runs": {
+    "before": {
+      "startupObservedMs": 3805.785875,
+      "firstRequestAdmissionMs": 204.2595,
+      "repeatFirstMedianMs": 56.988792000000004,
+      "switchHits": 2,
+      "switchMisses": 4,
+      "switchHitFirstMedianMs": 105.3904375,
+      "switchMissFirstMedianMs": 11129.280666999999,
+      "sampledEnginePeakBytes": 3933719456
+    },
+    "after": {
+      "startupObservedMs": 3793.678333,
+      "firstRequestAdmissionMs": 4.272708,
+      "repeatFirstMedianMs": 53.231417,
+      "switchHits": 2,
+      "switchMisses": 4,
+      "switchHitFirstMedianMs": 99.15531250000001,
+      "switchMissFirstMedianMs": 8552.241979,
+      "sampledEnginePeakBytes": 3930606472
+    }
+  }
+}

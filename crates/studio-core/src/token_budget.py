@@ -33,9 +33,10 @@ def qualified_tokenizer(root):
     names = set(expected) | {"README.md", "config.json", "model.safetensors", "model.safetensors.index.json", ".git", ".gitattributes"}
     if not {p.name for p in root.iterdir()} <= names or not set(expected) <= {p.name for p in root.iterdir()}:
         return None
-    if any(version(p) != v for p, v in {
-        "transformers": "5.19.0", "tokenizers": "0.23.3", "jinja2": "3.1.6"
-    }.items()):
+    if tuple(version(p) for p in ("transformers", "tokenizers", "jinja2")) not in {
+        ("5.19.0", "0.23.3", "3.1.6"),
+        ("5.20.2", "0.23.3", "3.1.6"),
+    }:
         return None
     for name, digest in expected.items():
         with (root / name).open("rb") as file:

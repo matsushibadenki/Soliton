@@ -171,6 +171,7 @@ impl Startup {
     }
 }
 struct Process {
+    metrics_session: Option<String>,
     allocation_report: Option<allocation_report::Session>,
     vllm_memory_binding: Option<engine::VllmSettings>,
     vllm_backend_port: Option<u16>,
@@ -256,6 +257,7 @@ impl Studio {
             document: RwLock::new(Document::default()),
             docking_diagnostics: Mutex::new(docking::DragDiagnostics::default()),
             process: Mutex::new(Process {
+                metrics_session: None,
                 allocation_report: None,
                 vllm_memory_binding: None,
                 vllm_backend_port: None,
@@ -570,6 +572,8 @@ impl Studio {
         let mut p = self.process.lock().await;
         let s = self.settings.read().await.clone();
         p.startup = None;
+        // Public correlation ID; never expose the private worker authorization key.
+        p.metrics_session = Some(uuid::Uuid::new_v4().to_string());
         if s.engine == engine::Engine::MlxPrefix {
             let reserve = std::net::TcpListener::bind("127.0.0.1:0").map_err(|e| e.to_string())?;
             let port = reserve.local_addr().map_err(|e| e.to_string())?.port();
@@ -969,13 +973,22 @@ impl Studio {
         records.push_back(metrics);
     }
     pub async fn snapshot(&self) -> Value {
-        let (running, upstream, key) = {
+        let (running, upstream, key, engine_session) = {
             let mut p = self.process.lock().await;
             let running = p
                 .child
                 .as_mut()
                 .is_some_and(|c| matches!(c.try_wait(), Ok(None)));
-            (running, p.port, p.key.clone())
+            (
+                running,
+                p.port,
+                p.key.clone(),
+                if running {
+                    p.metrics_session.clone()
+                } else {
+                    None
+                },
+            )
         };
         if !running {
             if let Ok(_lifecycle) = self.lifecycle.try_lock() {
@@ -1126,7 +1139,7 @@ impl Studio {
                 }
             }
         }
-        json!({"modelPlan":model_plan,"omniCounterFailed":self.omni_counter_failed.load(Ordering::SeqCst),"startup":startup,"vllmInspection":vllm_inspection,"dockingDiagnostics":*self.docking_diagnostics.lock().await,"requests":requests,"memoryUsage":memory_usage,"memoryTuning":memory_tuning,"preparation":self.preparation.lock().await.snapshot(),"status":status,"health":health,"settings":*self.settings.read().await,"document":document,"logs":*self.logs.lock().await,"architecture":std::env::consts::ARCH,"memoryBytes":self.memory_bytes,"selectedEngine":settings.engine,"backend":if settings.engine == engine::Engine::MlxPrefix {"MLX SSD"}else if settings.engine == engine::Engine::Lfm3Omni {"LFM3-Omni"}else if settings.engine == engine::Engine::VllmApple {"vLLM-Apple"} else if preparation::inspect_config(std::path::Path::new(&settings.config), std::path::Path::new(&settings.strata_root)).backend == "strata-gemma3-metal" {"Gemma 3 Metal"} else if cfg!(all(target_os="macos",target_arch="aarch64")){"Metal"}else{"Strata"},"endpoint":format!("http://127.0.0.1:{}/v1",self.port),"root":self.root})
+        json!({"engineSession":engine_session,"modelPlan":model_plan,"omniCounterFailed":self.omni_counter_failed.load(Ordering::SeqCst),"startup":startup,"vllmInspection":vllm_inspection,"dockingDiagnostics":*self.docking_diagnostics.lock().await,"requests":requests,"memoryUsage":memory_usage,"memoryTuning":memory_tuning,"preparation":self.preparation.lock().await.snapshot(),"status":status,"health":health,"settings":*self.settings.read().await,"document":document,"logs":*self.logs.lock().await,"architecture":std::env::consts::ARCH,"memoryBytes":self.memory_bytes,"selectedEngine":settings.engine,"backend":if settings.engine == engine::Engine::MlxPrefix {"MLX SSD"}else if settings.engine == engine::Engine::Lfm3Omni {"LFM3-Omni"}else if settings.engine == engine::Engine::VllmApple {"vLLM-Apple"} else if preparation::inspect_config(std::path::Path::new(&settings.config), std::path::Path::new(&settings.strata_root)).backend == "strata-gemma3-metal" {"Gemma 3 Metal"} else if cfg!(all(target_os="macos",target_arch="aarch64")){"Metal"}else{"Strata"},"endpoint":format!("http://127.0.0.1:{}/v1",self.port),"root":self.root})
     }
 }
 fn pump<T: tokio::io::AsyncRead + Unpin + Send + 'static>(
@@ -1544,6 +1557,7 @@ async fn action(State(s): State<Arc<Studio>>, h: HeaderMap, Json(v): Json<Value>
     }
 }
 async fn proxy(State(s): State<Arc<Studio>>, req: Request) -> Response {
+    let received = std::time::Instant::now();
     let (parts, body) = req.into_parts();
     // Inference stays loopback-only; Studio clients authenticate with the process session token.
     let authenticated = authorized(&parts.headers, &s)
@@ -1556,108 +1570,11 @@ async fn proxy(State(s): State<Arc<Studio>>, req: Request) -> Response {
     if !authenticated {
         return error(StatusCode::UNAUTHORIZED, "Use the Studio session API key");
     }
-    let lifecycle = s.lifecycle.lock().await;
-    let (port, key) = {
-        let mut p = s.process.lock().await;
-        if !p
-            .child
-            .as_mut()
-            .is_some_and(|c| matches!(c.try_wait(), Ok(None)))
-        {
-            return error(StatusCode::SERVICE_UNAVAILABLE, "Engine is offline");
-        }
-        (p.port, p.key.clone())
-    };
     let path = parts
         .uri
         .path_and_query()
         .map(|x| x.as_str())
         .unwrap_or("/");
-    let mut body = match axum::body::to_bytes(body, 16 * 1024 * 1024).await {
-        Ok(b) => b,
-        Err(_) => return error(StatusCode::PAYLOAD_TOO_LARGE, "Request exceeds 16 MiB"),
-    };
-    let omni_config = s.settings.read().await.clone();
-    if omni_config.engine == engine::Engine::MlxPrefix {
-        if s.active_requests.load(Ordering::SeqCst) != 0 {
-            return error(StatusCode::CONFLICT, "MLX SSD inference is busy");
-        }
-        match path.split('?').next() {
-            Some("/v1/models" | "/studio/ssd-cache") => (),
-            Some("/v1/chat/completions") => {
-                let value: Value = match serde_json::from_slice(&body) {
-                    Ok(v) => v,
-                    Err(_) => return error(StatusCode::BAD_REQUEST, "Invalid inference JSON"),
-                };
-                if let Err(response) = s.check_prefix(port, &key, &value).await {
-                    return response;
-                }
-            }
-            _ => {
-                return error(
-                    StatusCode::UNPROCESSABLE_ENTITY,
-                    "MLX SSD supports text chat and model discovery only",
-                )
-            }
-        }
-    }
-    if omni_config.engine == engine::Engine::Lfm3Omni {
-        if s.active_requests.load(Ordering::SeqCst) != 0 {
-            return error(
-                StatusCode::CONFLICT,
-                "Omni inference or media processing is busy",
-            );
-        }
-        if path.split('?').next() != Some("/v1/chat/completions")
-            && path.split('?').next() != Some("/v1/models")
-        {
-            return error(
-                StatusCode::UNPROCESSABLE_ENTITY,
-                "Unqualified Omni API mode",
-            );
-        }
-        if path.split('?').next() == Some("/v1/chat/completions") {
-            let mut v: Value = match serde_json::from_slice(&body) {
-                Ok(v) => v,
-                Err(_) => return error(StatusCode::BAD_REQUEST, "Invalid Omni JSON"),
-            };
-            let messages: Vec<Message> = match serde_json::from_value(v["messages"].clone()) {
-                Ok(v) => v,
-                Err(_) => {
-                    return error(
-                        StatusCode::UNPROCESSABLE_ENTITY,
-                        "Use text and Rust-owned Omni attachment IDs",
-                    )
-                }
-            };
-            v["messages"] = match omni_runtime::messages(&messages, &omni_config.omni) {
-                Ok(v) => json!(v),
-                Err(e) => return error(StatusCode::UNPROCESSABLE_ENTITY, e),
-            };
-            v["temperature"] = json!(0);
-            if let Err(e) = s.check_omni(port, &key, &v, omni_config.omni.context).await {
-                return error(e.status(), e);
-            }
-            body = axum::body::Bytes::from(serde_json::to_vec(&v).unwrap());
-        }
-    }
-    if matches!(
-        path.split('?').next(),
-        Some("/v1/chat/completions" | "/v1/completions")
-    ) {
-        let settings = s.settings.read().await.clone();
-        let value = match serde_json::from_slice::<Value>(&body) {
-            Ok(v) => v,
-            Err(_) => return error(StatusCode::BAD_REQUEST, "Invalid inference JSON"),
-        };
-        if let Err(rejection) = s.token_counter.lock().await.check(&settings, &value).await {
-            return rejection.response();
-        }
-    }
-    let model = serde_json::from_slice::<Value>(&body)
-        .ok()
-        .and_then(|v| v["model"].as_str().map(str::to_owned))
-        .unwrap_or_default();
     let mut trace = ProxyTrace {
         studio: s.clone(),
         tracker: inference::Tracker::new(
@@ -1669,12 +1586,141 @@ async fn proxy(State(s): State<Arc<Studio>>, req: Request) -> Response {
             } else {
                 "skip"
             },
-            &model,
+            "",
         ),
         json: false,
         eof: false,
     };
+
+    trace.tracker.begin_gateway(received);
+    let waiting = std::time::Instant::now();
+    let lifecycle = s.lifecycle.lock().await;
+    trace
+        .tracker
+        .info
+        .metrics
+        .gateway
+        .as_mut()
+        .unwrap()
+        .lifecycle_wait_ms = Some(waiting.elapsed().as_secs_f64() * 1000.0);
     trace.tracker.info.metrics.engine = Some(s.settings.read().await.engine.label().into());
+    let (port, key) = {
+        let mut p = s.process.lock().await;
+        if !p
+            .child
+            .as_mut()
+            .is_some_and(|c| matches!(c.try_wait(), Ok(None)))
+        {
+            return trace.reject(error(StatusCode::SERVICE_UNAVAILABLE, "Engine is offline"));
+        }
+        trace
+            .tracker
+            .info
+            .metrics
+            .gateway
+            .as_mut()
+            .unwrap()
+            .engine_session = p.metrics_session.clone();
+        (p.port, p.key.clone())
+    };
+    let mut body = match axum::body::to_bytes(body, 16 * 1024 * 1024).await {
+        Ok(b) => b,
+        Err(_) => {
+            return trace.reject(error(
+                StatusCode::PAYLOAD_TOO_LARGE,
+                "Request exceeds 16 MiB",
+            ))
+        }
+    };
+    trace.tracker.admission_started();
+    let omni_config = s.settings.read().await.clone();
+    if omni_config.engine == engine::Engine::MlxPrefix {
+        if s.active_requests.load(Ordering::SeqCst) != 0 {
+            return trace.reject(error(StatusCode::CONFLICT, "MLX SSD inference is busy"));
+        }
+        match path.split('?').next() {
+            Some("/v1/models" | "/studio/ssd-cache") => (),
+            Some("/v1/chat/completions") => {
+                let value: Value = match serde_json::from_slice(&body) {
+                    Ok(v) => v,
+                    Err(_) => {
+                        return trace
+                            .reject(error(StatusCode::BAD_REQUEST, "Invalid inference JSON"))
+                    }
+                };
+                if let Err(response) = s.check_prefix(port, &key, &value).await {
+                    return trace.reject(response);
+                }
+            }
+            _ => {
+                return trace.reject(error(
+                    StatusCode::UNPROCESSABLE_ENTITY,
+                    "MLX SSD supports text chat and model discovery only",
+                ));
+            }
+        }
+    }
+    if omni_config.engine == engine::Engine::Lfm3Omni {
+        if s.active_requests.load(Ordering::SeqCst) != 0 {
+            return trace.reject(error(
+                StatusCode::CONFLICT,
+                "Omni inference or media processing is busy",
+            ));
+        }
+        if path.split('?').next() != Some("/v1/chat/completions")
+            && path.split('?').next() != Some("/v1/models")
+        {
+            return trace.reject(error(
+                StatusCode::UNPROCESSABLE_ENTITY,
+                "Unqualified Omni API mode",
+            ));
+        }
+        if path.split('?').next() == Some("/v1/chat/completions") {
+            let mut v: Value = match serde_json::from_slice(&body) {
+                Ok(v) => v,
+                Err(_) => return trace.reject(error(StatusCode::BAD_REQUEST, "Invalid Omni JSON")),
+            };
+            let messages: Vec<Message> = match serde_json::from_value(v["messages"].clone()) {
+                Ok(v) => v,
+                Err(_) => {
+                    return trace.reject(error(
+                        StatusCode::UNPROCESSABLE_ENTITY,
+                        "Use text and Rust-owned Omni attachment IDs",
+                    ));
+                }
+            };
+            v["messages"] = match omni_runtime::messages(&messages, &omni_config.omni) {
+                Ok(v) => json!(v),
+                Err(e) => return trace.reject(error(StatusCode::UNPROCESSABLE_ENTITY, e)),
+            };
+            v["temperature"] = json!(0);
+            if let Err(e) = s.check_omni(port, &key, &v, omni_config.omni.context).await {
+                return trace.reject(error(e.status(), e));
+            }
+            body = axum::body::Bytes::from(serde_json::to_vec(&v).unwrap());
+        }
+    }
+    if matches!(
+        path.split('?').next(),
+        Some("/v1/chat/completions" | "/v1/completions")
+    ) {
+        let settings = s.settings.read().await.clone();
+        let value = match serde_json::from_slice::<Value>(&body) {
+            Ok(v) => v,
+            Err(_) => {
+                return trace.reject(error(StatusCode::BAD_REQUEST, "Invalid inference JSON"))
+            }
+        };
+        if let Err(rejection) = s.token_counter.lock().await.check(&settings, &value).await {
+            return trace.reject(rejection.response());
+        }
+    }
+    let model = serde_json::from_slice::<Value>(&body)
+        .ok()
+        .and_then(|v| v["model"].as_str().map(str::to_owned))
+        .unwrap_or_default();
+    trace.tracker.info.metrics.model = model.chars().take(128).collect();
+    trace.tracker.restart_legacy_clock();
     let mut request = s
         .client
         .request(parts.method, format!("http://127.0.0.1:{port}{path}"))
@@ -1687,6 +1733,7 @@ async fn proxy(State(s): State<Arc<Studio>>, req: Request) -> Response {
     }
     let inference = InferenceGuard::new(s.clone()).await;
     drop(lifecycle);
+    trace.tracker.dispatched();
     let upstream = match request.send().await {
         Ok(r) => r,
         Err(e) => {
@@ -1694,6 +1741,7 @@ async fn proxy(State(s): State<Arc<Studio>>, req: Request) -> Response {
             return error(StatusCode::BAD_GATEWAY, e);
         }
     };
+    trace.tracker.upstream_headers_received();
     let status = upstream.status();
     if !status.is_success() {
         trace.fail();
@@ -1741,6 +1789,10 @@ struct ProxyTrace {
     eof: bool,
 }
 impl ProxyTrace {
+    fn reject(&mut self, response: Response) -> Response {
+        self.tracker.reject();
+        response
+    }
     fn feed(&mut self, bytes: &[u8]) {
         if self.json {
             self.tracker.feed_json(bytes);
@@ -1787,6 +1839,7 @@ impl Drop for InferenceGuard {
 }
 // The conversation and in-flight generation live here, rather than in a WebView.
 async fn chat(State(s): State<Arc<Studio>>, h: HeaderMap, Json(mut body): Json<Value>) -> Response {
+    let received = std::time::Instant::now();
     if !authorized(&h, &s) {
         return error(StatusCode::UNAUTHORIZED, "Studio token required");
     }
@@ -1804,8 +1857,10 @@ async fn chat(State(s): State<Arc<Studio>>, h: HeaderMap, Json(mut body): Json<V
         }
         _ => return error(StatusCode::BAD_REQUEST, "Invalid user message"),
     };
+    let waiting = std::time::Instant::now();
     let lifecycle = s.lifecycle.lock().await;
-    let (port, key) = {
+    let lifecycle_wait_ms = waiting.elapsed().as_secs_f64() * 1000.0;
+    let (port, key, engine_session) = {
         let mut p = s.process.lock().await;
         if !p
             .child
@@ -1814,7 +1869,7 @@ async fn chat(State(s): State<Arc<Studio>>, h: HeaderMap, Json(mut body): Json<V
         {
             return error(StatusCode::SERVICE_UNAVAILABLE, "Engine is offline");
         }
-        (p.port, p.key.clone())
+        (p.port, p.key.clone(), p.metrics_session.clone())
     };
     let settings = s.settings.read().await;
     if settings.engine == engine::Engine::VllmApple {
@@ -1856,6 +1911,10 @@ async fn chat(State(s): State<Arc<Studio>>, h: HeaderMap, Json(mut body): Json<V
     drop(settings);
     let mut tracker = inference::Tracker::new("chat", body["model"].as_str().unwrap_or(""));
     tracker.info.metrics.engine = Some(engine_label);
+    tracker.begin_gateway(received);
+    let gateway = tracker.info.metrics.gateway.as_mut().unwrap();
+    gateway.engine_session = engine_session;
+    gateway.lifecycle_wait_ms = Some(lifecycle_wait_ms);
     {
         let mut d = s.document.write().await;
         if body["conversationId"]
@@ -1880,6 +1939,7 @@ async fn chat(State(s): State<Arc<Studio>>, h: HeaderMap, Json(mut body): Json<V
             .cloned()
             .collect::<Vec<_>>();
         pending.push(user.clone());
+        tracker.admission_started();
         if is_omni {
             let messages = match omni_runtime::messages(&pending, &omni_settings) {
                 Ok(v) => v,
@@ -1887,6 +1947,8 @@ async fn chat(State(s): State<Arc<Studio>>, h: HeaderMap, Json(mut body): Json<V
             };
             body["messages"] = json!(messages);
             if let Err(e) = s.check_omni(port, &key, &body, omni_settings.context).await {
+                tracker.reject();
+                s.record_request(tracker.info.metrics.clone()).await;
                 return error(e.status(), e);
             }
         } else {
@@ -1906,6 +1968,8 @@ async fn chat(State(s): State<Arc<Studio>>, h: HeaderMap, Json(mut body): Json<V
                     return error(StatusCode::CONFLICT, "MLX SSD inference is busy");
                 }
                 if let Err(response) = s.check_prefix(port, &key, &body).await {
+                    tracker.reject();
+                    s.record_request(tracker.info.metrics.clone()).await;
                     return response;
                 }
             }
@@ -1916,6 +1980,8 @@ async fn chat(State(s): State<Arc<Studio>>, h: HeaderMap, Json(mut body): Json<V
                 .check(&s.settings.read().await.clone(), &body)
                 .await
             {
+                tracker.reject();
+                s.record_request(tracker.info.metrics.clone()).await;
                 return rejection.response();
             }
         }
@@ -1935,6 +2001,7 @@ async fn chat(State(s): State<Arc<Studio>>, h: HeaderMap, Json(mut body): Json<V
     body.as_object_mut().unwrap().remove("conversationId");
     let inference = InferenceGuard::new(s.clone()).await;
     drop(lifecycle);
+    tracker.dispatched();
     let response = s
         .client
         .post(format!("http://127.0.0.1:{port}/v1/chat/completions"))
@@ -1942,6 +2009,9 @@ async fn chat(State(s): State<Arc<Studio>>, h: HeaderMap, Json(mut body): Json<V
         .json(&body)
         .send()
         .await;
+    if response.is_ok() {
+        tracker.upstream_headers_received();
+    }
     let mut response = match response {
         Ok(r) if r.status().is_success() => r,
         other => {

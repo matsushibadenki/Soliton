@@ -1,0 +1,320 @@
+{
+  "result": "passed",
+  "identity": "64d3fb013b0b42277557fb9a179391d7e66bcb3efc59857bd48cc92ce4b4dd79",
+  "profile": {
+    "schema": 2,
+    "engine": "mlxPrefix",
+    "context": 512,
+    "maximum_output_tokens": 128,
+    "concurrency": 1,
+    "temperature": 0,
+    "seed": 0,
+    "memory_cache_bytes": 67108864,
+    "allocator_cache_bytes": 268435456
+  },
+  "binding_schema": 2,
+  "cache_binding": {
+    "binding_schema": 2,
+    "identity": {
+      "model": "3e8d02db8dc0df26d4e45291ae3a11ba9538671fc5337b22a8176f611a24b800",
+      "tokenizer": "8b76bdce87555efdf146fd0369a233715742b2fa7203b5a0fd882ee1b62a9f27",
+      "runtime": "2361aaa88dc6dd4b5e672ee8ba327f991700ed260613f9c2424829fbf1d32b6b",
+      "format": "mlx-lm/0.32.0/gemma2-2b/http-prefix-v1"
+    },
+    "profile": {
+      "schema": 2,
+      "engine": "mlxPrefix",
+      "context": 512,
+      "maximum_output_tokens": 128,
+      "concurrency": 1,
+      "temperature": 0,
+      "seed": 0,
+      "memory_cache_bytes": 67108864,
+      "allocator_cache_bytes": 268435456
+    },
+    "cache_root": "/Users/Shared/Program/Tauri/Soliton/.soliton-runtime/ssd-volume-v2-20261108/qualified-cache",
+    "cache_volume": {
+      "volume_uuid_sha256": "141a1429155645f0aa4e5949ef6e65a5f09956256e63869ccda82563c9014a51",
+      "filesystem": "apfs",
+      "internal": true,
+      "solid_state": true,
+      "bus_protocol": "Apple Fabric"
+    },
+    "quota_bytes": 268435456
+  },
+  "cache_device_observed": 16777229,
+  "cache_device_observed_end": 16777229,
+  "quota_bytes": 268435456,
+  "created_at": 1794106225.6825469,
+  "duration_seconds": 1800.1195957090004,
+  "successes": 5834,
+  "failures": 0,
+  "requires_eviction": true,
+  "eviction_pressure": {
+    "requests": 22,
+    "saved_writes": 22,
+    "storage_errors": 0,
+    "removed_entries": 23,
+    "samples": [
+      {
+        "index": 0,
+        "used_bytes": 218161171,
+        "entries": 5,
+        "removed_entries": 0
+      },
+      {
+        "index": 1,
+        "used_bytes": 163612339,
+        "entries": 3,
+        "removed_entries": 3
+      },
+      {
+        "index": 2,
+        "used_bytes": 218149775,
+        "entries": 4,
+        "removed_entries": 0
+      },
+      {
+        "index": 3,
+        "used_bytes": 163612339,
+        "entries": 3,
+        "removed_entries": 2
+      },
+      {
+        "index": 4,
+        "used_bytes": 218149775,
+        "entries": 4,
+        "removed_entries": 0
+      },
+      {
+        "index": 5,
+        "used_bytes": 163612339,
+        "entries": 3,
+        "removed_entries": 2
+      },
+      {
+        "index": 6,
+        "used_bytes": 218149775,
+        "entries": 4,
+        "removed_entries": 0
+      },
+      {
+        "index": 7,
+        "used_bytes": 163612339,
+        "entries": 3,
+        "removed_entries": 2
+      },
+      {
+        "index": 8,
+        "used_bytes": 218149775,
+        "entries": 4,
+        "removed_entries": 0
+      },
+      {
+        "index": 9,
+        "used_bytes": 163612339,
+        "entries": 3,
+        "removed_entries": 2
+      },
+      {
+        "index": 10,
+        "used_bytes": 218149775,
+        "entries": 4,
+        "removed_entries": 0
+      },
+      {
+        "index": 11,
+        "used_bytes": 163612339,
+        "entries": 3,
+        "removed_entries": 2
+      },
+      {
+        "index": 12,
+        "used_bytes": 218149775,
+        "entries": 4,
+        "removed_entries": 0
+      },
+      {
+        "index": 13,
+        "used_bytes": 163612339,
+        "entries": 3,
+        "removed_entries": 2
+      },
+      {
+        "index": 14,
+        "used_bytes": 218149775,
+        "entries": 4,
+        "removed_entries": 0
+      },
+      {
+        "index": 15,
+        "used_bytes": 163612339,
+        "entries": 3,
+        "removed_entries": 2
+      },
+      {
+        "index": 16,
+        "used_bytes": 218149775,
+        "entries": 4,
+        "removed_entries": 0
+      },
+      {
+        "index": 17,
+        "used_bytes": 163612339,
+        "entries": 3,
+        "removed_entries": 2
+      },
+      {
+        "index": 18,
+        "used_bytes": 218149775,
+        "entries": 4,
+        "removed_entries": 0
+      },
+      {
+        "index": 19,
+        "used_bytes": 163612339,
+        "entries": 3,
+        "removed_entries": 2
+      },
+      {
+        "index": 20,
+        "used_bytes": 218149775,
+        "entries": 4,
+        "removed_entries": 0
+      },
+      {
+        "index": 21,
+        "used_bytes": 163612339,
+        "entries": 3,
+        "removed_entries": 2
+      }
+    ],
+    "restart_counters": {
+      "hits": 0,
+      "misses": 1,
+      "writes": 1,
+      "errors": 0,
+      "skippedWrites": 1,
+      "serializedBytes": 27270312,
+      "committedBytes": 27270312,
+      "identity": "64d3fb013b0b42277557fb9a179391d7e66bcb3efc59857bd48cc92ce4b4dd79",
+      "profile": {
+        "schema": 2,
+        "engine": "mlxPrefix",
+        "context": 512,
+        "maximum_output_tokens": 128,
+        "concurrency": 1,
+        "temperature": 0,
+        "seed": 0,
+        "memory_cache_bytes": 67108864,
+        "allocator_cache_bytes": 268435456
+      },
+      "binding_schema": 2,
+      "cache_binding": {
+        "binding_schema": 2,
+        "identity": {
+          "model": "3e8d02db8dc0df26d4e45291ae3a11ba9538671fc5337b22a8176f611a24b800",
+          "tokenizer": "8b76bdce87555efdf146fd0369a233715742b2fa7203b5a0fd882ee1b62a9f27",
+          "runtime": "2361aaa88dc6dd4b5e672ee8ba327f991700ed260613f9c2424829fbf1d32b6b",
+          "format": "mlx-lm/0.32.0/gemma2-2b/http-prefix-v1"
+        },
+        "profile": {
+          "schema": 2,
+          "engine": "mlxPrefix",
+          "context": 512,
+          "maximum_output_tokens": 128,
+          "concurrency": 1,
+          "temperature": 0,
+          "seed": 0,
+          "memory_cache_bytes": 67108864,
+          "allocator_cache_bytes": 268435456
+        },
+        "cache_root": "/Users/Shared/Program/Tauri/Soliton/.soliton-runtime/ssd-volume-v2-20261108/qualified-cache",
+        "cache_volume": {
+          "volume_uuid_sha256": "141a1429155645f0aa4e5949ef6e65a5f09956256e63869ccda82563c9014a51",
+          "filesystem": "apfs",
+          "internal": true,
+          "solid_state": true,
+          "bus_protocol": "Apple Fabric"
+        },
+        "quota_bytes": 268435456
+      },
+      "cache_device_observed": 16777229,
+      "quota_bytes": 268435456,
+      "experimental": true,
+      "productionIntegration": false
+    }
+  },
+  "rss_growth_bytes": 0,
+  "gates": {
+    "authentication": true,
+    "request_rejection": true,
+    "cold": true,
+    "restart_hit": true,
+    "corruption_fallback": true,
+    "duplicate_write_suppression": true,
+    "live_entry_repair": true,
+    "disconnect_recovery": true,
+    "quota_fallback": true,
+    "protected_quota_preservation": true,
+    "quota_retry": true,
+    "context_boundary": true,
+    "automatic_eviction": true,
+    "eviction_restart_recompute": true
+  },
+  "final_counters": {
+    "hits": 0,
+    "misses": 1,
+    "writes": 3,
+    "errors": 0,
+    "skippedWrites": 5792,
+    "serializedBytes": 81810936,
+    "committedBytes": 81810936,
+    "identity": "64d3fb013b0b42277557fb9a179391d7e66bcb3efc59857bd48cc92ce4b4dd79",
+    "profile": {
+      "schema": 2,
+      "engine": "mlxPrefix",
+      "context": 512,
+      "maximum_output_tokens": 128,
+      "concurrency": 1,
+      "temperature": 0,
+      "seed": 0,
+      "memory_cache_bytes": 67108864,
+      "allocator_cache_bytes": 268435456
+    },
+    "binding_schema": 2,
+    "cache_binding": {
+      "binding_schema": 2,
+      "identity": {
+        "model": "3e8d02db8dc0df26d4e45291ae3a11ba9538671fc5337b22a8176f611a24b800",
+        "tokenizer": "8b76bdce87555efdf146fd0369a233715742b2fa7203b5a0fd882ee1b62a9f27",
+        "runtime": "2361aaa88dc6dd4b5e672ee8ba327f991700ed260613f9c2424829fbf1d32b6b",
+        "format": "mlx-lm/0.32.0/gemma2-2b/http-prefix-v1"
+      },
+      "profile": {
+        "schema": 2,
+        "engine": "mlxPrefix",
+        "context": 512,
+        "maximum_output_tokens": 128,
+        "concurrency": 1,
+        "temperature": 0,
+        "seed": 0,
+        "memory_cache_bytes": 67108864,
+        "allocator_cache_bytes": 268435456
+      },
+      "cache_root": "/Users/Shared/Program/Tauri/Soliton/.soliton-runtime/ssd-volume-v2-20261108/qualified-cache",
+      "cache_volume": {
+        "volume_uuid_sha256": "141a1429155645f0aa4e5949ef6e65a5f09956256e63869ccda82563c9014a51",
+        "filesystem": "apfs",
+        "internal": true,
+        "solid_state": true,
+        "bus_protocol": "Apple Fabric"
+      },
+      "quota_bytes": 268435456
+    },
+    "cache_device_observed": 16777229,
+    "quota_bytes": 268435456,
+    "experimental": true,
+    "productionIntegration": false
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "result": "passed",
+  "qualificationIdentity": "64d3fb013b0b42277557fb9a179391d7e66bcb3efc59857bd48cc92ce4b4dd79",
+  "checks": {
+    "qualifiedStartup": true,
+    "capacityInspection": true,
+    "liveTrimRefused": true,
+    "diskReuse": true,
+    "exclusiveStart": true,
+    "settingsLocked": true,
+    "admissionRefusals": true,
+    "sse": true,
+    "duplicateWriteSuppression": true,
+    "ownedProcessCleanup": true,
+    "restartReuse": true,
+    "wrongQuotaRefused": true,
+    "expiredEvidenceRefused": true,
+    "engineSwitch": true,
+    "recovery": true,
+    "conversationsPreserved": true,
+    "stoppedMaintenance": true
+  },
+  "initialCapacity": {
+    "cacheBytes": 245435556,
+    "canTrim": true,
+    "entryCount": 6,
+    "quotaBytes": 268435456,
+    "reclaimableBytes": 245435556,
+    "targetBytes": 201326592,
+    "temporaryBytes": 0,
+    "temporaryCount": 0,
+    "unknownBytes": 0,
+    "unknownCount": 0,
+    "usedBytes": 245435556
+  },
+  "engine": "MLX SSD",
+  "api": "http://127.0.0.1:18093",
+  "legacyEvidence": {
+    "result": "passed",
+    "legacyStartupRefused": true,
+    "response": "{\"error\":{\"message\":\"MLX SSD qualification refused: Traceback (most recent call last):\\n  File \\\"/Users/Shared/Program/Tauri/Soliton/scripts/prefix-cache-http.py\\\", line 292, in <module>\\n    main()\\n  File \\\"/Users/Shared/Program/Tauri/Soliton/scripts/prefix-cache-http.py\\\", line 115, in main\\n    verify_evidence(args.evidence, binding, quota)\\n  File \\\"/Users/Shared/Program/Tauri/Soliton/scripts/prefix_cache_contract.py\\\", line 133, in verify_evidence\\n    raise ValueError('Legacy SSD qualification binding; requalify with volume binding v2')\\nValueError: Legacy SSD qualification binding; requalify with volume binding v2\\n\",\"type\":\"studio_error\"}}",
+    "historyPreserved": true,
+    "api": "http://127.0.0.1:18093"
+  },
+  "artifacts_sha256": {
+    "scripts/prefix_cache_contract.py": "7bfa583f5401afa31de5cb536891409bb01dbc46a6686d480043d0cb864f581d",
+    "scripts/prefix-cache-http.py": "07090ad3cd8e1586c5138d0ae2436e6c5961d65b37d54712e703bc606fbbec08",
+    "scripts/qualify-prefix-cache.py": "aee3db726ad50a7f6361d52970d2224383344c529d52805413e28801721f9015",
+    "target/debug/examples/prefix-store-evict": "062c8c7335990ff188d38d680c719d51140e303527d2e51b0fe8a09f467e3e96"
+  },
+  "ordinarySettingsChanged": false,
+  "limitations": [
+    "Actual reboot/remount continuity not tested; device-number changes simulated in unit tests.",
+    "One Mac, selected MLX-LM 0.32.0 / MLX 0.32.4 / Gemma 2 2B text profile only.",
+    "Volume UUID is not unique physical-drive attestation."
+  ]
+}

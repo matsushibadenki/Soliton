@@ -1,6 +1,6 @@
 {
   "name": "soliton",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "type": "module",
   "scripts": {
@@ -33,7 +33,9 @@
     "bundle:metal": ".soliton-runtime/python-build/cpython-3.12.15-macos-aarch64-none/bin/python3 scripts/build-bundled-metal.py",
     "check:distribution": ".soliton-runtime/python-build/cpython-3.12.15-macos-aarch64-none/bin/python3 scripts/check-distribution.py",
     "postdesktop:build": "npm run check:distribution",
-    "package:validation": "node scripts/package-validation.mjs"
+    "package:validation": "node scripts/package-validation.mjs",
+    "benchmark:engine": "node scripts/benchmark-engine-gateway.mjs",
+    "test:engine-baseline": "node --test scripts/benchmark-engine-gateway.test.mjs"
   },
   "dependencies": {
     "@tauri-apps/api": "^2.12.4",

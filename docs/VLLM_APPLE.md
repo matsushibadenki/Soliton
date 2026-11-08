@@ -1,8 +1,8 @@
 # vLLM-Apple: verified local startup
 
-Latest environment proof / 最新の環境証跡 / 最新环境证据: [2026-10-25 allocator profile](#2026-10-25-qualified-allocator-profile).
+Latest isolated qualification / 最新の専用環境証跡 / 最新独立环境资格记录: [2026-11-08 fixed PyPI runtime and4096 baseline](INFERENCE.md#4096トークン主経路の基準値と0112026-11-08).
 
-Current measured profile / 現在の検証済み設定 / 当前已验证配置: [4,096 tokens, retained KV 1,024 MiB, allocator free cache 256 MiB, concurrency one](#2026-10-25-qualified-allocator-profile). Earlier dated entries and the 1,024 GUI fixture below are retained as history.
+Qualified QA profile: MLX-LM0.32.0 /MLX0.32.4,4096 total tokens, retained KV1024MiB, allocator512MiB, concurrency1. Original Homebrew settings are currently refused after environment drift; ordinary preferences were not rewritten. Historical dated instructions below remain for provenance and do not approve the changed Homebrew environment.
 
 ## 日本語
 

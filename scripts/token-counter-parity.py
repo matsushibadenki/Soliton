@@ -2,6 +2,7 @@
 Run with the qualified backend's Python and the local model directory.
 """
 import ast
+import argparse
 import hashlib
 import json
 import os
@@ -11,8 +12,13 @@ import sys
 
 os.environ["HF_HUB_OFFLINE"] = "1"
 os.environ["TRANSFORMERS_OFFLINE"] = "1"
-root = Path(sys.argv[1]).resolve()
-source = Path(__file__).resolve().parents[1] / "crates/studio-core/src/token_budget.py"
+parser=argparse.ArgumentParser(description=__doc__)
+parser.add_argument('model',type=Path)
+parser.add_argument('fixtures',type=Path,nargs='?')
+parser.add_argument('--source',type=Path,default=Path(__file__).resolve().parents[1]/'crates/studio-core/src/token_budget.py')
+args=parser.parse_args()
+root=args.model.resolve()
+source=args.source.resolve()
 # Load the selector without running the worker or replacing any upstream imports.
 node = next(n for n in ast.parse(source.read_text()).body if isinstance(n, ast.FunctionDef) and n.name == "qualified_tokenizer")
 namespace = {"Path": Path, "json": json}
@@ -82,8 +88,8 @@ for messages in [[{"role": "system", "content": "test"}], [{"role": "assistant",
             raise AssertionError("invalid conversation accepted")
     counts["rejected"] += 1
 # Optional synthetic long-context fixtures; compare complete IDs, not only lengths.
-if len(sys.argv) > 2:
-    fixture_path = Path(sys.argv[2])
+if args.fixtures is not None:
+    fixture_path = args.fixtures
     assert fixture_path.stat().st_size <= 2 * 1024 * 1024
     fixtures = json.loads(fixture_path.read_text())
     assert isinstance(fixtures, list) and 0 < len(fixtures) <= 256

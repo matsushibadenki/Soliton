@@ -246,8 +246,9 @@ def main():
         checked=subprocess.run([str(args.python),str(root/'prefix-cache-http.py'),'--model',str(args.model),
             '--cache-root',str(args.cache_root),'--quota-mib',str(args.quota_mib),'--store-executable',str(args.store_executable),
             '--qualification-mode','--verify-only'],env=env,capture_output=True,check=True,timeout=60)
-        if json.loads(checked.stdout)['identity']!=identity:raise RuntimeError('Model/runtime changed during qualification')
-        report=dict(result='preflight' if args.preflight else 'passed',identity=identity,profile=PROFILE,
+        final_binding=json.loads(checked.stdout)
+        if final_binding['identity']!=identity or final_binding['cache_binding']!=original['cache_binding']:raise RuntimeError('Model/runtime/volume changed during qualification')
+        report=dict(result='preflight' if args.preflight else 'passed',identity=identity,profile=PROFILE,binding_schema=original['binding_schema'],cache_binding=original['cache_binding'],cache_device_observed=original['cache_device_observed'],cache_device_observed_end=final_binding['cache_device_observed'],
             quota_bytes=args.quota_mib*1024**2,created_at=time.time(),duration_seconds=elapsed,successes=successes,
             failures=0,requires_eviction=args.require_eviction,eviction_pressure=eviction_pressure,rss_growth_bytes=max(0,peak-base),gates=gates,final_counters=final)
         if not args.preflight:

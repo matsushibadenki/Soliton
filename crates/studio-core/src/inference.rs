@@ -30,6 +30,19 @@ pub struct PromptProcessing {
     pub cache_hit_percent: Option<f64>,
     pub tokens_per_second: Option<f64>,
 }
+/// Gateway wall times, not GPU/kernel times. Offsets share one receipt clock.
+#[derive(Clone, Default, Debug, Serialize, Deserialize)]
+#[serde(default, rename_all = "camelCase")]
+pub struct GatewayTimings {
+    pub engine_session: Option<String>,
+    pub lifecycle_wait_ms: Option<f64>,
+    pub admission_ms: Option<f64>,
+    pub admission_rejected: Option<bool>,
+    pub dispatch_ms: Option<f64>,
+    pub upstream_headers_ms: Option<f64>,
+    pub first_content_ms: Option<f64>,
+    pub elapsed_ms: Option<f64>,
+}
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Metrics {
@@ -48,6 +61,8 @@ pub struct Metrics {
     pub timings: Option<Timings>,
     #[serde(default)]
     pub prompt_processing: Option<PromptProcessing>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub gateway: Option<GatewayTimings>,
 }
 impl Metrics {
     pub fn prompt_processing(&self) -> PromptProcessing {
@@ -108,6 +123,9 @@ pub struct Tracker {
     anthropic_input: Option<u64>,
     anthropic_cached: Option<u64>,
     anthropic_created: Option<u64>,
+    gateway_start: Option<Instant>,
+    admission_start: Option<Instant>,
+    dispatch_start: Option<Instant>,
 }
 fn number(v: &Value) -> Option<f64> {
     v.as_f64().filter(|n| n.is_finite() && *n >= 0.)
@@ -144,6 +162,7 @@ impl Tracker {
                     usage: None,
                     timings: None,
                     prompt_processing: None,
+                    gateway: None,
                 },
             },
             answer: String::new(),
@@ -153,6 +172,51 @@ impl Tracker {
             anthropic_input: None,
             anthropic_cached: None,
             anthropic_created: None,
+            gateway_start: None,
+            admission_start: None,
+            dispatch_start: None,
+        }
+    }
+    pub fn begin_gateway(&mut self, received: Instant) {
+        self.gateway_start = Some(received);
+        self.info.metrics.gateway = Some(GatewayTimings::default());
+    }
+    pub fn admission_started(&mut self) {
+        self.admission_start = Some(Instant::now());
+    }
+    pub fn reject(&mut self) {
+        if let Some(g) = &mut self.info.metrics.gateway {
+            g.admission_rejected = Some(true);
+        }
+        self.finish("error", false);
+    }
+    pub fn restart_legacy_clock(&mut self) {
+        self.start = Instant::now();
+        self.info.metrics.started_at = SystemTime::now()
+            .duration_since(UNIX_EPOCH)
+            .unwrap_or_default()
+            .as_millis() as u64;
+    }
+    fn admission_finished(&mut self) {
+        if let (Some(start), Some(g)) =
+            (self.admission_start.take(), &mut self.info.metrics.gateway)
+        {
+            g.admission_ms = Some(start.elapsed().as_secs_f64() * 1000.0);
+        }
+    }
+    pub fn dispatched(&mut self) {
+        self.admission_finished();
+        if let Some(g) = &mut self.info.metrics.gateway {
+            g.admission_rejected = Some(false);
+        }
+        self.dispatch_start = Some(Instant::now());
+        if let (Some(start), Some(g)) = (self.gateway_start, &mut self.info.metrics.gateway) {
+            g.dispatch_ms = Some(start.elapsed().as_secs_f64() * 1000.0);
+        }
+    }
+    pub fn upstream_headers_received(&mut self) {
+        if let (Some(start), Some(g)) = (self.dispatch_start, &mut self.info.metrics.gateway) {
+            g.upstream_headers_ms = Some(start.elapsed().as_secs_f64() * 1000.0);
         }
     }
     pub fn value(&mut self, v: &Value) {
@@ -312,6 +376,10 @@ impl Tracker {
         let calls = d["tool_calls"].as_array();
         if !content.is_empty() || !reasoning.is_empty() || calls.is_some_and(|c| !c.is_empty()) {
             self.info.metrics.first_output_ms.get_or_insert(ms);
+            if let (Some(start), Some(g)) = (self.gateway_start, &mut self.info.metrics.gateway) {
+                g.first_content_ms
+                    .get_or_insert_with(|| start.elapsed().as_secs_f64() * 1000.0);
+            }
         }
         if !content.is_empty() {
             self.info.metrics.first_answer_ms.get_or_insert(ms);
@@ -412,6 +480,7 @@ impl Tracker {
         }
     }
     pub fn finish(&mut self, fallback: &str, json: bool) {
+        self.admission_finished();
         if !json && fallback != "cancelled" && !self.buffer.is_empty() {
             self.feed(b"\n\n");
         }
@@ -424,6 +493,9 @@ impl Tracker {
             }
         }
         self.info.metrics.elapsed_ms = Some(self.start.elapsed().as_millis() as u64);
+        if let (Some(start), Some(g)) = (self.gateway_start, &mut self.info.metrics.gateway) {
+            g.elapsed_ms = Some(start.elapsed().as_secs_f64() * 1000.0);
+        }
         if self.info.metrics.status != "error" {
             self.info.metrics.status = if self.finished {
                 match self.info.metrics.finish_reason.as_deref() {
@@ -447,6 +519,76 @@ mod tests {
         t.value(&value);
         t.finish("error", false);
         t
+    }
+    #[test]
+    fn gateway_clock_includes_admission_without_changing_legacy_clock() {
+        let mut t = Tracker::new("api", "fixture");
+        t.begin_gateway(Instant::now() - std::time::Duration::from_millis(100));
+        t.admission_started();
+        t.restart_legacy_clock();
+        t.dispatched();
+        t.upstream_headers_received();
+        t.value(&serde_json::json!({"choices":[{"delta":{"role":"assistant"}}]}));
+        assert!(t
+            .info
+            .metrics
+            .gateway
+            .as_ref()
+            .unwrap()
+            .first_content_ms
+            .is_none());
+        t.value(
+            &serde_json::json!({"choices":[{"delta":{"content":"hello"},"finish_reason":"stop"}]}),
+        );
+        let first = t
+            .info
+            .metrics
+            .gateway
+            .as_ref()
+            .unwrap()
+            .first_content_ms
+            .unwrap();
+        t.finish("error", false);
+        let g = t.info.metrics.gateway.as_ref().unwrap();
+        assert!(first >= 100.0);
+        assert!(first - t.info.metrics.first_output_ms.unwrap() as f64 >= 99.0);
+        assert!(g.elapsed_ms.unwrap() >= first);
+        assert!(g.dispatch_ms.unwrap() >= 100.0);
+        assert_eq!(g.admission_rejected, Some(false));
+        assert_eq!(t.info.metrics.status, "completed");
+        assert!(t.info.metrics.timings.is_none());
+    }
+    #[test]
+    fn gateway_refusal_cancel_and_legacy_do_not_invent_unreached_stages() {
+        let mut t = Tracker::new("api", "fixture");
+        let legacy = serde_json::to_value(&t.info.metrics).unwrap();
+        assert!(legacy.get("gateway").is_none());
+        let old: Metrics = serde_json::from_value(legacy).unwrap();
+        assert!(old.gateway.is_none());
+        t.begin_gateway(Instant::now());
+        t.admission_started();
+        t.reject();
+        let g = t.info.metrics.gateway.as_ref().unwrap();
+        assert_eq!(g.admission_rejected, Some(true));
+        assert!(g.admission_ms.is_some());
+        assert!(
+            g.dispatch_ms.is_none()
+                && g.upstream_headers_ms.is_none()
+                && g.first_content_ms.is_none()
+        );
+        assert_eq!(t.info.metrics.status, "error");
+        let mut cancelled = Tracker::new("chat", "fixture");
+        cancelled.begin_gateway(Instant::now());
+        cancelled.dispatched();
+        cancelled.finish("cancelled", false);
+        assert_eq!(cancelled.info.metrics.status, "cancelled");
+        assert!(cancelled
+            .info
+            .metrics
+            .gateway
+            .unwrap()
+            .upstream_headers_ms
+            .is_none());
     }
     #[test]
     fn kapitsa_cache_aware_prefill_and_decode_remain_distinct() {

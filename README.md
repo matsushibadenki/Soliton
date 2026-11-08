@@ -1,5 +1,7 @@
 # Soliton
 
+Version0.1.1 records a qualified private4,096-token runtime, a36-case shared-API baseline and the tokenizer improvement. Ordinary settings remain unchanged; see [results and runtime setup](docs/INFERENCE.md#4096トークン主経路の基準値と0112026-11-08) and [release notes](CHANGELOG.md).
+
 ![Soliton](docs/images/stratastudio-image.png)
 
 [日本語](README.ja.md) · [简体中文](README.zh-CN.md)
@@ -184,5 +186,7 @@ Latest update: [2026-11-02 dependencies, immutable distribution pin and real-inf
 
 
 Opt-in **MLX SSD** is available in Preferences → Engine, with Rust-owned lifecycle and private, identity-bound 30-minute qualification. The verified Gemma 2 2B profile is text-only, total context 512, output up to 128 and one request at a time. See [configuration, qualification and limits](docs/SSD_PREFIX_CACHE.md#managed-soliton-engine-and-requalification).
+
+MLX SSD now requires a fresh volume-bound v2 certificate; v1 certificates cannot be upgraded automatically. See [binding and requalification](docs/SSD_PREFIX_CACHE.md#volume-bound-qualification-v2--2026-11-08).
 
 The MLX SSD preferences also show store usage and offer stopped-engine trimming to 75% of quota, protecting unknown files.

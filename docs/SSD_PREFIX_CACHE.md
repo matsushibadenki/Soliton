@@ -364,3 +364,110 @@ python3 scripts/prefix-multiturn.test.py
 ```
 
 Legacy six-turn/manual-trim mode remains available with `--maintain /absolute/prefix-maintain`. Fresh stores can be large; the tool retains them for inspection, and the cleanup above was limited to this completed run's captured receipts. No native-window, other-model/Mac or broader-context validation was added.
+
+
+## Matched-history ABBA pilot — 2026-11-07
+
+`benchmark-prefix-history.py` adds a repeatable first-request comparison using the exact `en-5`126-token history and `ja-9`496-token history from the successful nine-turn suite. It plans two complete `fresh → restore → restore → fresh` rounds per history:16 measured requests, four per mode/history. Every request uses a fresh worker process, the same selected model/runtime/executable, quota256MiB and a fixed run cache root. Source/fixture hashes and the per-run worker identity must remain unchanged. Source bytes and the selected answers/counts are never edited to favor restoration.
+
+Unmeasured preparation creates one saved state per history and independently verifies exact reply and full `input-1` token SSD restoration in a second process. For each measured A request the application store is empty; B receives a byte-verified private copy of the saved state. Before either request the same serialized bytes are read and SHA-256 checked (the archive for A, committed file for B). This is a deliberate **warm-read setup**, not a cold OS cache, device or physical NAND test. Timing starts after model readiness and excludes startup and host waiting, but includes first-forward/JIT effects and fresh serialization/commit versus validated restore. This does not isolate raw prefill computation.
+
+The existing calibrated Darwin CPU guard is reused. Launches require three distinct quiet samples at≤20% background CPU within120s; requests require the same gate within30s. Each measured interval must average≤50% background CPU with no≥75% episode sustained for1s. Controller and worker CPU are excluded; short Rust helper processes are conservatively counted as background. There is no GPU-load, thermal or page-residency guard, so even a future complete result is a bounded pilot, not general speedup certification. No apps are stopped by this tool.
+
+Exact answers, token counts, zero storage errors and the intended cache route are mandatory. A must report0 reused tokens and one commit; B must report`input-1` reused tokens, one disk hit and zero commits. The summarizer rejects missing/reordered ABBA slots, CPU contamination, bad answer/cache gates and non-finite timings. It permits a valid result in which restoration is slower, rather than selecting favorable outcomes. Every planned history and round must finish before any comparison summary is accepted.
+
+**Initial outcome: comparison rejected, not a performance result; the complete retry below resolves this for the bounded pilot.** Two initial attempts could not satisfy the launch quiet gate; the second captured237 CPU samples ranging25.7–64.4%. A third run verified both real saved states and completed9 eligible requests (all8 English slots and the first Japanese fresh request), then failed the next launch quiet gate. The full planned16-slot matrix was not collected, so the entire pilot has no accepted latency summary. Favorable partial timings are retained as raw diagnostics only. Simulator/Spotlight activity was observed; no unrelated app/process was terminated. [Rejected-run evidence](evaluation/ssd-history-abba-pilot-20261107.json).
+
+Six new tests cover complete ordering, a slower-restore result, incomplete/reordered rows, load/answer/cache rejection, invalid timing data, and quiet-gate reset/timeout behavior; the six existing CPU-guard tests also pass, including native process-clock unit calibration. The benchmark source, worker and executable hashes matched after the run. No worker source or ordinary setting was changed, and no new qualification was issued. Captured state archives/current entries totaling136,349,288 logical bytes were cleaned after all owned workers stopped; logs/reports remain and the certified cache is untouched.
+
+Reproduce on a quiet Mac using a fresh output directory:
+
+```sh
+/path/to/selected/python scripts/benchmark-prefix-history.py \
+  --python /path/to/selected/python --model /absolute/gemma-2-2b-it-4bit \
+  --store /absolute/Soliton/target/debug/examples/prefix-store-evict \
+  --fixtures /absolute/Soliton/docs/evaluation/ssd-near-limit-multiturn-20261106.json \
+  --output-dir /absolute/new-abba-directory --rounds 2 --order ABBA
+python3 scripts/prefix-history-benchmark.test.py
+python3 scripts/host_load_guard.test.py
+```
+
+An incomplete or rejected `comparison.json` is not authorization to adopt a latency policy. Preserve every rejected attempt and repeat the full matrix rather than selectively filling favorable slots from different host conditions.
+
+
+### Completed pilot after Simulator shutdown
+
+After explicit user authorization, the single booted iOS Simulator was shut down. A new output directory and the entire planned matrix were used; no rows from earlier failed attempts were reused. All **16 measured requests** completed in their predefined order, with four fresh and four restored first requests per history. Every raw reply, input-token count and cache-route check matched; each fresh request committed once with zero reused tokens, and each restored request reused exactly input-minus-one tokens with one SSD hit and zero commits. No storage errors or request retries occurred.
+
+| History | Input tokens | First-content median: fresh → restore | Completion median: fresh → restore |
+| --- | ---: | ---: | ---: |
+| English time recall (`en-5`) | 126 | 574.2 → 336.4 ms | 695.3 → 457.0 ms |
+| Japanese combined recall (`ja-9`) | 496 | 1,328.8 → 562.5 ms | 1,526.7 → 757.1 ms |
+
+The observed first-content reductions were **41.4%** and **57.7%** in this setup. Maximum pre-request background CPU was17.55% (limit20%); the maximum measured background average was20.85% (limit50%), with zero sustained-high episodes. Source/fixture hashes and the run identity remained unchanged. The existing30-minute certificate was separately checked after measurement and **refused** because the cache filesystem device number differs. No replacement qualification was issued and ordinary app settings were unchanged. The Simulator remained shut down at the end.
+
+These are bounded first-request observations on one Mac with two synthetic histories and four observations per mode/history. Both modes deliberately read the serialized bytes before timing; this is **not physical cold-SSD/NAND performance**, and A includes recompute/serialization/commit while B includes validated restoration. Worker startup is excluded, first-forward/JIT costs are included, and GPU load/temperature/page residency were not independently controlled. The result supports this selected warm-read comparison, not a general model, storage or production-latency guarantee. The Japanese reply's counters/format remain the model-quality issue recorded by the nine-turn suite; caching did not rewrite the reply.
+
+The accepted run is private under `.soliton-runtime/ssd-history-abba-20261107-attempt4`; the public record includes all16 rows, CPU windows, counters, source hashes, eligibility summary and original-certificate verification. Captured state files totaling136,349,288 logical bytes were removed after all owned workers stopped, with logs/reports retained and the certified cache untouched. Earlier rejected attempts remain rejected. [Accepted evidence](evaluation/ssd-history-abba-comparison-20261107.json).
+
+
+#### Qualification binding diagnostic
+
+The accepted pilot does not authorize normal engine startup. The older certificate is unchanged (SHA-256 `4187e92c090313fc9c95e943dfed6f7e428ea934551f4285fd09fcf820b6d260`) and still exactly matches its public copy. Worker, contract, receipt helper, controller and store executable bytes match the recorded qualification artifacts. The current selected versions remain MLX-LM0.32.0 /MLX0.32.4.
+
+The old saved-state header and the current full verify-only fingerprint isolate the mismatch to `cache_device`: qualification used **16777231**, current filesystem stat reports **16777233**. Reconstructing the old binding with that one changed input exactly reproduces the certificate identity; all model/tokenizer/runtime/profile/path/quota inputs match. This proves which bound input differs, not whether the underlying physical volume is unchanged. Current identity is `14da3d9ebbac56e61daaa1c476d3ad1b940074e6813334163502637d9189e099`; the older certificate binds `b66ba5cf0516500a810e58d8c692e6a22daf7bd31776d70e0c8ab9c8eb7abf0f`.
+
+The certificate and worker guards were not edited to accept the mismatch. Before operational adoption, review a durable volume-identity design and perform the corresponding qualification, or qualify the present location under the current contract. No bypass, edited approval or automatic migration was performed. The performance result remains a standalone qualification-mode pilot with a fixed identity throughout its complete matrix. The accepted evidence contains both the successful comparison and this failed certificate recheck.
+
+
+## Volume-bound qualification v2 — 2026-11-08
+
+The old contract included the cache directory's `st_dev`, which was observed changing between runs even when all other identity inputs matched. The new contract separates the observed device number from the approved storage identity. This is a new binding/profile schema (2), not an edit or reinterpretation of a v1 certificate.
+
+The worker resolves a unique current block-device node whose `st_rdev` matches the real private cache directory. It invokes the fixed OS command `/usr/sbin/diskutil info -plist <node>` without a shell. The query has a three-second deadline and64KiB output limit; timeout/oversize paths reap the owned child. The child stays in the worker's process group so engine shutdown can reap it as well. Root identity/ownership/mode and the device-node association are checked around the query; a replaced directory, changed mapping, missing UUID, mismatching mount device or unavailable DiskManagement fails closed. No fallback to a device-number-only binding is permitted.
+
+The approved hash includes canonical cache path, quota, model/tokenizer/runtime content, profile, and a volume record: hashed canonical VolumeUUID, filesystem type, internal/SSD flags and bus protocol. Raw UUID is not exported. Only reviewed local `apfs`/`hfs` metadata is accepted; unsupported/unavailable storage remains unqualified. The OS exposes volume UUIDs as a filesystem resource ([Apple volumeUUIDStringKey](https://developer.apple.com/documentation/foundation/urlresourcekey/volumeuuidstringkey)); the selected implementation uses the native machine-readable disk metadata and verifies its live device association. UUID identity is not proof of unique physical hardware: cloned volumes can preserve identifiers. No physical-drive attestation claim is made.
+
+`cache_device_observed` is diagnostic only and is excluded from the v2 hash. Reports retain the complete hashed-input description as `cache_binding` and start/end observed device numbers, making future mismatch diagnosis possible without reconstructing the old inputs. Rust inspection/launch requires protocol, profile and binding schema2 and an explicit verified/unverified boolean. The Python verifier checks the embedded binding digest as well as every existing duration/expiry/request/memory/quality gate. V1 evidence and malformed/tampered v2 reports are refused; there is no automatic upgrade or approval reuse.
+
+Seven evidence-contract tests and six volume/probe tests cover renumber invariance, volume/path/quota changes, old/tampered reports, UUID normalization, bad device/mount/metadata, directory replacement, output/time limits and subprocess cleanup. Four admission/diagnostic and three receipt tests remain passing. All157 Rust tests and studio-server/Tauri builds pass. A real read-only volume probe returned consistent UUID-derived metadata and excluded the observed device number from the hash. Actual reboot/remount continuity is not claimed by the simulated-number tests; other Macs/filesystems/platforms remain outside this validation. The fresh real-model qualification and managed verification below validate this exact new-worker configuration; other configurations require their own qualification.
+
+
+### Fresh v2 qualification and managed verification
+
+The selected MLX-LM0.32.0 / MLX0.32.4 / Gemma2 2B4-bit profile completed **1800.120 seconds,5834 successful requests,zero failures and0 sampled RSS growth**. All14 gates passed. Automatic pressure wrote22 states and removed23 older entries with zero storage errors; protected-data preservation, restart reuse, corruption recovery and cold recomputation remained intact. Start/end content identity and full cache binding matched; the observed device was16777229 at both ends. Final counters recorded3 serialized/committed saves and5792 skipped saves. These counters are not physical NAND-write measurements. [Original qualification](evaluation/ssd-volume-v2-qualification-20261108.json).
+
+The rebuilt Rust host then passed all17 managed checks: qualified startup, capacity inspection, live-trim refusal,177-token disk reuse, exclusive start, locked live settings, admission refusals, SSE, duplicate-write suppression, owned-process cleanup, restart reuse, wrong-quota and expired-evidence refusal, engine switching, recovery, conversation preservation and stopped maintenance. A separate actual startup using the unchanged v1 certificate was refused with the legacy-binding error, without changing conversation state; the QA configuration was restored. [Managed results and artifact hashes](evaluation/ssd-volume-v2-managed-20261108.json).
+
+The private usable certificate is `.soliton-runtime/ssd-volume-v2-20261108/qualification.json` (owner-only0600), bound to `.soliton-runtime/ssd-volume-v2-20261108/qualified-cache`,256MiB, the selected isolated Python and rebuilt `prefix-store-evict` executable. The public evidence is a record, not a portable approval: exact paths/content/storage and seven-day expiry are still checked. Existing ordinary native/headless settings were not rewritten. The dedicated QA server and its owned model workers were stopped; certified cache/evidence/logs were retained. V1 certificates are preserved as historical evidence and cannot authorize the new worker. Actual reboot/remount and other-Mac checks remain Pending.
+
+
+## Counterbalanced history comparison — 2026-11-08
+
+The comparator now defaults to `--order counterbalanced`: each history runs an ABBA block followed by BAAB, with A=fresh+persist and B=validated SSD restoration. Two or four rounds are required so each mode occupies each slot equally; `--order ABBA` preserves the earlier protocol. Process startup, identical serialized-byte warm reads, exact reply/count/cache-route checks and all CPU guards are unchanged. History labels are selectable, and report scope/sample counts follow the selected matrix.
+
+Each history now includes individual first-content ranges and per-round fresh/restore medians, relative changes, and the median/range of those paired changes. Slower restoration and disagreement between rounds remain visible. These are descriptive statistics; two blocks do not justify a confidence interval or general population inference. Missing/reordered blocks, odd balanced-round counts, nonfinite/negative load samples and first-content time after completion are rejected. Eight comparison tests and six CPU-guard tests pass.
+
+A real selected v2-runtime attempt used `en-5`126 tokens, `ja-9`496 tokens and `zh-9`496 tokens, planning24 measured requests. All three unmeasured cold-save/independent-process restores matched the canonical answers and token counts. The first request's quiet-host check then failed: the request window ranged16.19–44.78% background CPU, without three consecutive readings at or below20% within30 seconds. **Zero measured requests were accepted and no latency summary was issued.** No processes belonging to other applications were stopped and no guard was relaxed. The complete attempt remains rejected. [Raw refusal and preparation evidence](evaluation/ssd-counterbalanced-rejection-20261108.json).
+
+After owned workers stopped, three generated state archives totaling136,349,288 logical bytes were hash-checked and removed, retaining logs/report. The certified cache was untouched. A subsequent full verify-only run accepted the existing v2 certificate with the same identity; ordinary settings were unchanged. Quiet-host completion of the full three-language balanced matrix remains Next; independent GPU/thermal/page-residency controls and wider histories remain unfinished. This attempt does not supersede the earlier accepted ABBA pilot or the30-minute qualification.
+
+```sh
+/absolute/python scripts/benchmark-prefix-history.py \
+  --python /absolute/python --model /absolute/gemma-2-2b-it-4bit \
+  --store /absolute/prefix-store-evict \
+  --fixtures docs/evaluation/ssd-near-limit-multiturn-20261106.json \
+  --output-dir /absolute/new-balanced-directory \
+  --labels en-5 ja-9 zh-9 --rounds 2 --order counterbalanced
+```
+
+
+### Model-free host preflight and existing-evidence checks
+
+The comparator now checks the original quiet-host condition **before any seed/model worker starts**, avoiding repeated three-model preparation when the host is already busy. Request/launch guards remain unchanged. Quiet-host refusals carry `failureStage` and `quietFailure` with deadline, count, limit, required consecutive readings and min/max background CPU. They preserve complete raw quiet windows and remain rejected; no partial summary is promoted. Ten comparison tests and six live CPU-monitor tests pass, including an end-to-end mocked busy-host run asserting no model subprocess/seed and monitor cleanup.
+
+Optional `--evidence /absolute/qualification.json --qualified-cache-root /absolute/certified-cache` must be supplied together. They run the **original full verify-only startup path** against the certified cache before model preparation and after every planned measurement has completed, with a90-second subprocess deadline. Refused/malformed/oversized/unverified/v1 responses fail the comparison; before/after qualification identities must agree. The original expiry, full content/runtime/model/profile/path/quota/volume checks remain active. The actual benchmark still uses its own separate cache root/identity, so the operational certificate is neither copied to that root nor treated as approval for the experiment. No new qualification is issued.
+
+The next full retry again saved/restored all three fixtures correctly but failed the first launch quiet gate, with zero measured requests; all136,349,288 generated state bytes were hash-checked and removed after workers stopped. [Retry record](evaluation/ssd-counterbalanced-rejection2-20261108.json). A subsequent run with the new preflight accepted the exact existing v2 certificate (`64d3fb…4dd79`), then refused at `host_preflight` after229 readings over120 seconds (16.27–43.52% background CPU). There were no model logs, seeds or measured requests. A read-only process snapshot during the earlier retry showed macOS `mediaanalysisd` consuming about two CPU cores; no application/system process was stopped. [Model-free preflight record](evaluation/ssd-counterbalanced-preflight-20261108.json).
+
+The full three-language balanced latency matrix is Pending until the host meets the unchanged quiet condition. Post-matrix evidence verification is unit-tested through the shared verifier helper but has not yet been reached by a successful live balanced matrix. GPU load, thermal state and physical page residency remain uncontrolled; no new latency result or performance certification is claimed.

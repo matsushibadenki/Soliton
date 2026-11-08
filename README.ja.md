@@ -1,5 +1,7 @@
 # Soliton
 
+0.1.1では、専用4,096トークン構成の資格確認、共通APIの36件基準測定、軽量計数の改善を記録しました。通常設定は変更していません。[結果・実行環境](docs/INFERENCE.md#4096トークン主経路の基準値と0112026-11-08)と[変更履歴](CHANGELOG.md)を参照してください。
+
 ![Soliton](docs/images/stratastudio-image.png)
 
 [English](README.md) · [简体中文](README.zh-CN.md)
@@ -154,5 +156,7 @@ Apple Silicon配布版では、ローカルモデル画面で取得済みの`goo
 
 
 環境設定 → エンジンで任意の **MLX SSD** を選べます。Rustが起動・停止を管理し、構成と一致する専用の30分資格証跡を検査します。確認済みのGemma 2 2B構成はテキスト専用、入出力合計512、出力最大128、同時実行1件です。[設定・資格確認・制限](docs/SSD_PREFIX_CACHE.md#managed-soliton-engine-and-requalification)を参照してください。
+
+MLX SSDにはボリューム識別に対応したv2証跡が必要です。v1証跡は自動移行せず、30分の再資格確認を行います。[照合方式と再資格確認](docs/SSD_PREFIX_CACHE.md#volume-bound-qualification-v2--2026-11-08)を参照してください。
 
 MLX SSDの環境設定では保存領域の使用量を確認し、停止中に容量枠の75%まで整理できます。不明なファイルは保護します。

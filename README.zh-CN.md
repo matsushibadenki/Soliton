@@ -1,5 +1,7 @@
 # Soliton
 
+0.1.1记录了独立4096 token环境的资格验证、36个公共API基线用例和轻量计数改进；普通设置未改动。参阅[结果及运行环境](docs/INFERENCE.md#4096トークン主経路の基準値と0112026-11-08)和[更新记录](CHANGELOG.md)。
+
 ![Soliton](docs/images/stratastudio-image.png)
 
 [English](README.md) · [日本語](README.ja.md)
@@ -150,5 +152,7 @@ Apple Silicon发行版中，在本地模型界面选择已下载的`google/gemma
 
 
 偏好设置 → 引擎中可选用 **MLX SSD**。Rust管理启动和停止，并验证与当前配置绑定的独立30分钟资格记录。已验证的Gemma 2 2B配置仅支持文本，输入与输出合计512 token、输出最多128 token、单请求并发。参阅[配置、资格验证与限制](docs/SSD_PREFIX_CACHE.md#managed-soliton-engine-and-requalification)。
+
+MLX SSD现需使用绑定卷标识的v2资格记录；v1记录不会自动升级，须重新完成30分钟资格验证。参阅[绑定方式与重新验证](docs/SSD_PREFIX_CACHE.md#volume-bound-qualification-v2--2026-11-08)。
 
 MLX SSD偏好设置还可查看存储用量，并在停止引擎后整理至容量上限的75%；未知文件受到保护。

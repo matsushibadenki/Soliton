@@ -204,13 +204,7 @@ impl Settings {
         }
         let value: Value =
             serde_json::from_slice(&output.stdout).map_err(|_| "Invalid inspection response")?;
-        if value["verified"] != false
-            || value["identity"]
-                .as_str()
-                .is_none_or(|s| s.len() != 64 || !s.bytes().all(|b| b.is_ascii_hexdigit()))
-        {
-            return Err("Invalid configuration identity".into());
-        }
+        validate_verification(&value, false)?;
         Ok(value)
     }
     pub async fn command(&self, port: u16, key: &str) -> Result<(Command, String), String> {
@@ -234,16 +228,26 @@ impl Settings {
         }
         let response: Value = serde_json::from_slice(&output.stdout)
             .map_err(|_| "Invalid MLX SSD evidence response")?;
-        let identity = response["identity"]
-            .as_str()
-            .filter(|s| s.len() == 64 && s.bytes().all(|b| b.is_ascii_hexdigit()))
-            .ok_or("Invalid qualification identity")?
-            .to_string();
-        if response["verified"] != true {
-            return Err("MLX SSD evidence is unverified".into());
-        }
+        let identity = validate_verification(&response, true)?;
         Ok((self.base(port, key, true)?, identity))
     }
+}
+/// Keep old runtime protocols from being mistaken for the volume-bound contract.
+fn validate_verification(value: &Value, verified: bool) -> Result<String, String> {
+    if value["binding_schema"].as_u64() != Some(2)
+        || value["profile"]["schema"].as_u64() != Some(2)
+        || value["cache_binding"]["binding_schema"].as_u64() != Some(2)
+    {
+        return Err("MLX SSD requires volume-binding v2 runtime and fresh qualification".into());
+    }
+    if value["verified"].as_bool() != Some(verified) {
+        return Err("MLX SSD evidence verification status mismatch".into());
+    }
+    value["identity"]
+        .as_str()
+        .filter(|s| s.len() == 64 && s.bytes().all(|b| b.is_ascii_hexdigit()))
+        .map(str::to_owned)
+        .ok_or_else(|| "Invalid qualification identity".into())
 }
 /// Reject unsupported API options before requesting a count or mutating history.
 pub fn validate_body(body: &Value) -> Result<(), String> {
@@ -307,6 +311,30 @@ pub fn validate_body(body: &Value) -> Result<(), String> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn verification_requires_current_schema_and_explicit_verified_status() {
+        let good = json!({"identity":"a".repeat(64),"verified":true,"binding_schema":2,
+            "profile":{"schema":2},"cache_binding":{"binding_schema":2}});
+        assert!(validate_verification(&good, true).is_ok());
+        assert!(validate_verification(&good, false).is_err());
+        for patch in [
+            json!({"binding_schema":1}),
+            json!({"binding_schema":null}),
+            json!({"profile":{"schema":1}}),
+            json!({"cache_binding":{}}),
+            json!({"verified":1}),
+            json!({"identity":"invalid"}),
+        ] {
+            let mut bad = good.clone();
+            for (key, value) in patch.as_object().unwrap() {
+                bad[key] = value.clone();
+            }
+            assert!(validate_verification(&bad, true).is_err());
+        }
+        let mut inspected = good;
+        inspected["verified"] = json!(false);
+        assert!(validate_verification(&inspected, false).is_ok());
+    }
     #[test]
     fn settings_migrate_and_request_bounds() {
         let s: Settings = serde_json::from_str("{}").unwrap();
