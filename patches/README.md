@@ -39,3 +39,19 @@ The old Homebrew environment currently contains development MLX-LM0.32.3.dev12 a
 日本語: グローバル環境は変更せず、固定した専用環境で全ファイル照合と再資格確認を行います。新旧のserver/cacheを混在させる組合せは拒否します。
 
 简体中文：保留全局环境，使用固定的独立环境完成全部文件校验和重新资格验证；拒绝混用新旧server/cache。
+
+## MLX-LM0.32.2 plain-text profile — 2026-11-08
+
+`vllm-apple-mlx-0322.patch` targets clean controller commit `bdef9567191bcc46154c0f7cf7f05089b718f0b4`. It is a combined alternative to `vllm-apple-mlx-0320-pypi.patch`, not a patch to force over an already modified checkout. `scripts/mlx-retained-kv.py` is the canonical resulting wrapper. Check/apply to a separate clean controller copy; compare the resulting file byte-for-byte with the canonical script. The patch was check-applied/applied to a temporary original-source fixture and matched exactly. Keep any existing qualified controller/environment intact.
+
+The allowlist now binds **release and exact server/cache pair together**: the two previously reviewed0.32.0 pairs remain, and0.32.2 admits only server8d475058…0723/cachec96cb169…45e6. Unknown/development releases, changed files and incorrect version/source combinations remain refused. The0.32.2 cache and Gemma2 implementation are byte-identical to the selected PyPI0.32.0 versions. Generation/tokenizer/model-loading and response-state differences were reviewed; full installed-file inventory and architecture evidence still bind all files, not only these two hashes.
+
+The0.32.2 server can inline image URLs before model-specific processing. This text profile replaces that exact guarded function with plain-string role/content validation before URL inlining, inside the upstream400-error boundary. It does not change attention, model weights, LRU insert/fetch/trim, active tensors, or sampling. Vision, tool calls and alternate templates are outside the qualified shared Rust surface. Real direct-backend probes verify rejected image/data-URL/content-part requests with zero fetches of a local canary URL, JSON/SSE answer/count/cache parity and bounded scalar snapshots.
+
+Use `scripts/fixtures/mlx-0322-runtime-20261108.txt` for the separate34-package backend environment. Package pins are reproducibility inputs, not approval. `scripts/mlx-0322-contract.test.py` tests release/source and text boundaries without models; `BACKEND_PYTHON -I scripts/verify-kv-lru.py --wrapper scripts/mlx-retained-kv.py --release 0.32.2` checks real LRU byte enforcement using logical fixtures only. The default LRU command still checks the original0.32.0 wrapper. `scripts/token-counter-parity.py` compares complete IDs and fallback boundaries before admitting the Transformers5.22.2/tokenizers0.23.3/Jinja2 3.1.6 tuple in the Rust-owned CPU counter.
+
+The unchanged original `qualify-model` runner is required: exact `--candidate-mlx-lm-version 0.32.2`, `--duration 1800 --warmup 30 --concurrency 1 --max-model-len 4096 --phase-samples 3 --request-timeout 60 --max-rss-growth-mib 256 --bind-architecture-evidence`, retained KV1536MiB and allocator512MiB. Do not use short-run exceptions or skip probes to issue startup evidence. The candidate flag does not promote the global version matrix; ordinary startup additionally verifies the complete matching evidence, identity, expiry and limits. A new path, source/environment, model, hardware or policy needs its own original qualification. Public JSON is not a portable startup approval.
+
+日本語：元の資格確認済み環境を残し、別controllerと固定環境へ適用します。版番号と正確なソース組を同時に検査し、画像URL処理へ入る前にテキスト以外を拒否します。旧証跡の編集流用やガード回避は行いません。新しい完全な30分資格確認と共有APIの境界・追い出し・ライフサイクル検証が必要です。
+
+简体中文：保留原有已认证环境，在独立controller及固定环境中应用。版本与精确源码组合同时校验，在图片URL处理前拒绝非纯文本消息。不修改旧证据来复用，不绕过门禁；必须重新完成完整30分钟认证及共享API边界、淘汰和生命周期验证。

@@ -36,6 +36,7 @@ def qualified_tokenizer(root):
     if tuple(version(p) for p in ("transformers", "tokenizers", "jinja2")) not in {
         ("5.19.0", "0.23.3", "3.1.6"),
         ("5.20.2", "0.23.3", "3.1.6"),
+        ("5.22.2", "0.23.3", "3.1.6"),
     }:
         return None
     for name, digest in expected.items():

@@ -3,6 +3,7 @@ Run: BACKEND_PYTHON -I scripts/verify-kv-lru.py
 """
 import hashlib
 import importlib.metadata
+import argparse
 import json
 from pathlib import Path
 import runpy
@@ -11,10 +12,19 @@ if not __debug__:
 from mlx_lm.models import cache as module
 from mlx_lm import server
 root = Path(__file__).resolve().parents[1]
-wrapper = runpy.run_path(str(root / 'vLLM-apple/vllm_apple/mlx_kv_budget.py'))
-assert importlib.metadata.version('mlx-lm') == '0.32.0'
-assert wrapper['reviewed_sources'](hashlib.sha256(Path(server.__file__).read_bytes()).hexdigest(),
-                                   hashlib.sha256(Path(module.__file__).read_bytes()).hexdigest())
+parser = argparse.ArgumentParser(description=__doc__)
+parser.add_argument('--wrapper', type=Path, default=root / 'vLLM-apple/vllm_apple/mlx_kv_budget.py')
+parser.add_argument('--release', default='0.32.0')
+args = parser.parse_args()
+wrapper = runpy.run_path(str(args.wrapper.resolve()))
+assert importlib.metadata.version('mlx-lm') == args.release
+pair = (hashlib.sha256(Path(server.__file__).read_bytes()).hexdigest(),
+        hashlib.sha256(Path(module.__file__).read_bytes()).hexdigest())
+if isinstance(wrapper['REVIEWED_SOURCE_PAIRS'], dict):
+    assert wrapper['reviewed_sources'](args.release, *pair)
+else:
+    assert args.release == '0.32.0'
+    assert wrapper['reviewed_sources'](*pair)
 class KV:
     nbytes = 400 * 1024**2
     def is_trimmable(self): return False

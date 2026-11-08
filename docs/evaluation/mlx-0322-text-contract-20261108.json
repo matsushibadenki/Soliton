@@ -1,0 +1,65 @@
+{
+  "passed": true,
+  "certification": false,
+  "scope": "Direct private text backend contract, not performance or vision qualification",
+  "refusals": [
+    400,
+    400,
+    400,
+    400,
+    400
+  ],
+  "first": {
+    "id": "chatcmpl-63081cce-723b-4d63-af87-4b0a72dbdf0c",
+    "system_fingerprint": "0.32.2-0.32.4-macOS-27.2-arm64-arm-64bit-applegpu_g16g",
+    "object": "chat.completion",
+    "model": "default_model",
+    "created": 1794131454,
+    "choices": [
+      {
+        "index": 0,
+        "finish_reason": "stop",
+        "message": {
+          "role": "assistant",
+          "content": "The code word is **soliton**. \n"
+        }
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 178,
+      "completion_tokens": 11,
+      "total_tokens": 189,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    }
+  },
+  "repeated": {
+    "answer": "The code word is **soliton**. \n",
+    "usage": {
+      "prompt_tokens": 178,
+      "completion_tokens": 11,
+      "total_tokens": 189,
+      "prompt_tokens_details": {
+        "cached_tokens": 177
+      }
+    }
+  },
+  "urlFetches": 0,
+  "kv": {
+    "retained_bytes": 20127744,
+    "max_bytes": 1610612736,
+    "entries": 1,
+    "accounting": "LRU tensor bytes, not unique physical memory",
+    "allocator": {
+      "active_bytes": 1520427550,
+      "cache_bytes": 108778644,
+      "peak_bytes": 1755999050,
+      "consistency": "non_atomic",
+      "configured_limit_bytes": 536870912,
+      "effective_limit_bytes": 536870912
+    }
+  },
+  "wrapperSha256": "5fd2d4f820ce55f3f154ed40befd819a3a8ed3c12f8c1abec7f14ac85a3f9e8e",
+  "shutdownClean": true
+}

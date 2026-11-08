@@ -1,0 +1,66 @@
+--- a/vllm_apple/mlx_kv_budget.py
++++ b/vllm_apple/mlx_kv_budget.py
+@@ -14,6 +14,43 @@
+
+ SERVER_SHA256 = '8514178d18ee7e5edd1db8b8077ab97079ec72d1db666b85c110fb33cdc55147'
+ CACHE_SHA256 = '440709018cc528ee1e4e42e61ff8713ed2e0079566d9e8fa58eed3a92d334404'
++# PyPI0.32.0: same LRU insert/trim/fetch contract, new cache-type accounting.
++# Qualified separately; do not mix server/cache revisions.
++REVIEWED_SOURCE_PAIRS = {
++    "0.32.0": {
++        (SERVER_SHA256, CACHE_SHA256),
++        ('57392576de114af80ede723976b9dd156dc234f856b9943b8b44b8b78bc27f79',
++         'c96cb169fd5e0ec4584a162dd61dc62ab08ccdca03a9850f8a491ce6809145e6'),
++    },
++    # PyPI0.32.2: LRU/Gemma2 bytes unchanged. Text generation and response
++    # transitions reviewed separately; vision is deliberately outside this profile.
++    "0.32.2": {
++        ('8d475058966cf90afcf8cb857f218c2b9dbc01ad1c506d9726de655a90d80723',
++         'c96cb169fd5e0ec4584a162dd61dc62ab08ccdca03a9850f8a491ce6809145e6'),
++    },
++}
++
++
++def reviewed_sources(release, server, cache):
++    return (server, cache) in REVIEWED_SOURCE_PAIRS.get(release, ())
++
++
++def validate_text_messages(messages):
++    """Keep the qualified plain-text surface before 0.32.2 can fetch image URLs."""
++    if not isinstance(messages, list) or not 1 <= len(messages) <= 1000:
++        raise ValueError('retained KV profile requires plain-text messages')
++    for message in messages:
++        if (not isinstance(message, dict) or set(message) != {'role', 'content'}
++                or message['role'] not in ('system', 'user', 'assistant')
++                or not isinstance(message['content'], str)):
++            raise ValueError('retained KV profile requires plain-text messages')
++
++
++def install_text_profile(server, release):
++    if release == '0.32.2':
++        # This function is called by the exactly guarded server before any URL
++        # inlining, inside its request-factory exception -> HTTP400 boundary.
++        server._inline_image_urls = validate_text_messages
+
+
+ def install_budget(cache_class, budget):
+@@ -69,13 +106,15 @@
+     if (not 1 <= len(raw) <= 4 or not raw.isascii() or not raw.isdecimal()
+             or not 64 <= int(raw) <= 4096):
+         raise ValueError('explicit retained KV MiB budget required')
+-    if importlib.metadata.version('mlx-lm') != '0.32.0':
+-        raise ValueError('retained KV wrapper requires reviewed MLX-LM 0.32.0')
++    release = importlib.metadata.version('mlx-lm')
++    if release not in REVIEWED_SOURCE_PAIRS:
++        raise ValueError('retained KV wrapper requires an exactly reviewed MLX-LM release')
+     from mlx_lm import server
+     from mlx_lm.models import cache
+-    if (hashlib.sha256(Path(server.__file__).read_bytes()).hexdigest() != SERVER_SHA256
+-            or hashlib.sha256(Path(cache.__file__).read_bytes()).hexdigest() != CACHE_SHA256):
++    if not reviewed_sources(release, hashlib.sha256(Path(server.__file__).read_bytes()).hexdigest(),
++                            hashlib.sha256(Path(cache.__file__).read_bytes()).hexdigest()):
+         raise ValueError('review retained KV wrapper after server/cache source changes')
++    install_text_profile(server, release)
+     import mlx.core as mx
+     allocator_policy = configure_allocator(mx, os.environ.get('VLLM_APPLE_ALLOCATOR_CACHE_MIB'))
+     install_budget(cache.LRUPromptCache, int(raw) * 1024**2)

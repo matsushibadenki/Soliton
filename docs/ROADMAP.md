@@ -5,8 +5,8 @@ Release policy: at a completed, validated milestone, increment the patch version
 ## Dependency maintenance — 2026-11-08
 
 - 🟢 [Done] Latest compatible app graph: Vite8.3.6, Lucide1.70.0, Playwright1.65.0, UUID1.29.1 plus14 other Cargo updates. Official Strata0.2.12 gitlink/distribution pin, rebuilt Metal, separate bundled Python3.12.16/Pillow13.0.0/SentencePiece0.2.3 and isolated CMake/Ninja build venv. Existing qualified MLX/Omni runtimes and user settings/models are preserved. [Update scope and verification](DEPENDENCY_UPDATE_20261108.md).
-- 🟠 [Next] Source-review the MLX-LM0.32.2 server/tokenizer changes and original full requalification before migrating the retained-KV profile. Latest dependencies resolve in isolation, but the unchanged current wrapper refuses the unreviewed version. Do not edit evidence or add hashes solely to accept it.
-- ⭕️ [Pending] Other-Mac/OS checks and Developer ID signing/notarization remain separate.
+- 🟢 [Done] 0.1.5: separate guarded MLX-LM0.32.2 plain-text profile with release/source binding and pre-URL text validation; original1800.063s qualification passed11871/11871 requests, zero failures,327680-byte peak RSS growth, complete identity match and clean stop. Shared API36 cases +3 exact/3 over boundaries, five-history eviction/reheat, old-evidence refusal/recovery and cancellation/switch/restart/chat persistence pass. All full answers/input/output/cached counts/finish reasons match0.1.4.1091 token-ID comparisons/six fallback guards admit only the measured5.22.2 tuple; old environments/evidence/settings are preserved. [Scope, tests and evidence](MLX_0322_QUALIFICATION.md).
+- ⭕️ [Pending] Native GUI with this exact new profile, other-Mac/OS/model checks and Developer ID signing/notarization remain separate.
 
 ## Engine performance direction — revised 2026-11-08
 

@@ -1,3 +1,5 @@
+> Follow-up0.1.5: the separately guarded MLX-LM0.32.2 text profile completed the original30-minute requalification and shared API regressions. The historical0.1.4 decisions below are preserved. [Results and exact scope](MLX_0322_QUALIFICATION.md).
+
 # Dependency update · 2026-11-08
 
 ## English

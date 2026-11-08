@@ -1,6 +1,6 @@
 # Soliton
 
-Version 0.1.4 updates the compatible app dependencies, Strata 0.2.12 and bundled Python 3.12.16. Existing qualified MLX/Omni runtimes and user settings are preserved; see [update scope and verification](docs/DEPENDENCY_UPDATE_20261108.md) and [release notes](CHANGELOG.md).
+Version 0.1.5 adds a separately guarded MLX-LM 0.32.2 text profile, with a complete 30-minute requalification and shared-API regression checks. Existing 0.32.0 runtime/evidence and ordinary settings are preserved. See [scope and reproduction](docs/MLX_0322_QUALIFICATION.md) and [release notes](CHANGELOG.md).
 
 ![Soliton](docs/images/stratastudio-image.png)
 

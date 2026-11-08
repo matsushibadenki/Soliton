@@ -1,0 +1,235 @@
+{
+  "status": "passed",
+  "scope": "Gemma2 2B 4bit plain text, context4096 concurrency1 retained1536MiB allocator512MiB; no vision or broad performance certification",
+  "controllerBase": "bdef9567191bcc46154c0f7cf7f05089b718f0b4",
+  "sourceReview": {
+    "server.py": {
+      "sha256": "8d475058966cf90afcf8cb857f218c2b9dbc01ad1c506d9726de655a90d80723",
+      "matches0320": false
+    },
+    "models/cache.py": {
+      "sha256": "c96cb169fd5e0ec4584a162dd61dc62ab08ccdca03a9850f8a491ce6809145e6",
+      "matches0320": true
+    },
+    "models/gemma2.py": {
+      "sha256": "7e0b7bb806d7d431651087a90a396fdd4b8aa0c23512718b258473621e95c4d2",
+      "matches0320": true
+    },
+    "generate.py": {
+      "sha256": "9d46803799f99d6fc7c35fff2d4357c79b1a25ae98cc63efeaaebeb50a7b5f33",
+      "matches0320": false
+    },
+    "tokenizer_utils.py": {
+      "sha256": "a6c3b727ae30989c5d65d4c1e81b8616cd3e960f02cf6e9cd5474c14926fe49f",
+      "matches0320": false
+    },
+    "utils.py": {
+      "sha256": "2803ff8d2298b0854797d78b16387c394801d16c57bfb30cf42ac4efbdee2873",
+      "matches0320": false
+    },
+    "processors/__init__.py": {
+      "sha256": "9e0dd48c6f7a54b2f892b80b195a00d1d166f796a5a91d1ba66848c2ec76d5f1",
+      "matches0320": false
+    }
+  },
+  "wrapperSha256": "5fd2d4f820ce55f3f154ed40befd819a3a8ed3c12f8c1abec7f14ac85a3f9e8e",
+  "patchSha256": "c730ae444b895334a552743dc9782e1bfa83616166710f5d90fc20a5f11e3645",
+  "fixedDependenciesSha256": "ce84da2057a0f54677701016b2612d70b2bb3a95990051b27dff6ed597c27e2d",
+  "tokenWorkerSha256": "54eb10d82b896c669a3697b9518d4f613f7cc5f24ca85471d25bd15e1d3f51ea",
+  "parity": {
+    "passed": true,
+    "counts": {
+      "raw": 211,
+      "chat": 844,
+      "rejected": 3,
+      "longChat": 36,
+      "longMinTokens": 27,
+      "longMaxTokens": 3937
+    },
+    "tokenIdsSha256": "aafd6f8fbc7c3d5f89c9f22c021913a2c8193af575c344a37c7abb9bab3aebaf",
+    "heavyImportsInFastPath": false,
+    "fallbackGuards": 6
+  },
+  "textContract": {
+    "passed": true,
+    "certification": false,
+    "scope": "Direct private text backend contract, not performance or vision qualification",
+    "refusals": [
+      400,
+      400,
+      400,
+      400,
+      400
+    ],
+    "first": {
+      "id": "chatcmpl-63081cce-723b-4d63-af87-4b0a72dbdf0c",
+      "system_fingerprint": "0.32.2-0.32.4-macOS-27.2-arm64-arm-64bit-applegpu_g16g",
+      "object": "chat.completion",
+      "model": "default_model",
+      "created": 1794131454,
+      "choices": [
+        {
+          "index": 0,
+          "finish_reason": "stop",
+          "message": {
+            "role": "assistant",
+            "content": "The code word is **soliton**. \n"
+          }
+        }
+      ],
+      "usage": {
+        "prompt_tokens": 178,
+        "completion_tokens": 11,
+        "total_tokens": 189,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      }
+    },
+    "repeated": {
+      "answer": "The code word is **soliton**. \n",
+      "usage": {
+        "prompt_tokens": 178,
+        "completion_tokens": 11,
+        "total_tokens": 189,
+        "prompt_tokens_details": {
+          "cached_tokens": 177
+        }
+      }
+    },
+    "urlFetches": 0,
+    "kv": {
+      "retained_bytes": 20127744,
+      "max_bytes": 1610612736,
+      "entries": 1,
+      "accounting": "LRU tensor bytes, not unique physical memory",
+      "allocator": {
+        "active_bytes": 1520427550,
+        "cache_bytes": 108778644,
+        "peak_bytes": 1755999050,
+        "consistency": "non_atomic",
+        "configured_limit_bytes": 536870912,
+        "effective_limit_bytes": 536870912
+      }
+    },
+    "wrapperSha256": "5fd2d4f820ce55f3f154ed40befd819a3a8ed3c12f8c1abec7f14ac85a3f9e8e",
+    "shutdownClean": true
+  },
+  "preflight": {
+    "passed": true,
+    "certification": false,
+    "shortSoakSuccesses": 17
+  },
+  "tests": {
+    "sourceAndTextContracts": 5,
+    "legacySourceContracts": 2,
+    "controllerQualificationAndBudget": 39,
+    "realLruLogicalFixture": {
+      "passed": true,
+      "realLruInsertions": 5,
+      "unboundedLogicalBytes": 2097152000,
+      "boundedLogicalBytes": 838860800,
+      "maxBytes": 1073741824,
+      "logicalByteFixturesOnly": true,
+      "weightsLoaded": false
+    },
+    "workspaceCheck": true,
+    "frontendBuild": true,
+    "rustPassed": 168,
+    "rustIgnored": 1,
+    "serverAndTauriBuild": true
+  },
+  "limits": [
+    "Only the exact selected local profile; public JSON is not portable approval",
+    "Ordinary settings and original0.32.0 environment/evidence remain unchanged",
+    "No global version-matrix promotion",
+    "No general speedup claim; no native GUI/other-Mac certification"
+  ],
+  "qualification": {
+    "passed": true,
+    "elapsedSeconds": 1800.063,
+    "requests": 11871,
+    "successes": 11871,
+    "failures": 0,
+    "peakRssGrowthBytes": 327680,
+    "rssLimitBytes": 268435456,
+    "shutdownClean": true,
+    "identity": {
+      "backend": "mlx_lm",
+      "backend_sha256": "8d8f294b62e700e86b488a27263f870759e3b60e176cd0b93eac7f44ba7801e6",
+      "config_sha256": "9279e9a8c58d7656782dc02f787feaa45118f37109281acb88144b6a44093401",
+      "environment_sha256": "0baf97c88f050b96f80609c8fcdb859dfcf509523574e15e78a3e77cfab5d508",
+      "hardware_sha256": "c8baa7d3ff988ba85885da228624da76c5a85818ef2f1daa3b1d3128e4b95d6c",
+      "model_root_sha256": "4f69654cb373cc4392fd048acf60d51d39d67e8176648a3e52a7936b0776cd14",
+      "runtime_sha256": "fd8cc8ef89a5df7b6f033adece2adaa8510696dbd6dd544c4104b24824b55748"
+    },
+    "scope": "text_smoke_30min",
+    "context": 4096,
+    "concurrency": 1
+  },
+  "release": "0.1.5",
+  "gateway": {
+    "cases": 36,
+    "boundariesAccepted": 3,
+    "boundariesRejected": 3,
+    "allFullAnswersInputOutputCachedAndFinishReasonsMatch014": true
+  },
+  "pressure": {
+    "cases": 9,
+    "retainedMaxBytes": 1260593152,
+    "old0320EvidenceRefused": true,
+    "qualifiedRecovery": true
+  },
+  "lifecycle": {
+    "result": "passed",
+    "scope": "Qualified headless Rust API lifecycle; Strata switch uses mock, no native GUI/OS-drag claim",
+    "checks": {
+      "jsonAnswer": true,
+      "plainTextAdmissionMaintained": true,
+      "activeSwitchRefused": true,
+      "cancel": true,
+      "ownedTreeAndCounterGone": true,
+      "strataMockSwitch": true,
+      "sessionChangedOnRestart": true,
+      "restartAnswer": true,
+      "apiHistoryPreserved": true,
+      "chatSseAndMetrics": true,
+      "chatSavedToDisk": true,
+      "chatPreservedOnStopAndEvidenceUnchanged": true
+    },
+    "refusals": [
+      {
+        "label": "missing-evidence",
+        "stage": "settings",
+        "httpStatus": 400,
+        "noInference": true
+      },
+      {
+        "label": "expired-evidence",
+        "offline": true,
+        "noCounterObserved": true,
+        "noInference": true
+      },
+      {
+        "label": "beyond-qualified-context",
+        "offline": true,
+        "noCounterObserved": true,
+        "noInference": true
+      }
+    ],
+    "evidenceSha256": "f9519045f771ea0b69b872cfef5efa903593f02094ce14a429fb8634733694b6"
+  },
+  "preservation": {
+    "oldWrapperSha256": "e9253bdff57980123a6800592fdf927b59540fd43b0ce44c050680bac5407c88",
+    "oldEvidenceSha256": "fb9a55d594d49332d4195cf01736fc7a87b920233439f728221350d84bbe9b83",
+    "ordinaryStateSha256": "481e80e6580626cf90cb1d86c5e21ee928cf64cdb1147e13ff256c40f86cef42",
+    "modelRootMatches0320": true
+  },
+  "qaProcessesStopped": true,
+  "harnessAttempts": {
+    "failed": 3,
+    "finalPassed": true,
+    "productionGuardsChanged": false,
+    "source": "mlx-0322-lifecycle-attempts-20261108.json"
+  }
+}

@@ -1,0 +1,82 @@
+[
+  {
+    "file": "lifecycle.json",
+    "harnessCorrection": "Harness expected later startup refusal; the existing nonzero-budget settings guard already returned HTTP400.",
+    "report": {
+      "result": "failed",
+      "scope": "Qualified headless Rust API lifecycle; Strata switch uses mock, no native GUI/OS-drag claim",
+      "checks": {},
+      "refusals": [],
+      "evidenceSha256": "f9519045f771ea0b69b872cfef5efa903593f02094ce14a429fb8634733694b6",
+      "error": "AssertionError [ERR_ASSERTION]: /studio/action: HTTP 400\n\n400 !== 200\n"
+    }
+  },
+  {
+    "file": "lifecycle-validated.json",
+    "harnessCorrection": "Harness assumed HTTP409 for active engine switch; the existing action contract returns HTTP400.",
+    "report": {
+      "result": "failed",
+      "scope": "Qualified headless Rust API lifecycle; Strata switch uses mock, no native GUI/OS-drag claim",
+      "checks": {
+        "jsonAnswer": true,
+        "plainTextAdmissionMaintained": true
+      },
+      "refusals": [
+        {
+          "label": "missing-evidence",
+          "stage": "settings",
+          "httpStatus": 400,
+          "noInference": true
+        },
+        {
+          "label": "expired-evidence",
+          "offline": true,
+          "noCounterObserved": true,
+          "noInference": true
+        },
+        {
+          "label": "beyond-qualified-context",
+          "offline": true,
+          "noCounterObserved": true,
+          "noInference": true
+        }
+      ],
+      "evidenceSha256": "f9519045f771ea0b69b872cfef5efa903593f02094ce14a429fb8634733694b6",
+      "error": "AssertionError [ERR_ASSERTION]: /studio/action: HTTP 400\n\n400 !== 409\n"
+    }
+  },
+  {
+    "file": "lifecycle-final.json",
+    "harnessCorrection": "Harness expected a string error; the existing API uses error.message.",
+    "report": {
+      "result": "failed",
+      "scope": "Qualified headless Rust API lifecycle; Strata switch uses mock, no native GUI/OS-drag claim",
+      "checks": {
+        "jsonAnswer": true,
+        "plainTextAdmissionMaintained": true
+      },
+      "refusals": [
+        {
+          "label": "missing-evidence",
+          "stage": "settings",
+          "httpStatus": 400,
+          "noInference": true
+        },
+        {
+          "label": "expired-evidence",
+          "offline": true,
+          "noCounterObserved": true,
+          "noInference": true
+        },
+        {
+          "label": "beyond-qualified-context",
+          "offline": true,
+          "noCounterObserved": true,
+          "noInference": true
+        }
+      ],
+      "evidenceSha256": "f9519045f771ea0b69b872cfef5efa903593f02094ce14a429fb8634733694b6",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ {\n+   message: 'Wait for active requests and model preparation to finish',\n+   type: 'studio_error'\n+ }\n- 'Wait for active requests and model preparation to finish'\n"
+    }
+  }
+]

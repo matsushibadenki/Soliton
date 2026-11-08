@@ -1,6 +1,6 @@
 # Soliton
 
-0.1.4更新了通过兼容性验证的应用依赖、Strata 0.2.12及内置Python 3.12.16。保留已认证MLX/Omni运行时和普通配置。参阅[更新范围与验证](docs/DEPENDENCY_UPDATE_20261108.md)及[更新记录](CHANGELOG.md)。
+0.1.5增加了保留兼容性门禁的独立MLX-LM 0.32.2纯文本配置，完成完整30分钟重新认证及共享API回归验证。保留原0.32.0运行时、证据和普通配置。参阅[范围与复现](docs/MLX_0322_QUALIFICATION.md)及[更新记录](CHANGELOG.md)。
 
 ![Soliton](docs/images/stratastudio-image.png)
 

@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.5 — 2026-11-08
+
+- Added a separate MLX-LM0.32.2 plain-text profile: exact release/server/cache binding, pre-URL text validation and complete installed-file/architecture evidence guards. Existing0.32.0 runtime/evidence and ordinary settings remain intact.
+- Qualified the fixed4096/concurrency1/KV1536MiB/allocator512MiB profile using the original30-minute runner:1800.063s,11871 successes,zero failures,327680-byte peak RSS growth, matching identity and clean shutdown. No global compatibility-matrix promotion.
+- Added only the measured Transformers5.22.2 tuple to the exact Gemma CPU counter after1091 full-ID comparisons and six fallback guards; previous tuples remain.
+- Shared API36 cases and three-language boundaries preserve all full answers/input/output/cache counts/finish reasons versus0.1.4. Eviction/reheat, old-evidence refusal/recovery, cancellation, owned cleanup, restart and chat SSE/persistence pass.
+- Source release; native GUI for the new profile, other Macs/models and signed distribution remain pending. [Full scope, preserved failed harness attempts and reproduction](docs/MLX_0322_QUALIFICATION.md).
+
 ## 0.1.4 — 2026-11-08
 
 - Updated Vite8.3.6, Lucide1.70.0, Playwright1.65.0, UUID1.29.1 and14 other compatible Cargo dependencies; latest stable Tauri/React retained.

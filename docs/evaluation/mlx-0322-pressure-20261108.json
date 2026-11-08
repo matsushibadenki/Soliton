@@ -1,0 +1,172 @@
+{
+  "result": "passed",
+  "scope": "Qualified shared API, more histories than retained capacity; functional cap/recompute/reheat verification, no controlled performance claim",
+  "samples": [
+    {
+      "phase": "cold",
+      "index": 0,
+      "promptTokens": 3935,
+      "cachedTokens": 0,
+      "kv": {
+        "bytes": 420126720,
+        "entries": 1,
+        "limitBytes": 1610612736
+      },
+      "engineMemory": {
+        "pid": 87860,
+        "processCount": 2,
+        "rootBytes": 69321352,
+        "sampledAt": 1794133659958,
+        "usedBytes": 2902444888
+      }
+    },
+    {
+      "phase": "hot",
+      "index": 0,
+      "promptTokens": 3935,
+      "cachedTokens": 3934,
+      "kv": {
+        "bytes": 420126720,
+        "entries": 1,
+        "limitBytes": 1610612736
+      },
+      "engineMemory": {
+        "pid": 87860,
+        "processCount": 2,
+        "rootBytes": 69321352,
+        "sampledAt": 1794133660282,
+        "usedBytes": 3153447768
+      }
+    },
+    {
+      "phase": "churn",
+      "index": 1,
+      "promptTokens": 3937,
+      "cachedTokens": 8,
+      "kv": {
+        "bytes": 840466432,
+        "entries": 2,
+        "limitBytes": 1610612736
+      },
+      "engineMemory": {
+        "pid": 87860,
+        "processCount": 2,
+        "rootBytes": 69337736,
+        "sampledAt": 1794133667436,
+        "usedBytes": 3325545304
+      }
+    },
+    {
+      "phase": "churn",
+      "index": 2,
+      "promptTokens": 3930,
+      "cachedTokens": 8,
+      "kv": {
+        "bytes": 1260060672,
+        "entries": 3,
+        "limitBytes": 1610612736
+      },
+      "engineMemory": {
+        "pid": 87860,
+        "processCount": 2,
+        "rootBytes": 69337736,
+        "sampledAt": 1794133674670,
+        "usedBytes": 3762752344
+      }
+    },
+    {
+      "phase": "churn",
+      "index": 3,
+      "promptTokens": 3935,
+      "cachedTokens": 8,
+      "kv": {
+        "bytes": 1260060672,
+        "entries": 3,
+        "limitBytes": 1610612736
+      },
+      "engineMemory": {
+        "pid": 87860,
+        "processCount": 2,
+        "rootBytes": 65077896,
+        "sampledAt": 1794133682056,
+        "usedBytes": 3757853528
+      }
+    },
+    {
+      "phase": "churn",
+      "index": 4,
+      "promptTokens": 3937,
+      "cachedTokens": 8,
+      "kv": {
+        "bytes": 1260060672,
+        "entries": 3,
+        "limitBytes": 1610612736
+      },
+      "engineMemory": {
+        "pid": 87860,
+        "processCount": 2,
+        "rootBytes": 65061512,
+        "sampledAt": 1794133689525,
+        "usedBytes": 3757837144
+      }
+    },
+    {
+      "phase": "revisit",
+      "index": 0,
+      "promptTokens": 3935,
+      "cachedTokens": 8,
+      "kv": {
+        "bytes": 1260593152,
+        "entries": 3,
+        "limitBytes": 1610612736
+      },
+      "engineMemory": {
+        "pid": 87860,
+        "processCount": 2,
+        "rootBytes": 65045128,
+        "sampledAt": 1794133696884,
+        "usedBytes": 3774745432
+      }
+    },
+    {
+      "phase": "reheat",
+      "index": 0,
+      "promptTokens": 3935,
+      "cachedTokens": 3934,
+      "kv": {
+        "bytes": 840466432,
+        "entries": 2,
+        "limitBytes": 1610612736
+      },
+      "engineMemory": {
+        "pid": 87860,
+        "processCount": 2,
+        "rootBytes": 65045128,
+        "sampledAt": 1794133697214,
+        "usedBytes": 3578989400
+      }
+    },
+    {
+      "phase": "recent",
+      "index": 4,
+      "promptTokens": 3937,
+      "cachedTokens": 3936,
+      "kv": {
+        "bytes": 840466432,
+        "entries": 2,
+        "limitBytes": 1610612736
+      },
+      "engineMemory": {
+        "pid": 87860,
+        "processCount": 2,
+        "rootBytes": 65045128,
+        "sampledAt": 1794133697536,
+        "usedBytes": 3620768600
+      }
+    }
+  ],
+  "engineSession": "173c944d-4e4b-46eb-83e8-66a1b961f2cb",
+  "historyPreserved": true,
+  "controlEvidenceRefused": true,
+  "qualifiedRecovery": true
+}

@@ -374,3 +374,12 @@ English: The optional1.5GiB retained-KV profile passed the original30-minute qua
 バックエンド/Python/modelの内容と保持量は変更していない。既存1536MiBの30分資格確認を利用し、新たに30分を実行したとは扱わない。通常アプリの設定は変更せず、署名・公証・別Mac検証はPending。
 
 0.1.3の最終回帰では、共通Rust APIの36ケースとEN/JA/ZHの4096ちょうど3件/4097拒否3件が通過し、0.1.2の同じfixture matrixと全36回答・入力数が一致した。空の会話を保持し、QAホストと所有モデルを停止した。[全記録](evaluation/startup-prewarm-gateway-20261108.json)。Rust162 tests、baseline tool5 tests、frontend/server/Tauri buildが通過した。UI表示の変更や新たなGUI速度検証はない。
+
+
+## MLX 0322 qualification — 2026-11-08
+
+0.1.5では、元の0.32.0環境・証跡を残し、別のcontroller／固定Python環境でMLX-LM0.32.2のテキスト専用対応を追加しました。版と正確なserver/cache組を束縛し、新しい画像URL経路に入る前に非テキストを拒否します。全ファイル照合・identity・期限・コンテキスト上限と元の資格確認ランナーは維持しています。
+
+元の30分試験は1800.063秒・11871成功・失敗ゼロ・ピークRSS増加327680 bytesで通過し、identity再照合・正常停止も成功。共通Rust API36件＋三言語境界、追い出し／再加熱・旧証跡拒否／復旧、キャンセル・停止・再起動・チャットSSE／保存を確認しました。0.1.4と全回答・入力／出力／cached数・終了理由が一致。5.22.2向けのCPU計数は1091件の完全ID一致と6フォールバック検査を経て追加し、旧tupleを残しています。
+
+通常設定は変更していません。専用controllerは`.soliton-runtime/mlx0322-20261108/controller`、backend launcherは同`python/bin/mlx_lm.server`、対応private証跡は同`qualification.json`です。context4096／KV1536MiB／allocator512MiB／MPS fallback1と組にし、旧証跡は編集しません。global互換表への昇格やGPU高速化の主張ではなく、exact profileの資格確認です。ネイティブGUI・他Mac／モデル・署名／公証はPending。[三言語の詳細・再現方法・全記録](MLX_0322_QUALIFICATION.md)。
