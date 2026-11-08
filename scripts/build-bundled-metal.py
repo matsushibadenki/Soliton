@@ -7,10 +7,36 @@ import sys
 import tarfile
 
 root = pathlib.Path(__file__).resolve().parent.parent
-stage = root / '.soliton-runtime' / 'metal-distribution'
 revision = (root / 'src-tauri/strata-revision.txt').read_text().strip()
 if len(revision) != 40 or any(c not in '0123456789abcdef' for c in revision):
     raise RuntimeError('Invalid pinned Strata revision')
+
+# Build tools belong to a disposable build environment, never to the relocatable
+# runtime archive. In particular, do not disable a managed Python's PEP 668 guard.
+build_python_root = root / '.soliton-runtime' / ('metal-build-python-' + '.'.join(map(str, sys.version_info[:3])))
+build_python = build_python_root / 'bin/python3'
+if pathlib.Path(sys.prefix).resolve() != build_python_root.resolve():
+    if not build_python.is_file():
+        subprocess.run([sys.executable, '-m', 'venv', str(build_python_root)], check=True)
+    subprocess.run([str(build_python), str(pathlib.Path(__file__).resolve())], check=True)
+    raise SystemExit(0)
+
+from importlib.metadata import PackageNotFoundError, version
+requirements = subprocess.check_output(['git', '-C', str(root / 'Strata'), 'show',
+                                       f'{revision}:requirements-build.txt'], text=True)
+pins = [line.strip() for line in requirements.splitlines() if line.strip() and not line.lstrip().startswith('#')]
+def build_tools_current():
+    try:
+        return all(version(name) == expected for name, expected in (pin.split('==') for pin in pins))
+    except PackageNotFoundError:
+        return False
+if not build_tools_current():
+    pinned_requirements = build_python_root / 'requirements-build.txt'
+    pinned_requirements.write_text(requirements)
+    subprocess.run([sys.executable, '-m', 'pip', 'install', '--disable-pip-version-check',
+                    '-r', str(pinned_requirements)], check=True)
+
+stage = root / '.soliton-runtime' / 'metal-distribution'
 source = stage / revision
 if not source.exists():
     source.mkdir(parents=True)

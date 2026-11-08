@@ -483,7 +483,7 @@ fn install_bundled_python(
     archive: &std::path::Path,
     app_data: &std::path::Path,
 ) -> Result<PathBuf, String> {
-    let root = app_data.join("python-3.12.15");
+    let root = app_data.join("python-3.12.16");
     if root.join("bin/python3").is_file() {
         let healthy = std::process::Command::new(root.join("bin/python3"))
             .args([
@@ -705,7 +705,7 @@ fn main() {
             let mut studio = studio_core::Studio::new(root, 8080);
             if managed {
                 studio.settings.get_mut().python = app_data
-                    .join("python-3.12.15/bin/python3")
+                    .join("python-3.12.16/bin/python3")
                     .to_string_lossy()
                     .into();
             }

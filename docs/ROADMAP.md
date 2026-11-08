@@ -2,6 +2,12 @@
 
 Release policy: at a completed, validated milestone, increment the patch version by0.0.1, synchronize app/package/Cargo versions, commit/push the reviewed change set, and publish a matching GitHub source release. Do not schedule automatic releases for unfinished work; signed native installers require their own distribution verification.
 
+## Dependency maintenance — 2026-11-08
+
+- 🟢 [Done] Latest compatible app graph: Vite8.3.6, Lucide1.70.0, Playwright1.65.0, UUID1.29.1 plus14 other Cargo updates. Official Strata0.2.12 gitlink/distribution pin, rebuilt Metal, separate bundled Python3.12.16/Pillow13.0.0/SentencePiece0.2.3 and isolated CMake/Ninja build venv. Existing qualified MLX/Omni runtimes and user settings/models are preserved. [Update scope and verification](DEPENDENCY_UPDATE_20261108.md).
+- 🟠 [Next] Source-review the MLX-LM0.32.2 server/tokenizer changes and original full requalification before migrating the retained-KV profile. Latest dependencies resolve in isolation, but the unchanged current wrapper refuses the unreviewed version. Do not edit evidence or add hashes solely to accept it.
+- ⭕️ [Pending] Other-Mac/OS checks and Developer ID signing/notarization remain separate.
+
 ## Engine performance direction — revised 2026-11-08
 
 This priority order supersedes older engine-related Next entries below; historical measurements and unfinished work remain recorded. [Rationale, scope and acceptance rules](INFERENCE.md#エンジン性能の方針見直し2026-11-08).

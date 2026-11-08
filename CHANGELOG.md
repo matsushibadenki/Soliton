@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.4 — 2026-11-08
+
+- Updated Vite8.3.6, Lucide1.70.0, Playwright1.65.0, UUID1.29.1 and14 other compatible Cargo dependencies; latest stable Tauri/React retained.
+- Updated the Strata gitlink and distribution pin to official0.2.12, with a rebuilt Metal engine and bundled Python3.12.16/Pillow13.0.0/SentencePiece0.2.3. Existing installed Python and user-selected settings are preserved.
+- Isolated CMake/Ninja build tools in a dedicated venv after a real packaging test exposed PEP668 protection in the new Python. Runtime archives exclude build tools; no global Python executable changes.
+- Qualified MLX/Omni runtimes remain pinned. A latest-MLX candidate was investigated in isolation and correctly refused by the existing source guard; its adoption requires separate source review and full requalification.
+- See [dependency scope and verification](docs/DEPENDENCY_UPDATE_20261108.md). Source release; signed/notarized installers and other-Mac validation remain pending.
+
 ## 0.1.3 — 2026-11-08
 
 - Moved qualified MLX CPU-tokenizer preparation from state reads to a Rust-owned startup monitor, covering API-only clients without UI polling. No inference or token-count frames are sent during preparation.

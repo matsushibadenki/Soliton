@@ -1,6 +1,6 @@
 # Soliton
 
-0.1.3では、API単独利用でもRust側でエンジン起動中にCPUトークナイザーを準備します。状態取得なしの4回の比較で初回受付の中央値は298msから5msでした。初期化を前倒しする改善であり、GPUの高速化ではありません。[結果と範囲](docs/INFERENCE.md#autonomous-startup-prewarm--2026-11-08)と[変更履歴](CHANGELOG.md)を参照してください。
+0.1.4では、互換性を確認したアプリ依存、Strata 0.2.12、同梱Python 3.12.16へ更新しました。資格確認済みのMLX・Omniと通常設定は維持しています。[更新範囲と検証](docs/DEPENDENCY_UPDATE_20261108.md)・[変更履歴](CHANGELOG.md)を参照してください。
 
 ![Soliton](docs/images/stratastudio-image.png)
 

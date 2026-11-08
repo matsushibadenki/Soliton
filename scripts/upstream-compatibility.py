@@ -1,5 +1,6 @@
 """Offline contract checks against the installed upstream, without models or setup jobs."""
 import importlib.util
+import os
 import sys
 import tempfile
 import unittest
@@ -7,7 +8,8 @@ from pathlib import Path
 from types import SimpleNamespace
 
 ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT / 'Strata'))
+UPSTREAM = Path(os.environ.get('SOLITON_TEST_STRATA_ROOT', ROOT / 'Strata')).resolve()
+sys.path.insert(0, str(UPSTREAM))
 
 
 def load(name, path):
@@ -19,7 +21,7 @@ def load(name, path):
 
 class UpstreamCompatibility(unittest.TestCase):
     def test_mac_setup_local_only_contract(self):
-        metal = load('studio_upstream_contract', ROOT / 'Strata/metal/setup_mac.py')
+        metal = load('studio_upstream_contract', UPSTREAM / 'metal/setup_mac.py')
         wrapper = load('studio_local_wrapper', ROOT / 'crates/studio-core/src/local_setup.py')
         with tempfile.TemporaryDirectory(prefix='strata-upstream-contract-') as folder:
             base = Path(folder)

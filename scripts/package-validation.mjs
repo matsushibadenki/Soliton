@@ -6,7 +6,7 @@ import { spawnSync } from 'node:child_process';
 const root = resolve(import.meta.dirname, '..');
 const app = resolve(process.argv[2] || resolve(root, 'target/aarch64-apple-darwin/release/bundle/macos/Soliton.app'));
 const out = resolve(root, '.soliton-runtime/distribution-handoff');
-const python = resolve(root, '.soliton-runtime/python-build/cpython-3.12.15-macos-aarch64-none/bin/python3');
+const python = resolve(root, '.soliton-runtime/python-build/cpython-3.12.16-macos-aarch64-none/bin/python3');
 function run(command, args, capture = false) {
   const r = spawnSync(command, args, { cwd: root, encoding: 'utf8', stdio: capture ? 'pipe' : 'inherit' });
   if (r.status !== 0) throw new Error(`${command} failed: ${r.stderr || r.error || r.status}`);

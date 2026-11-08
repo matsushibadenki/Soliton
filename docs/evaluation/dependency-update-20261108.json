@@ -1,0 +1,752 @@
+{
+  "checkedOn": "2026-11-08",
+  "scope": "Latest stable compatible Soliton app graph; upstream Strata pins respected; qualified MLX/Omni runtimes not overwritten",
+  "npmChanges": [
+    {
+      "name": "@playwright/test",
+      "before": "1.64.1",
+      "after": "1.65.0"
+    },
+    {
+      "name": "lucide-react",
+      "before": "1.66.0",
+      "after": "1.70.0"
+    },
+    {
+      "name": "playwright",
+      "before": "1.64.1",
+      "after": "1.65.0"
+    },
+    {
+      "name": "playwright-core",
+      "before": "1.64.1",
+      "after": "1.65.0"
+    },
+    {
+      "name": "vite",
+      "before": "8.3.5",
+      "after": "8.3.6"
+    }
+  ],
+  "cargoChanges": [
+    {
+      "name": "brotli-decompressor",
+      "before": "6.2.0",
+      "after": "6.3.0"
+    },
+    {
+      "name": "cc",
+      "before": "1.10.0",
+      "after": "1.11.1"
+    },
+    {
+      "name": "flate2",
+      "before": "1.1.10",
+      "after": "1.1.11"
+    },
+    {
+      "name": "jiff",
+      "before": "0.2.38",
+      "after": "0.2.40"
+    },
+    {
+      "name": "jiff-core",
+      "before": "0.1.1",
+      "after": "0.1.3"
+    },
+    {
+      "name": "jiff-static",
+      "before": "0.2.38",
+      "after": "0.2.40"
+    },
+    {
+      "name": "mime",
+      "before": "0.3.17",
+      "after": "0.3.18"
+    },
+    {
+      "name": "serde_spanned",
+      "before": "1.1.2",
+      "after": "1.1.3"
+    },
+    {
+      "name": "smallvec",
+      "before": "1.16.4",
+      "after": "1.16.5"
+    },
+    {
+      "name": "toml",
+      "before": "1.1.8+spec-1.1.0",
+      "after": "1.2.1+spec-1.1.0"
+    },
+    {
+      "name": "toml_datetime",
+      "before": "1.1.2+spec-1.1.0",
+      "after": "1.1.3+spec-1.1.0"
+    },
+    {
+      "name": "toml_edit",
+      "before": "0.25.17+spec-1.1.0",
+      "after": "0.25.19+spec-1.1.0"
+    },
+    {
+      "name": "toml_writer",
+      "before": "1.1.3+spec-1.1.0",
+      "after": "1.2.0+spec-1.1.0"
+    },
+    {
+      "name": "uuid",
+      "before": "1.29.0",
+      "after": "1.29.1"
+    },
+    {
+      "name": "winnow",
+      "before": "1.0.4",
+      "after": "1.0.5"
+    }
+  ],
+  "cargoRemoved": [
+    {
+      "name": "defmt",
+      "version": "1.2.0"
+    },
+    {
+      "name": "defmt-macros",
+      "version": "1.2.0"
+    },
+    {
+      "name": "defmt-parser",
+      "version": "1.1.0"
+    }
+  ],
+  "registryReview": [
+    {
+      "ecosystem": "rust",
+      "name": "axum",
+      "latest": "0.8.9",
+      "repository": "https://github.com/tokio-rs/axum"
+    },
+    {
+      "ecosystem": "rust",
+      "name": "base64",
+      "latest": "0.23.1",
+      "repository": "https://github.com/marshallpierce/rust-base64"
+    },
+    {
+      "ecosystem": "rust",
+      "name": "futures-util",
+      "latest": "0.3.34",
+      "repository": "https://github.com/rust-lang/futures-rs"
+    },
+    {
+      "ecosystem": "rust",
+      "name": "libc",
+      "latest": "0.2.191",
+      "repository": "https://github.com/rust-lang/libc"
+    },
+    {
+      "ecosystem": "rust",
+      "name": "reqwest",
+      "latest": "0.13.5",
+      "repository": "https://github.com/seanmonstar/reqwest"
+    },
+    {
+      "ecosystem": "rust",
+      "name": "rusqlite",
+      "latest": "0.41.1",
+      "repository": "https://github.com/rusqlite/rusqlite"
+    },
+    {
+      "ecosystem": "rust",
+      "name": "semver",
+      "latest": "1.0.28",
+      "repository": "https://github.com/dtolnay/semver"
+    },
+    {
+      "ecosystem": "rust",
+      "name": "serde",
+      "latest": "1.0.229",
+      "repository": "https://github.com/serde-rs/serde"
+    },
+    {
+      "ecosystem": "rust",
+      "name": "serde_json",
+      "latest": "1.0.154",
+      "repository": "https://github.com/serde-rs/json"
+    },
+    {
+      "ecosystem": "rust",
+      "name": "sha2",
+      "latest": "0.11.1",
+      "repository": "https://github.com/RustCrypto/hashes"
+    },
+    {
+      "ecosystem": "rust",
+      "name": "tauri",
+      "latest": "2.12.5",
+      "repository": "https://github.com/tauri-apps/tauri"
+    },
+    {
+      "ecosystem": "rust",
+      "name": "tauri-build",
+      "latest": "2.7.4",
+      "repository": "https://github.com/tauri-apps/tauri"
+    },
+    {
+      "ecosystem": "rust",
+      "name": "tauri-plugin-dialog",
+      "latest": "2.8.4",
+      "repository": "https://github.com/tauri-apps/plugins-workspace"
+    },
+    {
+      "ecosystem": "rust",
+      "name": "tokio",
+      "latest": "1.54.1",
+      "repository": "https://github.com/tokio-rs/tokio"
+    },
+    {
+      "ecosystem": "rust",
+      "name": "tokio-stream",
+      "latest": "0.1.19",
+      "repository": "https://github.com/tokio-rs/tokio"
+    },
+    {
+      "ecosystem": "rust",
+      "name": "tokio-tungstenite",
+      "latest": "0.30.0",
+      "repository": "https://github.com/snapview/tokio-tungstenite"
+    },
+    {
+      "ecosystem": "rust",
+      "name": "tower-http",
+      "latest": "0.7.1",
+      "repository": "https://github.com/tower-rs/tower-http"
+    },
+    {
+      "ecosystem": "rust",
+      "name": "uuid",
+      "latest": "1.29.1",
+      "repository": "https://github.com/uuid-rs/uuid"
+    },
+    {
+      "ecosystem": "python",
+      "name": "annotated-doc",
+      "current": "0.0.5",
+      "latest": "0.0.5",
+      "requiresPython": ">=3.9"
+    },
+    {
+      "ecosystem": "python",
+      "name": "anyio",
+      "current": "4.16.0",
+      "latest": "4.16.0",
+      "requiresPython": ">=3.10"
+    },
+    {
+      "ecosystem": "python",
+      "name": "click",
+      "current": "8.5.0",
+      "latest": "8.5.1",
+      "requiresPython": ">=3.10"
+    },
+    {
+      "ecosystem": "python",
+      "name": "filelock",
+      "current": "4.2.9",
+      "latest": "4.2.9",
+      "requiresPython": ">=3.11"
+    },
+    {
+      "ecosystem": "python",
+      "name": "fsspec",
+      "current": "2026.7.0",
+      "latest": "2026.9.0",
+      "requiresPython": ">=3.10"
+    },
+    {
+      "ecosystem": "python",
+      "name": "h11",
+      "current": "0.16.0",
+      "latest": "0.16.0",
+      "requiresPython": ">=3.8"
+    },
+    {
+      "ecosystem": "python",
+      "name": "hf-xet",
+      "current": "1.8.0",
+      "latest": "1.8.0",
+      "requiresPython": ">=3.8"
+    },
+    {
+      "ecosystem": "python",
+      "name": "httpcore2",
+      "current": "2.16.0",
+      "latest": "2.16.0",
+      "requiresPython": ">=3.11"
+    },
+    {
+      "ecosystem": "python",
+      "name": "httpx2",
+      "current": "2.16.0",
+      "latest": "2.16.0",
+      "requiresPython": ">=3.11"
+    },
+    {
+      "ecosystem": "python",
+      "name": "huggingface-hub",
+      "current": "2.4.0",
+      "latest": "2.4.0",
+      "requiresPython": ">=3.10.0"
+    },
+    {
+      "ecosystem": "python",
+      "name": "idna",
+      "current": "3.20",
+      "latest": "3.20",
+      "requiresPython": ">=3.9"
+    },
+    {
+      "ecosystem": "python",
+      "name": "jinja2",
+      "current": "3.1.6",
+      "latest": "3.1.6",
+      "requiresPython": ">=3.7"
+    },
+    {
+      "ecosystem": "python",
+      "name": "markdown-it-py",
+      "current": "4.2.0",
+      "latest": "4.2.0",
+      "requiresPython": ">=3.10"
+    },
+    {
+      "ecosystem": "python",
+      "name": "markupsafe",
+      "current": "3.0.4",
+      "latest": "3.0.4",
+      "requiresPython": ">=3.9"
+    },
+    {
+      "ecosystem": "python",
+      "name": "mdurl",
+      "current": "0.1.2",
+      "latest": "0.1.2",
+      "requiresPython": ">=3.7"
+    },
+    {
+      "ecosystem": "python",
+      "name": "mlx",
+      "current": "0.32.4",
+      "latest": "0.32.4",
+      "requiresPython": ">=3.10"
+    },
+    {
+      "ecosystem": "python",
+      "name": "mlx-lm",
+      "current": "0.32.0",
+      "latest": "0.32.2",
+      "requiresPython": ">=3.11"
+    },
+    {
+      "ecosystem": "python",
+      "name": "mlx-metal",
+      "current": "0.32.4",
+      "latest": "0.32.4",
+      "requiresPython": ">=3.10"
+    },
+    {
+      "ecosystem": "python",
+      "name": "numpy",
+      "current": "2.3.5",
+      "latest": "2.5.4",
+      "requiresPython": ">=3.12"
+    },
+    {
+      "ecosystem": "python",
+      "name": "packaging",
+      "current": "26.3",
+      "latest": "26.3",
+      "requiresPython": ">=3.9"
+    },
+    {
+      "ecosystem": "python",
+      "name": "protobuf",
+      "current": "7.36.2",
+      "latest": "7.36.2",
+      "requiresPython": ">=3.10"
+    },
+    {
+      "ecosystem": "python",
+      "name": "pygments",
+      "current": "2.21.0",
+      "latest": "2.21.0",
+      "requiresPython": ">=3.9"
+    },
+    {
+      "ecosystem": "python",
+      "name": "pyyaml",
+      "current": "6.0.3",
+      "latest": "6.0.3",
+      "requiresPython": ">=3.8"
+    },
+    {
+      "ecosystem": "python",
+      "name": "regex",
+      "current": "2026.9.29",
+      "latest": "2026.11.7",
+      "requiresPython": ">=3.11"
+    },
+    {
+      "ecosystem": "python",
+      "name": "rich",
+      "current": "15.0.0",
+      "latest": "15.0.0",
+      "requiresPython": ">=3.9.0"
+    },
+    {
+      "ecosystem": "python",
+      "name": "safetensors",
+      "current": "0.8.0",
+      "latest": "0.8.0",
+      "requiresPython": ">=3.10"
+    },
+    {
+      "ecosystem": "python",
+      "name": "sentencepiece",
+      "current": "0.2.2",
+      "latest": "0.2.3",
+      "requiresPython": ">=3.10"
+    },
+    {
+      "ecosystem": "python",
+      "name": "shellingham",
+      "current": "1.5.4",
+      "latest": "1.5.4",
+      "requiresPython": ">=3.7"
+    },
+    {
+      "ecosystem": "python",
+      "name": "tokenizers",
+      "current": "0.23.3",
+      "latest": "0.23.3",
+      "requiresPython": ">=3.10"
+    },
+    {
+      "ecosystem": "python",
+      "name": "tqdm",
+      "current": "4.70.1",
+      "latest": "4.70.1",
+      "requiresPython": ">=3.8"
+    },
+    {
+      "ecosystem": "python",
+      "name": "transformers",
+      "current": "5.20.2",
+      "latest": "5.22.2",
+      "requiresPython": ">=3.11.0"
+    },
+    {
+      "ecosystem": "python",
+      "name": "truststore",
+      "current": "0.10.5",
+      "latest": "0.10.5",
+      "requiresPython": ">=3.10"
+    },
+    {
+      "ecosystem": "python",
+      "name": "typer",
+      "current": "0.27.3",
+      "latest": "0.28.0",
+      "requiresPython": ">=3.10"
+    },
+    {
+      "ecosystem": "python",
+      "name": "typing-extensions",
+      "current": "4.16.0",
+      "latest": "4.16.0",
+      "requiresPython": ">=3.9"
+    }
+  ],
+  "npmOutdated": {},
+  "npmAudit": {
+    "info": 0,
+    "low": 0,
+    "moderate": 0,
+    "high": 0,
+    "critical": 0,
+    "total": 0
+  },
+  "strata": {
+    "before": "c62d5e3a15b40ea51c96aae9e8d36928965f53ab",
+    "after": "146df3c468739147f520ac3816de806f71232571",
+    "version": "0.2.12",
+    "candidateReal": {
+      "passed": true,
+      "revision": "146df3c468739147f520ac3816de806f71232571",
+      "engineSha256": "d0d9a76dc64f87b946d94926918ed39cc27d34b8f0a0357ef91281179d2d2e54",
+      "scope": "Isolated candidate, real Q2_0 functional smoke; no performance or broad model claim",
+      "unauthorizedRefused": true,
+      "responses": [
+        {
+          "id": "chatcmpl-a5917778735041c49e5527cc",
+          "object": "chat.completion",
+          "created": 1794130065,
+          "model": "qwen3.8-flash-next-q2_0",
+          "choices": [
+            {
+              "index": 0,
+              "message": {
+                "role": "assistant",
+                "content": "SOLITON114"
+              },
+              "finish_reason": "stop"
+            }
+          ],
+          "usage": {
+            "prompt_tokens": 25,
+            "completion_tokens": 8,
+            "total_tokens": 33,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 25,
+            "prompt_ms": 14070.8,
+            "prompt_per_token_ms": 562.832,
+            "prompt_per_second": 1.8,
+            "predicted_n": 8,
+            "predicted_ms": 2754.6,
+            "predicted_per_token_ms": 344.325,
+            "predicted_per_second": 2.9,
+            "draft_n": 0,
+            "draft_n_accepted": 0
+          }
+        },
+        {
+          "id": "chatcmpl-e7bfa7116c484ccfaad2b0e6",
+          "object": "chat.completion",
+          "created": 1794130082,
+          "model": "qwen3.8-flash-next-q2_0",
+          "choices": [
+            {
+              "index": 0,
+              "message": {
+                "role": "assistant",
+                "content": "SOLITON114"
+              },
+              "finish_reason": "stop"
+            }
+          ],
+          "usage": {
+            "prompt_tokens": 54,
+            "completion_tokens": 8,
+            "total_tokens": 62,
+            "prompt_tokens_details": {
+              "cached_tokens": 32
+            }
+          },
+          "timings": {
+            "cache_n": 32,
+            "prompt_n": 22,
+            "prompt_ms": 4715.1,
+            "prompt_per_token_ms": 214.323,
+            "prompt_per_second": 4.7,
+            "predicted_n": 8,
+            "predicted_ms": 2347.2,
+            "predicted_per_token_ms": 293.4,
+            "predicted_per_second": 3.4,
+            "draft_n": 0,
+            "draft_n_accepted": 0
+          }
+        }
+      ],
+      "ordinaryStatePreserved": true,
+      "modelFilesPreserved": true,
+      "exitCode": 0
+    },
+    "distributionReal": {
+      "passed": true,
+      "revision": "146df3c468739147f520ac3816de806f71232571",
+      "engineSha256": "fab7043528882f0523236854d14360868d91f4642743831a7e1e030f682bdb88",
+      "scope": "Actual distribution engine/source and bundled Python, isolated real Q2_0 functional smoke; no performance or broad model claim",
+      "unauthorizedRefused": true,
+      "responses": [
+        {
+          "id": "chatcmpl-fe9ff3504cc64a3b961b8593",
+          "object": "chat.completion",
+          "created": 1794130629,
+          "model": "qwen3.8-flash-next-q2_0",
+          "choices": [
+            {
+              "index": 0,
+              "message": {
+                "role": "assistant",
+                "content": "SOLITON114"
+              },
+              "finish_reason": "stop"
+            }
+          ],
+          "usage": {
+            "prompt_tokens": 25,
+            "completion_tokens": 8,
+            "total_tokens": 33,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 25,
+            "prompt_ms": 14794.5,
+            "prompt_per_token_ms": 591.78,
+            "prompt_per_second": 1.7,
+            "predicted_n": 8,
+            "predicted_ms": 1544.6,
+            "predicted_per_token_ms": 193.075,
+            "predicted_per_second": 5.2,
+            "draft_n": 0,
+            "draft_n_accepted": 0
+          }
+        },
+        {
+          "id": "chatcmpl-ee3182d6ab8d43e0bb46c461",
+          "object": "chat.completion",
+          "created": 1794130645,
+          "model": "qwen3.8-flash-next-q2_0",
+          "choices": [
+            {
+              "index": 0,
+              "message": {
+                "role": "assistant",
+                "content": "SOLITON114"
+              },
+              "finish_reason": "stop"
+            }
+          ],
+          "usage": {
+            "prompt_tokens": 54,
+            "completion_tokens": 8,
+            "total_tokens": 62,
+            "prompt_tokens_details": {
+              "cached_tokens": 32
+            }
+          },
+          "timings": {
+            "cache_n": 32,
+            "prompt_n": 22,
+            "prompt_ms": 3514.8,
+            "prompt_per_token_ms": 159.764,
+            "prompt_per_second": 6.3,
+            "predicted_n": 8,
+            "predicted_ms": 1695.0,
+            "predicted_per_token_ms": 211.875,
+            "predicted_per_second": 4.7,
+            "draft_n": 0,
+            "draft_n_accepted": 0
+          }
+        }
+      ],
+      "ordinaryStatePreserved": true,
+      "modelFilesPreserved": true,
+      "exitCode": 0
+    }
+  },
+  "bundledPython": {
+    "before": "3.12.15",
+    "after": "3.12.16",
+    "pillow": "13.0.0",
+    "sentencepiece": "0.2.3",
+    "upstreamRequirementsUnmodified": true,
+    "relocatedImport": true
+  },
+  "mlxCandidate": {
+    "dependenciesResolved": true,
+    "adopted": false,
+    "version": "0.32.2",
+    "guardError": "retained KV wrapper requires reviewed MLX-LM 0.32.0",
+    "reviewedCacheFileUnchanged": true,
+    "serverDiffLines": 508,
+    "decision": "Keep original qualified 0.32.0 runtime. New server has vision URL/cache-key and response-state changes; review and original full qualification needed before adoption. No allowlist/fingerprint bypass."
+  },
+  "checks": {
+    "rust": {
+      "corePassed": 162,
+      "tauriPassed": 6,
+      "ignored": 1
+    },
+    "node": {
+      "passed": 35
+    },
+    "frontendBuild": true,
+    "workspaceAllTargetsCheck": true,
+    "strataMac": {
+      "passed": 42
+    },
+    "strataApiResponsesSpeedLifeline": {
+      "passed": 431,
+      "skipped": 2,
+      "total": 433
+    },
+    "gemmaConverter": {
+      "passed": 4
+    },
+    "distributionCheckerUnit": {
+      "passed": 7
+    },
+    "localReuseContract": true,
+    "browser": {
+      "availableSkill": false,
+      "fallback": "Repository Playwright; browser skill not available",
+      "playwright": "1.65.0",
+      "chromium": "158.0.8127.18",
+      "engine": true,
+      "splitDocking": true,
+      "floating": true,
+      "workspace": true,
+      "languages": [
+        "en",
+        "ja",
+        "zh"
+      ],
+      "widths": [
+        1440,
+        390,
+        320
+      ],
+      "nativeOsDrag": false
+    },
+    "gateway": {
+      "passed": 36,
+      "exact4096": 3,
+      "refused4097": 3,
+      "allAnswersAndInputCountsMatch013": true,
+      "source": "dependency-gateway-20261108.json"
+    },
+    "desktopBuild": true,
+    "runtimeExcludesCmakeNinja": true,
+    "buildEnvironment": "Dedicated metal-build-python-3.12.16 venv; immutable upstream build pins; does not override PEP668",
+    "nativeProvisioning": {
+      "passed": true,
+      "scope": "Fresh isolated native app provisioning and API state; no native pointer/visual certification",
+      "newPythonRoot": true,
+      "pinnedStrataRevision": "146df3c468739147f520ac3816de806f71232571",
+      "offline": true,
+      "emptyQaConversation": true
+    },
+    "distribution": {
+      "passed": true,
+      "nativeFiles": 66,
+      "errors": [],
+      "source": "dependency-distribution-20261108.json"
+    }
+  },
+  "limits": [
+    "One Mac; no signed/notarized distribution or other OS claim",
+    "Broad serve discovery was interrupted; targeted API/Responses/Mac/lifecycle tests reported separately",
+    "No general performance claim",
+    "Existing user-selected Python paths and engine settings are preserved"
+  ],
+  "release": "0.1.4"
+}

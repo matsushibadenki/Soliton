@@ -2,7 +2,7 @@
 
 # Current dependency update · 2026-11-02
 
-Strata v0.2.9 (`c62d5e3a`), source engine 0.1.55. [Distribution pin, real inference and validation limits](DEPENDENCY_UPDATE_20261102.md). Change both the Strata gitlink and `src-tauri/strata-revision.txt` for future updates. Earlier sections are historical.
+Strata v0.2.12 (`146df3c4`), source engine 0.1.58. [Distribution pin, real inference and validation limits](DEPENDENCY_UPDATE_20261108.md). Change both the Strata gitlink and `src-tauri/strata-revision.txt` for future updates. Earlier sections are historical.
 
 # Current dependency update · 2026-10-29
 

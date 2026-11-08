@@ -1,6 +1,6 @@
 # Soliton
 
-Version 0.1.3 prepares the CPU tokenizer during Rust-managed engine startup, including API-only use. In a scoped four-start comparison without state polling, first-request admission medians changed from 298ms to 5ms. Initialization moves earlier; this is not a GPU speedup. See [results and limits](docs/INFERENCE.md#autonomous-startup-prewarm--2026-11-08) and [release notes](CHANGELOG.md).
+Version 0.1.4 updates the compatible app dependencies, Strata 0.2.12 and bundled Python 3.12.16. Existing qualified MLX/Omni runtimes and user settings are preserved; see [update scope and verification](docs/DEPENDENCY_UPDATE_20261108.md) and [release notes](CHANGELOG.md).
 
 ![Soliton](docs/images/stratastudio-image.png)
 

@@ -1,6 +1,6 @@
 # Soliton
 
-0.1.3在Rust管理的引擎启动过程中预备CPU分词器，也支持仅使用API的场景。在不轮询状态的四次启动比较中，首次请求准入时间中位数从298ms降至5ms。这是提前初始化，并非GPU加速。参阅[结果与范围](docs/INFERENCE.md#autonomous-startup-prewarm--2026-11-08)及[更新记录](CHANGELOG.md)。
+0.1.4更新了通过兼容性验证的应用依赖、Strata 0.2.12及内置Python 3.12.16。保留已认证MLX/Omni运行时和普通配置。参阅[更新范围与验证](docs/DEPENDENCY_UPDATE_20261108.md)及[更新记录](CHANGELOG.md)。
 
 ![Soliton](docs/images/stratastudio-image.png)
 
