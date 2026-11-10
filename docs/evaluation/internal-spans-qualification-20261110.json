@@ -1,0 +1,105 @@
+{
+  "date": "2026-11-10",
+  "scope": "Public summary, not portable startup approval",
+  "originalPrivateReportSha256": "e4dfbb760a3e3b75adfe2cab9af87ff7425d40cb789a541791a97907148a7973",
+  "model": "Gemma2 2B 4bit",
+  "backend": "MLX-LM0.32.2",
+  "profile": {
+    "context": 4096,
+    "concurrency": 1,
+    "kvCacheMiB": 1536,
+    "allocatorCacheMiB": 512,
+    "mpsFallback": true
+  },
+  "passed": true,
+  "shutdownClean": true,
+  "soak": {
+    "certification_required": true,
+    "elapsed_seconds": 1800.111,
+    "errors": {},
+    "failures": 0,
+    "latency_ms": {
+      "max": 660.376,
+      "mean": 123.39,
+      "p50_upper_bound": 250,
+      "p95_upper_bound": 250
+    },
+    "passed": true,
+    "process_alive": true,
+    "requests": 14588,
+    "requests_per_second": 8.104,
+    "rss": {
+      "baseline_bytes": 1920286720,
+      "final_bytes": 1920286720,
+      "growth_bytes": 0,
+      "limit_bytes": 268435456,
+      "peak_bytes": 1920417792,
+      "peak_growth_bytes": 131072
+    },
+    "stability_window_met": true,
+    "storage": {
+      "error_keys": 0,
+      "latency_buckets": 12
+    },
+    "successes": 14588
+  },
+  "qualificationLimits": {
+    "concurrency": 1,
+    "context_tokens": 4096
+  },
+  "promotionProbe": {
+    "checks": {
+      "greedy_repeat_equal": true,
+      "sampled_repeat_equal": true,
+      "sampled_stream_equal": true,
+      "stream_completed": true
+    },
+    "determinism_mode": "greedy_only",
+    "digests": {
+      "greedy": "a72f0215ec983589f7140253c77d742103fd5bf1210ece94febc2d1562d35e6d",
+      "sampled": "a72f0215ec983589f7140253c77d742103fd5bf1210ece94febc2d1562d35e6d",
+      "sampled_stream": "a72f0215ec983589f7140253c77d742103fd5bf1210ece94febc2d1562d35e6d"
+    },
+    "model": "default_model",
+    "passed": true,
+    "schema_version": 1,
+    "seed": 1729,
+    "temperature": 0
+  },
+  "qualitySmoke": {
+    "checks": {
+      "english": true,
+      "japanese": true,
+      "simplified_chinese": true
+    },
+    "match_policy": "trimmed_exact",
+    "passed": true,
+    "sample_count": 3,
+    "schema_version": 1,
+    "stores_generated_text": false
+  },
+  "contextReevaluation": {
+    "capacity_context_tokens": null,
+    "configured_context_tokens": 4096,
+    "effective_context_tokens": 4096,
+    "enabled": false,
+    "kv_bytes_per_token": null,
+    "kv_capacity_bytes": null,
+    "passed": true,
+    "reevaluations": 0,
+    "source": null,
+    "status": "unavailable",
+    "weights_bytes": null
+  },
+  "identity": {
+    "backend": "mlx_lm",
+    "backend_sha256": "8d8f294b62e700e86b488a27263f870759e3b60e176cd0b93eac7f44ba7801e6",
+    "config_sha256": "9279e9a8c58d7656782dc02f787feaa45118f37109281acb88144b6a44093401",
+    "environment_sha256": "0baf97c88f050b96f80609c8fcdb859dfcf509523574e15e78a3e77cfab5d508",
+    "hardware_sha256": "c8baa7d3ff988ba85885da228624da76c5a85818ef2f1daa3b1d3128e4b95d6c",
+    "model_root_sha256": "4f69654cb373cc4392fd048acf60d51d39d67e8176648a3e52a7936b0776cd14",
+    "runtime_sha256": "6c22dd4788f191520a8b4d13682bc11d0b206dd80bf9ddb3b79cbe1fc3842b1c"
+  },
+  "onlyRuntimeIdentityChanged": true,
+  "originalProfilePreserved": true
+}

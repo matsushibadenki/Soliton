@@ -55,3 +55,17 @@ The unchanged original `qualify-model` runner is required: exact `--candidate-ml
 日本語：元の資格確認済み環境を残し、別controllerと固定環境へ適用します。版番号と正確なソース組を同時に検査し、画像URL処理へ入る前にテキスト以外を拒否します。旧証跡の編集流用やガード回避は行いません。新しい完全な30分資格確認と共有APIの境界・追い出し・ライフサイクル検証が必要です。
 
 简体中文：保留原有已认证环境，在独立controller及固定环境中应用。版本与精确源码组合同时校验，在图片URL处理前拒绝非纯文本消息。不修改旧证据来复用，不绕过门禁；必须重新完成完整30分钟认证及共享API边界、淘汰和生命周期验证。
+
+## Internal wall spans · MLX-LM0.32.2 — 2026-11-10
+
+`vllm-apple-internal-spans.patch` is an incremental patch **after** `vllm-apple-mlx-0322.patch` on controller base `bdef9567191bcc46154c0f7cf7f05089b718f0b4`. Check/apply to a separate copy; retain the qualified controller and evidence. The canonical new launcher is `scripts/mlx-internal-spans.py` (copied as `vllm_apple/mlx_internal_spans.py`); the candidate budget helper (`mlx_kv_budget.py`) is the original helper plus the patch’s optional scalar-diagnostics callback. The original canonical `scripts/mlx-retained-kv.py` and its0.32.2 patch are preserved byte-for-byte. No installed wheel or model is edited. Runtime identity includes all these source files and therefore requires fresh full qualification.
+
+The new candidate launcher admits only the already-reviewed0.32.2 server/cache pair and additionally binds `generate.py` SHA-256 `9d46803799f99d6fc7c35fff2d4357c79b1a25ae98cc63efeaaebeb50a7b5f33`. Guards run before hooks/model startup. Other releases, mixed hashes and modified sources fail; existing0.32.0/0.32.2 installations remain available in their original controllers. The candidate uses unchanged budget/synchronization/text-only behavior, wrapping original functions without extra MLX eval/synchronization. The original architecture verifier and full installed-file/model/environment/hardware/source fingerprints remain mandatory; no shortened soak issues startup evidence.
+
+Bounded atomic scalar ledgers record host wall durations for full evidence verification/validation, model manifest/backend fingerprint, RAM LRU fetch/insert/trim, batch prompt/decode methods and sequential iterator advancement. Qualification validation/cache trim can be nested; do not add their totals to parent intervals. These are cumulative process-local observations, not per-request metrics or GPU-kernel timings. No prompt, token IDs, tensors or exception messages are stored. SSD disk persistence/CLI spans are outside this patch.
+
+`/v1/runtime.startup_internal_spans` exposes verifier spans; the private backend's existing `/vllm-apple/kv-cache.internal_spans` exposes inference/cache spans. Rust only retains validated scalars through the existing authenticated, bounded, session/settings-bound `refreshBackendBudget` path. A missing ledger stays unknown, and old controllers still work with null new fields. No UI or ordinary preferences are changed by installing source files.
+
+日本語：既存の資格確認済みcontrollerを残した別候補へ適用します。新しいgenerateソース検査、完全なidentity照合、元の30分試験を維持します。区間はCPU側の壁時計・プロセス累積値で、GPU時間や要求単位の計測とは扱いません。SSD保存／復元は別工程です。
+
+简体中文：在保留原认证controller的独立候选副本上应用；新增generate源码校验，保留完整identity验证及原30分钟测试。记录的是进程累计主机壁钟时间，不是GPU内核或单请求计时。SSD保存／恢复另行处理。

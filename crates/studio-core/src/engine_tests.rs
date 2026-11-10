@@ -848,3 +848,77 @@ async fn stale_health_or_failed_spawn_cannot_prepare_again() {
     backend.abort();
     std::fs::remove_dir_all(dir).unwrap();
 }
+
+#[test]
+fn launch_spans_keep_readiness_origin_and_unknown_values() {
+    let mut startup = Startup::new();
+    assert!(startup.snapshot()["launchPreparationMs"].is_null());
+    assert!(startup.snapshot()["childSpawnMs"].is_null());
+    let origin = startup.started;
+    let preparation = origin - Duration::from_millis(120);
+    let spawn = origin - Duration::from_millis(20);
+    startup.record_launch(preparation, spawn, origin);
+    startup.control_ms = Some(30);
+    startup.inference_ms = Some(90);
+    let snapshot = startup.snapshot();
+    assert_eq!(snapshot["launchPreparationMs"], 100.0);
+    assert_eq!(snapshot["childSpawnMs"], 20.0);
+    assert_eq!(snapshot["modelLoadingObservedMs"], 60);
+    assert_eq!(startup.started, origin);
+}
+
+#[cfg(unix)]
+#[tokio::test]
+async fn launch_spans_follow_real_launch_restart_failure_and_stop() {
+    use std::os::unix::fs::PermissionsExt;
+    let dir = std::env::temp_dir().join(format!("soliton-launch-spans-{}", uuid::Uuid::new_v4()));
+    std::fs::create_dir_all(dir.join("serve")).unwrap();
+    std::fs::write(dir.join("serve/server.py"), "# fixture").unwrap();
+    let python = dir.join("python");
+    // A delayed dependency check followed by an owned idle engine. No model needed.
+    std::fs::write(
+        &python,
+        "#!/bin/sh\nif [ \"$1\" = '-c' ]; then /bin/sleep 0.05; exit 0; fi\nexec /bin/sleep 60\n",
+    )
+    .unwrap();
+    std::fs::set_permissions(&python, std::fs::Permissions::from_mode(0o700)).unwrap();
+    let s = Arc::new(Studio::new(dir.clone(), 0));
+    {
+        let mut settings = s.settings.write().await;
+        settings.mock = true;
+        settings.python = python.to_string_lossy().into();
+    }
+    s.start().await.unwrap();
+    let first_session = s.process.lock().await.metrics_session.clone();
+    let launch = s.process.lock().await.startup.as_ref().unwrap().snapshot();
+    assert!(launch["launchPreparationMs"].as_f64().unwrap() >= 40.0);
+    assert!(launch["childSpawnMs"].as_f64().unwrap() >= 0.0);
+    assert!(launch["controlReadyObservedMs"].is_null());
+    assert!(launch["modelLoadingObservedMs"].is_null());
+    // Refusing a duplicate start must not replace the running session's timings.
+    assert!(s.start().await.is_err());
+    assert_eq!(
+        s.process.lock().await.startup.as_ref().unwrap().snapshot(),
+        launch
+    );
+    s.stop().await.unwrap();
+    assert!(s.snapshot().await["startup"].is_null());
+    s.start().await.unwrap();
+    assert_ne!(s.process.lock().await.metrics_session, first_session);
+    assert!(s
+        .process
+        .lock()
+        .await
+        .startup
+        .as_ref()
+        .unwrap()
+        .control_ms
+        .is_none());
+    s.stop().await.unwrap();
+    // A failed validation must not publish spans from the previous launch.
+    s.settings.write().await.python = dir.join("missing").to_string_lossy().into();
+    assert!(s.start().await.is_err());
+    assert!(s.process.lock().await.startup.is_none());
+    assert!(s.snapshot().await["startup"].is_null());
+    std::fs::remove_dir_all(dir).unwrap();
+}

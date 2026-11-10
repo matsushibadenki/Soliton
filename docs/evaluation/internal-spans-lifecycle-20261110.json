@@ -1,0 +1,39 @@
+{
+  "result": "passed",
+  "scope": "Qualified headless Rust API lifecycle; Strata switch uses mock, no native GUI/OS-drag claim",
+  "checks": {
+    "jsonAnswer": true,
+    "plainTextAdmissionMaintained": true,
+    "activeSwitchRefused": true,
+    "cancel": true,
+    "ownedTreeAndCounterGone": true,
+    "strataMockSwitch": true,
+    "sessionChangedOnRestart": true,
+    "restartAnswer": true,
+    "apiHistoryPreserved": true,
+    "chatSseAndMetrics": true,
+    "chatSavedToDisk": true,
+    "chatPreservedOnStopAndEvidenceUnchanged": true
+  },
+  "refusals": [
+    {
+      "label": "missing-evidence",
+      "stage": "settings",
+      "httpStatus": 400,
+      "noInference": true
+    },
+    {
+      "label": "expired-evidence",
+      "offline": true,
+      "noCounterObserved": true,
+      "noInference": true
+    },
+    {
+      "label": "beyond-qualified-context",
+      "offline": true,
+      "noCounterObserved": true,
+      "noInference": true
+    }
+  ],
+  "evidenceSha256": "e4dfbb760a3e3b75adfe2cab9af87ff7425d40cb789a541791a97907148a7973"
+}

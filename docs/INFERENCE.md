@@ -383,3 +383,28 @@ English: The optional1.5GiB retained-KV profile passed the original30-minute qua
 元の30分試験は1800.063秒・11871成功・失敗ゼロ・ピークRSS増加327680 bytesで通過し、identity再照合・正常停止も成功。共通Rust API36件＋三言語境界、追い出し／再加熱・旧証跡拒否／復旧、キャンセル・停止・再起動・チャットSSE／保存を確認しました。0.1.4と全回答・入力／出力／cached数・終了理由が一致。5.22.2向けのCPU計数は1091件の完全ID一致と6フォールバック検査を経て追加し、旧tupleを残しています。
 
 通常設定は変更していません。専用controllerは`.soliton-runtime/mlx0322-20261108/controller`、backend launcherは同`python/bin/mlx_lm.server`、対応private証跡は同`qualification.json`です。context4096／KV1536MiB／allocator512MiB／MPS fallback1と組にし、旧証跡は編集しません。global互換表への昇格やGPU高速化の主張ではなく、exact profileの資格確認です。ネイティブGUI・他Mac／モデル・署名／公証はPending。[三言語の詳細・再現方法・全記録](MLX_0322_QUALIFICATION.md)。
+
+## Rust launcher wall-time spans — 2026-11-10
+
+P0の次の小工程として、`/studio/state`の`startup`に省略可能な`launchPreparationMs`と`childSpawnMs`を追加した。全5起動経路（MLX SSD、Omni、vLLM-Apple、Gemma 3 Metal、Strata/mock）で記録する。既存の起動準備完了観測時刻の基準は維持する。
+
+| Field | Boundary | Exclusions |
+|---|---|---|
+| `launchPreparationMs` | Prior-engine cleanup completed → immediately before `Command::spawn` | Lifecycle-lock wait and prior-engine stop; worker-side verification/model loading |
+| `childSpawnMs` | Immediately before → immediately after successful `Command::spawn` | Pipe setup, log collection, model readiness and GPU work |
+
+準備時間にはRust側のロック取得・設定確認・ポート確保・コマンド作成、該当経路のPython依存確認が含まれる。複合区間であり、個別の資格確認時間やbackend内部のprefill/decode時間とは呼ばない。これら2値はそれぞれ独立した区間の壁時計時間で、既存`controlReadyObservedMs`等の開始基準からのオフセットとは加算関係を保証しない。健康状態のポーリング遅延や起動後の処理もあるため、足し合わせて「総起動時間」と表示しない。
+
+未計測は`null`、実測が0に近い場合はその値を保持する。起動拒否では成功値を生成せず、再起動時は新しいセッションで取り直す。停止中の公開snapshotは従来どおり`startup: null`。同一エンジンの重複Start拒否は稼働中の値を保持する。ベンチマークツール`benchmark-engine-gateway.mjs`は既存の`report.startup`経由で新しい値も保存するため、レポート形式の移行は不要。
+
+検証：決定的な時計境界テストと、実際の所有プロセスを使う遅延依存確認・起動・重複拒否・停止・再起動・起動失敗テストを追加。モデル重み・資格確認済みworker・通常設定は変更していない。実モデルでの新規計測、起動高速化の比較、完全な内部検証/cache/prefill/decode spanは未実施。今回の変更は計測追加であり速度改善の主張ではない。
+
+English: Optional launcher preparation and process-spawn wall durations are available in `startup` for all five launch paths. Existing readiness clocks retain their boundaries. Missing values stay null; stopped snapshots hide them, restarts replace them, and duplicate-start refusal preserves the live session. Preparation is a composite Rust-side interval, not backend evidence verification, model loading or GPU time. No measured speedup or real-model qualification is claimed.
+
+简体中文：五条启动路径的`startup`均增加可选的启动准备和进程创建耗时，保留原有就绪时间基准。未测量值为null，停止后不公开旧值，重启重新记录，重复启动被拒绝时保留当前会话数据。准备阶段是Rust侧的组合区间，不代表后端资格验证、模型加载或GPU耗时。本次不宣称提速，也未完成真实模型的新验证。
+
+検証結果：`STUDIO_TEST_PYTHON=/opt/homebrew/bin/python3 cargo test -p studio-core`で164件通過、既存gateway baseline toolの5件通過、server build・Tauri check・差分検査通過。初回のsandboxプロセス情報制限と旧system Pythonによる既存準備テスト2件の失敗は、権限を付けた所有プロセステストと対応Python指定で切り分けた。[検証記録](evaluation/launcher-spans-20261110.json)。
+
+## Backend internal wall spans — 2026-11-10
+
+P0の内部計測を独立したMLX-LM0.32.2／Gemma2候補へ追加。資格確認全体・モデル／backend照合・RAMキャッシュ・バッチprefill/decode・逐次イテレーターを固定スカラーで記録し、Rustの認証付き診断で形式・設定・所有プロセスを照合する。元の30分資格確認、変更前後の全回答／usage一致、共有API境界、追い出し／再加熱・旧証跡拒否／復旧・ライフサイクルを通過。通常設定と既存runtimeは保持した。GPU時間・速度改善は主張せず、SSD保存／復元・CLIはNext。[English／日本語／简体中文・計測値と再現手順](ENGINE_INTERNAL_SPANS.md)。

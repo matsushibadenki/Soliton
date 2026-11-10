@@ -151,6 +151,8 @@ impl Default for Document {
     }
 }
 struct Startup {
+    launch_preparation_ms: Option<f64>,
+    child_spawn_ms: Option<f64>,
     started: std::time::Instant,
     control_ms: Option<u64>,
     inference_ms: Option<u64>,
@@ -160,6 +162,8 @@ struct Startup {
 impl Startup {
     fn new() -> Self {
         Self {
+            launch_preparation_ms: None,
+            child_spawn_ms: None,
             started: std::time::Instant::now(),
             control_ms: None,
             inference_ms: None,
@@ -167,8 +171,27 @@ impl Startup {
             counter_preparation: None,
         }
     }
+    /// Separate launcher wall durations; existing readiness clock remains unchanged.
+    /// Preparation begins after prior-engine cleanup and includes command validation,
+    /// port reservation and any dependency probe, not worker-side evidence verification.
+    fn record_launch(
+        &mut self,
+        preparation_started: std::time::Instant,
+        spawn_started: std::time::Instant,
+        spawn_completed: std::time::Instant,
+    ) {
+        self.launch_preparation_ms = Some(
+            spawn_started
+                .duration_since(preparation_started)
+                .as_secs_f64()
+                * 1000.0,
+        );
+        self.child_spawn_ms =
+            Some(spawn_completed.duration_since(spawn_started).as_secs_f64() * 1000.0);
+    }
     fn snapshot(&self) -> Value {
-        json!({"controlReadyObservedMs":self.control_ms,"inferenceReadyObservedMs":self.inference_ms,
+        json!({"launchPreparationMs":self.launch_preparation_ms,"childSpawnMs":self.child_spawn_ms,
+            "controlReadyObservedMs":self.control_ms,"inferenceReadyObservedMs":self.inference_ms,
             "counterSpawnedMs":self.counter_ms,"counterPreparation":self.counter_preparation,
             "modelLoadingObservedMs":self.inference_ms.zip(self.control_ms).map(|(ready,control)|ready.saturating_sub(control))})
     }
@@ -572,6 +595,7 @@ impl Studio {
             }
         }
         self.stop_inner().await?;
+        let preparation_started = std::time::Instant::now();
         let mut p = self.process.lock().await;
         let s = self.settings.read().await.clone();
         p.startup = None;
@@ -588,16 +612,20 @@ impl Studio {
             #[cfg(unix)]
             cmd.process_group(0);
             drop(reserve);
+            let spawn_started = std::time::Instant::now();
             let mut child = cmd
                 .spawn()
                 .map_err(|e| format!("Cannot launch MLX SSD: {e}"))?;
+            let spawn_completed = std::time::Instant::now();
             if let Some(out) = child.stdout.take() {
                 pump(out, self.logs.clone());
             }
             if let Some(out) = child.stderr.take() {
                 pump(out, self.logs.clone());
             }
-            p.startup = Some(Startup::new());
+            let mut startup = Startup::new();
+            startup.record_launch(preparation_started, spawn_started, spawn_completed);
+            p.startup = Some(startup);
             p.group = child.id();
             p.child = Some(child);
             p.port = port;
@@ -626,16 +654,20 @@ impl Studio {
             #[cfg(unix)]
             cmd.process_group(0);
             drop(reserve);
+            let spawn_started = std::time::Instant::now();
             let mut child = cmd
                 .spawn()
                 .map_err(|e| format!("Cannot launch Omni: {e}"))?;
+            let spawn_completed = std::time::Instant::now();
             if let Some(out) = child.stdout.take() {
                 pump(out, self.logs.clone());
             }
             if let Some(out) = child.stderr.take() {
                 pump(out, self.logs.clone());
             }
-            p.startup = Some(Startup::new());
+            let mut startup = Startup::new();
+            startup.record_launch(preparation_started, spawn_started, spawn_completed);
+            p.startup = Some(startup);
             p.group = child.id();
             p.child = Some(child);
             p.port = port;
@@ -667,16 +699,20 @@ impl Studio {
             cmd.process_group(0);
             drop(reserve);
             drop(backend_reserve);
+            let spawn_started = std::time::Instant::now();
             let mut child = cmd
                 .spawn()
                 .map_err(|e| format!("Cannot launch vLLM-Apple: {e}"))?;
+            let spawn_completed = std::time::Instant::now();
             if let Some(out) = child.stdout.take() {
                 pump(out, self.logs.clone());
             }
             if let Some(out) = child.stderr.take() {
                 pump(out, self.logs.clone());
             }
-            p.startup = Some(Startup::new());
+            let mut startup = Startup::new();
+            startup.record_launch(preparation_started, spawn_started, spawn_completed);
+            p.startup = Some(startup);
             p.group = child.id();
             p.child = Some(child);
             p.port = port;
@@ -776,9 +812,14 @@ impl Studio {
                 #[cfg(unix)]
                 cmd.process_group(0);
                 drop(reserve);
+                let spawn_started = std::time::Instant::now();
                 let mut child = cmd
                     .spawn()
                     .map_err(|e| format!("Cannot launch bundled Gemma Metal backend: {e}"))?;
+                let spawn_completed = std::time::Instant::now();
+                let mut startup = Startup::new();
+                startup.record_launch(preparation_started, spawn_started, spawn_completed);
+                p.startup = Some(startup);
                 let report = allocation_report::Session::new(
                     &s,
                     &config_bytes,
@@ -844,9 +885,14 @@ impl Studio {
         #[cfg(unix)]
         cmd.process_group(0);
         drop(reserve);
+        let spawn_started = std::time::Instant::now();
         let mut child = cmd
             .spawn()
             .map_err(|e| format!("Cannot launch {}: {e}", s.python))?;
+        let spawn_completed = std::time::Instant::now();
+        let mut startup = Startup::new();
+        startup.record_launch(preparation_started, spawn_started, spawn_completed);
+        p.startup = Some(startup);
         if let Some(out) = child.stdout.take() {
             pump(out, self.logs.clone());
         }

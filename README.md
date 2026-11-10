@@ -1,6 +1,6 @@
 # Soliton
 
-Version 0.1.5 adds a separately guarded MLX-LM 0.32.2 text profile, with a complete 30-minute requalification and shared-API regression checks. Existing 0.32.0 runtime/evidence and ordinary settings are preserved. See [scope and reproduction](docs/MLX_0322_QUALIFICATION.md) and [release notes](CHANGELOG.md).
+Version 0.1.6 adds bounded internal wall-time diagnostics for startup verification, RAM cache operations and MLX prefill/decode, with a separate fully requalified Gemma2/MLX-LM0.32.2 profile. Existing runtime/evidence and ordinary settings are preserved. See [measurements and limits](docs/ENGINE_INTERNAL_SPANS.md) and [release notes](CHANGELOG.md).
 
 ![Soliton](docs/images/stratastudio-image.png)
 

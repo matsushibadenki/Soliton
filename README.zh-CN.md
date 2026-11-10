@@ -1,6 +1,6 @@
 # Soliton
 
-0.1.5增加了保留兼容性门禁的独立MLX-LM 0.32.2纯文本配置，完成完整30分钟重新认证及共享API回归验证。保留原0.32.0运行时、证据和普通配置。参阅[范围与复现](docs/MLX_0322_QUALIFICATION.md)及[更新记录](CHANGELOG.md)。
+0.1.6增加了启动资格验证、RAM缓存与MLX prefill/decode的内部壁钟计时，并通过独立Gemma2／MLX-LM0.32.2配置的完整30分钟重新认证。保留原环境、证据和普通设置。参阅[测量与范围](docs/ENGINE_INTERNAL_SPANS.md)及[更新记录](CHANGELOG.md)。
 
 ![Soliton](docs/images/stratastudio-image.png)
 

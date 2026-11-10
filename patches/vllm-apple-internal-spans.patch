@@ -1,0 +1,243 @@
+--- a/vllm_apple/architecture_evidence.py
++++ b/vllm_apple/architecture_evidence.py
+@@ -10,6 +10,7 @@
+ from pathlib import Path
+
+ from .architecture_registry import describe_architecture
++from .mlx_internal_spans import STARTUP
+ from .backend_fingerprint import fingerprint_backend
+ from .model import InspectedModel
+ from .model_integrity import build_model_integrity_manifest
+@@ -34,9 +35,9 @@
+         raise ValueError("unsupported evidence backend")
+     return {
+         "config_sha256": descriptor["config_sha256"],
+-        "model_root_sha256": build_model_integrity_manifest(model.path)["root_sha256"],
++        "model_root_sha256": STARTUP.wrap("qualification.model_identity", build_model_integrity_manifest)(model.path)["root_sha256"],
+         "backend": backend,
+-        "backend_sha256": fingerprint_backend(executable),
++        "backend_sha256": STARTUP.wrap("qualification.backend_identity", fingerprint_backend)(executable),
+         "environment_sha256": _digest({
+             key: value for key, value in os.environ.items()
+             if key.startswith(("MLX_", "VLLM_", "METAL_", "DYLD_", "OMP_", "VECLIB_",
+@@ -150,6 +151,7 @@
+     return {**report, "architecture_evidence": binding}
+
+
++@STARTUP.wrap("qualification.validate")
+ def validate_evidence(report: dict[str, object], identity: dict[str, object], *,
+                       context_tokens: int, concurrency: int,
+                       now: float | None = None) -> dict[str, object]:
+@@ -186,6 +188,7 @@
+     return binding
+
+
++@STARTUP.wrap("qualification.verify")
+ def verify_startup_evidence(path: Path, model: InspectedModel, executable: Path,
+                             backend: str, hardware: HardwareInfo, *,
+                             context_tokens: int, concurrency: int) -> dict[str, object]:
+--- a/vllm_apple/backend.py
++++ b/vllm_apple/backend.py
+@@ -137,7 +137,7 @@
+             if self.kv_cache_bytes is not None:
+                 command = [str(self.executable.parent / "python"), "-I", "-u", "-c",
+                     "import runpy,sys;runpy.run_path(sys.argv.pop(1),run_name='__main__')",
+-                    str(Path(__file__).with_name("mlx_kv_budget.py"))]
++                    str(Path(__file__).with_name("mlx_internal_spans.py"))]
+             if self.python_module is not None:
+                 command.extend(("-m", self.python_module))
+             command.extend([
+--- a/vllm_apple/service.py
++++ b/vllm_apple/service.py
+@@ -1,4 +1,6 @@
+ from __future__ import annotations
++
++from .mlx_internal_spans import STARTUP
+
+ import threading
+ from collections.abc import Callable
+@@ -142,6 +144,7 @@
+             "kv_calibration": self.kv_calibration,
+             "native_v2_tuning": self.native_v2_tuning,
+             "startup_progress": self.startup_progress,
++            "startup_internal_spans": STARTUP.snapshot(),
+         }
+
+
+--- a/vllm_apple/mlx_kv_budget.py
++++ b/vllm_apple/mlx_kv_budget.py
+@@ -101,7 +101,7 @@
+     return dict(configured_limit_bytes=configured, effective_limit_bytes=effective)
+
+
+-def main():
++def main(diagnostics=None):
+     raw = os.environ.get('VLLM_APPLE_KV_CACHE_MIB', '')
+     if (not 1 <= len(raw) <= 4 or not raw.isascii() or not raw.isdecimal()
+             or not 64 <= int(raw) <= 4096):
+@@ -130,6 +130,8 @@
+                             entries=len(lru), accounting='LRU tensor bytes, not unique physical memory')
+         snapshot['allocator'] = dict(active_bytes=mx.get_active_memory(),
+             cache_bytes=mx.get_cache_memory(), peak_bytes=mx.get_peak_memory(), consistency='non_atomic', **allocator_policy)
++        if diagnostics is not None:
++            snapshot['internal_spans'] = diagnostics()
+         encoded = json.dumps(snapshot).encode()
+         self.send_response(200)
+         self.send_header('Content-Type', 'application/json')
+--- /dev/null
++++ b/vllm_apple/mlx_internal_spans.py
+@@ -0,0 +1,132 @@
++"""Bounded scalar wall spans for an isolated, source-reviewed MLX candidate.
++
++No prompts, tensors, token IDs or per-request samples are retained. Durations
++include host scheduling and any synchronization already done by the original
++method. No extra MLX evaluation, stream synchronization or cache mutation.
++"""
++from __future__ import annotations
++
++from contextlib import contextmanager
++from functools import wraps
++import hashlib
++import importlib
++import importlib.metadata
++import json
++from pathlib import Path
++import runpy
++import threading
++import time
++
++NAMES = ('qualification.verify', 'qualification.validate', 'qualification.model_identity',
++         'qualification.backend_identity', 'cache.fetch', 'cache.insert', 'cache.trim',
++         'batch.prefill', 'batch.decode', 'sequential.prefill_first', 'sequential.decode')
++SCHEMA = 'soliton-internal-wall-spans-v1'
++
++
++class SpanLedger:
++    def __init__(self, clock=time.perf_counter_ns):
++        self._clock = clock
++        self._lock = threading.Lock()
++        self._rows = {name: dict(calls=0, failures=0, total_ms=0.0, last_ms=None,
++                                max_ms=None) for name in NAMES}
++
++    @contextmanager
++    def measure(self, name):
++        if name not in self._rows:
++            raise ValueError('unknown internal span')
++        start = self._clock()
++        failed = False
++        try:
++            yield
++        except BaseException:
++            failed = True
++            raise
++        finally:
++            elapsed = (self._clock() - start) / 1e6
++            with self._lock:
++                row = self._rows[name]
++                row['calls'] += 1
++                row['failures'] += int(failed)
++                row['total_ms'] += elapsed
++                row['last_ms'] = elapsed
++                row['max_ms'] = max(row['max_ms'] or 0.0, elapsed)
++
++    def wrap(self, name, fn=None):
++        if fn is None:
++            return lambda target: self.wrap(name, target)
++        @wraps(fn)
++        def call(*args, **kwargs):
++            with self.measure(name):
++                return fn(*args, **kwargs)
++        return call
++
++    def snapshot(self):
++        with self._lock:
++            return dict(schema=SCHEMA, basis='host_wall_no_added_sync',
++                        consistency='atomic_ledger_not_request_atomic',
++                        spans={name: dict(row) for name, row in self._rows.items()})
++
++
++STARTUP = SpanLedger()
++GENERATE_SHA256 = '9d46803799f99d6fc7c35fff2d4357c79b1a25ae98cc63efeaaebeb50a7b5f33'
++
++
++def install(ledger, server, cache, generate):
++    """Caller must verify all source bytes before installing any hook."""
++    for name, method in [('cache.fetch', 'fetch_nearest_cache'),
++                         ('cache.insert', 'insert_cache'), ('cache.trim', 'trim_to')]:
++        setattr(cache.LRUPromptCache, method,
++                ledger.wrap(name, getattr(cache.LRUPromptCache, method)))
++    generate.PromptProcessingBatch.prompt = ledger.wrap(
++        'batch.prefill', generate.PromptProcessingBatch.prompt)
++    generate.GenerationBatch.next = ledger.wrap('batch.decode', generate.GenerationBatch.next)
++    original = server.stream_generate
++
++    def stream(*args, **kwargs):
++        # Time iterator advancement only; do not include time spent suspended in
++        # the server consumer. Closing a generator is not a completed generation.
++        iterator = original(*args, **kwargs)
++        phase = 'sequential.prefill_first'
++        try:
++            while True:
++                # StopIteration is normal termination, not a failed span.
++                # Counts include the final normal iterator exhaustion; they
++                # are iterator advances, never generated-token counts.
++                sentinel = object()
++                with ledger.measure(phase):
++                    item = next(iterator, sentinel)
++                if item is sentinel:
++                    return
++                yield item
++                phase = 'sequential.decode'
++        finally:
++            iterator.close()
++    server.stream_generate = stream
++
++
++def main():
++    import os
++    # Canonical budget wrapper stays self-contained and retains its complete
++    # release/server/cache guards; this stricter profile additionally binds generate.
++    budget = runpy.run_path(str(Path(__file__).with_name('mlx_kv_budget.py')))
++    if importlib.metadata.version('mlx-lm') != '0.32.2':
++        raise ValueError('internal spans require reviewed MLX-LM 0.32.2')
++    from mlx_lm import server
++    from mlx_lm.models import cache
++    generate = importlib.import_module('mlx_lm.generate')
++    if (not budget['reviewed_sources']('0.32.2',
++            hashlib.sha256(Path(server.__file__).read_bytes()).hexdigest(),
++            hashlib.sha256(Path(cache.__file__).read_bytes()).hexdigest())
++            or hashlib.sha256(Path(generate.__file__).read_bytes()).hexdigest() != GENERATE_SHA256):
++        raise ValueError('internal spans source mismatch')
++    # Keep invalid policy rejection before instrumentation/model startup as well.
++    raw = os.environ.get('VLLM_APPLE_KV_CACHE_MIB', '')
++    if not raw.isascii() or not raw.isdecimal() or not 1 <= len(raw) <= 4 or not 64 <= int(raw) <= 4096:
++        raise ValueError('explicit reviewed retained budget required')
++    ledger = SpanLedger()
++    install(ledger, server, cache, generate)
++    budget['main'](diagnostics=ledger.snapshot)
++
++
++if __name__ == '__main__':
++    main()
+--- a/tests/test_allocator_budget.py
++++ b/tests/test_allocator_budget.py
+@@ -57,7 +57,7 @@
+             ):
+                 config = BackendConfig("local", exe, backend_kind="mlx_lm")
+             self.assertEqual(config.allocator_cache_bytes, 256 * 1024**2)
+-            self.assertTrue(any(x.endswith("mlx_kv_budget.py") for x in config.command()))
++            self.assertTrue(any(x.endswith("mlx_internal_spans.py") for x in config.command()))
+
+     def test_invalid_policy_rejected_before_launch(self):
+         for raw in ["0", "63", "4097", "256.0", "+256"]:
+--- a/tests/test_kv_budget.py
++++ b/tests/test_kv_budget.py
+@@ -26,7 +26,7 @@
+             self.assertEqual(command[-2:], ["--prompt-cache-bytes", "1073741824"])
+             self.assertIn("19123", command)
+             self.assertEqual(command[:4], [str(Path(directory) / "python"), "-I", "-u", "-c"])
+-            self.assertTrue(any(x.endswith("mlx_kv_budget.py") for x in command))
++            self.assertTrue(any(x.endswith("mlx_internal_spans.py") for x in command))
+             self.assertFalse(any(x.startswith("--skip") for x in command))
+
+     def test_invalid_or_wrong_backend_policies_fail_before_start(self):

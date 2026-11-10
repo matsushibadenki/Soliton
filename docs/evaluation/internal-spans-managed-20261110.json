@@ -1,0 +1,549 @@
+{
+  "passed": true,
+  "scope": "Qualified shared Rust API scalar internal wall spans; no GPU time or speedup claim",
+  "samples": [
+    {
+      "label": "en-new-input",
+      "stream": false,
+      "answer": "STRATA-7391 \n",
+      "usage": {
+        "prompt_tokens": 32,
+        "completion_tokens": 10,
+        "total_tokens": 42,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      }
+    },
+    {
+      "label": "en-repeat",
+      "stream": true,
+      "answer": "STRATA-7391 \n",
+      "usage": {
+        "prompt_tokens": 32,
+        "completion_tokens": 10,
+        "total_tokens": 42,
+        "prompt_tokens_details": {
+          "cached_tokens": 31
+        }
+      }
+    },
+    {
+      "label": "ja-new-input",
+      "stream": false,
+      "answer": "STRATA-7391 \n",
+      "usage": {
+        "prompt_tokens": 34,
+        "completion_tokens": 10,
+        "total_tokens": 44,
+        "prompt_tokens_details": {
+          "cached_tokens": 4
+        }
+      }
+    },
+    {
+      "label": "ja-repeat",
+      "stream": true,
+      "answer": "STRATA-7391 \n",
+      "usage": {
+        "prompt_tokens": 34,
+        "completion_tokens": 10,
+        "total_tokens": 44,
+        "prompt_tokens_details": {
+          "cached_tokens": 33
+        }
+      }
+    },
+    {
+      "label": "zh-new-input",
+      "stream": false,
+      "answer": "STRATA-7391 \n",
+      "usage": {
+        "prompt_tokens": 27,
+        "completion_tokens": 10,
+        "total_tokens": 37,
+        "prompt_tokens_details": {
+          "cached_tokens": 4
+        }
+      }
+    },
+    {
+      "label": "zh-repeat",
+      "stream": true,
+      "answer": "STRATA-7391 \n",
+      "usage": {
+        "prompt_tokens": 27,
+        "completion_tokens": 10,
+        "total_tokens": 37,
+        "prompt_tokens_details": {
+          "cached_tokens": 26
+        }
+      }
+    }
+  ],
+  "engineSession": "c9eb1ed7-74f9-43f4-8bec-c554abaea07c",
+  "launch": {
+    "childSpawnMs": 0.26495799999999997,
+    "controlReadyObservedMs": 2877,
+    "counterPreparation": "spawned",
+    "counterSpawnedMs": 2877,
+    "inferenceReadyObservedMs": 3576,
+    "launchPreparationMs": 0.108084,
+    "modelLoadingObservedMs": 699
+  },
+  "initial": {
+    "allocatorBytes": null,
+    "allocatorPeakBytes": null,
+    "backendSpans": {
+      "basis": "host_wall_no_added_sync",
+      "consistency": "atomic_ledger_not_request_atomic",
+      "schema": "soliton-internal-wall-spans-v1",
+      "spans": {
+        "batch.decode": {
+          "calls": 0,
+          "failures": 0,
+          "lastMs": null,
+          "maxMs": null,
+          "totalMs": 0
+        },
+        "batch.prefill": {
+          "calls": 0,
+          "failures": 0,
+          "lastMs": null,
+          "maxMs": null,
+          "totalMs": 0
+        },
+        "cache.fetch": {
+          "calls": 0,
+          "failures": 0,
+          "lastMs": null,
+          "maxMs": null,
+          "totalMs": 0
+        },
+        "cache.insert": {
+          "calls": 0,
+          "failures": 0,
+          "lastMs": null,
+          "maxMs": null,
+          "totalMs": 0
+        },
+        "cache.trim": {
+          "calls": 1,
+          "failures": 0,
+          "lastMs": 0.002375,
+          "maxMs": 0.002375,
+          "totalMs": 0.002375
+        },
+        "qualification.backend_identity": {
+          "calls": 0,
+          "failures": 0,
+          "lastMs": null,
+          "maxMs": null,
+          "totalMs": 0
+        },
+        "qualification.model_identity": {
+          "calls": 0,
+          "failures": 0,
+          "lastMs": null,
+          "maxMs": null,
+          "totalMs": 0
+        },
+        "qualification.validate": {
+          "calls": 0,
+          "failures": 0,
+          "lastMs": null,
+          "maxMs": null,
+          "totalMs": 0
+        },
+        "qualification.verify": {
+          "calls": 0,
+          "failures": 0,
+          "lastMs": null,
+          "maxMs": null,
+          "totalMs": 0
+        },
+        "sequential.decode": {
+          "calls": 0,
+          "failures": 0,
+          "lastMs": null,
+          "maxMs": null,
+          "totalMs": 0
+        },
+        "sequential.prefill_first": {
+          "calls": 0,
+          "failures": 0,
+          "lastMs": null,
+          "maxMs": null,
+          "totalMs": 0
+        }
+      }
+    },
+    "components": [
+      {
+        "basis": "artifact",
+        "bytes": 1470988882,
+        "name": "weights"
+      },
+      {
+        "basis": "model_spec",
+        "bytes": 0,
+        "name": "recurrent"
+      },
+      {
+        "basis": "ledger",
+        "bytes": 0,
+        "name": "prefix"
+      },
+      {
+        "basis": "projection",
+        "bytes": 0,
+        "name": "window"
+      },
+      {
+        "basis": "model_spec",
+        "bytes": 0,
+        "name": "experts"
+      },
+      {
+        "basis": "model_spec",
+        "bytes": 0,
+        "name": "ngram"
+      },
+      {
+        "basis": "model_spec",
+        "bytes": 0,
+        "name": "mtp"
+      },
+      {
+        "basis": "ledger",
+        "bytes": 0,
+        "name": "scratch"
+      }
+    ],
+    "kvBytes": null,
+    "mlxAllocator": {
+      "activeBytes": 1473045008,
+      "freeCacheBytes": 3380,
+      "peakActiveBytes": 1473045008
+    },
+    "retainedKv": {
+      "bytes": 0,
+      "entries": 0,
+      "limitBytes": 1610612736
+    },
+    "sampledAt": 1794310529567,
+    "startupSpans": {
+      "basis": "host_wall_no_added_sync",
+      "consistency": "atomic_ledger_not_request_atomic",
+      "schema": "soliton-internal-wall-spans-v1",
+      "spans": {
+        "batch.decode": {
+          "calls": 0,
+          "failures": 0,
+          "lastMs": null,
+          "maxMs": null,
+          "totalMs": 0
+        },
+        "batch.prefill": {
+          "calls": 0,
+          "failures": 0,
+          "lastMs": null,
+          "maxMs": null,
+          "totalMs": 0
+        },
+        "cache.fetch": {
+          "calls": 0,
+          "failures": 0,
+          "lastMs": null,
+          "maxMs": null,
+          "totalMs": 0
+        },
+        "cache.insert": {
+          "calls": 0,
+          "failures": 0,
+          "lastMs": null,
+          "maxMs": null,
+          "totalMs": 0
+        },
+        "cache.trim": {
+          "calls": 0,
+          "failures": 0,
+          "lastMs": null,
+          "maxMs": null,
+          "totalMs": 0
+        },
+        "qualification.backend_identity": {
+          "calls": 1,
+          "failures": 0,
+          "lastMs": 972.463,
+          "maxMs": 972.463,
+          "totalMs": 972.463
+        },
+        "qualification.model_identity": {
+          "calls": 1,
+          "failures": 0,
+          "lastMs": 1531.448792,
+          "maxMs": 1531.448792,
+          "totalMs": 1531.448792
+        },
+        "qualification.validate": {
+          "calls": 2,
+          "failures": 0,
+          "lastMs": 0.112708,
+          "maxMs": 0.17275,
+          "totalMs": 0.285458
+        },
+        "qualification.verify": {
+          "calls": 1,
+          "failures": 0,
+          "lastMs": 2544.655458,
+          "maxMs": 2544.655458,
+          "totalMs": 2544.655458
+        },
+        "sequential.decode": {
+          "calls": 0,
+          "failures": 0,
+          "lastMs": null,
+          "maxMs": null,
+          "totalMs": 0
+        },
+        "sequential.prefill_first": {
+          "calls": 0,
+          "failures": 0,
+          "lastMs": null,
+          "maxMs": null,
+          "totalMs": 0
+        }
+      }
+    }
+  },
+  "final": {
+    "allocatorBytes": null,
+    "allocatorPeakBytes": null,
+    "backendSpans": {
+      "basis": "host_wall_no_added_sync",
+      "consistency": "atomic_ledger_not_request_atomic",
+      "schema": "soliton-internal-wall-spans-v1",
+      "spans": {
+        "batch.decode": {
+          "calls": 60,
+          "failures": 0,
+          "lastMs": 9.997292,
+          "maxMs": 25.267542,
+          "totalMs": 617.2652909999998
+        },
+        "batch.prefill": {
+          "calls": 75,
+          "failures": 0,
+          "lastMs": 0.000667,
+          "maxMs": 85.549708,
+          "totalMs": 196.69883500000017
+        },
+        "cache.fetch": {
+          "calls": 6,
+          "failures": 0,
+          "lastMs": 0.241291,
+          "maxMs": 0.277125,
+          "totalMs": 1.252582
+        },
+        "cache.insert": {
+          "calls": 9,
+          "failures": 0,
+          "lastMs": 0.059,
+          "maxMs": 0.067375,
+          "totalMs": 0.405915
+        },
+        "cache.trim": {
+          "calls": 7,
+          "failures": 0,
+          "lastMs": 0.003084,
+          "maxMs": 0.003916,
+          "totalMs": 0.021834
+        },
+        "qualification.backend_identity": {
+          "calls": 0,
+          "failures": 0,
+          "lastMs": null,
+          "maxMs": null,
+          "totalMs": 0
+        },
+        "qualification.model_identity": {
+          "calls": 0,
+          "failures": 0,
+          "lastMs": null,
+          "maxMs": null,
+          "totalMs": 0
+        },
+        "qualification.validate": {
+          "calls": 0,
+          "failures": 0,
+          "lastMs": null,
+          "maxMs": null,
+          "totalMs": 0
+        },
+        "qualification.verify": {
+          "calls": 0,
+          "failures": 0,
+          "lastMs": null,
+          "maxMs": null,
+          "totalMs": 0
+        },
+        "sequential.decode": {
+          "calls": 0,
+          "failures": 0,
+          "lastMs": null,
+          "maxMs": null,
+          "totalMs": 0
+        },
+        "sequential.prefill_first": {
+          "calls": 0,
+          "failures": 0,
+          "lastMs": null,
+          "maxMs": null,
+          "totalMs": 0
+        }
+      }
+    },
+    "components": [
+      {
+        "basis": "artifact",
+        "bytes": 1470988882,
+        "name": "weights"
+      },
+      {
+        "basis": "model_spec",
+        "bytes": 0,
+        "name": "recurrent"
+      },
+      {
+        "basis": "ledger",
+        "bytes": 0,
+        "name": "prefix"
+      },
+      {
+        "basis": "projection",
+        "bytes": 0,
+        "name": "window"
+      },
+      {
+        "basis": "model_spec",
+        "bytes": 0,
+        "name": "experts"
+      },
+      {
+        "basis": "model_spec",
+        "bytes": 0,
+        "name": "ngram"
+      },
+      {
+        "basis": "model_spec",
+        "bytes": 0,
+        "name": "mtp"
+      },
+      {
+        "basis": "ledger",
+        "bytes": 0,
+        "name": "scratch"
+      }
+    ],
+    "kvBytes": null,
+    "mlxAllocator": {
+      "activeBytes": 1540874782,
+      "freeCacheBytes": 71654076,
+      "peakActiveBytes": 1626352558
+    },
+    "retainedKv": {
+      "bytes": 13099008,
+      "entries": 3,
+      "limitBytes": 1610612736
+    },
+    "sampledAt": 1794310531630,
+    "startupSpans": {
+      "basis": "host_wall_no_added_sync",
+      "consistency": "atomic_ledger_not_request_atomic",
+      "schema": "soliton-internal-wall-spans-v1",
+      "spans": {
+        "batch.decode": {
+          "calls": 0,
+          "failures": 0,
+          "lastMs": null,
+          "maxMs": null,
+          "totalMs": 0
+        },
+        "batch.prefill": {
+          "calls": 0,
+          "failures": 0,
+          "lastMs": null,
+          "maxMs": null,
+          "totalMs": 0
+        },
+        "cache.fetch": {
+          "calls": 0,
+          "failures": 0,
+          "lastMs": null,
+          "maxMs": null,
+          "totalMs": 0
+        },
+        "cache.insert": {
+          "calls": 0,
+          "failures": 0,
+          "lastMs": null,
+          "maxMs": null,
+          "totalMs": 0
+        },
+        "cache.trim": {
+          "calls": 0,
+          "failures": 0,
+          "lastMs": null,
+          "maxMs": null,
+          "totalMs": 0
+        },
+        "qualification.backend_identity": {
+          "calls": 1,
+          "failures": 0,
+          "lastMs": 972.463,
+          "maxMs": 972.463,
+          "totalMs": 972.463
+        },
+        "qualification.model_identity": {
+          "calls": 1,
+          "failures": 0,
+          "lastMs": 1531.448792,
+          "maxMs": 1531.448792,
+          "totalMs": 1531.448792
+        },
+        "qualification.validate": {
+          "calls": 2,
+          "failures": 0,
+          "lastMs": 0.112708,
+          "maxMs": 0.17275,
+          "totalMs": 0.285458
+        },
+        "qualification.verify": {
+          "calls": 1,
+          "failures": 0,
+          "lastMs": 2544.655458,
+          "maxMs": 2544.655458,
+          "totalMs": 2544.655458
+        },
+        "sequential.decode": {
+          "calls": 0,
+          "failures": 0,
+          "lastMs": null,
+          "maxMs": null,
+          "totalMs": 0
+        },
+        "sequential.prefill_first": {
+          "calls": 0,
+          "failures": 0,
+          "lastMs": null,
+          "maxMs": null,
+          "totalMs": 0
+        }
+      }
+    }
+  },
+  "conversationPreserved": true,
+  "stopCleared": true,
+  "originalPrivateReportSha256": "0c10b11d1fae4d0ea0222380de5cd73d627b6e7667b788bf0f4b553f0674064f"
+}

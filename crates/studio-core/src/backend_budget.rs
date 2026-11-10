@@ -23,9 +23,100 @@ pub struct RetainedKv {
     pub limit_bytes: u64,
     pub entries: u64,
 }
+const SPAN_NAMES: [&str; 11] = [
+    "qualification.verify",
+    "qualification.validate",
+    "qualification.model_identity",
+    "qualification.backend_identity",
+    "cache.fetch",
+    "cache.insert",
+    "cache.trim",
+    "batch.prefill",
+    "batch.decode",
+    "sequential.prefill_first",
+    "sequential.decode",
+];
+#[derive(Clone, Debug, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct Span {
+    calls: u64,
+    failures: u64,
+    total_ms: f64,
+    last_ms: Option<f64>,
+    max_ms: Option<f64>,
+}
+#[derive(Clone, Debug, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct InternalSpans {
+    schema: &'static str,
+    basis: &'static str,
+    consistency: &'static str,
+    spans: std::collections::BTreeMap<String, Span>,
+}
+fn duration(v: &Value) -> Option<f64> {
+    v.as_f64()
+        .filter(|n| n.is_finite() && *n >= 0.0 && *n <= 1e12)
+}
+fn internal_spans(value: &Value) -> Option<InternalSpans> {
+    if value["schema"] != "soliton-internal-wall-spans-v1"
+        || value["basis"] != "host_wall_no_added_sync"
+        || value["consistency"] != "atomic_ledger_not_request_atomic"
+    {
+        return None;
+    }
+    let rows = value["spans"].as_object()?;
+    if rows.len() != SPAN_NAMES.len() {
+        return None;
+    }
+    let mut spans = std::collections::BTreeMap::new();
+    for name in SPAN_NAMES {
+        let row = rows.get(name)?;
+        let calls = number(&row["calls"])?;
+        let failures = number(&row["failures"])?;
+        let total_ms = duration(&row["total_ms"])?;
+        if failures > calls {
+            return None;
+        }
+        let (last_ms, max_ms) = if calls == 0 {
+            if failures != 0
+                || total_ms != 0.0
+                || !row["last_ms"].is_null()
+                || !row["max_ms"].is_null()
+            {
+                return None;
+            }
+            (None, None)
+        } else {
+            let last = duration(&row["last_ms"])?;
+            let max = duration(&row["max_ms"])?;
+            if last > max || max > total_ms {
+                return None;
+            }
+            (Some(last), Some(max))
+        };
+        spans.insert(
+            name.into(),
+            Span {
+                calls,
+                failures,
+                total_ms,
+                last_ms,
+                max_ms,
+            },
+        );
+    }
+    Some(InternalSpans {
+        schema: "soliton-internal-wall-spans-v1",
+        basis: "host_wall_no_added_sync",
+        consistency: "atomic_ledger_not_request_atomic",
+        spans,
+    })
+}
 #[derive(Clone, Debug, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Reading {
+    pub startup_spans: Option<InternalSpans>,
+    pub backend_spans: Option<InternalSpans>,
     pub mlx_allocator: Option<MlxAllocator>,
     pub retained_kv: Option<RetainedKv>,
     pub sampled_at: Option<u64>,
@@ -91,6 +182,8 @@ pub fn parse(health: &Value) -> Option<Reading> {
     // Never add allocator + KV + components or subtract them to invent workspace.
     (allocator.is_some() || peak.is_some() || kv.is_some() || !components.is_empty()).then_some(
         Reading {
+            startup_spans: internal_spans(&health["startup_internal_spans"]),
+            backend_spans: None,
             mlx_allocator: None,
             retained_kv: None,
             sampled_at: None,
@@ -123,6 +216,7 @@ fn merge_retained_wrapper(reading: &mut Reading, value: &Value, expected_limit: 
         number(&value["entries"]),
     ) {
         if limit == expected_limit && limit > 0 && bytes <= limit && entries <= 100_000 {
+            reading.backend_spans = internal_spans(&value["internal_spans"]);
             reading.retained_kv = Some(RetainedKv {
                 bytes,
                 limit_bytes: limit,
@@ -276,13 +370,13 @@ mod tests {
         let port = listener.local_addr().unwrap().port();
         let handler = axum::routing::get(|| async {
             axum::Json(
-                json!({"control_ready":false,"inference_ready":false,"memory_telemetry":{"allocator_source":"mlx-wrapper-v1","allocator_current_bytes":100,"allocator_peak_bytes":120,"kv_source":"mlx-wrapper-v1","kv_used_bytes":0}}),
+                json!({"control_ready":false,"inference_ready":false,"memory_telemetry":{"allocator_source":"mlx-wrapper-v1","allocator_current_bytes":100,"allocator_peak_bytes":120,"kv_source":"mlx-wrapper-v1","kv_used_bytes":0},"startup_internal_spans":spans_fixture()}),
             )
         });
         let app = axum::Router::new()
             .route("/health", handler.clone())
             .route("/v1/runtime", handler)
-            .route("/vllm-apple/kv-cache",axum::routing::get(||async{axum::Json(json!({"retained_bytes":40,"max_bytes":1073741824u64,"entries":2,"accounting":"LRU tensor bytes, not unique physical memory","allocator":{"active_bytes":200,"cache_bytes":50,"peak_bytes":250,"consistency":"non_atomic"}}))}));
+            .route("/vllm-apple/kv-cache",axum::routing::get(||async{axum::Json(json!({"retained_bytes":40,"max_bytes":1073741824u64,"entries":2,"accounting":"LRU tensor bytes, not unique physical memory","allocator":{"active_bytes":200,"cache_bytes":50,"peak_bytes":250,"consistency":"non_atomic"},"internal_spans":spans_fixture()}))}));
         let server = tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
         let studio = Arc::new(Studio::new(
             std::env::temp_dir().join("soliton-budget-fixture"),
@@ -309,6 +403,12 @@ mod tests {
         studio.refresh_backend_budget().await.unwrap();
         let state = studio.snapshot().await;
         assert_eq!(state["modelPlan"]["backendBudget"]["allocatorBytes"], 100);
+        assert!(state["modelPlan"]["backendBudget"]["startupSpans"]["spans"].is_object());
+        assert!(state["modelPlan"]["backendBudget"]["backendSpans"]["spans"].is_object());
+        assert!(
+            state["modelPlan"]["backendBudget"]["backendSpans"]["spans"]["batch.prefill"]["lastMs"]
+                .is_null()
+        );
         assert_eq!(state["modelPlan"]["backendBudget"]["kvBytes"], 0);
         assert_eq!(
             state["modelPlan"]["backendBudget"]["mlxAllocator"]["activeBytes"],
@@ -324,6 +424,7 @@ mod tests {
         assert_eq!(partial["modelPlan"]["backendBudget"]["allocatorBytes"], 100);
         assert!(partial["modelPlan"]["backendBudget"]["mlxAllocator"].is_null());
         assert!(partial["modelPlan"]["backendBudget"]["retainedKv"].is_null());
+        assert!(partial["modelPlan"]["backendBudget"]["backendSpans"].is_null());
         studio.process.lock().await.vllm_backend_port = Some(port);
         {
             let mut p = studio.process.lock().await;
@@ -384,5 +485,64 @@ mod tests {
         let r=parse(&json!({"memory_telemetry":{"allocator_source":"mlx-wrapper-v1","allocator_current_bytes":10,"allocator_peak_bytes":5}})).unwrap();
         assert_eq!(r.allocator_peak_bytes, None);
         assert!(parse(&json!({"memory_budget":{"components":{"scratch":{"current_bytes":1,"source":"unexpected","accounting":"additive"}}}})).is_none());
+    }
+    fn spans_fixture() -> Value {
+        let rows: serde_json::Map<String, Value> = SPAN_NAMES
+            .into_iter()
+            .map(|name| {
+                (
+                    name.into(),
+                    json!({"calls":0,"failures":0,"total_ms":0.0,"last_ms":null,"max_ms":null}),
+                )
+            })
+            .collect();
+        json!({"schema":"soliton-internal-wall-spans-v1","basis":"host_wall_no_added_sync","consistency":"atomic_ledger_not_request_atomic","spans":rows})
+    }
+    #[test]
+    fn internal_spans_keep_unknown_separate_and_reject_inconsistent_values() {
+        let fixture = spans_fixture();
+        let parsed = internal_spans(&fixture).unwrap();
+        assert!(parsed.spans["batch.prefill"].last_ms.is_none());
+        let mut measured = fixture.clone();
+        measured["spans"]["cache.fetch"] =
+            json!({"calls":2,"failures":1,"total_ms":4.0,"last_ms":0.0,"max_ms":4.0});
+        assert_eq!(
+            internal_spans(&measured).unwrap().spans["cache.fetch"].last_ms,
+            Some(0.0)
+        );
+        for (key, value) in [
+            ("calls", json!(-1)),
+            ("calls", json!(true)),
+            ("failures", json!(3)),
+            ("total_ms", json!(-1)),
+            ("total_ms", json!(3.0)),
+            ("last_ms", json!(5)),
+            ("max_ms", json!(1e20)),
+        ] {
+            let mut bad = measured.clone();
+            bad["spans"]["cache.fetch"][key] = value;
+            assert!(internal_spans(&bad).is_none(), "{key}");
+        }
+        let mut bad = fixture.clone();
+        bad["schema"] = json!("unknown");
+        assert!(internal_spans(&bad).is_none());
+        let mut bad = fixture.clone();
+        bad["spans"]["batch.prefill"]["last_ms"] = json!(0);
+        assert!(internal_spans(&bad).is_none());
+        let mut bad = fixture.clone();
+        bad["spans"]["unbounded"] = json!({});
+        assert!(internal_spans(&bad).is_none());
+        assert!(internal_spans(&json!({})).is_none());
+    }
+    #[test]
+    fn internal_spans_are_bound_to_expected_retained_profile() {
+        let mut reading=parse(&json!({"memory_budget":{"components":{"weights":{"current_bytes":10,"source":"model_weight_files","accounting":"additive"}}},"startup_internal_spans":spans_fixture()})).unwrap();
+        assert!(reading.startup_spans.is_some());
+        assert!(reading.backend_spans.is_none());
+        let value = json!({"accounting":"LRU tensor bytes, not unique physical memory","retained_bytes":0,"max_bytes":100,"entries":0,"internal_spans":spans_fixture()});
+        merge_retained_wrapper(&mut reading, &value, 99);
+        assert!(reading.backend_spans.is_none());
+        merge_retained_wrapper(&mut reading, &value, 100);
+        assert!(reading.backend_spans.is_some());
     }
 }

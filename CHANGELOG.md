@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.1.6 — 2026-11-10
+
+- Added optional Rust launcher preparation/process-spawn wall times across all five launch paths while preserving readiness timing origins.
+- Added an isolated, exactly source-guarded MLX-LM0.32.2 internal-span profile: full startup evidence/model/backend verification, RAM LRU fetch/insert/trim, batch prompt/decode and sequential generation iterator timing. Fixed scalar ledgers retain no prompts/tensors; Rust validates schema/values and binds diagnostics to live settings/session with existing byte/time/expiry limits.
+- Original full qualification passed1800.111s,14588/14588 requests, zero failures,128KiB peak RSS growth and clean shutdown. Only controller runtime identity changed; installed backend/model/environment/hardware identities and ordinary settings are preserved.
+- Old/candidate24+24 multilingual JSON/SSE/seeded/batch parity and shared API36 cases/4096–4097 boundaries match complete answers and usage. Pressure/eviction/reheat, old-evidence refusal/recovery, cancellation/switch/restart and chat persistence pass.
+- 166 Rust,4 span,5 existing0322 contract,75 controller and5 gateway-tool tests pass; frontend/server builds, Tauri check and seven-file patch replay pass. Failed QA setup attempts remain recorded, with no guard relaxed.
+- Source release with an opt-in measured profile; no GPU-time or speedup claim. SSD persistence/CLI spans, other Macs/models, native GUI for this profile and signed/notarized installers remain separate. [Evidence and reproduction](docs/ENGINE_INTERNAL_SPANS.md).
+
 ## 0.1.5 — 2026-11-08
 
 - Added a separate MLX-LM0.32.2 plain-text profile: exact release/server/cache binding, pre-URL text validation and complete installed-file/architecture evidence guards. Existing0.32.0 runtime/evidence and ordinary settings remain intact.

@@ -1,6 +1,6 @@
 # Soliton
 
-0.1.5では、互換性ガードを維持したMLX-LM 0.32.2のテキスト専用プロファイルを追加し、30分の再資格確認と共通APIの回帰検証を完了しました。既存0.32.0の環境・証跡・通常設定は保持しています。[範囲と再現方法](docs/MLX_0322_QUALIFICATION.md)・[変更履歴](CHANGELOG.md)を参照してください。
+0.1.6では、資格確認・RAMキャッシュ・MLXのprefill/decodeの内部壁時計計測を追加し、独立したGemma2／MLX-LM0.32.2プロファイルで30分再資格確認を完了しました。既存環境・証跡・通常設定は保持しています。[計測値と範囲](docs/ENGINE_INTERNAL_SPANS.md)・[変更履歴](CHANGELOG.md)を参照してください。
 
 ![Soliton](docs/images/stratastudio-image.png)
 

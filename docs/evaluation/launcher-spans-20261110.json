@@ -1,0 +1,50 @@
+{
+  "date": "2026-11-10",
+  "scope": "Rust launcher wall-duration instrumentation; no backend changes or speedup claim",
+  "checks": [
+    {
+      "command": "STUDIO_TEST_PYTHON=/opt/homebrew/bin/python3 cargo test -p studio-core",
+      "result": "passed",
+      "tests": 164
+    },
+    {
+      "command": "/opt/homebrew/bin/node --test scripts/benchmark-engine-gateway.test.mjs",
+      "result": "passed",
+      "tests": 5
+    },
+    {
+      "command": "cargo build -p studio-server",
+      "result": "passed"
+    },
+    {
+      "command": "cargo check -p soliton",
+      "result": "passed"
+    },
+    {
+      "command": "git diff --check",
+      "result": "passed"
+    }
+  ],
+  "earlierAttempts": [
+    {
+      "result": "sandbox denied macOS process inspection during owned-process fixture",
+      "resolution": "reran process lifecycle tests with elevated permissions"
+    },
+    {
+      "result": "162/164 passed with system Python; two existing preparation fixtures failed",
+      "resolution": "all164 passed with supported Homebrew Python selected by STUDIO_TEST_PYTHON"
+    }
+  ],
+  "sourceSha256": {
+    "crates/studio-core/src/lib.rs": "de30a3dfb4d1350ba8bbab32db4f4f333fcacd67768abfef0d76ad1f70fab04d",
+    "crates/studio-core/src/engine_tests.rs": "c20be0e32e6ddb54f5a2a83557add748ae2bd0b97922046c900d7b428c20ec25"
+  },
+  "realModelExecuted": false,
+  "qualifiedBackendModified": false,
+  "ordinarySettingsModified": false,
+  "pending": [
+    "Real-model launcher observations",
+    "Backend evidence/cache/CLI/prefill/decode internal spans",
+    "Controlled latency comparison"
+  ]
+}

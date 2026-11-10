@@ -1,0 +1,45 @@
+{
+  "date": "2026-11-10",
+  "version": "0.1.6",
+  "passed": true,
+  "scope": "Measured M4 Gemma2 2B 4bit / MLX-LM0.32.2 /4096 /concurrency1 /KV1536MiB /allocator512MiB, optional private profile",
+  "tests": {
+    "rust": 166,
+    "internalSpans": 4,
+    "existing0322Contracts": 5,
+    "controllerEvidenceBackendKvApi": 75,
+    "gatewayTool": 5,
+    "frontendBuild": "passed",
+    "serverBuild": "passed",
+    "tauriCheck": "passed",
+    "patchReplayExactFiles": 7,
+    "diffCheck": "passed"
+  },
+  "privateReportSha256": {
+    "qualification.json": "e4dfbb760a3e3b75adfe2cab9af87ff7425d40cb789a541791a97907148a7973",
+    "parity.json": "af4566cc0a1c5341f5784147885e825c4045c9cb778650b288bb0ad2213db78d",
+    "gateway-final.json": "dbec3187c017c1bbc05f94b6516890fefe003b93a1e45f696910cbb308884357",
+    "managed.json": "0c10b11d1fae4d0ea0222380de5cd73d627b6e7667b788bf0f4b553f0674064f",
+    "pressure.json": "0eed4367ab017a72e542ddfe50e6e1216d28cb1999f81f631325f073a4c4cd9d",
+    "lifecycle.json": "7f42314b3c77cdb513cec38de5cbcaafeef82bffcc883f0fbfc5678389264362"
+  },
+  "sourceSha256": {
+    "crates/studio-core/src/lib.rs": "de30a3dfb4d1350ba8bbab32db4f4f333fcacd67768abfef0d76ad1f70fab04d",
+    "crates/studio-core/src/engine_tests.rs": "c20be0e32e6ddb54f5a2a83557add748ae2bd0b97922046c900d7b428c20ec25",
+    "crates/studio-core/src/backend_budget.rs": "fc004dfce84f29a65992f03f402ce02dc5265a61f8161fb627c08f2aac6f352c",
+    "scripts/mlx-internal-spans.py": "84c9286b34b65a5e052c7e677b2b5e81c10d1629e5ea75a9ec038564cc0803ba",
+    "scripts/mlx-internal-spans.test.py": "0c56a594ac421ad5cd5ca639f5a3d177d62d4a30711e34c6dcb7ee51f5c90fc9",
+    "scripts/verify-internal-spans.py": "6357092eaa320368cad219ce35d5cbafb9c5a532a56f485b7cf7efb6765f42eb",
+    "scripts/verify-internal-spans-managed.mjs": "454633fa90fd2ad212014549526e4daa9663ca2405c0b56c1e784b650b8e7ed1",
+    "patches/vllm-apple-internal-spans.patch": "793db9d86342fc850276e701dd042ecb2d92c19c494bda067fc961f39a97a86c"
+  },
+  "originalWrapperProfileEvidencePreserved": true,
+  "ordinarySettingsChanged": false,
+  "failedQaAttemptsRetained": true,
+  "limits": [
+    "No controlled speedup or GPU timing claim",
+    "Cumulative nested host-wall spans are not per-request additive costs",
+    "SSD load/save and CLI spans remain unfinished",
+    "Native GUI, other Macs/models and signed/notarized installers remain separate"
+  ]
+}
