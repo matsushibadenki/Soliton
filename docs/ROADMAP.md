@@ -154,6 +154,37 @@ See [Knowledge Lab](KNOWLEDGE_LAB.md) for scope and verification.
 - ⭕️ [Pending] Native interactions and vLLM-Apple GPU requalification are not certified by browser fixtures.
 
 
+## Gemma 4 31B ARA-heretic GGUF — planned 2026-11-10
+
+- 🟢 [Done] Static Mac preflight: inspected the pinned Q4_K_M GGUF header and existing native Gemma4/Metal source/device support; calculated 4096-token KV and quantization-specific planning budgets for M4/32GiB. [Assessment / 日本語 / 简体中文](GEMMA4_31B_MAC_PREFLIGHT.md). This does not certify model execution.
+- 🟠 [Next] Implement a dedicated Gemma4 adapter and architecture-aware budget, then validate a pinned Q3_K_M memory smoke candidate with actual peak memory; IQ4_XS/Q4 remain conditional. Keep existing Gemma3 guards and qualification separate.
+- ⭕️ [Pending] Exact GGUF load/generation, measured memory/performance and full30-minute qualification; only a16MiB prefix was fetched, with no full-model download or execution.
+
+Target: [mradermacher/gemma-4-31B-it-ARA-heretic-GGUF](https://huggingface.co/mradermacher/gemma-4-31B-it-ARA-heretic-GGUF), quantized from [richardyoung/gemma-4-31B-it-ARA-heretic](https://huggingface.co/richardyoung/gemma-4-31B-it-ARA-heretic). This is a separate checkpoint, not an already supported Gemma2/3 profile. Initial inspection on2026-11-10 found repository revision1b49bbdcb3dfaa67cc4daced7da7d16552959f97; pin and recheck the actual selected artifacts before implementation. Existing inference P0/P1 priorities remain unchanged.
+
+- 🟠 [Next] Review Gemma4 GGUF architecture/tensors, tokenizer/chat template and exact llama.cpp/Metal or other native backend support. Select quantization only after measuring weights + KV + compute buffers + OS headroom; the31B label and GGUF file size alone do not prove fit on the development Mac. Do not reuse Gemma2/3 layout estimates, lightweight tokenizer allowlists or qualification evidence. Verify artifact checksums and reconcile model-card license metadata with the linked upstream terms before distribution.
+- 🔴 [Later] Integrate qualified text/chat first through Rust-owned engine lifecycle, local model discovery and EN/JA/ZH diagnostics. Evaluate the separately provided mmproj-Q8_0/f16 artifacts and image-input compatibility as a distinct later capability; projector availability does not certify vision support. Preserve ordinary settings and current models.
+- ⭕️ [Pending] Actual model download/execution and qualification: scoped multilingual answer/format checks, exact pre-count/usage and context admission, repeat/multi-turn cache behavior, peak memory, cancellation/stop/restart and wrong/expired identity refusal, followed by a separate full30-minute stability qualification for the exact model/quantization/runtime/Mac. No current support or performance claim; other quants, vision and other Macs remain unverified.
+
+日本語：gemma-4-31B-it-ARA-heretic-GGUFを対応予定へ追加。まず専用アーキテクチャ・量子化別メモリ・トークナイザーとMacバックエンドを確認し、テキスト推論を先行、mmprojを使う画像入力は別途検証します。実モデルと完全な30分資格確認は未実施で、既存Gemma2/3の設定・証跡は流用しません。
+
+简体中文：将gemma-4-31B-it-ARA-heretic-GGUF列入支持计划。先验证架构、各量化的内存、分词器与Mac后端，再接入文本推理；mmproj图片输入单独验证。真实模型与完整30分钟认证尚未执行，不复用Gemma2/3配置或证据。
+
+## P-H3-Image — planned 2026-11-09
+
+Target: [realrebelai/P-H3-Image_GGUFs](https://huggingface.co/realrebelai/P-H3-Image_GGUFs), community quantizations of [PrunaAI/P-H3-Image-Comfy](https://huggingface.co/PrunaAI/P-H3-Image-Comfy). This is an image-generation/editing pipeline, separate from chat inference and Omni image understanding. The quantizer's card explicitly leaves end-to-end GGUF generation unverified; a readable GGUF or its `minimax` metadata is not executable-backend compatibility. Existing P0/P1 inference priorities above remain in force.
+
+- 🟠 [Next] Review an immutable repository revision, actual tensor layouts/files/checksums, upstream license/NOTICE and component requirements. Distinguish GGUF Q4_K_M/Q5_K_M/Q6_K/Q8_0 from W4A8/W6A8/INT8 ConvRot Safetensors; never route them to the existing chat loader solely by extension. Include the P-H3-specific text encoder and compatible VAE; assess the optional prompt upsampler separately, including its model swap/memory cost.
+- 🟠 [Next] Establish a reproducible, isolated generation backend before UI integration. Check exact P-H3 architecture/quantized-loader support in ComfyUI-GGUF or another reviewed native backend, and Apple Silicon/Metal/MPS availability. If the GGUF path is not executable, retain it as Pending and assess the upstream supported Safetensors workflow independently. Do not bypass loaders, convert formats or enable unsupported GPU kernels automatically.
+- ⭕️ [Pending] Real generation on the development Mac: record resolution/steps/seed/workflow, actual total resident/peak memory, OS headroom and storage needs across model + text encoder + VAE + optional upsampler + working buffers. Model-card NVIDIA/AMD timings or VRAM claims do not certify Mac support or available-memory fit. No weights are downloaded and no compatibility is claimed by this roadmap entry.
+- 🔴 [Later] After the runtime gate passes, add a compact image-generation panel with prompt, seed, resolution, steps, progress/cancel and output/history. Rust owns Document/jobs/assets and supervised worker lifecycle, admission, GPU exclusion/budgeting and cleanup. Keep tensors/full frames in the worker/native GPU side; WebView receives commands/state/opaque asset IDs and bounded previews. Use Rust/wgpu for heavy local rendering/image processing and support English/日本語/简体中文 controls and information tooltips.
+- 🔴 [Later] Start with text-to-image; then qualify image editing/reference-image inputs, prompt upsampling and model-only LoRA as distinct capabilities. Preserve originals and source/provenance metadata, and verify each mode against fixed prompts/seeds/resolutions before enabling it.
+- ⭕️ [Pending] Image-specific acceptance: reproducible decode/save/reopen and supported output dimensions, scoped EN/JA/ZH prompt/edit fixtures, quantization comparisons under matched inputs, cancellation/timeout/OOM recovery, owned process/GPU cleanup, restart/history preservation and refusal of wrong/expired runtime/model evidence. Complete a separate identity-bound30-minute image-job stability run before adoption; existing text/Omni qualifications do not approve this image generator. Other Macs/GPUs and broad image-quality claims remain unverified.
+
+日本語：P-H3-ImageのGGUF対応を計画に追加。まず専用ローダー・テキストエンコーダー・VAEとMac実行可否を確認し、画像生成を先行、画像編集・参照画像・LoRA等を段階的に検証します。GGUFの読取成功を生成対応と扱わず、実測メモリ・停止／復旧・画像ジョブ専用の30分資格確認を経て有効化します。既存のチャット経路・通常設定・証跡は維持します。
+
+简体中文：将P-H3-Image GGUF支持纳入计划。先验证专用加载器、文本编码器、VAE与Mac执行能力，再依次实现文生图、图片编辑／参考图和LoRA等能力。GGUF可读取不代表可生成；采用前须完成实际内存、停止／恢复及图像任务专用30分钟认证。保留现有聊天路径、普通配置和证据。
+
 ## LFM3-Omni-2B — 2026-10-29
 
 - 🟢 [Done] Official GGUF revision2918dd47cfceb4f260cd1734cd1aac1b22bbe4b6 Q4_K_M + Q8_0 projector fetched and SHA256-verified; reviewed llama.cpp b11960/8642541b2 arm64 release verified. No global package/dependency upgrade or remote model code executed.
@@ -226,3 +257,5 @@ See [design and validation scope](INFERENCE.md#kapitsaから取り入れた計�
 - ⭕️ [Pending] Other-Mac verification,Developer ID signing and notarization remain deferred.
 
 - 🟢 [Done] Optimized MLX SSD freshly requalified for 1800.730s / 2458 successes / zero failures / sampled RSS +8.72MiB; duplicate suppression, live mutation repair and quota-retry gates passed. Final worker: 3 saves, 2441 skipped saves. [Measurements](evaluation/mlx-ssd-write-comparison-20261104.json).
+
+- 🟢 [Done] 2026-11-09 weekly verification: direct dependencies/Strata remain current; jiff lockfile patch trio updated; all-target/workspace tests, app build and 66-native-file distribution preflight passed. No runtime capability change. [Scope](DEPENDENCY_UPDATE_20261109.md).

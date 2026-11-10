@@ -1,3 +1,5 @@
+> 2026-11-09: Strata 0.2.12 and its pin are unchanged. [Weekly lockfile verification](DEPENDENCY_UPDATE_20261109.md). 日本語：上流固定値は変更なし。简体中文：上游固定值未变更。
+
 > Follow-up · 2026-11-02: the disk-space Pending item below is resolved. [Cache cleanup, real Q2_0 re-preparation and data-preservation verification](CACHE_CLEANUP_REPREP_20261102.md). 日本語：容量不足による保留を解除しました。简体中文：容量不足导致的待验证项已完成。
 
 # Current dependency update · 2026-11-02
