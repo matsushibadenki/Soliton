@@ -1,0 +1,480 @@
+{
+  "payloadBytes": 27270312,
+  "trialsPerBuild": 6,
+  "order": "ABBA x3",
+  "medianMs": {
+    "debug": {
+      "put": {
+        "wallNs": 344.994,
+        "outsideMainNs": 4.597,
+        "mainNs": 340.449,
+        "setupNs": 0.171,
+        "durabilityNs": 11.259,
+        "payloadAndHeaderNs": 328.498
+      },
+      "get": {
+        "wallNs": 346.297,
+        "outsideMainNs": 4.155,
+        "mainNs": 342.142,
+        "setupNs": 0.071,
+        "copyNs": 20.916,
+        "durabilityNs": 8.209,
+        "verifyAndReadNs": 312.654
+      }
+    },
+    "release": {
+      "put": {
+        "wallNs": 41.672,
+        "outsideMainNs": 4.49,
+        "mainNs": 34.76,
+        "setupNs": 0.143,
+        "durabilityNs": 12.124,
+        "payloadAndHeaderNs": 23.369
+      },
+      "get": {
+        "wallNs": 43.072,
+        "outsideMainNs": 4.14,
+        "mainNs": 38.569,
+        "setupNs": 0.051,
+        "copyNs": 17.721,
+        "durabilityNs": 8.173,
+        "verifyAndReadNs": 11.117
+      }
+    }
+  },
+  "samples": {
+    "debug": {
+      "put": [
+        {
+          "wallNs": 594299083,
+          "outsideMainNs": 241805833,
+          "mainNs": 352493250,
+          "phases": {
+            "durabilityNs": 13557000,
+            "payloadAndHeaderNs": 337577333
+          },
+          "setupNs": 725417
+        },
+        {
+          "wallNs": 337072000,
+          "outsideMainNs": 4294250,
+          "mainNs": 332777750,
+          "phases": {
+            "durabilityNs": 11260750,
+            "payloadAndHeaderNs": 321153625
+          },
+          "setupNs": 147833
+        },
+        {
+          "wallNs": 340757083,
+          "outsideMainNs": 4549542,
+          "mainNs": 336207541,
+          "phases": {
+            "durabilityNs": 11258084,
+            "payloadAndHeaderNs": 324543583
+          },
+          "setupNs": 172958
+        },
+        {
+          "wallNs": 342093000,
+          "outsideMainNs": 4643750,
+          "mainNs": 337449250,
+          "phases": {
+            "durabilityNs": 12148125,
+            "payloadAndHeaderNs": 324896042
+          },
+          "setupNs": 169875
+        },
+        {
+          "wallNs": 347895917,
+          "outsideMainNs": 4447792,
+          "mainNs": 343448125,
+          "phases": {
+            "durabilityNs": 10946542,
+            "payloadAndHeaderNs": 332099667
+          },
+          "setupNs": 161291
+        },
+        {
+          "wallNs": 385139417,
+          "outsideMainNs": 4700334,
+          "mainNs": 380439083,
+          "phases": {
+            "durabilityNs": 10860333,
+            "payloadAndHeaderNs": 369131958
+          },
+          "setupNs": 187458
+        }
+      ],
+      "get": [
+        {
+          "wallNs": 341194917,
+          "outsideMainNs": 4211792,
+          "mainNs": 336983125,
+          "phases": {
+            "copyNs": 17200583,
+            "durabilityNs": 6377542,
+            "verifyAndReadNs": 313247417
+          },
+          "setupNs": 78750
+        },
+        {
+          "wallNs": 343971875,
+          "outsideMainNs": 4026000,
+          "mainNs": 339945875,
+          "phases": {
+            "copyNs": 20798167,
+            "durabilityNs": 7038416,
+            "verifyAndReadNs": 311951167
+          },
+          "setupNs": 65542
+        },
+        {
+          "wallNs": 345251958,
+          "outsideMainNs": 4087125,
+          "mainNs": 341164833,
+          "phases": {
+            "copyNs": 18578500,
+            "durabilityNs": 10900250,
+            "verifyAndReadNs": 311523000
+          },
+          "setupNs": 65208
+        },
+        {
+          "wallNs": 349756417,
+          "outsideMainNs": 4495500,
+          "mainNs": 345260917,
+          "phases": {
+            "copyNs": 21034833,
+            "durabilityNs": 10718500,
+            "verifyAndReadNs": 313323708
+          },
+          "setupNs": 86209
+        },
+        {
+          "wallNs": 347341917,
+          "outsideMainNs": 4221875,
+          "mainNs": 343120042,
+          "phases": {
+            "copyNs": 23261916,
+            "durabilityNs": 7061667,
+            "verifyAndReadNs": 312665917
+          },
+          "setupNs": 70000
+        },
+        {
+          "wallNs": 359953834,
+          "outsideMainNs": 4098500,
+          "mainNs": 355855334,
+          "phases": {
+            "copyNs": 33679000,
+            "durabilityNs": 9356958,
+            "verifyAndReadNs": 312641167
+          },
+          "setupNs": 72125
+        }
+      ]
+    },
+    "release": {
+      "put": [
+        {
+          "wallNs": 246406167,
+          "outsideMainNs": 209360750,
+          "mainNs": 37045417,
+          "phases": {
+            "durabilityNs": 11701125,
+            "payloadAndHeaderNs": 24542917
+          },
+          "setupNs": 403250
+        },
+        {
+          "wallNs": 37360667,
+          "outsideMainNs": 4885750,
+          "mainNs": 32474917,
+          "phases": {
+            "durabilityNs": 9991458,
+            "payloadAndHeaderNs": 22194500
+          },
+          "setupNs": 152333
+        },
+        {
+          "wallNs": 35845292,
+          "outsideMainNs": 4283125,
+          "mainNs": 31562167,
+          "phases": {
+            "durabilityNs": 9153375,
+            "payloadAndHeaderNs": 22100542
+          },
+          "setupNs": 128500
+        },
+        {
+          "wallNs": 45982917,
+          "outsideMainNs": 4168751,
+          "mainNs": 41814166,
+          "phases": {
+            "durabilityNs": 14975167,
+            "payloadAndHeaderNs": 26545041
+          },
+          "setupNs": 135791
+        },
+        {
+          "wallNs": 35187292,
+          "outsideMainNs": 4480667,
+          "mainNs": 30706625,
+          "phases": {
+            "durabilityNs": 13623958,
+            "payloadAndHeaderNs": 16799792
+          },
+          "setupNs": 135291
+        },
+        {
+          "wallNs": 56278417,
+          "outsideMainNs": 4499667,
+          "mainNs": 51778750,
+          "phases": {
+            "durabilityNs": 12546792,
+            "payloadAndHeaderNs": 38905667
+          },
+          "setupNs": 150083
+        }
+      ],
+      "get": [
+        {
+          "wallNs": 43878750,
+          "outsideMainNs": 5032917,
+          "mainNs": 38845833,
+          "phases": {
+            "copyNs": 17763791,
+            "durabilityNs": 6820625,
+            "verifyAndReadNs": 14140417
+          },
+          "setupNs": 68500
+        },
+        {
+          "wallNs": 50552667,
+          "outsideMainNs": 4137626,
+          "mainNs": 46415041,
+          "phases": {
+            "copyNs": 26889750,
+            "durabilityNs": 8165791,
+            "verifyAndReadNs": 11235334
+          },
+          "setupNs": 50750
+        },
+        {
+          "wallNs": 40570958,
+          "outsideMainNs": 4146124,
+          "mainNs": 36424834,
+          "phases": {
+            "copyNs": 16182083,
+            "durabilityNs": 9238000,
+            "verifyAndReadNs": 10901792
+          },
+          "setupNs": 51250
+        },
+        {
+          "wallNs": 39454625,
+          "outsideMainNs": 3825625,
+          "mainNs": 35629000,
+          "phases": {
+            "copyNs": 16417875,
+            "durabilityNs": 8180625,
+            "verifyAndReadNs": 10915333
+          },
+          "setupNs": 45416
+        },
+        {
+          "wallNs": 46793000,
+          "outsideMainNs": 4142375,
+          "mainNs": 42650625,
+          "phases": {
+            "copyNs": 24761667,
+            "durabilityNs": 6666292,
+            "verifyAndReadNs": 11089625
+          },
+          "setupNs": 51667
+        },
+        {
+          "wallNs": 42266209,
+          "outsideMainNs": 3973375,
+          "mainNs": 38292834,
+          "phases": {
+            "copyNs": 17679041,
+            "durabilityNs": 9389334,
+            "verifyAndReadNs": 11144542
+          },
+          "setupNs": 53500
+        }
+      ]
+    }
+  },
+  "buildSha256": {
+    "debug": "5c28c0a7c1843c820e0a9206a785a46d937230e76a128e7ca6dec5d0f3dd977e",
+    "release": "596eaae391a5897ad3ec721a14c1cf0b6e08284841817fe2f1f3ff761f1f9d58"
+  },
+  "scope": "Same-size synthetic payload on local APFS. Outside main includes spawn, loader, exit, and pipe collection. File phases can include checksum work.",
+  "realSmoke": {
+    "debug": {
+      "passed": true,
+      "observations": {
+        "FIRST_STATS": {
+          "restoreStage": {
+            "calls": 1,
+            "exceptions": 0,
+            "totalNs": 432428958,
+            "maxNs": 432428958
+          },
+          "saveStage": {
+            "calls": 1,
+            "exceptions": 0,
+            "totalNs": 382543375,
+            "maxNs": 382543375
+          },
+          "storeGet": {
+            "calls": 1,
+            "exceptions": 0,
+            "totalNs": 431220292,
+            "maxNs": 431220292
+          },
+          "storePut": {
+            "calls": 1,
+            "exceptions": 0,
+            "totalNs": 360772625,
+            "maxNs": 360772625
+          },
+          "deserialize": {
+            "calls": 0,
+            "exceptions": 0,
+            "totalNs": 0,
+            "maxNs": null
+          },
+          "serialize": {
+            "calls": 1,
+            "exceptions": 0,
+            "totalNs": 19559458,
+            "maxNs": 19559458
+          }
+        },
+        "RESTORED": {
+          "restoreStage": {
+            "calls": 1,
+            "exceptions": 0,
+            "totalNs": 393443042,
+            "maxNs": 393443042
+          },
+          "saveStage": {
+            "calls": 0,
+            "exceptions": 0,
+            "totalNs": 0,
+            "maxNs": null
+          },
+          "storeGet": {
+            "calls": 1,
+            "exceptions": 0,
+            "totalNs": 390183166,
+            "maxNs": 390183166
+          },
+          "storePut": {
+            "calls": 0,
+            "exceptions": 0,
+            "totalNs": 0,
+            "maxNs": null
+          },
+          "deserialize": {
+            "calls": 1,
+            "exceptions": 0,
+            "totalNs": 2262791,
+            "maxNs": 2262791
+          },
+          "serialize": {
+            "calls": 0,
+            "exceptions": 0,
+            "totalNs": 0,
+            "maxNs": null
+          }
+        }
+      }
+    },
+    "release": {
+      "passed": true,
+      "observations": {
+        "FIRST_STATS": {
+          "restoreStage": {
+            "calls": 1,
+            "exceptions": 0,
+            "totalNs": 23940500,
+            "maxNs": 23940500
+          },
+          "saveStage": {
+            "calls": 1,
+            "exceptions": 0,
+            "totalNs": 88386125,
+            "maxNs": 88386125
+          },
+          "storeGet": {
+            "calls": 1,
+            "exceptions": 0,
+            "totalNs": 22369708,
+            "maxNs": 22369708
+          },
+          "storePut": {
+            "calls": 1,
+            "exceptions": 0,
+            "totalNs": 77415875,
+            "maxNs": 77415875
+          },
+          "deserialize": {
+            "calls": 0,
+            "exceptions": 0,
+            "totalNs": 0,
+            "maxNs": null
+          },
+          "serialize": {
+            "calls": 1,
+            "exceptions": 0,
+            "totalNs": 8141791,
+            "maxNs": 8141791
+          }
+        },
+        "RESTORED": {
+          "restoreStage": {
+            "calls": 1,
+            "exceptions": 0,
+            "totalNs": 90708042,
+            "maxNs": 90708042
+          },
+          "saveStage": {
+            "calls": 0,
+            "exceptions": 0,
+            "totalNs": 0,
+            "maxNs": null
+          },
+          "storeGet": {
+            "calls": 1,
+            "exceptions": 0,
+            "totalNs": 85273083,
+            "maxNs": 85273083
+          },
+          "storePut": {
+            "calls": 0,
+            "exceptions": 0,
+            "totalNs": 0,
+            "maxNs": null
+          },
+          "deserialize": {
+            "calls": 1,
+            "exceptions": 0,
+            "totalNs": 3929667,
+            "maxNs": 3929667
+          },
+          "serialize": {
+            "calls": 0,
+            "exceptions": 0,
+            "totalNs": 0,
+            "maxNs": null
+          }
+        }
+      }
+    }
+  }
+}

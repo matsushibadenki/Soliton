@@ -3,6 +3,7 @@ import argparse, http.client, json, os, pathlib, secrets, signal, subprocess, te
 parser=argparse.ArgumentParser(description="Opt-in real Gemma HTTP SSD-cache regression (isolated process and temporary store)")
 parser.add_argument("--python",required=True)
 parser.add_argument("--model",required=True,type=pathlib.Path)
+parser.add_argument("--store-executable", type=pathlib.Path)
 parser.add_argument("--port",type=int,default=18082)
 args=parser.parse_args()
 ROOT=pathlib.Path(__file__).resolve().parents[1]
@@ -19,7 +20,10 @@ def request(path='/studio/ssd-cache',body=None,auth=True):
  with urllib.request.urlopen(req,timeout=90) as r:return json.load(r)
 def start(folder,log):
  env=dict(os.environ,SOLITON_PREFIX_HTTP_TOKEN=TOKEN)
- p=subprocess.Popen([PYTHON,str(ROOT/'scripts/prefix-cache-http.py'),'--model',str(MODEL),'--cache-root',str(folder/'cache'),'--qualification-mode','--quota-mib','256','--port',str(PORT)],env=env,stdout=log,stderr=log)
+ command=[PYTHON,str(ROOT/'scripts/prefix-cache-http.py'),'--model',str(MODEL),'--cache-root',str(folder/'cache'),'--qualification-mode','--quota-mib','256','--port',str(PORT)]
+ if args.store_executable is not None:
+  command.extend(['--store-executable',str(args.store_executable.resolve(strict=True))])
+ p=subprocess.Popen(command,env=env,stdout=log,stderr=log)
  for _ in range(100):
   if p.poll() is not None:raise RuntimeError('Server exited; inspect /tmp/soliton-prefix-http.log')
   try:request();return p

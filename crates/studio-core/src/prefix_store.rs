@@ -7,6 +7,14 @@ use std::{
     io::{self, Read, Seek, SeekFrom, Write},
     path::{Path, PathBuf},
 };
+/// Wall-clock intervals for the CLI's successful store write.
+#[derive(Default, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct PutTimings {
+    pub payload_and_header_ns: u128,
+    pub durability_ns: u128,
+}
+
 const MAX_HEADER: u64 = 4096;
 const MAX_ENTRY: u64 = 1024 * 1024 * 1024;
 fn invalid(message: &str) -> io::Error {
@@ -162,18 +170,39 @@ impl Store {
     }
     /// Rejects full stores instead of silently deleting other conversations.
     pub fn put(&self, identity: &Identity, source: &mut impl Read, bytes: u64) -> io::Result<()> {
+        self.put_impl(identity, source, bytes, None)
+    }
+
+    pub fn put_timed(
+        &self,
+        identity: &Identity,
+        source: &mut impl Read,
+        bytes: u64,
+        timings: &mut PutTimings,
+    ) -> io::Result<()> {
+        self.put_impl(identity, source, bytes, Some(timings))
+    }
+
+    fn put_impl(
+        &self,
+        identity: &Identity,
+        source: &mut impl Read,
+        bytes: u64,
+        timings: Option<&mut PutTimings>,
+    ) -> io::Result<()> {
         identity.key()?;
         if bytes == 0 || bytes > MAX_ENTRY {
             return Err(invalid("State must be 1 byte to 1 GiB"));
         }
         let _lock = self.lock()?;
-        self.put_locked(identity, source, bytes)
+        self.put_locked(identity, source, bytes, timings)
     }
     fn put_locked(
         &self,
         identity: &Identity,
         source: &mut impl Read,
         bytes: u64,
+        timings: Option<&mut PutTimings>,
     ) -> io::Result<()> {
         let key = identity.key()?;
         let (used, count) = self.usage()?;
@@ -195,6 +224,7 @@ impl Store {
         }
         let temp = self.root.join(format!("{}.tmp", uuid::Uuid::new_v4()));
         let result = (|| {
+            let payload_started = timings.as_ref().map(|_| std::time::Instant::now());
             let mut file = private_options()
                 .write(true)
                 .read(true)
@@ -230,9 +260,16 @@ impl Store {
             file.seek(SeekFrom::Start(0))?;
             file.write_all(&(header.len() as u64).to_le_bytes())?;
             file.write_all(&header)?;
+            let durability_started = payload_started.map(|_| std::time::Instant::now());
             file.sync_all()?;
             fs::rename(&temp, &destination)?;
             File::open(&self.root)?.sync_all()?;
+            if let (Some(timings), Some(payload), Some(durability)) =
+                (timings, payload_started, durability_started)
+            {
+                timings.payload_and_header_ns = (durability - payload).as_nanos();
+                timings.durability_ns = durability.elapsed().as_nanos();
+            }
             Ok(())
         })();
         if result.is_err() {
@@ -269,7 +306,7 @@ impl Store {
         let mut result = Eviction::default();
         if used.checked_add(required).is_some_and(|n| n <= self.quota) && (count < 256 || overwrite)
         {
-            self.put_locked(identity, source, bytes)?;
+            self.put_locked(identity, source, bytes, None)?;
             return Ok(result);
         }
         let target = report.target_bytes.saturating_sub(required);
@@ -325,11 +362,49 @@ impl Store {
         if result.removed_entries > 0 {
             File::open(&self.root)?.sync_all()?;
         }
-        self.put_locked(identity, source, bytes)?;
+        self.put_locked(identity, source, bytes, None)?;
         Ok(result)
     }
     /// Returns a verified, positioned file handle plus exact payload length, never GPU arrays.
     pub fn get(&self, identity: &Identity) -> io::Result<Option<(File, u64)>> {
+        let Some((mut file, header)) = self.read_verified(identity, &mut io::sink())? else {
+            return Ok(None);
+        };
+        file.seek(SeekFrom::Start(4104))?;
+        Ok(Some((file, header.bytes)))
+    }
+
+    /// Copy and verify the same bytes before publishing a private staging file.
+    pub fn restore_to(
+        &self,
+        identity: &Identity,
+        destination: &Path,
+    ) -> io::Result<Option<(u64, u128)>> {
+        let temp = destination.with_file_name(format!(".{}.tmp", uuid::Uuid::new_v4()));
+        let mut output = private_options().write(true).create_new(true).open(&temp)?;
+        let result = (|| {
+            let Some((_, header)) = self.read_verified(identity, &mut output)? else {
+                return Ok(None);
+            };
+            let durability = std::time::Instant::now();
+            output.sync_all()?;
+            // Publish without overwriting an existing destination.
+            fs::hard_link(&temp, destination)?;
+            Ok(Some((header.bytes, durability.elapsed().as_nanos())))
+        })();
+        drop(output);
+        let cleanup = fs::remove_file(temp);
+        match result {
+            Err(error) => Err(error),
+            Ok(value) => cleanup.map(|()| value),
+        }
+    }
+
+    fn read_verified(
+        &self,
+        identity: &Identity,
+        output: &mut impl Write,
+    ) -> io::Result<Option<(File, Header)>> {
         let key = identity.key()?;
         let _lock = self.lock()?;
         let mut file = match private_options()
@@ -363,18 +438,18 @@ impl Store {
         file.seek(SeekFrom::Start(4104))?;
         let mut digest = Sha256::new();
         let mut buffer = [0u8; 65536];
-        loop {
-            let n = file.read(&mut buffer)?;
-            if n == 0 {
-                break;
-            }
-            digest.update(&buffer[..n]);
+        let mut remaining = header.bytes;
+        while remaining > 0 {
+            let length = remaining.min(buffer.len() as u64) as usize;
+            file.read_exact(&mut buffer[..length])?;
+            digest.update(&buffer[..length]);
+            output.write_all(&buffer[..length])?;
+            remaining -= length as u64;
         }
-        if hex(&digest.finalize()) != header.sha256 {
+        if file.read(&mut buffer[..1])? != 0 || hex(&digest.finalize()) != header.sha256 {
             return Err(invalid("Cache checksum mismatch"));
         }
-        file.seek(SeekFrom::Start(4104))?;
-        Ok(Some((file, header.bytes)))
+        Ok(Some((file, header)))
     }
 }
 
@@ -858,11 +933,26 @@ mod tests {
         assert!(store.put(&id, &mut &b"short"[..], 9).is_err());
         assert!(store.get(&id).unwrap().is_some());
         assert!(store.put(&id, &mut &vec![0u8; 14000][..], 14000).is_err());
+        let staging = root.with_extension("staging");
+        fs::create_dir(&staging).unwrap();
+        let restored = staging.join("restored");
+        assert_eq!(store.restore_to(&id, &restored).unwrap().unwrap().0, 5);
+        assert_eq!(fs::read(&restored).unwrap(), b"state");
+        fs::write(&restored, b"existing").unwrap();
+        assert_eq!(
+            store.restore_to(&id, &restored).unwrap_err().kind(),
+            io::ErrorKind::AlreadyExists
+        );
+        assert_eq!(fs::read(&restored).unwrap(), b"existing");
+        fs::remove_file(&restored).unwrap();
         let path = root.join(format!("{}.cache", id.key().unwrap()));
         let mut f = OpenOptions::new().write(true).open(path).unwrap();
         f.seek(SeekFrom::Start(4104)).unwrap();
         f.write_all(b"X").unwrap();
         assert!(store.get(&id).is_err());
+        assert!(store.restore_to(&id, &restored).is_err());
+        assert_eq!(fs::read_dir(&staging).unwrap().count(), 0);
+        fs::remove_dir(staging).unwrap();
         fs::remove_dir_all(root).unwrap();
     }
     #[cfg(unix)]

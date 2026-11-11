@@ -1,0 +1,310 @@
+{
+  "payloadBytes": 27270312,
+  "trialsPerBuild": 6,
+  "order": "ABBA x3",
+  "medianMs": {
+    "before": {
+      "put": {
+        "wallNs": 37.377,
+        "outsideMainNs": 4.181,
+        "mainNs": 33.238,
+        "setupNs": 0.132,
+        "durabilityNs": 14.327,
+        "payloadAndHeaderNs": 19.408
+      },
+      "get": {
+        "wallNs": 48.25,
+        "outsideMainNs": 3.95,
+        "mainNs": 44.362,
+        "setupNs": 0.052,
+        "copyNs": 25.576,
+        "durabilityNs": 7.299,
+        "verifyAndReadNs": 10.956
+      }
+    },
+    "after": {
+      "put": {
+        "wallNs": 37.002,
+        "outsideMainNs": 4.156,
+        "mainNs": 32.959,
+        "setupNs": 0.142,
+        "durabilityNs": 12.992,
+        "payloadAndHeaderNs": 18.681
+      },
+      "get": {
+        "wallNs": 33.686,
+        "outsideMainNs": 3.972,
+        "mainNs": 29.794,
+        "setupNs": 0.053,
+        "durabilityNs": 8.072,
+        "verifyAndCopyNs": 20.768
+      }
+    }
+  },
+  "samples": {
+    "before": {
+      "put": [
+        {
+          "wallNs": 436829542,
+          "outsideMainNs": 382937500,
+          "mainNs": 53892042,
+          "phases": {
+            "durabilityNs": 17575375,
+            "payloadAndHeaderNs": 35182083
+          },
+          "setupNs": 610958
+        },
+        {
+          "wallNs": 37104417,
+          "outsideMainNs": 4294292,
+          "mainNs": 32810125,
+          "phases": {
+            "durabilityNs": 14840042,
+            "payloadAndHeaderNs": 17717458
+          },
+          "setupNs": 122792
+        },
+        {
+          "wallNs": 37963833,
+          "outsideMainNs": 3933625,
+          "mainNs": 34030208,
+          "phases": {
+            "durabilityNs": 16108000,
+            "payloadAndHeaderNs": 17640041
+          },
+          "setupNs": 122708
+        },
+        {
+          "wallNs": 37649667,
+          "outsideMainNs": 4255917,
+          "mainNs": 33393750,
+          "phases": {
+            "durabilityNs": 13813208,
+            "payloadAndHeaderNs": 19315167
+          },
+          "setupNs": 137958
+        },
+        {
+          "wallNs": 34269500,
+          "outsideMainNs": 4105792,
+          "mainNs": 30163708,
+          "phases": {
+            "durabilityNs": 10367125,
+            "payloadAndHeaderNs": 19501500
+          },
+          "setupNs": 142500
+        },
+        {
+          "wallNs": 36911000,
+          "outsideMainNs": 3829458,
+          "mainNs": 33081542,
+          "phases": {
+            "durabilityNs": 11356459,
+            "payloadAndHeaderNs": 21467208
+          },
+          "setupNs": 125167
+        }
+      ],
+      "get": [
+        {
+          "wallNs": 57788458,
+          "outsideMainNs": 7581542,
+          "mainNs": 50206916,
+          "phases": {
+            "copyNs": 27277584,
+            "durabilityNs": 4787791,
+            "verifyAndReadNs": 17995791
+          },
+          "setupNs": 101416
+        },
+        {
+          "wallNs": 42242333,
+          "outsideMainNs": 4467791,
+          "mainNs": 37774542,
+          "phases": {
+            "copyNs": 19625667,
+            "durabilityNs": 6907417,
+            "verifyAndReadNs": 11138750
+          },
+          "setupNs": 50000
+        },
+        {
+          "wallNs": 48832000,
+          "outsideMainNs": 3917875,
+          "mainNs": 44914125,
+          "phases": {
+            "copyNs": 25097792,
+            "durabilityNs": 8793750,
+            "verifyAndReadNs": 10933083
+          },
+          "setupNs": 51333
+        },
+        {
+          "wallNs": 47058167,
+          "outsideMainNs": 3824459,
+          "mainNs": 43233708,
+          "phases": {
+            "copyNs": 25932166,
+            "durabilityNs": 6245000,
+            "verifyAndReadNs": 10978750
+          },
+          "setupNs": 53208
+        },
+        {
+          "wallNs": 48769917,
+          "outsideMainNs": 3981667,
+          "mainNs": 44788250,
+          "phases": {
+            "copyNs": 26046500,
+            "durabilityNs": 7729333,
+            "verifyAndReadNs": 10915417
+          },
+          "setupNs": 49625
+        },
+        {
+          "wallNs": 47729875,
+          "outsideMainNs": 3793750,
+          "mainNs": 43936125,
+          "phases": {
+            "copyNs": 25219333,
+            "durabilityNs": 7691542,
+            "verifyAndReadNs": 10930542
+          },
+          "setupNs": 65042
+        }
+      ]
+    },
+    "after": {
+      "put": [
+        {
+          "wallNs": 271895125,
+          "outsideMainNs": 221227709,
+          "mainNs": 50667416,
+          "phases": {
+            "durabilityNs": 11426000,
+            "payloadAndHeaderNs": 38222459
+          },
+          "setupNs": 574083
+        },
+        {
+          "wallNs": 34560792,
+          "outsideMainNs": 4670542,
+          "mainNs": 29890250,
+          "phases": {
+            "durabilityNs": 11353834,
+            "payloadAndHeaderNs": 18248500
+          },
+          "setupNs": 148083
+        },
+        {
+          "wallNs": 39474084,
+          "outsideMainNs": 4205459,
+          "mainNs": 35268625,
+          "phases": {
+            "durabilityNs": 15702333,
+            "payloadAndHeaderNs": 19264333
+          },
+          "setupNs": 155167
+        },
+        {
+          "wallNs": 34446000,
+          "outsideMainNs": 4105625,
+          "mainNs": 30340375,
+          "phases": {
+            "durabilityNs": 12247708,
+            "payloadAndHeaderNs": 17827083
+          },
+          "setupNs": 123916
+        },
+        {
+          "wallNs": 36126667,
+          "outsideMainNs": 4099208,
+          "mainNs": 32027459,
+          "phases": {
+            "durabilityNs": 13736209,
+            "payloadAndHeaderNs": 18038291
+          },
+          "setupNs": 135625
+        },
+        {
+          "wallNs": 37876792,
+          "outsideMainNs": 3986750,
+          "mainNs": 33890042,
+          "phases": {
+            "durabilityNs": 14513917,
+            "payloadAndHeaderNs": 19113750
+          },
+          "setupNs": 127792
+        }
+      ],
+      "get": [
+        {
+          "wallNs": 40983167,
+          "outsideMainNs": 7214250,
+          "mainNs": 33768917,
+          "phases": {
+            "durabilityNs": 6952125,
+            "verifyAndCopyNs": 26698500
+          },
+          "setupNs": 99209
+        },
+        {
+          "wallNs": 29537958,
+          "outsideMainNs": 4190125,
+          "mainNs": 25347833,
+          "phases": {
+            "durabilityNs": 7066667,
+            "verifyAndCopyNs": 18211458
+          },
+          "setupNs": 54000
+        },
+        {
+          "wallNs": 33001542,
+          "outsideMainNs": 3749376,
+          "mainNs": 29252166,
+          "phases": {
+            "durabilityNs": 9077167,
+            "verifyAndCopyNs": 20108125
+          },
+          "setupNs": 53000
+        },
+        {
+          "wallNs": 34369459,
+          "outsideMainNs": 4034459,
+          "mainNs": 30335000,
+          "phases": {
+            "durabilityNs": 7067542,
+            "verifyAndCopyNs": 23201542
+          },
+          "setupNs": 52500
+        },
+        {
+          "wallNs": 31178875,
+          "outsideMainNs": 3811916,
+          "mainNs": 27366959,
+          "phases": {
+            "durabilityNs": 9177541,
+            "verifyAndCopyNs": 18122084
+          },
+          "setupNs": 51000
+        },
+        {
+          "wallNs": 34502625,
+          "outsideMainNs": 3910291,
+          "mainNs": 30592334,
+          "phases": {
+            "durabilityNs": 9098167,
+            "verifyAndCopyNs": 21427625
+          },
+          "setupNs": 49625
+        }
+      ]
+    }
+  },
+  "buildProfile": "release for both executables",
+  "buildSha256": {
+    "before": "596eaae391a5897ad3ec721a14c1cf0b6e08284841817fe2f1f3ff761f1f9d58",
+    "after": "9e27309a5c17a3c5bd205bd9cf4e1f0a3a766052ba79f6636cdfda90fec938f3"
+  },
+  "scope": "Synthetic same-size SSD payload. All restored hashes and put/get receipts matched."
+}

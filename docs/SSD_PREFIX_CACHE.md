@@ -471,3 +471,101 @@ Optional `--evidence /absolute/qualification.json --qualified-cache-root /absolu
 The next full retry again saved/restored all three fixtures correctly but failed the first launch quiet gate, with zero measured requests; all136,349,288 generated state bytes were hash-checked and removed after workers stopped. [Retry record](evaluation/ssd-counterbalanced-rejection2-20261108.json). A subsequent run with the new preflight accepted the exact existing v2 certificate (`64d3fb…4dd79`), then refused at `host_preflight` after229 readings over120 seconds (16.27–43.52% background CPU). There were no model logs, seeds or measured requests. A read-only process snapshot during the earlier retry showed macOS `mediaanalysisd` consuming about two CPU cores; no application/system process was stopped. [Model-free preflight record](evaluation/ssd-counterbalanced-preflight-20261108.json).
 
 The full three-language balanced latency matrix is Pending until the host meets the unchanged quiet condition. Post-matrix evidence verification is unit-tested through the shared verifier helper but has not yet been reached by a successful live balanced matrix. GPU load, thermal state and physical page residency remain uncontrolled; no new latency result or performance certification is claimed.
+
+## SSD persistence timings — 2026-11-11
+
+The authenticated `/studio/ssd-cache` response exposes `persistenceTimings`.
+Each of the six fixed rows reports process-local calls, exceptions, total and
+maximum wall time in nanoseconds. A never-entered row has a null maximum.
+The stage intervals include temporary directory setup and cleanup, and enclose
+CLI and serialization work. CLI intervals measure the subprocess call, including
+startup and wait. Nonzero CLI exits retain their original handling and count as
+calls. The exception counter records raised exceptions.
+
+An isolated Gemma2 2B / MLX-LM 0.32.0 HTTP smoke at 512 context and 256 MiB
+store quota passed restart restore, answer parity, corruption fallback,
+deduplication, live repair and SSE disconnect recovery. In one observed restart
+hit, restore staging took 393.44 ms, with 390.18 ms in the get subprocess and
+2.26 ms in deserialization. One initial save took 382.54 ms, with 360.77 ms in
+the put subprocess and 19.56 ms in serialization. These are nested wall times
+from a functional test. The modified worker requires fresh SSD qualification.
+
+日本語：SSDの復元・保存、CLI、シリアライズの壁時計時間を記録。
+実モデルの短時間検証ではCLI区間が大半を占めた。次は条件を揃えて、
+プロセス起動、ファイルI/O、永続化処理の内訳を確認する。再資格確認は未実施。
+
+简体中文：记录SSD恢复、保存、CLI及序列化的壁钟耗时。
+真实模型短测中，CLI占用大部分时间。下一步在相同条件下拆分进程启动、
+文件I/O和持久化开销。完整重新认证待完成。
+
+## SSD CLI build comparison — 2026-11-11
+
+Set `SOLITON_PREFIX_STORE_TIMINGS=1` on the `prefix-store` example to write
+successful-operation phase timings to stderr. The stdout receipt format is
+unchanged. The parent measures elapsed time around the entire subprocess.
+The difference from time in Rust main includes process startup, loader,
+exit and pipe collection. Read verification includes file I/O and SHA-256.
+Save preparation includes payload copying, SHA-256 and header writing.
+The durability interval covers sync on restore and file sync, rename and
+directory sync on save.
+
+Six debug and six release trials alternated in ABBA blocks using fresh stores
+and an identical 27,270,312-byte synthetic payload sized from the Gemma2 smoke.
+Every restore matched the input SHA-256. All times below are medians in ms.
+
+| Interval | Debug get | Release get | Debug put | Release put |
+|---|---:|---:|---:|---:|
+| Subprocess wall time | 346.30 | 43.07 | 344.99 | 41.67 |
+| Outside Rust main | 4.16 | 4.14 | 4.60 | 4.49 |
+| Read and verify / payload and header | 312.65 | 11.12 | 328.50 | 23.37 |
+| Copy verified payload to staging | 20.92 | 17.72 | | |
+| Durability | 8.21 | 8.17 | 11.26 | 12.12 |
+
+Build the optimized candidate and pass its explicit path to the isolated
+smoke or qualification tool through `--store-executable`.
+
+```sh
+cargo build -p studio-core --example prefix-store
+cargo build --release -p studio-core --example prefix-store
+python3 scripts/compare-prefix-store-builds.py \
+  --debug target/debug/examples/prefix-store \
+  --release target/release/examples/prefix-store
+```
+
+The release binary passed the real Gemma2 restart, corruption, deduplication,
+repair and SSE smoke. Its single observed restore subprocess took 85.27 ms.
+The controlled medians above describe opaque payloads, with filesystem caching
+and host scheduling in effect. The optimized worker and executable need their
+own full qualification before managed adoption.
+[Raw measurements](evaluation/ssd-cli-build-comparison-20261111.json).
+
+日本語：SHA-256を含む読み書きが主な短縮箇所だったため、最適化ビルドを採用候補にした。
+復元・保存の同期処理を維持し、Gemma2の短時間回帰検証を通過した。正式な再資格確認は未実施。
+
+简体中文：主要节省来自包含SHA-256的读写阶段，因此选用优化构建作为候选。
+保留恢复与保存的同步操作，并通过Gemma2短时回归验证。完整重新认证待完成。
+
+## Single-pass SSD restore
+
+The ordinary `prefix-store get` reads each payload block once, hashes it and
+copies it to a private temporary file beside the requested output. After the
+checksum matches, it syncs the file and publishes it with a no-overwrite hard
+link. Corrupt payloads leave no published output. This path requires hard-link
+support on the staging filesystem, verified here on local APFS.
+
+With both executables built in release mode, six trials per version in ABBA
+order on the same 27,270,312-byte synthetic fixture reduced median get CLI
+wall time from 48.25 ms to 33.69 ms (30.2%). Put medians were 37.38 and
+37.00 ms. All restored payload hashes and CLI receipts matched. The new get
+timing reports `verifyAndCopyNs` for the combined path and `durabilityNs`
+for file sync and publication. These measurements describe the CLI on local
+APFS. The real Gemma2 smoke passed restart restore, corruption fallback,
+deduplication, live repair and SSE disconnect recovery. The 30-minute
+qualification remains pending. [Raw measurements](evaluation/ssd-single-pass-comparison.json).
+
+日本語：SSD復元の読み取りを1回にし、コピーとSHA-256検証を同時に行う。
+検証・同期が完了したデータを、既存ファイルを上書きせず公開する。
+同じ最適化設定でCLI中央値は48.25 msから33.69 msに短縮した。
+
+简体中文：SSD恢复只读取一次，同时复制并校验SHA-256。校验及同步完成后发布，
+保留已有目标文件。相同优化设置下，CLI中位耗时从48.25 ms降至33.69 ms。

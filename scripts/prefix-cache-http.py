@@ -1,6 +1,7 @@
 """Explicit opt-in, authenticated loopback MLX HTTP experiment (not production).
 Requires reviewed MLX-LM 0.32.0, a local Gemma 2 2B model and Rust prefix-store CLI.
 """
+from contextlib import contextmanager
 import argparse
 import hashlib
 import importlib
@@ -16,6 +17,7 @@ import shutil
 import subprocess
 import tempfile
 import threading
+import time
 import sys
 from http.server import ThreadingHTTPServer
 from prefix_cache_roundtrip_support import digest_files
@@ -25,6 +27,39 @@ from prefix_cache_writes import CommittedPrefixes
 REVIEWED = {'server': '57392576de114af80ede723976b9dd156dc234f856b9943b8b44b8b78bc27f79',
             'generate': '4a3bf57f5679dac73791f069268866ab5b9336e58582d436b31133984e4b6971',
             'models.cache': 'c96cb169fd5e0ec4584a162dd61dc62ab08ccdca03a9850f8a491ce6809145e6'}
+
+
+class PersistenceTimings:
+    """Process-local wall times with fixed names and no request data."""
+    def __init__(self):
+        self.lock = threading.Lock()
+        self.rows = {
+            name: dict(calls=0, exceptions=0, totalNs=0, maxNs=None)
+            for name in ('restoreStage', 'saveStage', 'storeGet', 'storePut',
+                         'deserialize', 'serialize')
+        }
+
+    @contextmanager
+    def measure(self, name):
+        started = time.perf_counter_ns()
+        failed = False
+        try:
+            yield
+        except BaseException:
+            failed = True
+            raise
+        finally:
+            elapsed = time.perf_counter_ns() - started
+            with self.lock:
+                row = self.rows[name]
+                row['calls'] += 1
+                row['exceptions'] += int(failed)
+                row['totalNs'] += elapsed
+                row['maxNs'] = max(row['maxNs'] or 0, elapsed)
+
+    def snapshot(self):
+        with self.lock:
+            return {name: row.copy() for name, row in self.rows.items()}
 
 
 class RequestAdmission:
@@ -120,11 +155,21 @@ def main():
     stats = dict(hits=0, misses=0, writes=0, errors=0, skippedWrites=0, serializedBytes=0, committedBytes=0)
     committed = CommittedPrefixes(root / 'store')
     context = threading.local()
+    timings = PersistenceTimings()
+
+    @contextmanager
+    def stage(name):
+        with timings.measure(name):
+            with tempfile.TemporaryDirectory(dir=root, prefix='stage-') as temp:
+                yield Path(temp)
+
+
     def disk(action, key, path, folder):
         manifest = folder / 'identity.json'
         manifest.write_text(json.dumps(key))
-        result = subprocess.run([str(executable), str(root / 'store'), str(quota), action, str(manifest), str(path)],
-                                stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, timeout=20)
+        with timings.measure({'get': 'storeGet', 'put': 'storePut'}[action]):
+            result = subprocess.run([str(executable), str(root / 'store'), str(quota), action, str(manifest), str(path)],
+                                    stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, timeout=20)
         if result.returncode != 0:
             return None
         if len(result.stdout) > 4096:
@@ -143,13 +188,13 @@ def main():
             if state is not None and rest:
                 return state, rest
             try:
-                with tempfile.TemporaryDirectory(dir=root, prefix='stage-') as temp:
-                    folder = Path(temp)
+                with stage('restoreStage') as folder:
                     path = folder / 'state.safetensors'
                     key = identity_for(tokens[:-1])
                     receipt = disk('get', key, path, folder)
                     if receipt is not None:
-                        restored, metadata = cache_module.load_prompt_cache(str(path), return_metadata=True)
+                        with timings.measure('deserialize'):
+                            restored, metadata = cache_module.load_prompt_cache(str(path), return_metadata=True)
                         if metadata.get('prefix') != identity_for(tokens[:-1])['prefix'] or len(restored) != 26 or any(getattr(c, 'offset', None) != len(tokens)-1 for c in restored):
                             raise ValueError('Restored cache shape/offset mismatch')
                         stats['hits'] += 1
@@ -182,10 +227,10 @@ def main():
                     return
                 if len(state) != 26 or any(getattr(c, 'offset', None) != len(tokens)-1 for c in state):
                     return
-                with tempfile.TemporaryDirectory(dir=root, prefix='stage-') as temp:
-                    folder = Path(temp)
+                with stage('saveStage') as folder:
                     path = folder / 'state.safetensors'
-                    cache_module.save_prompt_cache(str(path), state, {'prefix': key['prefix']})
+                    with timings.measure('serialize'):
+                        cache_module.save_prompt_cache(str(path), state, {'prefix': key['prefix']})
                     size = path.stat().st_size
                     stats['serializedBytes'] += size
                     receipt = disk('put', key, path, folder)
@@ -233,7 +278,7 @@ def main():
             if self.path == '/health':
                 return self.reply(200, {'status':'ok','model':'default_model','inference_ready':True,'identity':binding})
             if self.path == '/studio/ssd-cache':
-                return self.reply(200, dict(stats, identity=binding, profile=PROFILE, binding_schema=BINDING_SCHEMA, cache_binding=cache_binding, cache_device_observed=observed_device, quota_bytes=quota, experimental=args.qualification_mode, productionIntegration=not args.qualification_mode))
+                return self.reply(200, dict(stats, persistenceTimings=timings.snapshot(), identity=binding, profile=PROFILE, binding_schema=BINDING_SCHEMA, cache_binding=cache_binding, cache_device_observed=observed_device, quota_bytes=quota, experimental=args.qualification_mode, productionIntegration=not args.qualification_mode))
             return self.reply(404, {'error': 'Not found'})
         def do_POST(self):
             self.connection.settimeout(30)
