@@ -33,6 +33,27 @@ class EvidenceContract(unittest.TestCase):
         self.path.write_text(json.dumps(report))
         self.path.chmod(0o600)
 
+    def test_publication_validates_before_exposing_and_preserves_existing_report(self):
+        spec = importlib.util.spec_from_file_location(
+            'qualify_prefix_cache', Path(__file__).with_name('qualify-prefix-cache.py')
+        )
+        controller = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(controller)
+        with self.assertRaises(ValueError):
+            controller.publish_evidence(
+                self.path, {**self.report, 'duration_seconds': 1799}, self.identity, self.quota
+            )
+        self.assertFalse(self.path.exists())
+        controller.publish_evidence(self.path, self.report, self.identity, self.quota)
+        original = self.path.read_bytes()
+        verify_evidence(self.path, self.identity, self.quota)
+        with self.assertRaises(FileExistsError):
+            controller.publish_evidence(
+                self.path, {**self.report, 'successes': 101}, self.identity, self.quota
+            )
+        self.assertEqual(self.path.read_bytes(), original)
+        self.assertEqual(list(self.path.parent.iterdir()), [self.path])
+
     def test_device_renumbering_does_not_change_binding_but_volume_path_and_quota_do(self):
         root=Path(self.folder.name)
         volume=self.bound['cache_volume']

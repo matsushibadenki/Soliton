@@ -560,8 +560,7 @@ wall time from 48.25 ms to 33.69 ms (30.2%). Put medians were 37.38 and
 timing reports `verifyAndCopyNs` for the combined path and `durabilityNs`
 for file sync and publication. These measurements describe the CLI on local
 APFS. The real Gemma2 smoke passed restart restore, corruption fallback,
-deduplication, live repair and SSE disconnect recovery. The 30-minute
-qualification remains pending. [Raw measurements](evaluation/ssd-single-pass-comparison.json).
+deduplication, live repair and SSE disconnect recovery. The isolated 30-minute qualification and managed checks passed on 2026-11-12. [Raw measurements](evaluation/ssd-single-pass-comparison.json).
 
 日本語：SSD復元の読み取りを1回にし、コピーとSHA-256検証を同時に行う。
 検証・同期が完了したデータを、既存ファイルを上書きせず公開する。
@@ -569,3 +568,22 @@ qualification remains pending. [Raw measurements](evaluation/ssd-single-pass-com
 
 简体中文：SSD恢复只读取一次，同时复制并校验SHA-256。校验及同步完成后发布，
 保留已有目标文件。相同优化设置下，CLI中位耗时从48.25 ms降至33.69 ms。
+
+Stopped-engine staging cleanup also recognizes an interrupted single-pass
+restore. An old staging directory with a valid worker identity can contain
+one private UUID-named restore temporary file in place of the published
+payload. The existing ownership, link-count, age and file revalidation
+checks apply. Unknown names and directories containing both the temporary
+file and a published payload are preserved.
+
+日本語：停止中の清掃は、識別情報が有効で24時間以上経過した復元途中の一時ファイルを回収できます。
+简体中文：停机清理可回收身份有效且已超过24小时的未完成恢复临时文件。
+
+The exact 512-token, 256 MiB single-pass candidate passed 1,800.509 seconds with
+6,582 successful requests and zero failures. The isolated Rust host passed all
+18 checks, including timing metrics, restart reuse and wrong-quota and expired
+evidence refusal. The profile remains opt-in.
+[Public summary](evaluation/ssd-single-pass-qualification-20261112.json).
+
+日本語：512トークン、256 MiBの候補で30分再資格確認とRust管理下の18項目に合格しました。
+简体中文：512令牌、256 MiB候选配置通过了30分钟重新认证及Rust管理下的18项验证。

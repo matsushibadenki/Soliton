@@ -36,6 +36,21 @@ try{
  assert.equal(first.usage.prompt_tokens_details.cached_tokens,177);
  const metrics=await request('/studio/prefix-cache').then(r=>r.json());assert.equal(metrics.identity,evidence.identity);assert(metrics.hits>=1);checks.diskReuse=true;
  assert.equal(metrics.experimental,false);assert.equal(metrics.productionIntegration,true);
+
+ if (args.includes('--require-persistence-timings')) {
+  const phases = metrics.persistenceTimings;
+  for (const name of ['restoreStage', 'storeGet', 'deserialize']) {
+   const row = phases?.[name];
+   assert(Number.isSafeInteger(row?.calls) && row.calls >= 1, name);
+   assert.equal(row.exceptions, 0, name);
+   assert(Number.isSafeInteger(row.maxNs) && row.maxNs > 0 && row.totalNs >= row.maxNs, name);
+  }
+  for (const name of ['saveStage', 'storePut', 'serialize']) {
+   assert.deepEqual(phases[name], {calls: 0, exceptions: 0, totalNs: 0, maxNs: null}, name);
+  }
+  checks.persistenceTimings = true;
+ }
+
  await action('start',{},400);checks.exclusiveStart=true;
  await action('settings',{settings:{...running.settings,prefixCache:{...prefix,quotaMiB:512}}},409);checks.settingsLocked=true;
  await request('/v1/chat/completions',{...body,max_tokens:129},422);

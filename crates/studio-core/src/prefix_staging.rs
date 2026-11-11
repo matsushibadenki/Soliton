@@ -97,6 +97,7 @@ fn inventory(root: &Path) -> io::Result<(Staging, Vec<Candidate>)> {
         let mut bytes = 0;
         let mut stale = old(&meta);
         let mut recognized = true;
+        let mut restore_temps = 0;
         let mut children = Vec::new();
         for child in fs::read_dir(item.path())? {
             scanned += 1;
@@ -113,15 +114,31 @@ fn inventory(root: &Path) -> io::Result<(Staging, Vec<Candidate>)> {
                 use std::os::unix::fs::MetadataExt;
                 recognized &= meta.uid() == unsafe { libc::geteuid() } && meta.nlink() == 1;
             }
-            recognized &=
-                child.file_name() == "identity.json" || child.file_name() == "state.safetensors";
+            let name = child.file_name();
+            let restore_temp = name.to_str().is_some_and(|name| {
+                name.strip_prefix('.')
+                    .and_then(|name| name.strip_suffix(".tmp"))
+                    .and_then(|id| uuid::Uuid::parse_str(id).ok().map(|uuid| (id, uuid)))
+                    .is_some_and(|(id, uuid)| uuid.get_version_num() == 4 && uuid.to_string() == id)
+            });
+            if restore_temp {
+                restore_temps += 1;
+                #[cfg(unix)]
+                {
+                    use std::os::unix::fs::MetadataExt;
+                    recognized &= meta.mode() & 0o077 == 0;
+                }
+            }
+            recognized &= name == "identity.json" || name == "state.safetensors" || restore_temp;
             stale &= old(&meta);
             add(&mut bytes, meta.len())?;
             children.push((child.file_name(), meta));
         }
         add(&mut result.bytes, bytes)?;
         result.directories += 1;
-        if stale && recognized {
+        let complete_payload = children.iter().any(|(name, _)| name == "state.safetensors");
+        if stale && recognized && (restore_temps == 0 || (restore_temps == 1 && !complete_payload))
+        {
             add(&mut result.stale_bytes, bytes)?;
             result.stale_directories += 1;
             // Age and filenames alone are insufficient for deletion. Require the worker identity.
@@ -400,6 +417,40 @@ mod tests {
         age(&path);
         path
     }
+    #[test]
+    fn cleanup_recovers_interrupted_restore_but_preserves_ambiguous_files() {
+        use std::os::unix::fs::PermissionsExt;
+        let f = Fixture::new();
+        let interrupted = orphan(&f, "stage-abcdefgh");
+        let ambiguous = orphan(&f, "stage-ijklmnop");
+        let unknown = orphan(&f, "stage-qrstuvwx");
+        for (folder, name, keep_payload) in [
+            (
+                &interrupted,
+                format!(".{}.tmp", uuid::Uuid::new_v4()),
+                false,
+            ),
+            (&ambiguous, format!(".{}.tmp", uuid::Uuid::new_v4()), true),
+            (&unknown, ".user.tmp".to_owned(), false),
+        ] {
+            if !keep_payload {
+                fs::remove_file(folder.join("state.safetensors")).unwrap();
+            }
+            let temp = folder.join(name);
+            fs::write(&temp, b"partial restore").unwrap();
+            fs::set_permissions(&temp, fs::Permissions::from_mode(0o600)).unwrap();
+            age(&temp);
+            age(folder);
+        }
+        assert_eq!(inspect(&f.0).unwrap().cleanable_directories, 1);
+        let result = cleanup(&f.0).unwrap();
+        assert_eq!(result.removed_directories, 1);
+        assert_eq!(result.removed_files, 2);
+        assert!(!interrupted.exists());
+        assert!(ambiguous.exists());
+        assert!(unknown.exists());
+    }
+
     #[test]
     fn cleanup_only_removes_old_identified_orphans_and_is_idempotent() {
         let f = Fixture::new();

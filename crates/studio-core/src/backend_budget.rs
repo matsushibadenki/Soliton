@@ -225,7 +225,7 @@ fn merge_retained_wrapper(reading: &mut Reading, value: &Value, expected_limit: 
         }
     }
 }
-async fn bounded_json(
+pub(crate) async fn bounded_json(
     mut response: reqwest::Response,
     remaining: usize,
 ) -> Result<(Value, usize), &'static str> {

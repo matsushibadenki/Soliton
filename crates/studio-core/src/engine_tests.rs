@@ -922,3 +922,59 @@ async fn launch_spans_follow_real_launch_restart_failure_and_stop() {
     assert!(s.snapshot().await["startup"].is_null());
     std::fs::remove_dir_all(dir).unwrap();
 }
+
+#[cfg(unix)]
+#[tokio::test]
+async fn prefix_metrics_reject_oversized_worker_response() {
+    let s = studio();
+    s.settings.write().await.engine = Engine::MlxPrefix;
+    let padding = Arc::new(AtomicUsize::new(0));
+    let response_padding = padding.clone();
+    let router = Router::new().route(
+        "/studio/ssd-cache",
+        get(move || async move {
+            Json(json!({
+                "identity": "fixture",
+                "padding": "x".repeat(response_padding.load(Ordering::SeqCst)),
+            }))
+        }),
+    );
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let port = listener.local_addr().unwrap().port();
+    let server = tokio::spawn(async move { axum::serve(listener, router).await.unwrap() });
+    {
+        let mut process = s.process.lock().await;
+        process.port = port;
+        process.memory = Some(json!({"prefixIdentity": "fixture"}));
+        process.child = Some(
+            Command::new("/bin/sleep")
+                .arg("30")
+                .kill_on_drop(true)
+                .spawn()
+                .unwrap(),
+        );
+    }
+    let mut headers = HeaderMap::new();
+    headers.insert("x-studio-token", s.token.parse().unwrap());
+    assert_eq!(
+        prefix_stats(State(s.clone()), headers.clone())
+            .await
+            .status(),
+        StatusCode::OK
+    );
+    padding.store(64 * 1024, Ordering::SeqCst);
+    assert_eq!(
+        prefix_stats(State(s.clone()), headers).await.status(),
+        StatusCode::BAD_GATEWAY
+    );
+    s.process
+        .lock()
+        .await
+        .child
+        .take()
+        .unwrap()
+        .kill()
+        .await
+        .unwrap();
+    server.abort();
+}

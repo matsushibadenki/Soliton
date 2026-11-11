@@ -23,6 +23,19 @@ def annotate_http_error(error):
     return error
 
 
+def publish_evidence(output, report, identity, quota):
+    """Validate a complete private report before atomically publishing it."""
+    with tempfile.TemporaryDirectory(prefix='.ssd-evidence-', dir=output.parent) as staging:
+        candidate = Path(staging) / 'evidence.json'
+        fd = os.open(candidate, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o600)
+        with os.fdopen(fd, 'w') as file:
+            json.dump(report, file, indent=2)
+            file.flush()
+            os.fsync(file.fileno())
+        verify_evidence(candidate, identity, quota)
+        os.link(candidate, output)
+
+
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--python',required=True,type=Path)
@@ -37,6 +50,10 @@ def main():
     args=parser.parse_args()
     if args.require_eviction and not 64 <= args.quota_mib <= 256: parser.error('Eviction pressure fixture requires 64–256 MiB quota')
     if args.output.exists(): parser.error('Evidence output already exists; choose a new file')
+    try:
+        from transformers import AutoTokenizer
+    except ImportError as error:
+        parser.error(f'Run the controller with the selected MLX Python and its Transformers dependency: {error}')
     args.cache_root.mkdir(mode=0o700,exist_ok=True)
     root=Path(__file__).resolve().parent
     token=secrets.token_hex(24)
@@ -163,7 +180,6 @@ def main():
         stop()
         start()
         # Use the same installed tokenizer/template without loading a second model.
-        from transformers import AutoTokenizer
         tokenizer=AutoTokenizer.from_pretrained(str(args.model),local_files_only=True,trust_remote_code=False)
         boundary=None
         for n in range(512):
@@ -252,9 +268,7 @@ def main():
             quota_bytes=args.quota_mib*1024**2,created_at=time.time(),duration_seconds=elapsed,successes=successes,
             failures=0,requires_eviction=args.require_eviction,eviction_pressure=eviction_pressure,rss_growth_bytes=max(0,peak-base),gates=gates,final_counters=final)
         if not args.preflight:
-            fd=os.open(args.output,os.O_CREAT|os.O_EXCL|os.O_WRONLY,0o600)
-            with os.fdopen(fd,'w') as file:json.dump(report,file,indent=2);file.flush();os.fsync(file.fileno())
-            verify_evidence(args.output,identity,args.quota_mib*1024**2)
+            publish_evidence(args.output, report, identity, args.quota_mib * 1024**2)
         print(json.dumps(report),flush=True)
     finally:
         stop();logfile.close()

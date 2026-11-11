@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.7 — 2026-11-12
+
+- SSD cache restore copies and validates the payload in one pass. Median CLI restore time fell from 48.25 ms to 33.69 ms in the matched synthetic workload using optimized builds.
+- Added bounded persistence diagnostics, verified publication of qualification evidence, and cleanup of interrupted restore files while the engine is stopped.
+- The optional Gemma2 SSD profile passed 1,800.509 seconds with 6,582 successes, zero failures and 784 KiB sampled peak RSS growth. All 18 Rust-managed checks passed. [Scope and measurements](docs/SSD_PREFIX_CACHE.md#single-pass-ssd-restore).
+
 ## 0.1.6 — 2026-11-10
 
 - Added optional Rust launcher preparation/process-spawn wall times across all five launch paths while preserving readiness timing origins.

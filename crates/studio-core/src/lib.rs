@@ -1339,14 +1339,17 @@ async fn prefix_stats(State(s): State<Arc<Studio>>, h: HeaderMap) -> Response {
         .send()
         .await
     {
-        Ok(reply) if reply.status().is_success() => match reply.json::<Value>().await {
-            Ok(value)
-                if identity.is_some() && value["identity"].as_str() == identity.as_deref() =>
-            {
-                Json(value).into_response()
+        Ok(reply) if reply.status().is_success() => {
+            match backend_budget::bounded_json(reply, 64 * 1024).await {
+                Ok((value, _))
+                    if identity.is_some() && value["identity"].as_str() == identity.as_deref() =>
+                {
+                    Json(value).into_response()
+                }
+                Ok(_) => error(StatusCode::BAD_GATEWAY, "MLX SSD metrics identity mismatch"),
+                Err(message) => error(StatusCode::BAD_GATEWAY, message),
             }
-            _ => error(StatusCode::BAD_GATEWAY, "MLX SSD metrics identity mismatch"),
-        },
+        }
         _ => error(
             StatusCode::SERVICE_UNAVAILABLE,
             "MLX SSD metrics unavailable",
