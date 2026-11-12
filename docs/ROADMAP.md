@@ -27,7 +27,36 @@ This priority order supersedes older engine-related Next entries below; historic
 - 🟢 [Done] Stopped-engine staging cleanup recognizes a private partial file left by single-pass restore. The age, worker identity, ownership and link-count checks still apply. Regression tests preserve ambiguous and unknown files.
 - 🟢 [Done] Single-pass SSD restore passed fresh local qualification at 512 tokens and 256 MiB. The full run took 1,800.509 seconds, with 6,582 successes, zero failures and 784 KiB peak sampled RSS growth. All 18 isolated Rust-managed checks passed, including restart reuse, timing telemetry, identity refusals and process cleanup. [Evidence summary](evaluation/ssd-single-pass-qualification-20261112.json).
 - 🟢 [Done] 0.1.2 milestone: optional1536MiB retained-KV profile. Symmetric1024/1536/2048/2048/1536/1024 pilot108 requests preserved full answers/counts;1536 had12/12 full revisits versus0/12 at1024, recomputed47112→12 tokens, observed direct first-content median8351.75→94.79ms, sampled owned physical +475.62MiB. Short/decode tradeoffs are explicit;2048 has an ineligible CPU window and is not selected from its latency. Fresh1536 qualification1800.123s /12167 successes /zero failures /671744-byte peak RSS growth, clean shutdown. Shared API36 cases +3 exact boundaries/3 refusals and9-request pressure/eviction/reheat, wrong1024-evidence refusal and recovery passed. Default/ordinary settings unchanged. Seven comparator/five baseline/160 Rust tests and frontend/server/Tauri builds pass. [Scope and evidence](INFERENCE.md#optional-retained-kv-15-gib--2026-11-08).
-- 🟠 [Next] P1 follow-up: larger mixed practical working sets and cache-cost observations. Preserve qualified max bytes and OS headroom; no dynamic unqualified budget changes or universal default promotion from the three-history pilot.
+- 🟢 [Done] P1 mixed KV workload tooling. The opt-in `--mixed` mode interleaves three short prompts with 13 long histories in 33 requests. It records cache reuse, uncached tokens, response time, retained bytes and host headroom. Loopback checks passed the full plan and owned-engine stop on an over-budget response.
+- 🟢 [Done] Mixed KV reports now bind the qualification file digest and reject samples from a different engine session. Phase totals, peak retained bytes and minimum available memory passed loopback checks.
+- 🟢 [Done] Reuse exact input counts for the reviewed Gemma tokenizer. Each worker retains up to 128 digests and counts. Changed text or template settings trigger a fresh count. Model file checks and output reservation checks apply to every request. [Measurements](evaluation/exact-token-count-reuse-20261112.json).
+- 🟢 [Done] Reduced tokenizer file-check overhead with a single metadata read per file and directory-entry scanning. Linked tokenizer file mutation still invalidates cached counts. In four local CPU trials, median file scan fell from 8.21 to 1.68 ms, first count from 24.16 to 8.34 ms, and repeated count from 17.52 to 3.37 ms. All 80 counts per trial matched. [Measurements](evaluation/token-stamp-comparison-20261112.json).
+
+日本語：計数前後のファイル照合を高速化し、リンク先の変更も検出します。実トークナイザーで計数一致を確認しました。
+
+简体中文：加快计数前后的文件校验，继续检测链接目标的变更。真实分词器的计数结果一致。
+- 🔴 [Later] Study change-driven inference and selective training on small comparison models. Measure routing overhead, quality and total work before changing the inference or training architecture.
+- 🟢 [Done] Gemma2 / MLX-LM 0.32.2 requalification passed 1,800.058 seconds, 11,770 successes, zero failures, 304 KiB sampled peak RSS growth and clean shutdown. The same evidence authorized the 4,096-token / 1,536 MiB mixed run. All 33 requests passed. Six of nine repeated short prompts reused all but one token. After churn, the long anchor reused 7 of 3,935 tokens and the immediate repeat reused 3,934. Peak retained KV was 1,250.74 MiB, with at least 4.50 GiB of sampled available host memory. [Measurements](evaluation/mixed-kv-20261112.json).
+
+日本語：30分の再資格確認と、短文・長履歴を混ぜた33件の実モデル計測が完了。短文の再入力9件のうち6件で、入力末尾の1トークンを除いて再利用できた。
+
+简体中文：已完成30分钟重新认证及33次短提示和长历史混合实测。9次重复短提示中有6次复用了除最后一个令牌以外的全部输入。
+- 🟢 [Done] Mixed KV reports quantify exact-repeat reuse opportunity. In the qualified 33-request trace, perfect retention for all 17 repeated prompts could save at most 4,173 of 55,559 uncached tokens (7.51%), assuming the final prompt token still runs and all other requests stay as measured. Fresh long histories alone accounted for 47,113 uncached tokens. Prioritize long-history prefill before a larger budget for exact repeats. [Measurements](evaluation/mixed-kv-20261112.json).
+
+日本語：実測33件では、同一入力の再利用を最大化しても削減できる未キャッシュトークンは7.51%でした。新規長履歴のprefillを先に検証します。
+
+简体中文：在33次实测中，最大化相同输入的复用最多可减少7.51%的未缓存令牌。优先验证新增长历史的预填充性能。
+- 🟢 [Done] Added opt-in prefill wall spans to mixed KV reports. In the first real-model run, 24 requests passed the per-request checks. Ten fresh long histories accounted for 80.20 of the 87.91 seconds of recorded prefill wall time (91.2%). Request 25 crossed the existing 4 GiB host headroom floor and stopped the run. The timing is a partial baseline based on host wall time without added GPU synchronization.
+
+日本語：24件の途中集計では、新規長履歴10件がprefill計測時間の91.2%を占めました。25件目でホスト空きメモリが4 GiBを下回り、計測を終了しました。
+
+简体中文：已通过检查的24次请求中，10次新增长历史占预填充计时的91.2%。第25次请求触发4 GiB主机可用内存下限，测试结束。
+- 🟠 [Next] Reduce work on fresh long histories. Use `verify-kv-pressure.mjs --mixed --prefill-spans` to compare prefill by workload phase on the qualified 4,096-token profile. Test exact prefix reuse on growing conversations and prefill chunk sizes separately. Compare answer and token-count parity, first-content latency and peak memory before promoting a candidate.
+- 🔴 [Later] Compare speculative decoding on decode-heavy requests and continuous batching under concurrent requests. Evaluate model cascades offline with routing errors, fallback cost and response quality included. Treat adaptive layer/head/Expert skipping as a separate research track with quality and end-to-end cost measurements.
+
+日本語：新規長履歴のprefillを優先し、会話の追記で共有できる接頭辞とprefillの分割幅を個別に比較します。先読み生成、バッチ処理、モデル振り分けは対象の負荷ごとに評価します。
+
+简体中文：优先优化新增长历史的预填充，分别比较对话追加时的精确前缀复用和预填充分块大小。推测解码、连续批处理与模型路由按各自适用的负载评估。
 - ⭕️ [Pending] Controlled2048MiB latency comparison, other-Mac/profile checks and signed native distribution. Current1536 option is qualified only for the exact fixed runtime/model/Mac.
 - 🔴 [Later] Review selective SSD persistence and synchronous save/CLI/staging costs after the primary RAM-retention comparison; preserve bounded snapshot memory and safe cancellation/stop ownership.
 - 🔴 [Later] P2: prefill/KV memory tuning, selective/deferred SSD writes and longer-prefix storage after source/model review. Do not expand the SSD context or add asynchronous GPU-state access mechanically.

@@ -1,0 +1,775 @@
+{
+  "result": "passed",
+  "scope": "Qualified shared API, more histories than retained capacity; functional cap/recompute/reheat verification, no controlled performance claim",
+  "samples": [
+    {
+      "phase": "cold",
+      "index": 0,
+      "language": "en",
+      "promptTokens": 3935,
+      "cachedTokens": 0,
+      "uncachedTokens": 3935,
+      "responseMs": 13985.557417000002,
+      "kv": {
+        "bytes": 420126720,
+        "entries": 1,
+        "limitBytes": 1610612736
+      },
+      "availableBytes": 8050540544,
+      "engineMemory": {
+        "processCount": 2,
+        "rootBytes": 69386960,
+        "sampledAt": 1794443891825,
+        "usedBytes": 2907098064
+      }
+    },
+    {
+      "phase": "hot",
+      "index": 0,
+      "language": "en",
+      "promptTokens": 3935,
+      "cachedTokens": 3934,
+      "uncachedTokens": 1,
+      "responseMs": 353.31141699999716,
+      "kv": {
+        "bytes": 420126720,
+        "entries": 1,
+        "limitBytes": 1610612736
+      },
+      "availableBytes": 7838580736,
+      "engineMemory": {
+        "processCount": 2,
+        "rootBytes": 64324304,
+        "sampledAt": 1794443892189,
+        "usedBytes": 3128576976
+      }
+    },
+    {
+      "phase": "churn",
+      "index": 1,
+      "language": "ja",
+      "promptTokens": 3937,
+      "cachedTokens": 8,
+      "uncachedTokens": 3929,
+      "responseMs": 14066.072249999997,
+      "kv": {
+        "bytes": 840466432,
+        "entries": 2,
+        "limitBytes": 1610612736
+      },
+      "availableBytes": 7241728000,
+      "engineMemory": {
+        "processCount": 2,
+        "rootBytes": 64373456,
+        "sampledAt": 1794443906269,
+        "usedBytes": 3324922808
+      }
+    },
+    {
+      "phase": "short",
+      "index": 0,
+      "language": "en",
+      "promptTokens": 152,
+      "cachedTokens": 4,
+      "uncachedTokens": 148,
+      "responseMs": 946.3627500000002,
+      "kv": {
+        "bytes": 857718784,
+        "entries": 3,
+        "limitBytes": 1610612736
+      },
+      "availableBytes": 7595393024,
+      "engineMemory": {
+        "processCount": 2,
+        "rootBytes": 64373456,
+        "sampledAt": 1794443907228,
+        "usedBytes": 2923498424
+      }
+    },
+    {
+      "phase": "churn",
+      "index": 2,
+      "language": "zh",
+      "promptTokens": 3930,
+      "cachedTokens": 8,
+      "uncachedTokens": 3922,
+      "responseMs": 14852.576000000001,
+      "kv": {
+        "bytes": 1277313024,
+        "entries": 4,
+        "limitBytes": 1610612736
+      },
+      "availableBytes": 6481575936,
+      "engineMemory": {
+        "processCount": 2,
+        "rootBytes": 64406224,
+        "sampledAt": 1794443922092,
+        "usedBytes": 3790277560
+      }
+    },
+    {
+      "phase": "short",
+      "index": 1,
+      "language": "ja",
+      "promptTokens": 154,
+      "cachedTokens": 64,
+      "uncachedTokens": 90,
+      "responseMs": 655.8004170000058,
+      "kv": {
+        "bytes": 1294778368,
+        "entries": 5,
+        "limitBytes": 1610612736
+      },
+      "availableBytes": 6331678720,
+      "engineMemory": {
+        "processCount": 2,
+        "rootBytes": 64406224,
+        "sampledAt": 1794443922757,
+        "usedBytes": 3390000056
+      }
+    },
+    {
+      "phase": "churn",
+      "index": 3,
+      "language": "en",
+      "promptTokens": 3935,
+      "cachedTokens": 8,
+      "uncachedTokens": 3927,
+      "responseMs": 12932.430624999994,
+      "kv": {
+        "bytes": 1294778368,
+        "entries": 5,
+        "limitBytes": 1610612736
+      },
+      "availableBytes": 6760038400,
+      "engineMemory": {
+        "processCount": 2,
+        "rootBytes": 64422608,
+        "sampledAt": 1794443935701,
+        "usedBytes": 3814443960
+      }
+    },
+    {
+      "phase": "short",
+      "index": 2,
+      "language": "zh",
+      "promptTokens": 147,
+      "cachedTokens": 64,
+      "uncachedTokens": 83,
+      "responseMs": 453.8165000000008,
+      "kv": {
+        "bytes": 1311498240,
+        "entries": 6,
+        "limitBytes": 1610612736
+      },
+      "availableBytes": 7149633536,
+      "engineMemory": {
+        "processCount": 2,
+        "rootBytes": 64422608,
+        "sampledAt": 1794443936166,
+        "usedBytes": 3420572600
+      }
+    },
+    {
+      "phase": "recent",
+      "index": 3,
+      "language": "en",
+      "promptTokens": 3935,
+      "cachedTokens": 3934,
+      "uncachedTokens": 1,
+      "responseMs": 342.1576249999998,
+      "kv": {
+        "bytes": 891158528,
+        "entries": 5,
+        "limitBytes": 1610612736
+      },
+      "availableBytes": 6927826944,
+      "engineMemory": {
+        "processCount": 2,
+        "rootBytes": 64422608,
+        "sampledAt": 1794443936519,
+        "usedBytes": 3636415416
+      }
+    },
+    {
+      "phase": "churn",
+      "index": 4,
+      "language": "ja",
+      "promptTokens": 3937,
+      "cachedTokens": 8,
+      "uncachedTokens": 3929,
+      "responseMs": 12831.629958000005,
+      "kv": {
+        "bytes": 1311498240,
+        "entries": 6,
+        "limitBytes": 1610612736
+      },
+      "availableBytes": 6620299264,
+      "engineMemory": {
+        "processCount": 2,
+        "rootBytes": 64422608,
+        "sampledAt": 1794443949363,
+        "usedBytes": 3857927096
+      }
+    },
+    {
+      "phase": "short",
+      "index": 0,
+      "language": "en",
+      "promptTokens": 152,
+      "cachedTokens": 151,
+      "uncachedTokens": 1,
+      "responseMs": 235.60312499999418,
+      "kv": {
+        "bytes": 1311498240,
+        "entries": 6,
+        "limitBytes": 1610612736
+      },
+      "availableBytes": 6558400512,
+      "engineMemory": {
+        "processCount": 2,
+        "rootBytes": 64422608,
+        "sampledAt": 1794443949609,
+        "usedBytes": 3918351288
+      }
+    },
+    {
+      "phase": "churn",
+      "index": 5,
+      "language": "zh",
+      "promptTokens": 3930,
+      "cachedTokens": 8,
+      "uncachedTokens": 3922,
+      "responseMs": 12795.654249999992,
+      "kv": {
+        "bytes": 1311498240,
+        "entries": 6,
+        "limitBytes": 1610612736
+      },
+      "availableBytes": 6167756800,
+      "engineMemory": {
+        "processCount": 2,
+        "rootBytes": 64438992,
+        "sampledAt": 1794443962417,
+        "usedBytes": 3899722680
+      }
+    },
+    {
+      "phase": "short",
+      "index": 1,
+      "language": "ja",
+      "promptTokens": 154,
+      "cachedTokens": 153,
+      "uncachedTokens": 1,
+      "responseMs": 226.87574999999197,
+      "kv": {
+        "bytes": 1311498240,
+        "entries": 6,
+        "limitBytes": 1610612736
+      },
+      "availableBytes": 6087262208,
+      "engineMemory": {
+        "processCount": 2,
+        "rootBytes": 64438992,
+        "sampledAt": 1794443962651,
+        "usedBytes": 3979234232
+      }
+    },
+    {
+      "phase": "churn",
+      "index": 6,
+      "language": "en",
+      "promptTokens": 3935,
+      "cachedTokens": 8,
+      "uncachedTokens": 3927,
+      "responseMs": 12667.453582999995,
+      "kv": {
+        "bytes": 1294778368,
+        "entries": 5,
+        "limitBytes": 1610612736
+      },
+      "availableBytes": 6015172608,
+      "engineMemory": {
+        "processCount": 2,
+        "rootBytes": 64438992,
+        "sampledAt": 1794443975332,
+        "usedBytes": 3849505720
+      }
+    },
+    {
+      "phase": "short",
+      "index": 2,
+      "language": "zh",
+      "promptTokens": 147,
+      "cachedTokens": 64,
+      "uncachedTokens": 83,
+      "responseMs": 472.518624999997,
+      "kv": {
+        "bytes": 1311498240,
+        "entries": 6,
+        "limitBytes": 1610612736
+      },
+      "availableBytes": 6438141952,
+      "engineMemory": {
+        "processCount": 2,
+        "rootBytes": 64438992,
+        "sampledAt": 1794443975817,
+        "usedBytes": 3433319352
+      }
+    },
+    {
+      "phase": "recent",
+      "index": 6,
+      "language": "en",
+      "promptTokens": 3935,
+      "cachedTokens": 3934,
+      "uncachedTokens": 1,
+      "responseMs": 341.2177920000104,
+      "kv": {
+        "bytes": 891158528,
+        "entries": 5,
+        "limitBytes": 1610612736
+      },
+      "availableBytes": 6263472128,
+      "engineMemory": {
+        "processCount": 2,
+        "rootBytes": 64438992,
+        "sampledAt": 1794443976169,
+        "usedBytes": 3645934520
+      }
+    },
+    {
+      "phase": "churn",
+      "index": 7,
+      "language": "ja",
+      "promptTokens": 3937,
+      "cachedTokens": 8,
+      "uncachedTokens": 3929,
+      "responseMs": 15670.793208000003,
+      "kv": {
+        "bytes": 1311498240,
+        "entries": 6,
+        "limitBytes": 1610612736
+      },
+      "availableBytes": 5556862976,
+      "engineMemory": {
+        "processCount": 2,
+        "rootBytes": 44352208,
+        "sampledAt": 1794443991853,
+        "usedBytes": 3847359416
+      }
+    },
+    {
+      "phase": "short",
+      "index": 0,
+      "language": "en",
+      "promptTokens": 152,
+      "cachedTokens": 151,
+      "uncachedTokens": 1,
+      "responseMs": 317.08316699998977,
+      "kv": {
+        "bytes": 1311498240,
+        "entries": 6,
+        "limitBytes": 1610612736
+      },
+      "availableBytes": 5495832576,
+      "engineMemory": {
+        "processCount": 2,
+        "rootBytes": 44352208,
+        "sampledAt": 1794443992187,
+        "usedBytes": 3907750840
+      }
+    },
+    {
+      "phase": "churn",
+      "index": 8,
+      "language": "zh",
+      "promptTokens": 3930,
+      "cachedTokens": 8,
+      "uncachedTokens": 3922,
+      "responseMs": 15616.601958,
+      "kv": {
+        "bytes": 1311498240,
+        "entries": 6,
+        "limitBytes": 1610612736
+      },
+      "availableBytes": 5058543616,
+      "engineMemory": {
+        "processCount": 2,
+        "rootBytes": 44352208,
+        "sampledAt": 1794444007822,
+        "usedBytes": 3889925072
+      }
+    },
+    {
+      "phase": "short",
+      "index": 1,
+      "language": "ja",
+      "promptTokens": 154,
+      "cachedTokens": 153,
+      "uncachedTokens": 1,
+      "responseMs": 300.9224169999943,
+      "kv": {
+        "bytes": 1311498240,
+        "entries": 6,
+        "limitBytes": 1610612736
+      },
+      "availableBytes": 4963450880,
+      "engineMemory": {
+        "processCount": 2,
+        "rootBytes": 44352208,
+        "sampledAt": 1794444008149,
+        "usedBytes": 3940469712
+      }
+    },
+    {
+      "phase": "churn",
+      "index": 9,
+      "language": "en",
+      "promptTokens": 3935,
+      "cachedTokens": 8,
+      "uncachedTokens": 3927,
+      "responseMs": 15461.647208999988,
+      "kv": {
+        "bytes": 1294778368,
+        "entries": 5,
+        "limitBytes": 1610612736
+      },
+      "availableBytes": 5389369344,
+      "engineMemory": {
+        "processCount": 2,
+        "rootBytes": 44352208,
+        "sampledAt": 1794444023631,
+        "usedBytes": 3829451728
+      }
+    },
+    {
+      "phase": "short",
+      "index": 2,
+      "language": "zh",
+      "promptTokens": 147,
+      "cachedTokens": 64,
+      "uncachedTokens": 83,
+      "responseMs": 624.1179590000247,
+      "kv": {
+        "bytes": 1311498240,
+        "entries": 6,
+        "limitBytes": 1610612736
+      },
+      "availableBytes": 5820907520,
+      "engineMemory": {
+        "processCount": 2,
+        "rootBytes": 44352208,
+        "sampledAt": 1794444024267,
+        "usedBytes": 3413248976
+      }
+    },
+    {
+      "phase": "recent",
+      "index": 9,
+      "language": "en",
+      "promptTokens": 3935,
+      "cachedTokens": 3934,
+      "uncachedTokens": 1,
+      "responseMs": 396.8740420000104,
+      "kv": {
+        "bytes": 891158528,
+        "entries": 5,
+        "limitBytes": 1610612736
+      },
+      "availableBytes": 5479284736,
+      "engineMemory": {
+        "processCount": 2,
+        "rootBytes": 44352208,
+        "sampledAt": 1794444024676,
+        "usedBytes": 3682520016
+      }
+    },
+    {
+      "phase": "churn",
+      "index": 10,
+      "language": "ja",
+      "promptTokens": 3937,
+      "cachedTokens": 7,
+      "uncachedTokens": 3930,
+      "responseMs": 12466.162374999985,
+      "kv": {
+        "bytes": 1311498240,
+        "entries": 6,
+        "limitBytes": 1610612736
+      },
+      "availableBytes": 4896833536,
+      "engineMemory": {
+        "processCount": 2,
+        "rootBytes": 44352208,
+        "sampledAt": 1794444037151,
+        "usedBytes": 3847408592
+      }
+    },
+    {
+      "phase": "short",
+      "index": 0,
+      "language": "en",
+      "promptTokens": 152,
+      "cachedTokens": 151,
+      "uncachedTokens": 1,
+      "responseMs": 245.5350829999952,
+      "kv": {
+        "bytes": 1311498240,
+        "entries": 6,
+        "limitBytes": 1610612736
+      },
+      "availableBytes": 4836147200,
+      "engineMemory": {
+        "processCount": 2,
+        "rootBytes": 44352208,
+        "sampledAt": 1794444037407,
+        "usedBytes": 3907800016
+      }
+    },
+    {
+      "phase": "churn",
+      "index": 11,
+      "language": "zh",
+      "promptTokens": 3930,
+      "cachedTokens": 8,
+      "uncachedTokens": 3922,
+      "responseMs": 12035.30691699998,
+      "kv": {
+        "bytes": 1311498240,
+        "entries": 6,
+        "limitBytes": 1610612736
+      },
+      "availableBytes": 5499797504,
+      "engineMemory": {
+        "processCount": 2,
+        "rootBytes": 44352208,
+        "sampledAt": 1794444049456,
+        "usedBytes": 3873721296
+      }
+    },
+    {
+      "phase": "short",
+      "index": 1,
+      "language": "ja",
+      "promptTokens": 154,
+      "cachedTokens": 153,
+      "uncachedTokens": 1,
+      "responseMs": 231.00908399999025,
+      "kv": {
+        "bytes": 1311498240,
+        "entries": 6,
+        "limitBytes": 1610612736
+      },
+      "availableBytes": 5444796416,
+      "engineMemory": {
+        "processCount": 2,
+        "rootBytes": 44352208,
+        "sampledAt": 1794444049699,
+        "usedBytes": 3926805456
+      }
+    },
+    {
+      "phase": "churn",
+      "index": 12,
+      "language": "en",
+      "promptTokens": 3935,
+      "cachedTokens": 8,
+      "uncachedTokens": 3927,
+      "responseMs": 12445.84387500002,
+      "kv": {
+        "bytes": 1294778368,
+        "entries": 5,
+        "limitBytes": 1610612736
+      },
+      "availableBytes": 5132550144,
+      "engineMemory": {
+        "processCount": 2,
+        "rootBytes": 44352208,
+        "sampledAt": 1794444062160,
+        "usedBytes": 3813264336
+      }
+    },
+    {
+      "phase": "short",
+      "index": 2,
+      "language": "zh",
+      "promptTokens": 147,
+      "cachedTokens": 64,
+      "uncachedTokens": 83,
+      "responseMs": 444.88750000001164,
+      "kv": {
+        "bytes": 1311498240,
+        "entries": 6,
+        "limitBytes": 1610612736
+      },
+      "availableBytes": 5591318528,
+      "engineMemory": {
+        "processCount": 2,
+        "rootBytes": 44352208,
+        "sampledAt": 1794444062618,
+        "usedBytes": 3397061584
+      }
+    },
+    {
+      "phase": "recent",
+      "index": 12,
+      "language": "en",
+      "promptTokens": 3935,
+      "cachedTokens": 3934,
+      "uncachedTokens": 1,
+      "responseMs": 328.1772500000079,
+      "kv": {
+        "bytes": 891158528,
+        "entries": 5,
+        "limitBytes": 1610612736
+      },
+      "availableBytes": 5296177152,
+      "engineMemory": {
+        "processCount": 2,
+        "rootBytes": 44352208,
+        "sampledAt": 1794444062959,
+        "usedBytes": 3687353296
+      }
+    },
+    {
+      "phase": "revisit",
+      "index": 0,
+      "language": "en",
+      "promptTokens": 3935,
+      "cachedTokens": 7,
+      "uncachedTokens": 3928,
+      "responseMs": 13663.435874999996,
+      "kv": {
+        "bytes": 1311285248,
+        "entries": 6,
+        "limitBytes": 1610612736
+      },
+      "availableBytes": 5044289536,
+      "engineMemory": {
+        "processCount": 2,
+        "rootBytes": 44368592,
+        "sampledAt": 1794444076638,
+        "usedBytes": 3847359440
+      }
+    },
+    {
+      "phase": "reheat",
+      "index": 0,
+      "language": "en",
+      "promptTokens": 3935,
+      "cachedTokens": 3934,
+      "uncachedTokens": 1,
+      "responseMs": 415.85604199999943,
+      "kv": {
+        "bytes": 874438656,
+        "entries": 4,
+        "limitBytes": 1610612736
+      },
+      "availableBytes": 5270732800,
+      "engineMemory": {
+        "processCount": 2,
+        "rootBytes": 44368592,
+        "sampledAt": 1794444077067,
+        "usedBytes": 3659975632
+      }
+    },
+    {
+      "phase": "recent",
+      "index": 12,
+      "language": "en",
+      "promptTokens": 3935,
+      "cachedTokens": 3934,
+      "uncachedTokens": 1,
+      "responseMs": 408.36679100000765,
+      "kv": {
+        "bytes": 874438656,
+        "entries": 4,
+        "limitBytes": 1610612736
+      },
+      "availableBytes": 5791891456,
+      "engineMemory": {
+        "processCount": 2,
+        "rootBytes": 44368592,
+        "sampledAt": 1794444077490,
+        "usedBytes": 3636661200
+      }
+    }
+  ],
+  "workload": "mixed",
+  "evidenceSha256": "f38611bf042a1c633aa7675b16e7d18962aaf6586b27950c4606787a29794109",
+  "engineSession": "eae409ed-5d25-49f6-b720-27b499337225",
+  "shortReuse": {
+    "repeats": 9,
+    "fullHits": 6,
+    "uncachedTokens": 255
+  },
+  "totalsByPhase": {
+    "cold": {
+      "requests": 1,
+      "promptTokens": 3935,
+      "cachedTokens": 0,
+      "uncachedTokens": 3935
+    },
+    "hot": {
+      "requests": 1,
+      "promptTokens": 3935,
+      "cachedTokens": 3934,
+      "uncachedTokens": 1
+    },
+    "churn": {
+      "requests": 12,
+      "promptTokens": 47208,
+      "cachedTokens": 95,
+      "uncachedTokens": 47113
+    },
+    "short": {
+      "requests": 12,
+      "promptTokens": 1812,
+      "cachedTokens": 1236,
+      "uncachedTokens": 576
+    },
+    "recent": {
+      "requests": 5,
+      "promptTokens": 19675,
+      "cachedTokens": 19670,
+      "uncachedTokens": 5
+    },
+    "revisit": {
+      "requests": 1,
+      "promptTokens": 3935,
+      "cachedTokens": 7,
+      "uncachedTokens": 3928
+    },
+    "reheat": {
+      "requests": 1,
+      "promptTokens": 3935,
+      "cachedTokens": 3934,
+      "uncachedTokens": 1
+    }
+  },
+  "peakRetainedBytes": 1311498240,
+  "minimumAvailableBytes": 4836147200,
+  "historyPreserved": true,
+  "qualification": {
+    "elapsedSeconds": 1800.058,
+    "successes": 11770,
+    "failures": 0,
+    "peakRssGrowthBytes": 311296,
+    "cleanShutdown": true,
+    "limits": {
+      "concurrency": 1,
+      "context_tokens": 4096
+    },
+    "backendVersions": {
+      "mlx_lm": "0.32.2"
+    }
+  },
+  "date": "2026-11-12",
+  "exactRepeatOpportunity": {
+    "requests": 17,
+    "observedUncachedTokens": 55559,
+    "additionalReusableTokens": 4173,
+    "remainingUncachedTokens": 51386
+  }
+}

@@ -1,18 +1,36 @@
 """Local text token counting only; no weights, downloads or remote model code."""
+from collections import OrderedDict
+import hashlib
 import json
+import os
+import stat
 import sys
 from pathlib import Path
 
 
 def stamp():
     # Tokenizer files cannot silently change under a reused object. No weights read.
-    root = Path(sys.argv[1])
     entries = []
-    for p in sorted(root.rglob("*")):
-        if p.is_file():
-            st = p.stat()
-            entries.append((str(p.relative_to(root)), st.st_dev, st.st_ino, st.st_size, st.st_mtime_ns, st.st_ctime_ns))
-    return tuple(entries)
+    pending = [(sys.argv[1], "")]
+    while pending:
+        directory, prefix = pending.pop()
+        with os.scandir(directory) as children:
+            for child in children:
+                relative = prefix + child.name
+                if child.is_dir(follow_symlinks=False):
+                    pending.append((child.path, relative + "/"))
+                    continue
+                try:
+                    info = child.stat()
+                except FileNotFoundError:
+                    if child.is_symlink():
+                        # Like pathlib's is_file, ignore dangling symlinks.
+                        continue
+                    raise
+                if stat.S_ISREG(info.st_mode):
+                    entries.append((relative, info.st_dev, info.st_ino, info.st_size,
+                                    info.st_mtime_ns, info.st_ctime_ns))
+    return tuple(sorted(entries))
 
 
 def qualified_tokenizer(root):
@@ -72,6 +90,8 @@ def qualified_tokenizer(root):
 
 before = stamp()
 tokenizer = qualified_tokenizer(Path(sys.argv[1]))
+# Only the pinned deterministic template can safely reuse a count.
+cacheable = tokenizer is not None
 if tokenizer is None:
     from transformers import AutoTokenizer
     tokenizer = AutoTokenizer.from_pretrained(sys.argv[1], local_files_only=True, trust_remote_code=False)
@@ -79,21 +99,41 @@ if stamp() != before:
     raise RuntimeError("tokenizer files changed during load")
 
 
+# Per worker, retain only fixed-size digests and integer counts.
+counts = OrderedDict()
+COUNT_CACHE_ENTRIES = 128
+
+
 def count(request):
     if stamp() != before:
         raise RuntimeError("tokenizer files changed; restart and revalidate")
     if "messages" in request:
-        tokens = tokenizer.apply_chat_template(
-            request["messages"], tokenize=True, add_generation_prompt=True, return_dict=False,
-            tools=None, **request.get("chat_template_kwargs", {})
-        )
+        inputs = {"messages": request["messages"],
+                  "chat_template_kwargs": request.get("chat_template_kwargs", {})}
     else:
-        tokens = tokenizer.encode(request["prompt"])
-    if not isinstance(tokens, list) or not all(type(token) is int for token in tokens):
-        raise RuntimeError("invalid tokenizer result")
+        inputs = {"prompt": request["prompt"]}
+    key = (hashlib.sha256(json.dumps(inputs, separators=(",", ":")).encode()).digest()
+           if cacheable else None)
+    cached = counts.get(key) if key is not None else None
+    if cached is None:
+        if "messages" in inputs:
+            tokens = tokenizer.apply_chat_template(
+                inputs["messages"], tokenize=True, add_generation_prompt=True, return_dict=False,
+                tools=None, **inputs["chat_template_kwargs"]
+            )
+        else:
+            tokens = tokenizer.encode(inputs["prompt"])
+        if not isinstance(tokens, list) or not all(type(token) is int for token in tokens):
+            raise RuntimeError("invalid tokenizer result")
+        cached = len(tokens)
     if stamp() != before:
         raise RuntimeError("tokenizer files changed during count")
-    return len(tokens)
+    if key is not None:
+        counts[key] = cached
+        counts.move_to_end(key)
+        if len(counts) > COUNT_CACHE_ENTRIES:
+            counts.popitem(last=False)
+    return cached
 
 
 if "--soliton-token-counter" in sys.argv:
