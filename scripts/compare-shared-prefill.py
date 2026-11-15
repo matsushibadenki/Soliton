@@ -39,7 +39,7 @@ def wait_for_quiet(guard):
     raise BackgroundLoadExceeded('CPU load did not settle before request')
 
 
-def measure(api, headers, host, probe, fixture, guard):
+def measure(api, headers, host, probe, fixture, guard, *, fresh_long=True):
     request = urllib.request.Request(api + '/v1/chat/completions', json.dumps(dict(
         model='default_model', messages=fixture['messages'], max_tokens=64,
         temperature=0, stream=True, stream_options={'include_usage': True},
@@ -61,8 +61,8 @@ def measure(api, headers, host, probe, fixture, guard):
                 if error.returncode != 3:
                     raise
                 missed += 1
-            stop.wait(.10)
-        assert len(physical) >= 2 and min(physical) > 0 and missed <= len(physical) / 10
+            stop.wait(.10 if fresh_long else .02)
+        assert len(physical) >= 2 and min(physical) > 0 and missed <= max(0 if fresh_long else 1, len(physical) / 10)
         return max(physical), len(physical), missed
 
     assert helpers['detect_memory']().available_bytes >= 4 * 1024**3
@@ -93,10 +93,12 @@ def measure(api, headers, host, probe, fixture, guard):
             stop.set()
         peak, count, missed = memory.result()
     cpu = guard.interval(mark, guard.mark())
-    assert done and first is not None and answer.strip() == 'STRATA-7391'
+    assert done and first is not None and answer.strip()
     prompt = usage['prompt_tokens']
     cached = usage['prompt_tokens_details']['cached_tokens']
-    assert 3500 <= prompt <= 4032 and 0 <= cached <= 64
+    assert 0 < prompt <= 4032 and 0 <= cached <= prompt
+    if fresh_long:
+        assert prompt >= 3500 and cached <= 64 and answer.strip() == 'STRATA-7391'
     available = helpers['detect_memory']().available_bytes
     assert available >= 4 * 1024**3
     return dict(language=fixture['language'], answer=answer, promptTokens=prompt,

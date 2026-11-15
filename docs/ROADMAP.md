@@ -73,6 +73,71 @@ This priority order supersedes older engine-related Next entries below; historic
 - 🟢 [Done] Verified the integrated 512 profile's recovery through the shared API. Three fresh long histories passed. The patched controller refused the previous 2,048-profile evidence with a runtime identity mismatch and reached ready after restoring the matching evidence. [Verification](evaluation/integrated-prefill512-recovery-20261115.json).
 - 🟢 [Done] Rebuilt the 512 controller from the clean base commit by applying the MLX-LM 0.32.2, internal spans and Gemma 2 prefill patches in order. The runtime source matched the qualified copy. Soliton's regular Rust engine startup accepted the matching evidence and launched with step 512. All six EN/JA/ZH seed and append requests passed through the shared API. [Application steps](../patches/README.md#rebuild-from-the-controller-base) · [Verification](evaluation/clean-prefill512-20261115.json).
 - 🟢 [Done] Applied the qualified 4,096-token prefill 512 configuration to Soliton's normal desktop settings and restarted the native app. Verified the live backend argument, an exact real-model answer through the desktop API, and equality of all six existing conversation messages in the API and on disk. [Verification](evaluation/normal-app-prefill512-20261115.json).
+- 🟢 [Done] Measured Soliton 0.1.8 prefill 512 through the normal desktop API on three synthetic practical six-turn conversations in EN/JA/ZH. All 18 streams completed within the CPU criteria. Median first output was 143.5 ms, median completion 216.8 ms, token-weighted KV reuse 76.0% overall and 79.3% on follow-ups, and sampled peak physical footprint 2,345 MiB. Existing desktop history was preserved. [Measurements](evaluation/desktop-multiturn-prefill512-20261115.json).
+- 🟢 [Done] Compared explicit format instructions for the same conversations. Strict format matches fell from 12/18 to 11/18 despite fixing the two Japanese numeric-only turns. Keep the baseline prompts. Prioritize exact-format evaluation and validation where structured output is required.
+- 🟢 [Done] Added opt-in exact output validation to the shared chat API. Send `"soliton_output_validation": {"one_of": ["OK"]}` with a single non-streaming choice. The gateway allows 1–32 strings up to 4,096 UTF-8 bytes each, trims surrounding whitespace from the generated text and checks exact equality. It returns HTTP 422 without model output on mismatch or incomplete generation. Invalid rules and streaming combinations return HTTP 400. Across 18 paired EN/JA/ZH turns on qualified Gemma 2, the strict match rate was 7/18 (38.9%) with or without validation. All seven matches passed and all eleven mismatches were rejected. Median end-to-end response was 175.0 ms without validation and 160.1 ms with validation, including rejections. Repeated requests shared a live KV cache, so the timing does not isolate validation overhead. [Measurements](evaluation/output-validation-multiturn-20261115.json).
+- 🟢 [Done] Added one opt-in output retry for vLLM-Apple. Set `"soliton_output_validation": {"one_of": ["OK"], "retry_once": true}` on a single non-streaming chat request with a final plain-text user message. When a completed answer mismatches, the gateway appends the literal format requirement to that message, checks the token budget again and tries once. It releases only a validated answer. In 18 paired EN/JA/ZH turns on prefill 512, acceptance rose from 7/18 (38.9%) to 13/18 (72.2%). Six of eleven mismatches recovered. Median completion including rejections rose from 177.0 to 330.3 ms. Adopt as an explicit option for callers that prioritize format compliance. [Measurements](evaluation/output-retry-multiturn-20261115.json).
+- 🟢 [Done] Added short retry instructions selected by `retry_language` (`en`, `ja`, `zh-CN`) with `retry_once: true`. The five prior rejections covered two `OK` acknowledgements and three composite one-line answers. The instruction displays a single allowed line directly or lists multiple candidates in JSON. In 18 paired multilingual Gemma 2 turns, acceptance rose from 13/18 to 16/18. All three composite answers recovered, and both third-turn acknowledgements remained rejected. Median response including rejections was 327.7 ms with the current instruction and 309.0 ms with the localized instruction. The observed times include shared KV effects. Adopt the localized instruction as an explicit API option and preserve the existing default. [Measurements](evaluation/output-localized-retry-multiturn-20261115.json).
+- 🟢 [Done] Compared a localized acknowledgement instruction for singleton `OK` with the existing localized retry in 18 paired Gemma 2 turns. The two outstanding cases followed explicit changes to earlier facts (room and destination). Both remained rejected; the previous time-setting acknowledgements in EN and ZH also regressed. Strict acceptance fell from 16/18 to 14/18. Median completion including rejections was 285.5 ms with the current instruction and 277.3 ms with the candidate, with shared KV effects. Keep the current localized retry in production. The candidate is available via `retry_acknowledgement: true` for explicit experiments. [Measurements](evaluation/output-ack-retry-multiturn-20261115.json).
+- 🟢 [Done] Verified a hard token constraint for singleton `OK` on the reviewed Gemma 2 tokenizer. The diagnostic masks every alternative token, generates `OK`, and then permits only EOS on a single retry. The direct MLX-LM path did not naturally reproduce the two previously rejected gateway cases. Replaying their recorded `OK.` initial mismatch reached the real-model retry path. Both modes passed all 18 turns and all three next-turn updated facts. In the two targeted cases, constrained retries returned raw `OK` and the current instruction returned `OK` with trailing whitespace, which passes the same validator. Median completion in the replay was 247.9 ms for the current instruction and 156.6 ms with the constraint. Shared KV and direct backend timing limit the comparison. Keep the current production policy. [Measurements](evaluation/ack-token-constraint-20261115.json).
+- 🟢 [Done] Compared natural mismatches through the shared API with a separately qualified diagnostic controller (1,800.127 s, 12,940 successes, zero failures). Each policy passed 18/18 turns and correctly recalled all three updated facts on the next turn. Both retried seven initial mismatches. Token masking returned exact `OK` on the three natural `OK.` mismatches (EN first turn and ZH first two turns). The current policy also accepted all three. The two previously rejected third turns matched on their first attempt. Median completion was 233.2 ms for the current policy and 158.9 ms for the diagnostic constraint, with shared KV and cold-start effects. Retain the current production policy because the diagnostic showed no acceptance improvement. [Measurements](evaluation/shared-ack-token-constraint-20261115.json).
+- 🟢 [Done] Expanded the qualified shared API comparison to nine six-turn EN/JA/ZH conversations per run. Four fresh engine sessions used current/constraint/constraint/current order and the same three warm-ups. Initial cached tokens matched at 6,822 per policy. Each policy accepted 106/108 turns, recovered 18/18 natural acknowledgement mismatches with one retry, and correctly recalled 18/18 updated facts. Median completion across all turns was 164.3 ms current and 167.3 ms constrained. On acknowledgement retries it was 334.1 ms current and 243.2 ms constrained (27.2% lower). Keep the production default because overall latency and acceptance did not improve. [Measurements](evaluation/shared-ack-controlled-20261115.json).
+- 🟢 [Done] Added the opt-in `constrain_ok_retry` to the shared API. It requires `retry_once: true`, a singleton `OK` allowlist and the exact qualified controller and evidence. The language-specific retry remains the default. Four restarted, equally warmed sessions covered 216 EN/JA/ZH turns. Both policies accepted 106/108 turns, recovered 18/18 acknowledgement retries and recalled 18/18 updated facts. Acknowledgement retry median fell from 351.0 to 249.0 ms (29.1%). All-turn median was 184.9 versus 205.6 ms. [Setup](../patches/README.md#qualified-singleton-acknowledgement-constraint) · [Measurements](evaluation/shared-ack-option-20261115.json).
+- 🟢 [Done] Replayed all four controller patches from the clean base. The source matched the qualified acknowledgement controller and the shared API ran constrained retries on natural EN/ZH mismatches. The gateway rejected a non-`OK` allowlist with HTTP 400. The patched controller refused prefill-only evidence, and the original controller with its valid evidence rejected the option with HTTP 422. The default localized retry worked on both controllers. Restoring the matching pair recovered startup and preserved history. [Application steps](../patches/README.md#qualified-singleton-acknowledgement-constraint) · [Verification](evaluation/clean-ack-constraint-20261115.json).
+- 🟢 [Done] Applied the qualified acknowledgement constraint profile to normal desktop settings and restarted the rebuilt native app. Through its shared API, natural EN/ZH mismatches used the default localized retry when the option was absent and the token constraint only when requested. JA matched on the first attempt in both modes. All six requests returned the expected acknowledgement. All six existing conversation messages matched the backup in the API and on disk. [Verification](evaluation/normal-app-ack-constraint-20261115.json).
+
+日本語：通常設定を切り替えてアプリを再起動し、明示時のみトークン制約が使われることと、既存の会話メッセージ6件の保持を実モデルで確認しました。
+
+简体中文：已切换常规设置并重启应用。真实模型验证只有显式启用时才使用令牌约束，原有6条对话消息完整保留。
+
+
+日本語：クリーン適用後に制約付き再生成を確認し、旧資格情報と `OK` 以外の指定での拒否、両構成での既定再生成を確認しました。
+
+简体中文：从干净环境应用补丁后，验证了受约束重试、旧凭据及非 `OK` 值的拒绝行为，以及两种配置中的默认重试。
+
+
+日本語：検証済み構成に限って使える明示オプションを追加しました。両方式とも形式一致106/108、変更内容の参照18/18でした。確認応答の再生成中央値は29.1%短縮しました。
+
+简体中文：新增仅可用于已验证配置的显式选项。两种方式均有106/108轮符合格式，并正确引用18/18项更新。确认重试的耗时中位数缩短29.1%。
+
+日本語：ウォームアップとKVの初期条件を揃えた216ターンで、両方式とも形式一致106/108、変更内容の参照18/18でした。確認応答の再生成だけを見ると制約付きで27.2%短縮しました。既定方式は維持します。
+
+简体中文：在统一预热和 KV 初始条件的216轮测试中，两种方式均有106/108轮符合格式，并正确引用18/18项更新。受约束的确认重试耗时缩短27.2%，默认方式继续沿用。
+
+
+日本語：資格確認済みの共有APIで自然発生した不一致を比較しました。両方式とも18件すべてが一致し、後続の変更内容も3件すべて正答しました。現行方式を継続します。
+
+简体中文：通过资格验证的共享 API 比较自然发生的不匹配。两种方式均通过全部18轮，并正确引用全部三项更新。继续使用现行策略。
+
+日本語：記録済みの `OK.` 不一致を再現し、制約付き再生成で正確な `OK` を確認しました。後続の変更内容は両方式とも3件すべて正答しました。製品での採用は共有APIで自然発生した不一致を検証してから判断します。
+
+简体中文：重放此前的 `OK.` 不匹配后，受约束的重试准确输出 `OK`。两种方式均正确回答了后续三项更新内容。将在共享 API 中验证自然发生的不匹配后再决定是否采用。
+
+
+日本語：変更確認の未一致2件は解消せず、英中の別の確認応答2件が退行しました。現行の言語別指示を維持します。
+
+简体中文：两次更改确认仍未匹配，另外两次英语和简体中文确认出现退化。继续使用现有本地化指令。
+
+
+日本語：短い言語別指示により、複数項目を含む1行の回答3件が一致し、全体の一致率は72.2%から88.9%に上がりました。明示オプションとして採用します。
+
+简体中文：简短的本地化指令使三条多字段单行答案通过验证，整体匹配率从72.2%升至88.9%。作为显式选项采用。
+
+
+日本語：初回不一致時のみ再生成する設定を追加しました。英日中の18ターンで一致率は38.9%から72.2%に上昇し、応答中央値は177.0 msから330.3 msに増加しました。形式を優先する用途向けの明示オプションとして採用します。
+
+简体中文：新增仅在首次格式不匹配时重试一次的选项。英、日、中文共18轮中，匹配率从38.9%升至72.2%，响应时间中位数从177.0毫秒增至330.3毫秒。作为优先保证格式的显式选项采用。
+
+
+日本語：共有APIで許可文字列を指定できるようにしました。英日中18ターンの実測で、厳密一致7件を受理し、不一致11件を本文なしで拒否しました。
+
+简体中文：共享 API 支持指定允许输出的字符串。英、日、中文共18轮实测中，接受了7次严格匹配，并在不返回模型正文的情况下拒绝了11次不匹配。
+
+
+日本語：6ターン×3言語で追記時のKV再利用率は79.3%、完了時間の中央値は216.8 msでした。形式指示を追加しても全体の厳密一致率は改善しなかったため、既存の指示を維持します。
+
+简体中文：在三种语言的六轮对话中，后续轮次的 KV 复用率为79.3%，响应完成时间中位数为216.8毫秒。补充格式指令未提升整体严格匹配率，保留原有指令。
+
 
 日本語：通常のデスクトップ設定に512を適用し、アプリ再起動後に実モデルの応答と既存メッセージ6件の保持を確認しました。
 

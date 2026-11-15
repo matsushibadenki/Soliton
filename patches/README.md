@@ -100,3 +100,15 @@ printf '%s\n' "$controller"
 ```
 
 Set the controller root in Soliton to the printed directory. Select the frontend Python, reviewed MLX-LM 0.32.2 backend executable, Gemma 2 2B IT 4-bit model, 4,096-token context, 1,536 MiB retained KV, 512 MiB allocator cache, and matching qualification evidence. On the same host and backend, a byte-identical reconstruction can reuse the evidence if the normal startup verifier accepts its complete identity. Otherwise, run full qualification for that installation before starting the engine.
+
+### Qualified singleton acknowledgement constraint
+
+Apply [the acknowledgement constraint patch](vllm-apple-ack-constraint.patch) after the Gemma 2 prefill patch to a separate controller. The launcher uses the reviewed MLX-LM source guards and masks all tokens except the measured Gemma 2 `OK` token, followed by EOS. Soliton enables the option only for the exact controller launcher and 30-minute evidence verified in the shared API experiment. It checks both SHA-256 digests when starting the engine and the controller still verifies the complete qualification identity. A different installation or a newly issued evidence file requires review before this option is enabled.
+
+To rebuild from a clean controller, use the archive command in [Rebuild from the controller base](#rebuild-from-the-controller-base) and set the loop order to `mlx-0322 internal-spans gemma2-prefill512 ack-constraint`. Select the resulting controller root and matching acknowledgement qualification evidence in Soliton. Start the engine and check the retry header on a completed response. The older prefill-only evidence is valid with its original controller. The patched controller requires its own evidence.
+
+On that profile, send `"soliton_output_validation": {"one_of": ["OK"], "retry_once": true, "retry_language": "en", "constrain_ok_retry": true}` with a non-streaming chat request. The gateway applies the constraint only to the single retry after a completed mismatch. The successful response header `x-soliton-output-retry` distinguishes `none`, `instruction` and `constrained`.
+
+日本語：検証済みの資格情報を使う構成でのみ、`OK` の再生成を明示的に制約できます。
+
+简体中文：仅在使用已验证资格凭据的配置中，可显式限制 `OK` 的重试输出。

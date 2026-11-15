@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.1.9 — 2026-11-15
+
+- The shared chat API can validate a single non-streaming response against an exact allowlist and retry once after a completed mismatch. The default retry uses an instruction. Callers can select a shorter localized instruction with `retry_language` (`en`, `ja`, or `zh-CN`).
+- Opt in to `constrain_ok_retry: true` with `retry_once: true` and `one_of: ["OK"]` on the exact qualified Gemma 2 controller and its matching evidence. On retry, the backend permits the reviewed `OK` token followed by EOS. A successful response identifies the retry mode in `x-soliton-output-retry`.
+- Rebuild the controller by applying the MLX-LM 0.32.2, internal spans, prefill 512, and acknowledgement constraint patches in that order, then select the resulting controller and matching evidence in Soliton. [Application steps](patches/README.md#qualified-singleton-acknowledgement-constraint)
+- Across 216 English, Japanese and Simplified Chinese turns, each mode accepted 106/108, recovered 18/18 `OK` retries, and correctly recalled 18/18 updated facts. Median acknowledgement retry time was 351.0 ms with instructions and 249.0 ms with the constraint. The all-turn medians were 184.9 and 205.6 ms. [Shared API measurements](docs/evaluation/shared-ack-option-20261115.json)
+- Clean reconstruction verified rejection of older evidence and non-`OK` allowlists. The rebuilt desktop app exercised both retry modes after restart and preserved all six existing messages. [Clean reconstruction](docs/evaluation/clean-ack-constraint-20261115.json) · [Desktop verification](docs/evaluation/normal-app-ack-constraint-20261115.json)
+
+日本語：既定の指示による再生成に加え、資格確認済みの構成で `OK` だけを許す再生成オプションを追加しました。
+
+简体中文：保留默认指令重试，并在已通过资格验证的配置中新增仅允许输出 `OK` 的重试选项。
+
 ## 0.1.8 — 2026-11-15
 
 - Added prefill step 512 for the measured Gemma 2 2B IT 4-bit / MLX-LM 0.32.2 profile at 4,096 tokens, concurrency one, 1,536 MiB retained KV and a 512 MiB allocator cache.

@@ -1,0 +1,267 @@
+{
+  "cases": [
+    {
+      "label": "en-1",
+      "expected": "OK",
+      "baseline": {
+        "status": 200,
+        "responseMs": 1160.4010419978295,
+        "answer": "OK \n"
+      },
+      "validated": {
+        "status": 200,
+        "responseMs": 277.4143329988874,
+        "answer": "OK \n"
+      }
+    },
+    {
+      "label": "en-2",
+      "expected": "OK",
+      "validated": {
+        "status": 422,
+        "responseMs": 361.87066700222204,
+        "answer": null
+      },
+      "baseline": {
+        "status": 200,
+        "responseMs": 279.6883330011042,
+        "answer": "OK \n"
+      }
+    },
+    {
+      "label": "en-3",
+      "expected": "OK",
+      "baseline": {
+        "status": 422,
+        "responseMs": 366.5578340005595,
+        "answer": null
+      },
+      "validated": {
+        "status": 422,
+        "responseMs": 305.11324999679346,
+        "answer": null
+      }
+    },
+    {
+      "label": "en-4",
+      "expected": "Maple",
+      "validated": {
+        "status": 200,
+        "responseMs": 162.36399999979767,
+        "answer": "Maple \n"
+      },
+      "baseline": {
+        "status": 200,
+        "responseMs": 110.10833399996045,
+        "answer": "Maple \n"
+      }
+    },
+    {
+      "label": "en-5",
+      "expected": "14:00",
+      "baseline": {
+        "status": 200,
+        "responseMs": 247.67062500177417,
+        "answer": "14:00 \n"
+      },
+      "validated": {
+        "status": 200,
+        "responseMs": 192.37579200125765,
+        "answer": "14:00 \n"
+      }
+    },
+    {
+      "label": "en-6",
+      "expected": "Maple|14:00",
+      "validated": {
+        "status": 200,
+        "responseMs": 581.6523330031487,
+        "answer": "Maple|14:00 \n"
+      },
+      "baseline": {
+        "status": 200,
+        "responseMs": 476.37570799997775,
+        "answer": "Maple|14:00 \n"
+      }
+    },
+    {
+      "label": "ja-1",
+      "expected": "OK",
+      "baseline": {
+        "status": 200,
+        "responseMs": 172.38500000166823,
+        "answer": "OK \n"
+      },
+      "validated": {
+        "status": 200,
+        "responseMs": 111.75579200062202,
+        "answer": "OK \n"
+      }
+    },
+    {
+      "label": "ja-2",
+      "expected": "OK",
+      "validated": {
+        "status": 200,
+        "responseMs": 162.53779099861276,
+        "answer": "OK \n"
+      },
+      "baseline": {
+        "status": 200,
+        "responseMs": 111.73679199782782,
+        "answer": "OK \n"
+      }
+    },
+    {
+      "label": "ja-3",
+      "expected": "OK",
+      "baseline": {
+        "status": 200,
+        "responseMs": 163.13874999832478,
+        "answer": "OK \n"
+      },
+      "validated": {
+        "status": 200,
+        "responseMs": 108.17854200286092,
+        "answer": "OK \n"
+      }
+    },
+    {
+      "label": "ja-4",
+      "expected": "1",
+      "validated": {
+        "status": 200,
+        "responseMs": 347.14175000044634,
+        "answer": "1 \n"
+      },
+      "baseline": {
+        "status": 200,
+        "responseMs": 241.93450000166195,
+        "answer": "1 \n"
+      }
+    },
+    {
+      "label": "ja-5",
+      "expected": "3",
+      "baseline": {
+        "status": 200,
+        "responseMs": 348.23887499806006,
+        "answer": "3 \n"
+      },
+      "validated": {
+        "status": 200,
+        "responseMs": 232.69545799848856,
+        "answer": "3 \n"
+      }
+    },
+    {
+      "label": "ja-6",
+      "expected": "牛乳:1/パン:3",
+      "validated": {
+        "status": 200,
+        "responseMs": 610.6521250003425,
+        "answer": "牛乳:1/パン:3 \n"
+      },
+      "baseline": {
+        "status": 200,
+        "responseMs": 499.6183330003987,
+        "answer": "牛乳:1/パン:3 \n"
+      }
+    },
+    {
+      "label": "zh-1",
+      "expected": "OK",
+      "baseline": {
+        "status": 200,
+        "responseMs": 347.0577920015785,
+        "answer": "OK \n"
+      },
+      "validated": {
+        "status": 200,
+        "responseMs": 277.21383400057675,
+        "answer": "OK \n"
+      }
+    },
+    {
+      "label": "zh-2",
+      "expected": "OK",
+      "validated": {
+        "status": 422,
+        "responseMs": 429.1087499987043,
+        "answer": null
+      },
+      "baseline": {
+        "status": 200,
+        "responseMs": 291.3345000015397,
+        "answer": "OK \n"
+      }
+    },
+    {
+      "label": "zh-3",
+      "expected": "OK",
+      "baseline": {
+        "status": 422,
+        "responseMs": 363.348250000854,
+        "answer": null
+      },
+      "validated": {
+        "status": 422,
+        "responseMs": 358.3753330021864,
+        "answer": null
+      }
+    },
+    {
+      "label": "zh-4",
+      "expected": "大阪",
+      "validated": {
+        "status": 200,
+        "responseMs": 159.72587500073132,
+        "answer": "大阪  \n"
+      },
+      "baseline": {
+        "status": 200,
+        "responseMs": 106.63570799806621,
+        "answer": "大阪  \n"
+      }
+    },
+    {
+      "label": "zh-5",
+      "expected": "09:30",
+      "baseline": {
+        "status": 200,
+        "responseMs": 232.82370800006902,
+        "answer": "09:30 \n"
+      },
+      "validated": {
+        "status": 200,
+        "responseMs": 189.26991700209328,
+        "answer": "09:30 \n"
+      }
+    },
+    {
+      "label": "zh-6",
+      "expected": "大阪|09:30",
+      "validated": {
+        "status": 200,
+        "responseMs": 563.8067079999018,
+        "answer": "大阪|09:30 \n"
+      },
+      "baseline": {
+        "status": 200,
+        "responseMs": 459.25633299702895,
+        "answer": "大阪|09:30 \n"
+      }
+    }
+  ],
+  "requestsPerMode": 18,
+  "historyPreserved": true,
+  "retryOnMismatch": true,
+  "localizedRetry": true,
+  "acknowledgementRetry": true,
+  "baselineAccepted": 16,
+  "accepted": 14,
+  "medianResponseMs": {
+    "baseline": 285.51141650132195,
+    "validated": 277.3140834997321
+  }
+}

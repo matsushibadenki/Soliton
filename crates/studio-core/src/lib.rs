@@ -201,6 +201,7 @@ struct Process {
     allocation_report: Option<allocation_report::Session>,
     vllm_memory_binding: Option<engine::VllmSettings>,
     vllm_backend_port: Option<u16>,
+    qualified_ack_constraint: bool,
     backend_budget: Option<backend_budget::Sample>,
     backend_budget_request: Option<String>,
     child: Option<Child>,
@@ -287,6 +288,7 @@ impl Studio {
                 allocation_report: None,
                 vllm_memory_binding: None,
                 vllm_backend_port: None,
+                qualified_ack_constraint: false,
                 backend_budget: None,
                 backend_budget_request: None,
                 child: None,
@@ -398,6 +400,7 @@ impl Studio {
         let mut p = self.process.lock().await;
         p.allocation_report = None;
         p.vllm_memory_binding = None;
+        p.qualified_ack_constraint = false;
         p.vllm_backend_port = None;
         p.backend_budget = None;
         p.backend_budget_request = None;
@@ -719,6 +722,7 @@ impl Studio {
             p.key = key;
             p.memory = Some(json!({"engine":"vllmApple"}));
             p.vllm_memory_binding = Some(s.vllm.clone());
+            p.qualified_ack_constraint = qualified_ack_constraint(&s.vllm);
             p.vllm_backend_port = Some(backend_port);
             push_log(
                 &self.logs,
@@ -1668,6 +1672,144 @@ async fn action(State(s): State<Arc<Studio>>, h: HeaderMap, Json(v): Json<Value>
         Err(e) => error(StatusCode::BAD_REQUEST, e),
     }
 }
+// Exact evidence and controller bytes from the certified diagnostic profile.
+fn qualified_ack_constraint(settings: &engine::VllmSettings) -> bool {
+    use sha2::{Digest, Sha256};
+    use std::io::Read;
+    fn matches(path: &std::path::Path, expected: &str) -> bool {
+        let Ok(file) = std::fs::File::open(path) else {
+            return false;
+        };
+        let mut bytes = Vec::new();
+        file.take(65537).read_to_end(&mut bytes).is_ok()
+            && bytes.len() <= 65536
+            && Sha256::digest(bytes)
+                .iter()
+                .map(|byte| format!("{byte:02x}"))
+                .collect::<String>()
+                == expected
+    }
+
+    settings.backend == "mlx_lm"
+        && settings.context == 4096
+        && settings.kv_cache_mib == 1536
+        && settings.allocator_cache_mib == 512
+        && matches(
+            &std::path::Path::new(&settings.root).join("vllm_apple/mlx_internal_spans.py"),
+            "3fe156b8527016f9d8ae63c43ba133a8da4e7d2b3b8a1df1a01bf84c4ebd00ac",
+        )
+        && matches(
+            std::path::Path::new(&settings.evidence),
+            "655f5454d7b275d135d1a332b0d0d43f89ce0423c91963ef4929e1a86c0e4143",
+        )
+}
+
+#[derive(serde::Deserialize)]
+#[serde(deny_unknown_fields)]
+struct OutputValidation {
+    one_of: Vec<String>,
+    #[serde(default)]
+    retry_once: bool,
+    retry_language: Option<RetryLanguage>,
+    #[serde(default)]
+    retry_acknowledgement: bool,
+    #[serde(default)]
+    constrain_ok_retry: bool,
+}
+
+#[derive(serde::Deserialize)]
+enum RetryLanguage {
+    #[serde(rename = "en")]
+    English,
+    #[serde(rename = "ja")]
+    Japanese,
+    #[serde(rename = "zh-CN")]
+    SimplifiedChinese,
+}
+
+impl RetryLanguage {
+    fn acknowledgement(&self) -> &'static str {
+        match self {
+            Self::English => "Acknowledge the update. Reply only OK (two letters, no period).",
+            Self::Japanese => "変更を確認し、英字2文字のOKだけを返してください。句読点は不要です。",
+            Self::SimplifiedChinese => "确认更改，只回复两个字母 OK，不加句号。",
+        }
+    }
+
+    fn instruction(&self, allowed: &[String]) -> String {
+        let single = matches!(allowed, [text] if !text.chars().any(char::is_control));
+        let format = match (self, single) {
+            (Self::English, true) => "Copy this answer exactly:",
+            (Self::Japanese, true) => "次の答えだけをそのまま出力：",
+            (Self::SimplifiedChinese, true) => "只原样输出以下答案：",
+            (Self::English, false) => "Output one listed string only, without quotes:",
+            (Self::Japanese, false) => "次の候補から1つだけ、引用符なしで出力：",
+            (Self::SimplifiedChinese, false) => "只输出一个候选字符串，不加引号：",
+        };
+        if single {
+            format!("{format}\n{}", allowed[0])
+        } else {
+            format!("{format}\n{}", json!(allowed))
+        }
+    }
+}
+
+impl OutputValidation {
+    fn matches(&self, response: &[u8]) -> Option<bool> {
+        let value = serde_json::from_slice::<Value>(response).ok()?;
+        let [choice] = value["choices"].as_array()?.as_slice() else {
+            return None;
+        };
+        if choice["finish_reason"] != "stop" || !choice["message"]["tool_calls"].is_null() {
+            return None;
+        }
+        let text = choice["message"]["content"].as_str()?.trim();
+        Some(self.one_of.iter().any(|allowed| text == allowed))
+    }
+
+    fn retry_body(&self, value: &Value) -> Option<Value> {
+        if !self.retry_once {
+            return None;
+        }
+        let mut retry = value.clone();
+        let last = retry.get_mut("messages")?.as_array_mut()?.last_mut()?;
+        if last["role"] != "user" {
+            return None;
+        }
+        let original = last["content"].as_str()?;
+        let instruction = match &self.retry_language {
+            Some(language) if self.retry_acknowledgement && self.one_of == ["OK"] => {
+                language.acknowledgement().into()
+            }
+            Some(language) => language.instruction(&self.one_of),
+            None => format!(
+                "Output format: return exactly one of these literal strings, without quotes, added punctuation, units, or explanation. Allowed strings (JSON array): {}",
+                json!(self.one_of)
+            ),
+        };
+        last["content"] = json!(format!("{original}\n\n{instruction}"));
+        if self.constrain_ok_retry {
+            retry["seed"] = json!(0);
+            retry["logit_bias"] = json!({"4083": 100.0});
+        }
+        Some(retry)
+    }
+}
+
+async fn read_validated_output(upstream: reqwest::Response) -> Option<Vec<u8>> {
+    use tokio_stream::StreamExt;
+    let mut stream = upstream.bytes_stream();
+    let mut bytes = Vec::new();
+    while let Some(chunk) = stream.next().await {
+        let chunk = chunk.ok()?;
+        if chunk.len() > 1024 * 1024 - bytes.len() {
+            return None;
+        }
+        bytes.extend_from_slice(&chunk);
+    }
+    Some(bytes)
+}
+
 async fn proxy(State(s): State<Arc<Studio>>, req: Request) -> Response {
     let received = std::time::Instant::now();
     let (parts, body) = req.into_parts();
@@ -1716,7 +1858,7 @@ async fn proxy(State(s): State<Arc<Studio>>, req: Request) -> Response {
         .unwrap()
         .lifecycle_wait_ms = Some(waiting.elapsed().as_secs_f64() * 1000.0);
     trace.tracker.info.metrics.engine = Some(s.settings.read().await.engine.label().into());
-    let (port, key) = {
+    let (port, key, ack_constraint) = {
         let mut p = s.process.lock().await;
         if !p
             .child
@@ -1733,7 +1875,7 @@ async fn proxy(State(s): State<Arc<Studio>>, req: Request) -> Response {
             .as_mut()
             .unwrap()
             .engine_session = p.metrics_session.clone();
-        (p.port, p.key.clone())
+        (p.port, p.key.clone(), p.qualified_ack_constraint)
     };
     let mut body = match axum::body::to_bytes(body, 16 * 1024 * 1024).await {
         Ok(b) => b,
@@ -1745,6 +1887,79 @@ async fn proxy(State(s): State<Arc<Studio>>, req: Request) -> Response {
         }
     };
     trace.tracker.admission_started();
+    let mut output_validation = None;
+    let mut retry_body = None;
+    if ack_constraint
+        && serde_json::from_slice::<Value>(&body)
+            .ok()
+            .is_some_and(|value| value.get("logit_bias").is_some())
+    {
+        return trace.reject(error(
+            StatusCode::BAD_REQUEST,
+            "Custom logit bias is unavailable on the acknowledgement constraint profile",
+        ));
+    }
+    if path.split('?').next() == Some("/v1/chat/completions") {
+        let Ok(mut value) = serde_json::from_slice::<Value>(&body) else {
+            return trace.reject(error(StatusCode::BAD_REQUEST, "Invalid inference JSON"));
+        };
+        if let Some(raw) = value
+            .as_object_mut()
+            .and_then(|v| v.remove("soliton_output_validation"))
+        {
+            let validation = serde_json::from_value::<OutputValidation>(raw)
+                .ok()
+                .filter(|rule| {
+                    (rule.retry_language.is_none() || rule.retry_once)
+                        && (!rule.retry_acknowledgement || rule.retry_language.is_some())
+                        && (1..=32).contains(&rule.one_of.len())
+                        && rule
+                            .one_of
+                            .iter()
+                            .all(|s| !s.is_empty() && s.len() <= 4096 && s.trim() == s)
+                });
+            if validation.is_none()
+                || !matches!(value.get("stream"), None | Some(Value::Bool(false)))
+                || value.get("n").is_some_and(|n| n.as_u64() != Some(1))
+            {
+                return trace.reject(error(StatusCode::BAD_REQUEST,
+                    "Output validation requires one non-streaming choice and 1–32 nonempty allowed strings"));
+            }
+            if validation
+                .as_ref()
+                .is_some_and(|rule| rule.constrain_ok_retry)
+            {
+                let rule = validation.as_ref().unwrap();
+                if !rule.retry_once || rule.one_of != ["OK"] || rule.retry_acknowledgement {
+                    return trace.reject(error(
+                        StatusCode::BAD_REQUEST,
+                        "Token constraint requires retry_once and exactly one allowed value: OK",
+                    ));
+                }
+                if !ack_constraint {
+                    return trace.reject(error(
+                        StatusCode::UNPROCESSABLE_ENTITY,
+                        "Token constraint requires the qualified acknowledgement profile",
+                    ));
+                }
+            }
+            if let Some(rule) = validation.as_ref().filter(|rule| rule.retry_once) {
+                retry_body = rule.retry_body(&value);
+                if retry_body.is_none()
+                    || s.settings.read().await.engine != engine::Engine::VllmApple
+                {
+                    return trace.reject(error(
+                        StatusCode::BAD_REQUEST,
+                        "Output retry requires vLLM-Apple and a final plain-text user message",
+                    ));
+                }
+            }
+            output_validation = validation;
+            body = serde_json::to_vec(&value)
+                .expect("JSON value serializes")
+                .into();
+        }
+    }
     let omni_config = s.settings.read().await.clone();
     if omni_config.engine == engine::Engine::MlxPrefix {
         if s.active_requests.load(Ordering::SeqCst) != 0 {
@@ -1836,13 +2051,18 @@ async fn proxy(State(s): State<Arc<Studio>>, req: Request) -> Response {
     let mut request = s
         .client
         .request(parts.method, format!("http://127.0.0.1:{port}{path}"))
-        .bearer_auth(key)
+        .bearer_auth(&key)
         .body(body);
     for name in ["content-type", "anthropic-version", "anthropic-beta"] {
         if let Some(value) = parts.headers.get(name) {
             request = request.header(name, value);
         }
     }
+    let retry_request = retry_body.as_ref().and_then(|value| {
+        request
+            .try_clone()
+            .map(|request| request.body(serde_json::to_vec(value).expect("JSON value serializes")))
+    });
     let inference = InferenceGuard::new(s.clone()).await;
     drop(lifecycle);
     trace.tracker.dispatched();
@@ -1863,6 +2083,80 @@ async fn proxy(State(s): State<Arc<Studio>>, req: Request) -> Response {
         .get("content-type")
         .and_then(|h| h.to_str().ok())
         .is_some_and(|h| h.contains("application/json"));
+    if let Some(validation) = output_validation.filter(|_| status.is_success()) {
+        trace.eof = true;
+        let Some(mut bytes) = read_validated_output(upstream).await else {
+            trace.fail();
+            return error(
+                StatusCode::BAD_GATEWAY,
+                "Validated response could not be read within 1 MiB",
+            );
+        };
+        let mut retried = false;
+        if validation.matches(&bytes) == Some(false) {
+            if let (Some(value), Some(request)) = (retry_body, retry_request) {
+                let lifecycle = s.lifecycle.lock().await;
+                {
+                    let mut process = s.process.lock().await;
+                    if process.key != key
+                        || process.port != port
+                        || !process
+                            .child
+                            .as_mut()
+                            .is_some_and(|child| matches!(child.try_wait(), Ok(None)))
+                    {
+                        trace.fail();
+                        return error(
+                            StatusCode::SERVICE_UNAVAILABLE,
+                            "Engine changed before output retry",
+                        );
+                    }
+                }
+                let settings = s.settings.read().await.clone();
+                if let Err(rejection) = s.token_counter.lock().await.check(&settings, &value).await
+                {
+                    trace.fail();
+                    return rejection.response();
+                }
+                drop(lifecycle);
+                let reply = match request.send().await {
+                    Ok(reply) if reply.status().is_success() => read_validated_output(reply).await,
+                    _ => None,
+                };
+                let Some(reply) = reply else {
+                    trace.fail();
+                    return error(StatusCode::BAD_GATEWAY, "Output retry failed");
+                };
+                bytes = reply;
+                retried = true;
+            }
+        }
+        if validation.matches(&bytes) != Some(true) {
+            trace.fail();
+            return error(
+                StatusCode::UNPROCESSABLE_ENTITY,
+                "Model output failed validation",
+            );
+        }
+        trace.json = true;
+        trace.feed(&bytes);
+        let retry_status = if retried && validation.constrain_ok_retry {
+            "constrained"
+        } else if retried {
+            "instruction"
+        } else {
+            "none"
+        };
+        return (
+            status,
+            [
+                ("content-type", "application/json"),
+                ("x-soliton-output-retry", retry_status),
+            ],
+            bytes,
+        )
+            .into_response();
+    }
     let headers = upstream.headers().clone();
     use tokio_stream::StreamExt;
     let stream = upstream

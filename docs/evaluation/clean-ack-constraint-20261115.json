@@ -1,0 +1,51 @@
+{
+  "passed": true,
+  "cleanRuntimeMatched": true,
+  "constrained": [
+    {
+      "language": "en",
+      "retry": "constrained"
+    },
+    {
+      "language": "zh-CN",
+      "retry": "constrained"
+    },
+    {
+      "language": "ja",
+      "retry": "none"
+    }
+  ],
+  "defaultOnCandidate": [
+    {
+      "language": "en",
+      "retry": "instruction"
+    },
+    {
+      "language": "zh-CN",
+      "retry": "instruction"
+    },
+    {
+      "language": "ja",
+      "retry": "none"
+    }
+  ],
+  "defaultOnOldProfile": [
+    {
+      "language": "en",
+      "retry": "instruction"
+    },
+    {
+      "language": "zh-CN",
+      "retry": "instruction"
+    },
+    {
+      "language": "ja",
+      "retry": "none"
+    }
+  ],
+  "nonOkRejected": 400,
+  "oldEvidenceIdentityRefused": true,
+  "oldProfileConstraintRejected": 422,
+  "qualifiedRecovery": true,
+  "historyPreserved": true
+}

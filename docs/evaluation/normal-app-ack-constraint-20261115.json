@@ -1,0 +1,37 @@
+{
+  "passed": true,
+  "appRestarted": true,
+  "usesNormalState": true,
+  "prefillStep": 512,
+  "default": [
+    {
+      "language": "en",
+      "retry": "instruction"
+    },
+    {
+      "language": "zh-CN",
+      "retry": "instruction"
+    },
+    {
+      "language": "ja",
+      "retry": "none"
+    }
+  ],
+  "constrained": [
+    {
+      "language": "en",
+      "retry": "constrained"
+    },
+    {
+      "language": "zh-CN",
+      "retry": "constrained"
+    },
+    {
+      "language": "ja",
+      "retry": "none"
+    }
+  ],
+  "historyPreserved": true,
+  "preservedMessages": 6,
+  "engineReady": true
+}

@@ -1,0 +1,678 @@
+{
+  "passed": true,
+  "evidenceSha256": "655f5454d7b275d135d1a332b0d0d43f89ce0423c91963ef4929e1a86c0e4143",
+  "qualificationSeconds": 1800.127,
+  "qualificationSuccesses": 12940,
+  "cases": [
+    {
+      "label": "en-1",
+      "expected": "OK",
+      "current": {
+        "first": "OK. \n",
+        "answer": "OK \n",
+        "retried": true,
+        "constrained": false,
+        "accepted": true,
+        "responseMs": 818.8110000010056,
+        "usage": {
+          "prompt_tokens": 35,
+          "completion_tokens": 4,
+          "total_tokens": 39,
+          "prompt_tokens_details": {
+            "cached_tokens": 22
+          }
+        }
+      },
+      "constrained": {
+        "first": "OK. \n",
+        "answer": "OK",
+        "retried": true,
+        "constrained": true,
+        "accepted": true,
+        "responseMs": 130.33529200038174,
+        "usage": {
+          "prompt_tokens": 35,
+          "completion_tokens": 2,
+          "total_tokens": 37,
+          "prompt_tokens_details": {
+            "cached_tokens": 34
+          }
+        }
+      }
+    },
+    {
+      "label": "en-2",
+      "expected": "OK",
+      "constrained": {
+        "first": "OK \n",
+        "answer": "OK \n",
+        "retried": false,
+        "constrained": false,
+        "accepted": true,
+        "responseMs": 155.21020799860707,
+        "usage": {
+          "prompt_tokens": 53,
+          "completion_tokens": 4,
+          "total_tokens": 57,
+          "prompt_tokens_details": {
+            "cached_tokens": 28
+          }
+        }
+      },
+      "current": {
+        "first": "OK \n",
+        "answer": "OK \n",
+        "retried": false,
+        "constrained": false,
+        "accepted": true,
+        "responseMs": 103.80141600035131,
+        "usage": {
+          "prompt_tokens": 53,
+          "completion_tokens": 4,
+          "total_tokens": 57,
+          "prompt_tokens_details": {
+            "cached_tokens": 52
+          }
+        }
+      }
+    },
+    {
+      "label": "en-3",
+      "expected": "OK",
+      "current": {
+        "first": "OK \n",
+        "answer": "OK \n",
+        "retried": false,
+        "constrained": false,
+        "accepted": true,
+        "responseMs": 161.95712500120862,
+        "usage": {
+          "prompt_tokens": 76,
+          "completion_tokens": 4,
+          "total_tokens": 80,
+          "prompt_tokens_details": {
+            "cached_tokens": 54
+          }
+        }
+      },
+      "constrained": {
+        "first": "OK \n",
+        "answer": "OK \n",
+        "retried": false,
+        "constrained": false,
+        "accepted": true,
+        "responseMs": 104.4518330018036,
+        "usage": {
+          "prompt_tokens": 76,
+          "completion_tokens": 4,
+          "total_tokens": 80,
+          "prompt_tokens_details": {
+            "cached_tokens": 75
+          }
+        }
+      }
+    },
+    {
+      "label": "en-4",
+      "expected": "Maple",
+      "constrained": {
+        "first": "Maple \n",
+        "answer": "Maple \n",
+        "retried": false,
+        "constrained": false,
+        "accepted": true,
+        "responseMs": 162.5166249978065,
+        "usage": {
+          "prompt_tokens": 99,
+          "completion_tokens": 4,
+          "total_tokens": 103,
+          "prompt_tokens_details": {
+            "cached_tokens": 77
+          }
+        },
+        "correctUpdatedFact": true
+      },
+      "current": {
+        "first": "Maple \n",
+        "answer": "Maple \n",
+        "retried": false,
+        "constrained": false,
+        "accepted": true,
+        "responseMs": 113.14150000180234,
+        "usage": {
+          "prompt_tokens": 99,
+          "completion_tokens": 4,
+          "total_tokens": 103,
+          "prompt_tokens_details": {
+            "cached_tokens": 98
+          }
+        },
+        "correctUpdatedFact": true
+      }
+    },
+    {
+      "label": "en-5",
+      "expected": "14:00",
+      "current": {
+        "first": "14:00 \n",
+        "answer": "14:00 \n",
+        "retried": false,
+        "constrained": false,
+        "accepted": true,
+        "responseMs": 236.02879100144492,
+        "usage": {
+          "prompt_tokens": 123,
+          "completion_tokens": 8,
+          "total_tokens": 131,
+          "prompt_tokens_details": {
+            "cached_tokens": 100
+          }
+        }
+      },
+      "constrained": {
+        "first": "14:00 \n",
+        "answer": "14:00 \n",
+        "retried": false,
+        "constrained": false,
+        "accepted": true,
+        "responseMs": 186.46604100285913,
+        "usage": {
+          "prompt_tokens": 123,
+          "completion_tokens": 8,
+          "total_tokens": 131,
+          "prompt_tokens_details": {
+            "cached_tokens": 122
+          }
+        }
+      }
+    },
+    {
+      "label": "en-6",
+      "expected": "Maple|14:00",
+      "constrained": {
+        "first": "Maple | 14:00 \n",
+        "answer": "Maple|14:00 \n",
+        "retried": true,
+        "constrained": false,
+        "accepted": true,
+        "responseMs": 576.5802079986315,
+        "usage": {
+          "prompt_tokens": 166,
+          "completion_tokens": 10,
+          "total_tokens": 176,
+          "prompt_tokens_details": {
+            "cached_tokens": 147
+          }
+        }
+      },
+      "current": {
+        "first": "Maple | 14:00 \n",
+        "answer": "Maple|14:00 \n",
+        "retried": true,
+        "constrained": false,
+        "accepted": true,
+        "responseMs": 459.2875419984921,
+        "usage": {
+          "prompt_tokens": 166,
+          "completion_tokens": 10,
+          "total_tokens": 176,
+          "prompt_tokens_details": {
+            "cached_tokens": 165
+          }
+        }
+      }
+    },
+    {
+      "label": "ja-1",
+      "expected": "OK",
+      "current": {
+        "first": "OK \n",
+        "answer": "OK \n",
+        "retried": false,
+        "constrained": false,
+        "accepted": true,
+        "responseMs": 157.458666999446,
+        "usage": {
+          "prompt_tokens": 26,
+          "completion_tokens": 4,
+          "total_tokens": 30,
+          "prompt_tokens_details": {
+            "cached_tokens": 4
+          }
+        }
+      },
+      "constrained": {
+        "first": "OK \n",
+        "answer": "OK \n",
+        "retried": false,
+        "constrained": false,
+        "accepted": true,
+        "responseMs": 101.00029100067331,
+        "usage": {
+          "prompt_tokens": 26,
+          "completion_tokens": 4,
+          "total_tokens": 30,
+          "prompt_tokens_details": {
+            "cached_tokens": 25
+          }
+        }
+      }
+    },
+    {
+      "label": "ja-2",
+      "expected": "OK",
+      "constrained": {
+        "first": "OK \n",
+        "answer": "OK \n",
+        "retried": false,
+        "constrained": false,
+        "accepted": true,
+        "responseMs": 155.1587499998277,
+        "usage": {
+          "prompt_tokens": 50,
+          "completion_tokens": 4,
+          "total_tokens": 54,
+          "prompt_tokens_details": {
+            "cached_tokens": 27
+          }
+        }
+      },
+      "current": {
+        "first": "OK \n",
+        "answer": "OK \n",
+        "retried": false,
+        "constrained": false,
+        "accepted": true,
+        "responseMs": 104.77995900146198,
+        "usage": {
+          "prompt_tokens": 50,
+          "completion_tokens": 4,
+          "total_tokens": 54,
+          "prompt_tokens_details": {
+            "cached_tokens": 49
+          }
+        }
+      }
+    },
+    {
+      "label": "ja-3",
+      "expected": "OK",
+      "current": {
+        "first": "OK \n",
+        "answer": "OK \n",
+        "retried": false,
+        "constrained": false,
+        "accepted": true,
+        "responseMs": 158.33004099840764,
+        "usage": {
+          "prompt_tokens": 78,
+          "completion_tokens": 4,
+          "total_tokens": 82,
+          "prompt_tokens_details": {
+            "cached_tokens": 51
+          }
+        }
+      },
+      "constrained": {
+        "first": "OK \n",
+        "answer": "OK \n",
+        "retried": false,
+        "constrained": false,
+        "accepted": true,
+        "responseMs": 105.28350000095088,
+        "usage": {
+          "prompt_tokens": 78,
+          "completion_tokens": 4,
+          "total_tokens": 82,
+          "prompt_tokens_details": {
+            "cached_tokens": 77
+          }
+        }
+      }
+    },
+    {
+      "label": "ja-4",
+      "expected": "1",
+      "constrained": {
+        "first": "1本 \n",
+        "answer": "1 \n",
+        "retried": true,
+        "constrained": false,
+        "accepted": true,
+        "responseMs": 336.31645800051047,
+        "usage": {
+          "prompt_tokens": 111,
+          "completion_tokens": 4,
+          "total_tokens": 115,
+          "prompt_tokens_details": {
+            "cached_tokens": 96
+          }
+        },
+        "correctUpdatedFact": true
+      },
+      "current": {
+        "first": "1本 \n",
+        "answer": "1 \n",
+        "retried": true,
+        "constrained": false,
+        "accepted": true,
+        "responseMs": 230.43374999906518,
+        "usage": {
+          "prompt_tokens": 111,
+          "completion_tokens": 4,
+          "total_tokens": 115,
+          "prompt_tokens_details": {
+            "cached_tokens": 110
+          }
+        },
+        "correctUpdatedFact": true
+      }
+    },
+    {
+      "label": "ja-5",
+      "expected": "3",
+      "current": {
+        "first": "3 \n",
+        "answer": "3 \n",
+        "retried": false,
+        "constrained": false,
+        "accepted": true,
+        "responseMs": 163.3136669988744,
+        "usage": {
+          "prompt_tokens": 122,
+          "completion_tokens": 4,
+          "total_tokens": 126,
+          "prompt_tokens_details": {
+            "cached_tokens": 102
+          }
+        }
+      },
+      "constrained": {
+        "first": "3 \n",
+        "answer": "3 \n",
+        "retried": false,
+        "constrained": false,
+        "accepted": true,
+        "responseMs": 104.08824999831268,
+        "usage": {
+          "prompt_tokens": 122,
+          "completion_tokens": 4,
+          "total_tokens": 126,
+          "prompt_tokens_details": {
+            "cached_tokens": 121
+          }
+        }
+      }
+    },
+    {
+      "label": "ja-6",
+      "expected": "牛乳:1/パン:3",
+      "constrained": {
+        "first": "牛乳: 1 / パン: 3 \n",
+        "answer": "牛乳:1/パン:3 \n",
+        "retried": true,
+        "constrained": false,
+        "accepted": true,
+        "responseMs": 590.9942090002005,
+        "usage": {
+          "prompt_tokens": 169,
+          "completion_tokens": 10,
+          "total_tokens": 179,
+          "prompt_tokens_details": {
+            "cached_tokens": 148
+          }
+        }
+      },
+      "current": {
+        "first": "牛乳: 1 / パン: 3 \n",
+        "answer": "牛乳:1/パン:3 \n",
+        "retried": true,
+        "constrained": false,
+        "accepted": true,
+        "responseMs": 490.47991699990234,
+        "usage": {
+          "prompt_tokens": 169,
+          "completion_tokens": 10,
+          "total_tokens": 179,
+          "prompt_tokens_details": {
+            "cached_tokens": 168
+          }
+        }
+      }
+    },
+    {
+      "label": "zh-1",
+      "expected": "OK",
+      "current": {
+        "first": "OK. \n",
+        "answer": "OK \n",
+        "retried": true,
+        "constrained": false,
+        "accepted": true,
+        "responseMs": 355.7352499992703,
+        "usage": {
+          "prompt_tokens": 33,
+          "completion_tokens": 4,
+          "total_tokens": 37,
+          "prompt_tokens_details": {
+            "cached_tokens": 18
+          }
+        }
+      },
+      "constrained": {
+        "first": "OK. \n",
+        "answer": "OK",
+        "retried": true,
+        "constrained": true,
+        "accepted": true,
+        "responseMs": 144.92949999839766,
+        "usage": {
+          "prompt_tokens": 33,
+          "completion_tokens": 2,
+          "total_tokens": 35,
+          "prompt_tokens_details": {
+            "cached_tokens": 32
+          }
+        }
+      }
+    },
+    {
+      "label": "zh-2",
+      "expected": "OK",
+      "constrained": {
+        "first": "OK. \n",
+        "answer": "OK",
+        "retried": true,
+        "constrained": true,
+        "accepted": true,
+        "responseMs": 289.65224999774364,
+        "usage": {
+          "prompt_tokens": 57,
+          "completion_tokens": 2,
+          "total_tokens": 59,
+          "prompt_tokens_details": {
+            "cached_tokens": 42
+          }
+        }
+      },
+      "current": {
+        "first": "OK. \n",
+        "answer": "OK \n",
+        "retried": true,
+        "constrained": false,
+        "accepted": true,
+        "responseMs": 299.5745830012311,
+        "usage": {
+          "prompt_tokens": 57,
+          "completion_tokens": 4,
+          "total_tokens": 61,
+          "prompt_tokens_details": {
+            "cached_tokens": 56
+          }
+        }
+      }
+    },
+    {
+      "label": "zh-3",
+      "expected": "OK",
+      "current": {
+        "first": "OK \n",
+        "answer": "OK \n",
+        "retried": false,
+        "constrained": false,
+        "accepted": true,
+        "responseMs": 252.3481249991164,
+        "usage": {
+          "prompt_tokens": 69,
+          "completion_tokens": 4,
+          "total_tokens": 73,
+          "prompt_tokens_details": {
+            "cached_tokens": 48
+          }
+        }
+      },
+      "constrained": {
+        "first": "OK \n",
+        "answer": "OK \n",
+        "retried": false,
+        "constrained": false,
+        "accepted": true,
+        "responseMs": 155.29979199709487,
+        "usage": {
+          "prompt_tokens": 69,
+          "completion_tokens": 4,
+          "total_tokens": 73,
+          "prompt_tokens_details": {
+            "cached_tokens": 68
+          }
+        }
+      }
+    },
+    {
+      "label": "zh-4",
+      "expected": "大阪",
+      "constrained": {
+        "first": "大阪 \n",
+        "answer": "大阪 \n",
+        "retried": false,
+        "constrained": false,
+        "accepted": true,
+        "responseMs": 332.5325830010115,
+        "usage": {
+          "prompt_tokens": 89,
+          "completion_tokens": 4,
+          "total_tokens": 93,
+          "prompt_tokens_details": {
+            "cached_tokens": 70
+          }
+        },
+        "correctUpdatedFact": true
+      },
+      "current": {
+        "first": "大阪 \n",
+        "answer": "大阪 \n",
+        "retried": false,
+        "constrained": false,
+        "accepted": true,
+        "responseMs": 173.8731250006822,
+        "usage": {
+          "prompt_tokens": 89,
+          "completion_tokens": 4,
+          "total_tokens": 93,
+          "prompt_tokens_details": {
+            "cached_tokens": 88
+          }
+        },
+        "correctUpdatedFact": true
+      }
+    },
+    {
+      "label": "zh-5",
+      "expected": "09:30",
+      "current": {
+        "first": "09:30 \n",
+        "answer": "09:30 \n",
+        "retried": false,
+        "constrained": false,
+        "accepted": true,
+        "responseMs": 386.3638750008249,
+        "usage": {
+          "prompt_tokens": 108,
+          "completion_tokens": 8,
+          "total_tokens": 116,
+          "prompt_tokens_details": {
+            "cached_tokens": 90
+          }
+        }
+      },
+      "constrained": {
+        "first": "09:30 \n",
+        "answer": "09:30 \n",
+        "retried": false,
+        "constrained": false,
+        "accepted": true,
+        "responseMs": 220.05641600117087,
+        "usage": {
+          "prompt_tokens": 108,
+          "completion_tokens": 8,
+          "total_tokens": 116,
+          "prompt_tokens_details": {
+            "cached_tokens": 107
+          }
+        }
+      }
+    },
+    {
+      "label": "zh-6",
+      "expected": "大阪|09:30",
+      "constrained": {
+        "first": "大阪 | 09:30 \n",
+        "answer": "大阪|09:30 \n",
+        "retried": true,
+        "constrained": false,
+        "accepted": true,
+        "responseMs": 700.3248749970226,
+        "usage": {
+          "prompt_tokens": 151,
+          "completion_tokens": 10,
+          "total_tokens": 161,
+          "prompt_tokens_details": {
+            "cached_tokens": 130
+          }
+        }
+      },
+      "current": {
+        "first": "大阪 | 09:30 \n",
+        "answer": "大阪|09:30 \n",
+        "retried": true,
+        "constrained": false,
+        "accepted": true,
+        "responseMs": 498.90004199914983,
+        "usage": {
+          "prompt_tokens": 151,
+          "completion_tokens": 10,
+          "total_tokens": 161,
+          "prompt_tokens_details": {
+            "cached_tokens": 150
+          }
+        }
+      }
+    }
+  ],
+  "summary": {
+    "current": {
+      "accepted": 18,
+      "naturalMismatches": 7,
+      "constrainedRetries": 0,
+      "correctUpdatedFacts": 3,
+      "medianResponseMs": 233.23127050025505
+    },
+    "constrained": {
+      "accepted": 18,
+      "naturalMismatches": 7,
+      "constrainedRetries": 3,
+      "correctUpdatedFacts": 3,
+      "medianResponseMs": 158.9082084974507
+    }
+  }
+}

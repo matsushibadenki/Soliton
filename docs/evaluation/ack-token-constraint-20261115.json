@@ -1,0 +1,839 @@
+{
+  "scope": "Direct MLX-LM diagnostic with shared KV. Replay injects the previously recorded initial mismatch after a real first inference.",
+  "natural": {
+    "cases": [
+      {
+        "label": "en-1",
+        "expected": "OK",
+        "current": {
+          "first": "OK. \n",
+          "answer": "OK \n",
+          "finish": "stop",
+          "retried": true,
+          "accepted": true,
+          "responseMs": 1043.8623749978433
+        },
+        "constrained": {
+          "first": "OK. \n",
+          "answer": "OK",
+          "finish": "stop",
+          "retried": true,
+          "accepted": true,
+          "responseMs": 179.99633299768902
+        }
+      },
+      {
+        "label": "en-2",
+        "expected": "OK",
+        "constrained": {
+          "first": "OK \n",
+          "answer": "OK \n",
+          "finish": "stop",
+          "retried": false,
+          "accepted": true,
+          "responseMs": 151.3038340017374
+        },
+        "current": {
+          "first": "OK \n",
+          "answer": "OK \n",
+          "finish": "stop",
+          "retried": false,
+          "accepted": true,
+          "responseMs": 98.30062499895575
+        }
+      },
+      {
+        "label": "en-3",
+        "expected": "OK",
+        "current": {
+          "first": "OK \n",
+          "answer": "OK \n",
+          "finish": "stop",
+          "retried": false,
+          "accepted": true,
+          "responseMs": 155.35770899805357
+        },
+        "constrained": {
+          "first": "OK \n",
+          "answer": "OK \n",
+          "finish": "stop",
+          "retried": false,
+          "accepted": true,
+          "responseMs": 100.92995800005156
+        }
+      },
+      {
+        "label": "en-4",
+        "expected": "Maple",
+        "constrained": {
+          "first": "Maple \n",
+          "answer": "Maple \n",
+          "finish": "stop",
+          "retried": false,
+          "accepted": true,
+          "responseMs": 154.65462500287686,
+          "correctUpdatedFact": true
+        },
+        "current": {
+          "first": "Maple \n",
+          "answer": "Maple \n",
+          "finish": "stop",
+          "retried": false,
+          "accepted": true,
+          "responseMs": 101.24991699922248,
+          "correctUpdatedFact": true
+        }
+      },
+      {
+        "label": "en-5",
+        "expected": "14:00",
+        "current": {
+          "first": "14:00 \n",
+          "answer": "14:00 \n",
+          "finish": "stop",
+          "retried": false,
+          "accepted": true,
+          "responseMs": 230.77329199804808
+        },
+        "constrained": {
+          "first": "14:00 \n",
+          "answer": "14:00 \n",
+          "finish": "stop",
+          "retried": false,
+          "accepted": true,
+          "responseMs": 175.37566700048046
+        }
+      },
+      {
+        "label": "en-6",
+        "expected": "Maple|14:00",
+        "constrained": {
+          "first": "Maple | 14:00 \n",
+          "answer": "Maple|14:00 \n",
+          "finish": "stop",
+          "retried": true,
+          "accepted": true,
+          "responseMs": 612.0082080014981
+        },
+        "current": {
+          "first": "Maple | 14:00 \n",
+          "answer": "Maple|14:00 \n",
+          "finish": "stop",
+          "retried": true,
+          "accepted": true,
+          "responseMs": 452.97504200061667
+        }
+      },
+      {
+        "label": "ja-1",
+        "expected": "OK",
+        "current": {
+          "first": "OK \n",
+          "answer": "OK \n",
+          "finish": "stop",
+          "retried": false,
+          "accepted": true,
+          "responseMs": 154.55862499948125
+        },
+        "constrained": {
+          "first": "OK \n",
+          "answer": "OK \n",
+          "finish": "stop",
+          "retried": false,
+          "accepted": true,
+          "responseMs": 99.62387500127079
+        }
+      },
+      {
+        "label": "ja-2",
+        "expected": "OK",
+        "constrained": {
+          "first": "OK \n",
+          "answer": "OK \n",
+          "finish": "stop",
+          "retried": false,
+          "accepted": true,
+          "responseMs": 156.4280000020517
+        },
+        "current": {
+          "first": "OK \n",
+          "answer": "OK \n",
+          "finish": "stop",
+          "retried": false,
+          "accepted": true,
+          "responseMs": 99.86645900062285
+        }
+      },
+      {
+        "label": "ja-3",
+        "expected": "OK",
+        "current": {
+          "first": "OK \n",
+          "answer": "OK \n",
+          "finish": "stop",
+          "retried": false,
+          "accepted": true,
+          "responseMs": 157.50150000167196
+        },
+        "constrained": {
+          "first": "OK \n",
+          "answer": "OK \n",
+          "finish": "stop",
+          "retried": false,
+          "accepted": true,
+          "responseMs": 103.77925000284449
+        }
+      },
+      {
+        "label": "ja-4",
+        "expected": "1",
+        "constrained": {
+          "first": "1本 \n",
+          "answer": "1 \n",
+          "finish": "stop",
+          "retried": true,
+          "accepted": true,
+          "responseMs": 367.0248749986058,
+          "correctUpdatedFact": true
+        },
+        "current": {
+          "first": "1本 \n",
+          "answer": "1 \n",
+          "finish": "stop",
+          "retried": true,
+          "accepted": true,
+          "responseMs": 215.60137499909615,
+          "correctUpdatedFact": true
+        }
+      },
+      {
+        "label": "ja-5",
+        "expected": "3",
+        "current": {
+          "first": "3 \n",
+          "answer": "3 \n",
+          "finish": "stop",
+          "retried": false,
+          "accepted": true,
+          "responseMs": 156.29191599873593
+        },
+        "constrained": {
+          "first": "3 \n",
+          "answer": "3 \n",
+          "finish": "stop",
+          "retried": false,
+          "accepted": true,
+          "responseMs": 102.11037499902886
+        }
+      },
+      {
+        "label": "ja-6",
+        "expected": "牛乳:1/パン:3",
+        "constrained": {
+          "first": "牛乳: 1 / パン: 3 \n",
+          "answer": "牛乳:1/パン:3 \n",
+          "finish": "stop",
+          "retried": true,
+          "accepted": true,
+          "responseMs": 583.0416250028065
+        },
+        "current": {
+          "first": "牛乳: 1 / パン: 3 \n",
+          "answer": "牛乳:1/パン:3 \n",
+          "finish": "stop",
+          "retried": true,
+          "accepted": true,
+          "responseMs": 461.8766669991601
+        }
+      },
+      {
+        "label": "zh-1",
+        "expected": "OK",
+        "current": {
+          "first": "OK. \n",
+          "answer": "OK \n",
+          "finish": "stop",
+          "retried": true,
+          "accepted": true,
+          "responseMs": 337.753583000449
+        },
+        "constrained": {
+          "first": "OK. \n",
+          "answer": "OK",
+          "finish": "stop",
+          "retried": true,
+          "accepted": true,
+          "responseMs": 128.79312500081141
+        }
+      },
+      {
+        "label": "zh-2",
+        "expected": "OK",
+        "constrained": {
+          "first": "OK. \n",
+          "answer": "OK",
+          "finish": "stop",
+          "retried": true,
+          "accepted": true,
+          "responseMs": 235.48574999949778
+        },
+        "current": {
+          "first": "OK. \n",
+          "answer": "OK \n",
+          "finish": "stop",
+          "retried": true,
+          "accepted": true,
+          "responseMs": 257.0464579985128
+        }
+      },
+      {
+        "label": "zh-3",
+        "expected": "OK",
+        "current": {
+          "first": "OK \n",
+          "answer": "OK \n",
+          "finish": "stop",
+          "retried": false,
+          "accepted": true,
+          "responseMs": 153.84191699922667
+        },
+        "constrained": {
+          "first": "OK \n",
+          "answer": "OK \n",
+          "finish": "stop",
+          "retried": false,
+          "accepted": true,
+          "responseMs": 98.73795800012886
+        }
+      },
+      {
+        "label": "zh-4",
+        "expected": "大阪",
+        "constrained": {
+          "first": "大阪 \n",
+          "answer": "大阪 \n",
+          "finish": "stop",
+          "retried": false,
+          "accepted": true,
+          "responseMs": 156.48687499924563,
+          "correctUpdatedFact": true
+        },
+        "current": {
+          "first": "大阪 \n",
+          "answer": "大阪 \n",
+          "finish": "stop",
+          "retried": false,
+          "accepted": true,
+          "responseMs": 100.70366700165323,
+          "correctUpdatedFact": true
+        }
+      },
+      {
+        "label": "zh-5",
+        "expected": "09:30",
+        "current": {
+          "first": "09:30 \n",
+          "answer": "09:30 \n",
+          "finish": "stop",
+          "retried": false,
+          "accepted": true,
+          "responseMs": 232.7615419999347
+        },
+        "constrained": {
+          "first": "09:30 \n",
+          "answer": "09:30 \n",
+          "finish": "stop",
+          "retried": false,
+          "accepted": true,
+          "responseMs": 177.72304100071779
+        }
+      },
+      {
+        "label": "zh-6",
+        "expected": "大阪|09:30",
+        "constrained": {
+          "first": "大阪 | 09:30 \n",
+          "answer": "大阪|09:30 \n",
+          "finish": "stop",
+          "retried": true,
+          "accepted": true,
+          "responseMs": 549.4063749974885
+        },
+        "current": {
+          "first": "大阪 | 09:30 \n",
+          "answer": "大阪|09:30 \n",
+          "finish": "stop",
+          "retried": true,
+          "accepted": true,
+          "responseMs": 458.2519579998916
+        }
+      }
+    ],
+    "summary": {
+      "current": {
+        "accepted": 18,
+        "correctUpdatedFacts": 3,
+        "medianResponseMs": 186.55143750038405
+      },
+      "constrained": {
+        "accepted": 18,
+        "correctUpdatedFacts": 3,
+        "medianResponseMs": 156.45743750064867
+      }
+    }
+  },
+  "replayed": {
+    "cases": [
+      {
+        "label": "en-1",
+        "expected": "OK",
+        "current": {
+          "first": "OK. \n",
+          "answer": "OK \n",
+          "finish": "stop",
+          "retried": true,
+          "usedConstraint": false,
+          "injectedMismatch": false,
+          "accepted": true,
+          "responseMs": 891.0890420011128
+        },
+        "constrained": {
+          "first": "OK. \n",
+          "answer": "OK",
+          "finish": "stop",
+          "retried": true,
+          "usedConstraint": true,
+          "injectedMismatch": false,
+          "accepted": true,
+          "responseMs": 128.78183299835655
+        }
+      },
+      {
+        "label": "en-2",
+        "expected": "OK",
+        "constrained": {
+          "first": "OK \n",
+          "answer": "OK \n",
+          "finish": "stop",
+          "retried": false,
+          "usedConstraint": false,
+          "injectedMismatch": false,
+          "accepted": true,
+          "responseMs": 152.0040000032168
+        },
+        "current": {
+          "first": "OK \n",
+          "answer": "OK \n",
+          "finish": "stop",
+          "retried": false,
+          "usedConstraint": false,
+          "injectedMismatch": false,
+          "accepted": true,
+          "responseMs": 98.58141700169654
+        }
+      },
+      {
+        "label": "en-3",
+        "expected": "OK",
+        "current": {
+          "first": "OK \n",
+          "answer": "OK \n",
+          "finish": "stop",
+          "retried": true,
+          "usedConstraint": false,
+          "injectedMismatch": true,
+          "accepted": true,
+          "responseMs": 309.1439169984369
+        },
+        "constrained": {
+          "first": "OK \n",
+          "answer": "OK",
+          "finish": "stop",
+          "retried": true,
+          "usedConstraint": true,
+          "injectedMismatch": true,
+          "accepted": true,
+          "responseMs": 110.9106250005425
+        }
+      },
+      {
+        "label": "en-4",
+        "expected": "Maple",
+        "constrained": {
+          "first": "Maple \n",
+          "answer": "Maple \n",
+          "finish": "stop",
+          "retried": false,
+          "usedConstraint": false,
+          "injectedMismatch": false,
+          "accepted": true,
+          "responseMs": 156.02604200103087,
+          "correctUpdatedFact": true
+        },
+        "current": {
+          "first": "Maple \n",
+          "answer": "Maple \n",
+          "finish": "stop",
+          "retried": false,
+          "usedConstraint": false,
+          "injectedMismatch": false,
+          "accepted": true,
+          "responseMs": 102.12550000142073,
+          "correctUpdatedFact": true
+        }
+      },
+      {
+        "label": "en-5",
+        "expected": "14:00",
+        "current": {
+          "first": "14:00 \n",
+          "answer": "14:00 \n",
+          "finish": "stop",
+          "retried": false,
+          "usedConstraint": false,
+          "injectedMismatch": false,
+          "accepted": true,
+          "responseMs": 233.9787500022794
+        },
+        "constrained": {
+          "first": "14:00 \n",
+          "answer": "14:00 \n",
+          "finish": "stop",
+          "retried": false,
+          "usedConstraint": false,
+          "injectedMismatch": false,
+          "accepted": true,
+          "responseMs": 179.3447499985632
+        }
+      },
+      {
+        "label": "en-6",
+        "expected": "Maple|14:00",
+        "constrained": {
+          "first": "Maple | 14:00 \n",
+          "answer": "Maple|14:00 \n",
+          "finish": "stop",
+          "retried": true,
+          "usedConstraint": false,
+          "injectedMismatch": false,
+          "accepted": true,
+          "responseMs": 561.1694590006664
+        },
+        "current": {
+          "first": "Maple | 14:00 \n",
+          "answer": "Maple|14:00 \n",
+          "finish": "stop",
+          "retried": true,
+          "usedConstraint": false,
+          "injectedMismatch": false,
+          "accepted": true,
+          "responseMs": 458.9566249997006
+        }
+      },
+      {
+        "label": "ja-1",
+        "expected": "OK",
+        "current": {
+          "first": "OK \n",
+          "answer": "OK \n",
+          "finish": "stop",
+          "retried": false,
+          "usedConstraint": false,
+          "injectedMismatch": false,
+          "accepted": true,
+          "responseMs": 158.8587499973073
+        },
+        "constrained": {
+          "first": "OK \n",
+          "answer": "OK \n",
+          "finish": "stop",
+          "retried": false,
+          "usedConstraint": false,
+          "injectedMismatch": false,
+          "accepted": true,
+          "responseMs": 101.75208299915539
+        }
+      },
+      {
+        "label": "ja-2",
+        "expected": "OK",
+        "constrained": {
+          "first": "OK \n",
+          "answer": "OK \n",
+          "finish": "stop",
+          "retried": false,
+          "usedConstraint": false,
+          "injectedMismatch": false,
+          "accepted": true,
+          "responseMs": 157.10483400107478
+        },
+        "current": {
+          "first": "OK \n",
+          "answer": "OK \n",
+          "finish": "stop",
+          "retried": false,
+          "usedConstraint": false,
+          "injectedMismatch": false,
+          "accepted": true,
+          "responseMs": 103.78466700058198
+        }
+      },
+      {
+        "label": "ja-3",
+        "expected": "OK",
+        "current": {
+          "first": "OK \n",
+          "answer": "OK \n",
+          "finish": "stop",
+          "retried": false,
+          "usedConstraint": false,
+          "injectedMismatch": false,
+          "accepted": true,
+          "responseMs": 164.08466599750682
+        },
+        "constrained": {
+          "first": "OK \n",
+          "answer": "OK \n",
+          "finish": "stop",
+          "retried": false,
+          "usedConstraint": false,
+          "injectedMismatch": false,
+          "accepted": true,
+          "responseMs": 104.06037500069942
+        }
+      },
+      {
+        "label": "ja-4",
+        "expected": "1",
+        "constrained": {
+          "first": "1本 \n",
+          "answer": "1 \n",
+          "finish": "stop",
+          "retried": true,
+          "usedConstraint": false,
+          "injectedMismatch": false,
+          "accepted": true,
+          "responseMs": 350.60100000191596,
+          "correctUpdatedFact": true
+        },
+        "current": {
+          "first": "1本 \n",
+          "answer": "1 \n",
+          "finish": "stop",
+          "retried": true,
+          "usedConstraint": false,
+          "injectedMismatch": false,
+          "accepted": true,
+          "responseMs": 223.01408299972536,
+          "correctUpdatedFact": true
+        }
+      },
+      {
+        "label": "ja-5",
+        "expected": "3",
+        "current": {
+          "first": "3 \n",
+          "answer": "3 \n",
+          "finish": "stop",
+          "retried": false,
+          "usedConstraint": false,
+          "injectedMismatch": false,
+          "accepted": true,
+          "responseMs": 158.35433399843168
+        },
+        "constrained": {
+          "first": "3 \n",
+          "answer": "3 \n",
+          "finish": "stop",
+          "retried": false,
+          "usedConstraint": false,
+          "injectedMismatch": false,
+          "accepted": true,
+          "responseMs": 100.313915998413
+        }
+      },
+      {
+        "label": "ja-6",
+        "expected": "牛乳:1/パン:3",
+        "constrained": {
+          "first": "牛乳: 1 / パン: 3 \n",
+          "answer": "牛乳:1/パン:3 \n",
+          "finish": "stop",
+          "retried": true,
+          "usedConstraint": false,
+          "injectedMismatch": false,
+          "accepted": true,
+          "responseMs": 584.3531249993248
+        },
+        "current": {
+          "first": "牛乳: 1 / パン: 3 \n",
+          "answer": "牛乳:1/パン:3 \n",
+          "finish": "stop",
+          "retried": true,
+          "usedConstraint": false,
+          "injectedMismatch": false,
+          "accepted": true,
+          "responseMs": 491.98508400149876
+        }
+      },
+      {
+        "label": "zh-1",
+        "expected": "OK",
+        "current": {
+          "first": "OK. \n",
+          "answer": "OK \n",
+          "finish": "stop",
+          "retried": true,
+          "usedConstraint": false,
+          "injectedMismatch": false,
+          "accepted": true,
+          "responseMs": 340.6066669995198
+        },
+        "constrained": {
+          "first": "OK. \n",
+          "answer": "OK",
+          "finish": "stop",
+          "retried": true,
+          "usedConstraint": true,
+          "injectedMismatch": false,
+          "accepted": true,
+          "responseMs": 130.91633300064132
+        }
+      },
+      {
+        "label": "zh-2",
+        "expected": "OK",
+        "constrained": {
+          "first": "OK. \n",
+          "answer": "OK",
+          "finish": "stop",
+          "retried": true,
+          "usedConstraint": true,
+          "injectedMismatch": false,
+          "accepted": true,
+          "responseMs": 237.09225000129663
+        },
+        "current": {
+          "first": "OK. \n",
+          "answer": "OK \n",
+          "finish": "stop",
+          "retried": true,
+          "usedConstraint": false,
+          "injectedMismatch": false,
+          "accepted": true,
+          "responseMs": 263.0312920009601
+        }
+      },
+      {
+        "label": "zh-3",
+        "expected": "OK",
+        "current": {
+          "first": "OK \n",
+          "answer": "OK \n",
+          "finish": "stop",
+          "retried": true,
+          "usedConstraint": false,
+          "injectedMismatch": true,
+          "accepted": true,
+          "responseMs": 320.7160410020151
+        },
+        "constrained": {
+          "first": "OK \n",
+          "answer": "OK",
+          "finish": "stop",
+          "retried": true,
+          "usedConstraint": true,
+          "injectedMismatch": true,
+          "accepted": true,
+          "responseMs": 134.92549999864423
+        }
+      },
+      {
+        "label": "zh-4",
+        "expected": "大阪",
+        "constrained": {
+          "first": "大阪 \n",
+          "answer": "大阪 \n",
+          "finish": "stop",
+          "retried": false,
+          "usedConstraint": false,
+          "injectedMismatch": false,
+          "accepted": true,
+          "responseMs": 162.50154199951794,
+          "correctUpdatedFact": true
+        },
+        "current": {
+          "first": "大阪 \n",
+          "answer": "大阪 \n",
+          "finish": "stop",
+          "retried": false,
+          "usedConstraint": false,
+          "injectedMismatch": false,
+          "accepted": true,
+          "responseMs": 104.52712500045891,
+          "correctUpdatedFact": true
+        }
+      },
+      {
+        "label": "zh-5",
+        "expected": "09:30",
+        "current": {
+          "first": "09:30 \n",
+          "answer": "09:30 \n",
+          "finish": "stop",
+          "retried": false,
+          "usedConstraint": false,
+          "injectedMismatch": false,
+          "accepted": true,
+          "responseMs": 261.79204199797823
+        },
+        "constrained": {
+          "first": "09:30 \n",
+          "answer": "09:30 \n",
+          "finish": "stop",
+          "retried": false,
+          "usedConstraint": false,
+          "injectedMismatch": false,
+          "accepted": true,
+          "responseMs": 180.9778329989058
+        }
+      },
+      {
+        "label": "zh-6",
+        "expected": "大阪|09:30",
+        "constrained": {
+          "first": "大阪 | 09:30 \n",
+          "answer": "大阪|09:30 \n",
+          "finish": "stop",
+          "retried": true,
+          "usedConstraint": false,
+          "injectedMismatch": false,
+          "accepted": true,
+          "responseMs": 584.7770840009616
+        },
+        "current": {
+          "first": "大阪 | 09:30 \n",
+          "answer": "大阪|09:30 \n",
+          "finish": "stop",
+          "retried": true,
+          "usedConstraint": false,
+          "injectedMismatch": false,
+          "accepted": true,
+          "responseMs": 462.8558750009688
+        }
+      }
+    ],
+    "summary": {
+      "current": {
+        "accepted": 18,
+        "correctUpdatedFacts": 3,
+        "medianResponseMs": 247.88539600012882
+      },
+      "constrained": {
+        "accepted": 18,
+        "correctUpdatedFacts": 3,
+        "medianResponseMs": 156.56543800105283
+      }
+    }
+  }
+}

@@ -1,0 +1,27 @@
+diff --git a/vllm_apple/mlx_internal_spans.py b/vllm_apple/mlx_internal_spans.py
+--- a/vllm_apple/mlx_internal_spans.py
++++ b/vllm_apple/mlx_internal_spans.py
+@@ -123,6 +123,23 @@
+     raw = os.environ.get('VLLM_APPLE_KV_CACHE_MIB', '')
+     if not raw.isascii() or not raw.isdecimal() or not 1 <= len(raw) <= 4 or not 64 <= int(raw) <= 4096:
+         raise ValueError('explicit reviewed retained budget required')
++    import mlx.core as mx
++    original = server._make_logits_processors
++
++    def processors(args):
++        if args.logits.logit_bias != {4083: 100.0}:
++            return original(args)
++        next_token = 4083
++
++        def force_token(_tokens, logits):
++            nonlocal next_token
++            allowed = mx.arange(logits.shape[-1]) == next_token
++            next_token = 1
++            return mx.where(allowed, mx.zeros_like(logits), -float('inf'))
++
++        return [force_token]
++
++    server._make_logits_processors = processors
+     ledger = SpanLedger()
+     install(ledger, server, cache, generate)
+     budget['main'](diagnostics=ledger.snapshot)
