@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.1.8 — 2026-11-15
+
+- Added prefill step 512 for the measured Gemma 2 2B IT 4-bit / MLX-LM 0.32.2 profile at 4,096 tokens, concurrency one, 1,536 MiB retained KV and a 512 MiB allocator cache.
+- In 24 shared API requests within the CPU load criteria, full answers and token counts matched. Median first output fell from 7.009 s to 6.755 s and median response completion from 7.222 s to 6.955 s. Sampled peak physical footprint fell by 87 MiB. [Comparison](docs/evaluation/shared-prefill-quiet-20261115.json)
+- The integrated runtime passed 1,800.243 s of qualification with 13,482 successes and zero failures. All 33 mixed KV requests passed. A clean reconstruction passed six multilingual requests, and the native desktop restart preserved all six existing messages. [Qualification](docs/evaluation/integrated-prefill512-20261115.json) · [Clean reconstruction](docs/evaluation/clean-prefill512-20261115.json) · [Desktop verification](docs/evaluation/normal-app-prefill512-20261115.json)
+- Apply the MLX-LM 0.32.2, internal spans and prefill 512 patches in order, then select the controller and its matching qualification evidence in Soliton. [Application steps](patches/README.md#rebuild-from-the-controller-base)
+
+日本語：実測したGemma 2構成に512を組み込みました。30分の再資格確認、共有API、通常のデスクトップ再起動での履歴保持を確認しました。
+
+简体中文：在经实测的 Gemma 2 配置中集成了512，并通过30分钟重新认证、共享 API 验证和桌面重启后的历史保留检查。
+
 ## 0.1.7 — 2026-11-12
 
 - SSD cache restore copies and validates the payload in one pass. Median CLI restore time fell from 48.25 ms to 33.69 ms in the matched synthetic workload using optimized builds.

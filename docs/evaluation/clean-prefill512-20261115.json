@@ -1,0 +1,240 @@
+{
+  "result": "passed",
+  "scope": "Qualified shared API, more histories than retained capacity; functional cap/recompute/reheat verification, no controlled performance claim",
+  "samples": [
+    {
+      "prefill": {
+        "batch.prefill": {
+          "calls": 20,
+          "wallMs": 6549.669663000001
+        },
+        "sequential.prefill_first": {
+          "calls": 0,
+          "wallMs": 0
+        }
+      },
+      "phase": "seed",
+      "index": 0,
+      "language": "en",
+      "promptTokens": 3935,
+      "cachedTokens": 0,
+      "uncachedTokens": 3935,
+      "responseMs": 7488.131125,
+      "kv": {
+        "bytes": 420126720,
+        "entries": 1,
+        "limitBytes": 1610612736
+      },
+      "availableBytes": 11968610304,
+      "engineMemory": {
+        "pid": 22653,
+        "processCount": 2,
+        "rootBytes": 80937632,
+        "sampledAt": 1794721165398,
+        "usedBytes": 2920565760
+      }
+    },
+    {
+      "prefill": {
+        "batch.prefill": {
+          "calls": 13,
+          "wallMs": 95.97154000000046
+        },
+        "sequential.prefill_first": {
+          "calls": 0,
+          "wallMs": 0
+        }
+      },
+      "phase": "append",
+      "index": 0,
+      "language": "en",
+      "promptTokens": 3962,
+      "cachedTokens": 3942,
+      "uncachedTokens": 20,
+      "responseMs": 381.2477909999998,
+      "kv": {
+        "bytes": 843128832,
+        "entries": 2,
+        "limitBytes": 1610612736
+      },
+      "availableBytes": 11564105728,
+      "engineMemory": {
+        "pid": 22653,
+        "processCount": 2,
+        "rootBytes": 80937632,
+        "sampledAt": 1794721165786,
+        "usedBytes": 3320728576
+      }
+    },
+    {
+      "prefill": {
+        "batch.prefill": {
+          "calls": 20,
+          "wallMs": 6599.961624
+        },
+        "sequential.prefill_first": {
+          "calls": 0,
+          "wallMs": 0
+        }
+      },
+      "phase": "seed",
+      "index": 1,
+      "language": "ja",
+      "promptTokens": 3937,
+      "cachedTokens": 8,
+      "uncachedTokens": 3929,
+      "responseMs": 6912.322542,
+      "kv": {
+        "bytes": 1263468544,
+        "entries": 3,
+        "limitBytes": 1610612736
+      },
+      "availableBytes": 11194056704,
+      "engineMemory": {
+        "pid": 22653,
+        "processCount": 2,
+        "rootBytes": 80954016,
+        "sampledAt": 1794721172708,
+        "usedBytes": 3790490624
+      }
+    },
+    {
+      "prefill": {
+        "batch.prefill": {
+          "calls": 13,
+          "wallMs": 95.4420429999991
+        },
+        "sequential.prefill_first": {
+          "calls": 0,
+          "wallMs": 0
+        }
+      },
+      "phase": "append",
+      "index": 1,
+      "language": "ja",
+      "promptTokens": 3966,
+      "cachedTokens": 3944,
+      "uncachedTokens": 22,
+      "responseMs": 381.1294170000001,
+      "kv": {
+        "bytes": 1266769920,
+        "entries": 3,
+        "limitBytes": 1610612736
+      },
+      "availableBytes": 11248517120,
+      "engineMemory": {
+        "pid": 22653,
+        "processCount": 2,
+        "rootBytes": 80954016,
+        "sampledAt": 1794721173097,
+        "usedBytes": 3768323072
+      }
+    },
+    {
+      "prefill": {
+        "batch.prefill": {
+          "calls": 20,
+          "wallMs": 6626.113378999997
+        },
+        "sequential.prefill_first": {
+          "calls": 0,
+          "wallMs": 0
+        }
+      },
+      "phase": "seed",
+      "index": 2,
+      "language": "zh",
+      "promptTokens": 3930,
+      "cachedTokens": 8,
+      "uncachedTokens": 3922,
+      "responseMs": 6954.514457999998,
+      "kv": {
+        "bytes": 1263362048,
+        "entries": 3,
+        "limitBytes": 1610612736
+      },
+      "availableBytes": 11176427520,
+      "engineMemory": {
+        "pid": 22653,
+        "processCount": 2,
+        "rootBytes": 80954016,
+        "sampledAt": 1794721180055,
+        "usedBytes": 3790064640
+      }
+    },
+    {
+      "prefill": {
+        "batch.prefill": {
+          "calls": 13,
+          "wallMs": 93.84816799999317
+        },
+        "sequential.prefill_first": {
+          "calls": 0,
+          "wallMs": 0
+        }
+      },
+      "phase": "append",
+      "index": 2,
+      "language": "zh",
+      "promptTokens": 3954,
+      "cachedTokens": 3937,
+      "uncachedTokens": 17,
+      "responseMs": 380.06766699999935,
+      "kv": {
+        "bytes": 1265172480,
+        "entries": 3,
+        "limitBytes": 1610612736
+      },
+      "availableBytes": 11208327168,
+      "engineMemory": {
+        "pid": 22653,
+        "processCount": 2,
+        "rootBytes": 80954016,
+        "sampledAt": 1794721180450,
+        "usedBytes": 3767520256
+      }
+    }
+  ],
+  "workload": "append",
+  "evidenceSha256": "37a7f03e605bfad95028ff9806aec5121f4bb08160a435ba0fb89318f1867aae",
+  "engineSession": "dd3cdf91-5aa5-41a7-ac8a-1724377e24b7",
+  "prefillBasis": "Session ledger deltas on an isolated serial workload, host wall time without added GPU synchronization",
+  "totalsByPhase": {
+    "seed": {
+      "requests": 3,
+      "promptTokens": 11802,
+      "cachedTokens": 16,
+      "uncachedTokens": 11786,
+      "prefillCalls": 60,
+      "prefillWallMs": 19775.744666
+    },
+    "append": {
+      "requests": 3,
+      "promptTokens": 11882,
+      "cachedTokens": 11823,
+      "uncachedTokens": 59,
+      "prefillCalls": 39,
+      "prefillWallMs": 285.2617509999927
+    }
+  },
+  "peakRetainedBytes": 1266769920,
+  "minimumAvailableBytes": 11176427520,
+  "historyPreserved": true,
+  "baseCommit": "bdef9567191bcc46154c0f7cf7f05089b718f0b4",
+  "patches": [
+    {
+      "name": "mlx-0322",
+      "sha256": "c730ae444b895334a552743dc9782e1bfa83616166710f5d90fc20a5f11e3645"
+    },
+    {
+      "name": "internal-spans",
+      "sha256": "793db9d86342fc850276e701dd042ecb2d92c19c494bda067fc961f39a97a86c"
+    },
+    {
+      "name": "gemma2-prefill512",
+      "sha256": "21ff909947820882d88d8402b3a17b941655c721945e8e0548699b56d12e6d63"
+    }
+  ],
+  "runtimeSourceMatchesQualifiedCopy": true,
+  "observedPrefillStep": 512
+}

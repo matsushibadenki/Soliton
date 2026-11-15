@@ -77,3 +77,26 @@ Apply [the prefill patch](vllm-apple-gemma2-prefill512.patch) after the internal
 日本語：内部計測パッチの後に適用し、変更後のcontrollerで30分の資格情報を発行します。共有APIの起動設定では、そのcontrollerと対応する資格情報を指定します。
 
 简体中文：在内部计时补丁之后应用，并使用修改后的 controller 生成30分钟资格凭据。启动共享 API 时选用该 controller 及其对应的凭据。
+
+### Rebuild from the controller base
+
+Run from the Soliton repository root. Set `controller` to an empty directory at an absolute path.
+
+```sh
+set -eu
+repo="$(pwd)"
+controller="$(mktemp -d /tmp/soliton-controller.XXXXXX)"
+git -C "$repo/vLLM-apple" archive bdef9567191bcc46154c0f7cf7f05089b718f0b4 |
+  tar -xf - -C "$controller"
+for name in mlx-0322 internal-spans gemma2-prefill512; do
+  input="$repo/patches/vllm-apple-$name.patch"
+  (
+    cd "$controller"
+    patch --dry-run -p1 < "$input"
+    patch -p1 < "$input"
+  )
+done
+printf '%s\n' "$controller"
+```
+
+Set the controller root in Soliton to the printed directory. Select the frontend Python, reviewed MLX-LM 0.32.2 backend executable, Gemma 2 2B IT 4-bit model, 4,096-token context, 1,536 MiB retained KV, 512 MiB allocator cache, and matching qualification evidence. On the same host and backend, a byte-identical reconstruction can reuse the evidence if the normal startup verifier accepts its complete identity. Otherwise, run full qualification for that installation before starting the engine.

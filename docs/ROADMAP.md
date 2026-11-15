@@ -71,6 +71,18 @@ This priority order supersedes older engine-related Next entries below; historic
 - 🟢 [Done] Repeated the 24-request shared API comparison within the existing background CPU limits. All answers and prompt, completion and cached token counts matched. For 512 / 2,048, median first output was 6.755 / 7.009 s, median completion was 6.955 / 7.222 s, and sampled peak physical footprint during inference was 4,176 / 4,264 MiB. All 24 requests passed the load criteria. Approve 512 for integration on the measured Gemma 2 / MLX-LM 0.32.2 profile at 4,096 tokens, concurrency one, 1,536 MiB retained KV and 512 MiB allocator cache. [Measurements](evaluation/shared-prefill-quiet-20261115.json).
 - 🟢 [Done] Integrated prefill step 512 into the reviewed Gemma 2 controller launcher. The exact patched runtime passed 1,800.243 seconds of qualification with 13,482 successes, zero failures and clean shutdown. The production Rust startup path accepted the new evidence, launched with step 512, and passed all 33 shared API mixed KV requests with history preservation. [Measurements](evaluation/integrated-prefill512-20261115.json).
 - 🟢 [Done] Verified the integrated 512 profile's recovery through the shared API. Three fresh long histories passed. The patched controller refused the previous 2,048-profile evidence with a runtime identity mismatch and reached ready after restoring the matching evidence. [Verification](evaluation/integrated-prefill512-recovery-20261115.json).
+- 🟢 [Done] Rebuilt the 512 controller from the clean base commit by applying the MLX-LM 0.32.2, internal spans and Gemma 2 prefill patches in order. The runtime source matched the qualified copy. Soliton's regular Rust engine startup accepted the matching evidence and launched with step 512. All six EN/JA/ZH seed and append requests passed through the shared API. [Application steps](../patches/README.md#rebuild-from-the-controller-base) · [Verification](evaluation/clean-prefill512-20261115.json).
+- 🟢 [Done] Applied the qualified 4,096-token prefill 512 configuration to Soliton's normal desktop settings and restarted the native app. Verified the live backend argument, an exact real-model answer through the desktop API, and equality of all six existing conversation messages in the API and on disk. [Verification](evaluation/normal-app-prefill512-20261115.json).
+
+日本語：通常のデスクトップ設定に512を適用し、アプリ再起動後に実モデルの応答と既存メッセージ6件の保持を確認しました。
+
+简体中文：已将512应用到常规桌面设置，并在重启后确认真实模型可以回答，原有6条消息完整保留。
+
+
+日本語：クリーンなベースから3つのパッチを順に適用し、通常のエンジン起動経路で512が選ばれることを確認しました。英日中の共有API検証は全6件合格しました。
+
+简体中文：从干净的基础提交依次应用三个补丁，确认常规引擎启动路径使用512。英、日、中文的6次共享API请求均通过。
+
 
 日本語：旧資格情報での起動拒否と、対応する資格情報への切り替えによる復旧を確認しました。
 
