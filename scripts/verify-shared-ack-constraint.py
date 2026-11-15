@@ -41,13 +41,62 @@ def conversations():
             yield language, index, list(map(replace, prompts)), list(map(replace, expected))
 
 
+def yes_no_conversations():
+    variants = {
+        'en': [('Cedar', 'Maple'), ('Birch', 'Oak'), ('Pine', 'Elm'), ('Ash', 'Willow')],
+        'ja': [('松', '桜'), ('梅', '竹'), ('楓', '椿'), ('桃', '藤')],
+        'zh': [('北厅', '南厅'), ('东厅', '西厅'), ('梅厅', '竹厅'), ('红厅', '蓝厅')],
+    }
+    for language, pairs in variants.items():
+        for index, (old, new) in enumerate(pairs):
+            if language == 'en':
+                prompts = [
+                    f'The meeting room is {old}. Is the room {old}? Answer YES or NO.',
+                    f'The meeting room has changed to {new}. Is the room still {old}? Answer YES or NO.',
+                    f'Is the current room {new}? Answer YES or NO.',
+                    f'Is the current room {old}? Answer YES or NO.',
+                    f'Was the original room {old}? Answer YES or NO.',
+                    f'Was the original room {new}? Answer YES or NO.',
+                ]
+            elif language == 'ja':
+                prompts = [
+                    f'会議室は「{old}」です。会議室は「{old}」ですか？',
+                    f'会議室を「{new}」に変更しました。会議室はまだ「{old}」ですか？',
+                    f'現在の会議室は「{new}」ですか？',
+                    f'現在の会議室は「{old}」ですか？',
+                    f'最初の会議室は「{old}」でしたか？',
+                    f'最初の会議室は「{new}」でしたか？',
+                ]
+                prompts = [prompt + ' YES または NO だけで答えてください。' for prompt in prompts]
+            else:
+                prompts = [
+                    f'会议地点是{old}。会议在{old}吗？',
+                    f'会议地点改为{new}。会议还在{old}吗？',
+                    f'会议现在在{new}吗？',
+                    f'会议现在在{old}吗？',
+                    f'最初的会议地点是{old}吗？',
+                    f'最初的会议地点是{new}吗？',
+                ]
+                prompts = [prompt + '只回答 YES 或 NO。' for prompt in prompts]
+            yield language, index, prompts, ['YES', 'NO', 'YES', 'NO', 'YES', 'NO']
+
+
+CHOICE_INSTRUCTIONS = {
+    'en': 'Output one listed string only, without quotes:',
+    'ja': '次の候補から1つだけ、引用符なしで出力：',
+    'zh': '只输出一个候选字符串，不加引号：',
+}
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--api', required=True, choices=['http://127.0.0.1:18099'])
     parser.add_argument('--evidence', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--gateway-option', action='store_true')
+    parser.add_argument('--yes-no', action='store_true')
     args = parser.parse_args()
+    assert not (args.yes_no and args.gateway_option)
     evidence = args.evidence.read_bytes()
     qualification = json.loads(evidence)
     assert qualification['passed'] and qualification['shutdown_clean']
@@ -63,7 +112,7 @@ def main():
     def complete(messages, constrained=False):
         body = dict(model='default_model', messages=messages, stream=False, temperature=0, max_tokens=64)
         if constrained:
-            body.update(seed=0, logit_bias=diagnostic['SENTINEL'])
+            body.update(seed=0, logit_bias=diagnostic['YES_NO_SENTINEL' if args.yes_no else 'SENTINEL'])
         reply = call('/v1/chat/completions', body)
         choice = reply['choices'][0]
         return choice['message']['content'], choice['finish_reason'], reply['usage']
@@ -102,6 +151,7 @@ def main():
     order = ('current', 'constrained', 'constrained', 'current')
     report['order'] = order
     report['gatewayOption'] = args.gateway_option
+    report['yesNo'] = args.yes_no
     report['warmup'] = []
     sessions = set()
     with args.output.open('x') as output:
@@ -126,11 +176,12 @@ def main():
                         _, _, usage = complete([dict(role='user', content=text)])
                         warmup.append(dict(language=language, usage=usage))
                     report['warmup'].append(dict(run=run, mode=mode, cases=warmup))
-                    for language, case, prompts, targets in conversations():
+                    for language, case, prompts, targets in (yes_no_conversations() if args.yes_no else conversations()):
                         messages = []
                         for turn, (prompt, expected) in enumerate(zip(prompts, targets), 1):
                             messages.append(dict(role='user', content=prompt))
                             start = time.monotonic()
+                            allowed = {'YES', 'NO'} if args.yes_no else {expected}
                             if args.gateway_option:
                                 answer, usage, retry, forced = gateway_complete(
                                     messages, language, expected, mode == 'constrained')
@@ -139,23 +190,26 @@ def main():
                                 first, retry_usage = None, None
                             else:
                                 first, finish, usage = complete(messages)
-                                retry = finish == 'stop' and first.strip() != expected
-                                forced = retry and expected == 'OK' and mode == 'constrained'
+                                retry = finish == 'stop' and first.strip() not in allowed
+                                forced = retry and mode == 'constrained' and (args.yes_no or expected == 'OK')
                                 answer, retry_usage = first, None
                                 if retry:
-                                    instruction = diagnostic['INSTRUCTIONS'][language]
+                                    instruction = (CHOICE_INSTRUCTIONS if args.yes_no
+                                                   else diagnostic['INSTRUCTIONS'])[language]
+                                    target = '["YES","NO"]' if args.yes_no else expected
                                     revised = messages[:-1] + [dict(role='user',
-                                        content=f'{prompt}\n\n{instruction}\n{expected}')]
+                                        content=f'{prompt}\n\n{instruction}\n{target}')]
                                     answer, finish, retry_usage = complete(revised, forced)
                                 elapsed = (time.monotonic() - start) * 1000
-                                accepted = finish == 'stop' and answer.strip() == expected
+                                accepted = finish == 'stop' and answer.strip() in allowed
                                 if forced:
-                                    assert accepted and answer == 'OK' and retry_usage['completion_tokens'] <= 2
+                                    assert accepted and answer in allowed and retry_usage['completion_tokens'] <= 2
                             # Use the same whitespace normalization as the output validator.
                             messages.append(dict(role='assistant', content=answer.strip() if accepted else ''))
                             report['cases'].append(dict(run=run, mode=mode, language=language,
                                 case=case, turn=turn, expected=expected, first=first, answer=answer,
                                 retried=retry, constrained=forced, accepted=accepted,
+                                correct=accepted and answer.strip() == expected,
                                 responseMs=elapsed, initialUsage=usage, retryUsage=retry_usage))
                     final = call('/studio/state')
                     assert final['engineSession'] == session
@@ -167,7 +221,7 @@ def main():
             report['summary'] = {}
             for mode in ('current', 'constrained'):
                 rows = [r for r in report['cases'] if r['mode'] == mode]
-                assert len(rows) == 108
+                assert len(rows) == (144 if args.yes_no else 108)
                 recalls = [r for r in rows if r['turn'] == 4]
                 retries = [r for r in rows if r['retried']]
                 ok_retries = [r for r in retries if r['expected'] == 'OK']
@@ -175,7 +229,8 @@ def main():
                     requests=len(rows), accepted=sum(r['accepted'] for r in rows),
                     naturalMismatches=len(retries), acknowledgementRetries=len(ok_retries),
                     acceptedAcknowledgementRetries=sum(r['accepted'] for r in ok_retries),
-                    correctUpdatedFacts=sum(r['accepted'] for r in recalls), updatedFactRequests=len(recalls),
+                    correct=sum(r['correct'] for r in rows),
+                    correctUpdatedFacts=sum(r['correct'] for r in recalls), updatedFactRequests=len(recalls),
                     initialCachedTokens=None if args.gateway_option else sum(
                         r['initialUsage']['prompt_tokens_details']['cached_tokens'] for r in rows),
                     medianResponseMs=statistics.median(r['responseMs'] for r in rows),
@@ -184,6 +239,12 @@ def main():
                 if args.gateway_option:
                     # Retry headers are only returned for accepted completions.
                     summary['successfulRetries'] = summary.pop('naturalMismatches')
+                if args.yes_no:
+                    summary.update(acceptedRetries=sum(r['accepted'] for r in retries),
+                        correctRetries=sum(r['correct'] for r in retries),
+                        constrainedRetries=sum(r['constrained'] for r in rows),
+                        medianRetriedResponseMs=statistics.median(r['responseMs'] for r in retries)
+                        if retries else None)
                 report['summary'][mode] = summary
             report['passed'] = True
         finally:

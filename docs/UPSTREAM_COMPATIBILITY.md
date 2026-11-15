@@ -1,3 +1,13 @@
+# Dependency update · 2026-11-15
+
+- 🟢 [Done] Strata source and distribution pin: v0.2.13.1 (`628f74955a56fcba092495b800dd02af75373a0f`); local Metal build source version 0.1.59.1. This is a source build, not installation of the upstream Linux-only Control artifact for this tag.
+- 🟢 [Done] Lucide React 1.73.0, Playwright 1.65.1, Prettier 3.10.1, Vite 8.3.8 and compatible Cargo lockfile updates (including UUID 1.29.2 and Wry 0.57.2). Tauri remains 2.12.5. The npm registry reported no remaining updates.
+- 🟢 [Done] Frontend build, all-target Cargo check, 174 workspace tests (one ignored), offline upstream contract, 54 focused upstream tests (one skipped), and three-language Strata/vLLM-Apple switching fixtures passed. Existing diagnostic code, roadmap edits and evaluation data were preserved.
+- 🟢 [Done] Existing Q2_0 passed authenticated exact-response inference, unauthenticated 401 and clean shutdown using the rebuilt Metal engine and temporary configuration. [Verification](evaluation/strata-real-20261115.json). Full model re-preparation was not repeated.
+- 🟢 [Done] Apple Silicon app build and local distribution preflight passed: 66 native files, no errors, matching Strata pin. [Evidence](evaluation/dependency-distribution-20261115.json).
+- 日本語：既存Q2_0の認証付き実推論と正常停止を確認しました。今回は再準備を再実行していません。Strataのソースと配布ピンを0.2.13.1へ同期し、npm/Rust依存を更新しました。既存の診断コード、ロードマップ差分、評価データは保持しています。
+- 简体中文：已有Q2_0的认证真实推理及正常停止通过；本次未重新准备模型。已同步更新Strata源码和分发固定版本至0.2.13.1，并更新npm/Rust依赖；保留已有诊断代码、路线图修改和评估数据。
+
 > 2026-11-09: Strata 0.2.12 and its pin are unchanged. [Weekly lockfile verification](DEPENDENCY_UPDATE_20261109.md). 日本語：上流固定値は変更なし。简体中文：上游固定值未变更。
 
 > Follow-up · 2026-11-02: the disk-space Pending item below is resolved. [Cache cleanup, real Q2_0 re-preparation and data-preservation verification](CACHE_CLEANUP_REPREP_20261102.md). 日本語：容量不足による保留を解除しました。简体中文：容量不足导致的待验证项已完成。

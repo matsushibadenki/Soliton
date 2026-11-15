@@ -14,6 +14,7 @@ import urllib.request
 ROOT = Path(__file__).resolve().parents[1]
 CASES = runpy.run_path(str(ROOT / 'scripts/validate-prefix-multiturn.py'))
 SENTINEL = {4083: 100.0}
+YES_NO_SENTINEL = {17480: 100.0, 5349: 100.0}
 INSTRUCTIONS = {
     'en': 'Copy this answer exactly:',
     'ja': '次の答えだけをそのまま出力：',
@@ -34,18 +35,28 @@ def launch_backend(wrapper, model, port):
     tokenizer = AutoTokenizer.from_pretrained(model, local_files_only=True)
     assert tokenizer.encode('OK', add_special_tokens=False) == [4083]
     assert tokenizer.decode([4083]) == 'OK' and tokenizer.eos_token_id == 1
+    for text, token in [('YES', 17480), ('NO', 5349)]:
+        assert tokenizer.encode(text, add_special_tokens=False) == [token]
+        assert tokenizer.decode([token]) == text
     original = server._make_logits_processors
 
     def processors(args):
-        if args.logits.logit_bias != SENTINEL:
+        if args.logits.logit_bias == SENTINEL:
+            first_tokens = (4083,)
+        elif args.logits.logit_bias == YES_NO_SENTINEL:
+            first_tokens = tuple(YES_NO_SENTINEL)
+        else:
             return original(args)
-        next_token = 4083
+        allowed_tokens = first_tokens
 
         def force_token(_tokens, logits):
-            nonlocal next_token
-            allowed = mx.arange(logits.shape[-1]) == next_token
-            next_token = 1
-            return mx.where(allowed, mx.zeros_like(logits), -float('inf'))
+            nonlocal allowed_tokens
+            vocabulary = mx.arange(logits.shape[-1])
+            allowed = vocabulary == allowed_tokens[0]
+            for token in allowed_tokens[1:]:
+                allowed = allowed | (vocabulary == token)
+            allowed_tokens = (1,)
+            return mx.where(allowed, logits, -float('inf'))
 
         return [force_token]
 
@@ -113,11 +124,87 @@ def compare(api, replay_mismatch):
     })
 
 
+def compare_yes_no(api):
+    instructions = {
+        'en': 'Output one listed string only, without quotes:',
+        'ja': '次の候補から1つだけ、引用符なしで出力：',
+        'zh': '只输出一个候选字符串，不加引号：',
+    }
+    scenarios = {
+        'en': ('The meeting room is Cedar.', 'The room has changed to Maple.',
+               'Is the room Maple? Answer YES or NO.', 'Is the room Cedar? Answer YES or NO.'),
+        'ja': ('会議室は松です。', '会議室を桜に変更しました。',
+               '会議室は桜ですか？ YES または NO だけで答えてください。',
+               '会議室は松ですか？ YES または NO だけで答えてください。'),
+        'zh': ('会议地点是北厅。', '会议地点改为南厅。',
+               '会议现在在南厅吗？只回答 YES 或 NO。', '会议现在在北厅吗？只回答 YES 或 NO。'),
+    }
+    modes = ('current', 'constrained')
+
+    def complete(messages, constrain=False):
+        body = dict(model='default_model', messages=messages, temperature=0, max_tokens=32)
+        if constrain:
+            body.update(seed=0, logit_bias=YES_NO_SENTINEL)
+        req = urllib.request.Request(api + '/v1/chat/completions', json.dumps(body).encode(),
+                                     {'Content-Type': 'application/json'})
+        with urllib.request.urlopen(req, timeout=60) as response:
+            payload = json.load(response)
+        choice = payload['choices'][0]
+        return choice['message']['content'], choice['finish_reason'], payload['usage']
+
+    rows = []
+    for language, (initial, update, yes, no) in scenarios.items():
+        for order in ((yes, no), (no, yes)):
+            history = []
+            for prompt in (initial, update):
+                history.append(dict(role='user', content=prompt))
+                answer, _, _ = complete(history)
+                history.append(dict(role='assistant', content=answer))
+            for question in order:
+                expected = 'YES' if question == yes else 'NO'
+                messages = history + [dict(role='user', content=question)]
+                row = dict(language=language, expected=expected)
+                for mode in (modes if len(rows) % 2 == 0 else modes[::-1]):
+                    start = time.monotonic()
+                    first, finish, initial_usage = complete(messages)
+                    answer = first
+                    retry_ms = None
+                    retried = finish == 'stop' and first.strip() not in {'YES', 'NO'}
+                    if retried:
+                        retry = messages[:-1] + [dict(role='user',
+                            content=f'{question}\n\n{instructions[language]}\n["YES","NO"]')]
+                        retry_start = time.monotonic()
+                        answer, finish, _ = complete(retry, constrain=mode == 'constrained')
+                        retry_ms = (time.monotonic() - retry_start) * 1000
+                    elapsed = (time.monotonic() - start) * 1000
+                    accepted = finish == 'stop' and answer.strip() in {'YES', 'NO'}
+                    if retried and mode == 'constrained':
+                        assert accepted and answer in {'YES', 'NO'}
+                    row[mode] = dict(first=first, answer=answer, retried=retried, accepted=accepted,
+                                     correct=accepted and answer.strip()==expected, responseMs=elapsed,
+                                     retryMs=retry_ms, initialUsage=initial_usage)
+                rows.append(row)
+                # Keep paired histories identical using the current policy result.
+                history = messages + [dict(role='assistant', content=row['current']['answer'])]
+    summary = {}
+    for mode in modes:
+        cases = [row[mode] for row in rows]
+        retries = [case for case in cases if case['retried']]
+        summary[mode] = dict(requests=len(cases), accepted=sum(c['accepted'] for c in cases),
+            correct=sum(c['correct'] for c in cases), retries=len(retries),
+            acceptedRetries=sum(c['accepted'] for c in retries),
+            medianResponseMs=statistics.median(c['responseMs'] for c in cases),
+            medianRetriedResponseMs=statistics.median(c['responseMs'] for c in retries) if retries else None)
+    return dict(scope='Direct loopback MLX-LM diagnostic, alternating paired request order, shared KV',
+                cases=rows, summary=summary)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     for key in ('backend-python', 'wrapper', 'model', 'output'):
         parser.add_argument('--' + key, type=Path, required=True)
     parser.add_argument('--replay-mismatch', action='store_true')
+    parser.add_argument('--yes-no', action='store_true')
     args = parser.parse_args()
     port = 19243
     api = f'http://127.0.0.1:{port}'
@@ -137,7 +224,7 @@ def main():
                     time.sleep(.25)
             else:
                 raise RuntimeError('Diagnostic backend did not start')
-            report = compare(api, args.replay_mismatch)
+            report = compare_yes_no(api) if args.yes_no else compare(api, args.replay_mismatch)
         finally:
             child.terminate()
             try:
