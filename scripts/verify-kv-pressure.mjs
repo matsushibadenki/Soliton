@@ -11,8 +11,11 @@ async function request(path,body){const r=await fetch(api+path,{method:body===un
 const state=()=>request('/studio/state'),action=(action,data={})=>request('/studio/action',{action,...data});
 const initial=await state();assert.equal(initial.status,'offline');assert.equal(initial.settings.engine,'vllmApple');assert.equal(initial.settings.vllm.context,4096);assert.equal(initial.settings.vllm.kvCacheMiB,1536);
 const mixed = args.includes('--mixed');
-const measurePrefill = args.includes('--prefill-spans');
-assert(!measurePrefill || mixed, '--prefill-spans requires --mixed');
+const append = args.includes('--append');
+const fresh = args.includes('--fresh-long');
+assert([append, mixed, fresh].filter(Boolean).length <= 1, 'Choose one workload');
+const measurePrefill = fresh || args.includes('--prefill-spans');
+assert(!measurePrefill || mixed || append || fresh, '--prefill-spans requires --mixed or --append');
 const prefillNames = ['batch.prefill', 'sequential.prefill_first'];
 function prefillSnapshot(budget) {
  const ledger = budget?.backendSpans;
@@ -36,7 +39,18 @@ for (let index = 1; index <= (mixed ? 12 : 4); index++) {
  }
 }
 plan.push(['revisit', 0], ['reheat', 0], ['recent', mixed ? 12 : 4]);
-const report={result:'running',scope:'Qualified shared API, more histories than retained capacity; functional cap/recompute/reheat verification, no controlled performance claim',samples:[],workload:mixed?'mixed':'long-only'};let owned=false,restoreSettings=null;
+if (append) {
+ plan.length = 0;
+ for (let index = 0; index < 3; index++) {
+  plan.push(['seed', index], ['append', index]);
+ }
+}
+if (fresh) {
+ plan.length = 0;
+ // One independent long history per language, without revisits or short prompts.
+ for (let index = 0; index < 3; index++) plan.push(['churn', index]);
+}
+const report={result:'running',scope:'Qualified shared API, more histories than retained capacity; functional cap/recompute/reheat verification, no controlled performance claim',samples:[],workload:fresh?'fresh-long':append?'append':mixed?'mixed':'long-only'};let owned=false,restoreSettings=null;
 try{
  const evidence = await readFile(initial.settings.vllm.evidence);
  report.evidenceSha256 = createHash('sha256').update(evidence).digest('hex');
@@ -56,6 +70,12 @@ try{
  for (const [phase, index] of plan) {
   const {language, messages: longMessages} = cacheHistory(index);
   const messages = phase === 'short' ? contextMessages(8, language, false, 'middle') : longMessages;
+  if (phase === 'append') {
+   messages.push(
+    {role: 'assistant', content: 'STRATA-7391'},
+    {...messages.at(-1)},
+   );
+  }
   const started = performance.now();
   const result = await request('/v1/chat/completions', {
    model: 'default_model', messages, max_tokens: 64, temperature: 0, stream: false,
@@ -124,13 +144,27 @@ try{
     total.prefillWallMs = (total.prefillWallMs ?? 0) + span.wallMs;
    }
   }
-  assert(totalsByPhase.churn.prefillCalls > 0, 'No prefill observations during fresh long histories');
+  assert(totalsByPhase[append ? 'seed' : 'churn'].prefillCalls > 0, 'No prefill observations during seed or churn');
  }
  report.totalsByPhase = totalsByPhase;
  report.peakRetainedBytes = Math.max(...report.samples.map(row => row.kv.bytes));
  report.minimumAvailableBytes = Math.min(...report.samples.map(row => row.availableBytes));
+ if (append) {
+  for (let index = 0; index < 3; index++) {
+   const seed = report.samples.find(row => row.phase === 'seed' && row.index === index);
+   const next = report.samples.find(row => row.phase === 'append' && row.index === index);
+   assert(next.promptTokens > seed.promptTokens);
+   assert(next.cachedTokens >= seed.promptTokens - 16, `Long prefix reuse missing for ${seed.language}`);
+  }
+ } else if (fresh) {
+  for (const row of report.samples) {
+   assert(row.promptTokens >= 3500 && row.cachedTokens <= 64,
+    `Expected a mostly uncached long history for ${row.language}`);
+  }
+ } else {
  const by=phase=>report.samples.find(s=>s.phase===phase);
  assert(by('hot').cachedTokens>=by('hot').promptTokens-1);assert(by('revisit').cachedTokens<by('hot').cachedTokens/2);assert(by('reheat').cachedTokens>=by('reheat').promptTokens-1);
+ }
  assert.deepEqual((await state()).document.messages,initial.document.messages);report.historyPreserved=true;
  if(args.includes('--control-evidence')){
   await action('stop');owned=false;

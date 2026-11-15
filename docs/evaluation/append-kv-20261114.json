@@ -1,0 +1,148 @@
+{
+  "result": "passed",
+  "workload": "append",
+  "prefillBasis": "Session ledger deltas on an isolated serial workload, host wall time without added GPU synchronization",
+  "historyPreserved": true,
+  "peakRetainedBytes": 1266769920,
+  "minimumAvailableBytes": 9827844096,
+  "totalsByPhase": {
+    "seed": {
+      "requests": 3,
+      "promptTokens": 11802,
+      "cachedTokens": 16,
+      "uncachedTokens": 11786,
+      "prefillCalls": 42,
+      "prefillWallMs": 20444.649749999997
+    },
+    "append": {
+      "requests": 3,
+      "promptTokens": 11882,
+      "cachedTokens": 11823,
+      "uncachedTokens": 59,
+      "prefillCalls": 39,
+      "prefillWallMs": 290.58199799999966
+    }
+  },
+  "samples": [
+    {
+      "prefill": {
+        "batch.prefill": {
+          "calls": 14,
+          "wallMs": 6801.816166999999
+        },
+        "sequential.prefill_first": {
+          "calls": 0,
+          "wallMs": 0
+        }
+      },
+      "phase": "seed",
+      "index": 0,
+      "language": "en",
+      "promptTokens": 3935,
+      "cachedTokens": 0,
+      "uncachedTokens": 3935,
+      "responseMs": 7778.108,
+      "availableBytes": 11689164800
+    },
+    {
+      "prefill": {
+        "batch.prefill": {
+          "calls": 13,
+          "wallMs": 97.71725000000151
+        },
+        "sequential.prefill_first": {
+          "calls": 0,
+          "wallMs": 0
+        }
+      },
+      "phase": "append",
+      "index": 0,
+      "language": "en",
+      "promptTokens": 3962,
+      "cachedTokens": 3942,
+      "uncachedTokens": 20,
+      "responseMs": 382.9581249999992,
+      "availableBytes": 11689164800
+    },
+    {
+      "prefill": {
+        "batch.prefill": {
+          "calls": 14,
+          "wallMs": 6798.421833
+        },
+        "sequential.prefill_first": {
+          "calls": 0,
+          "wallMs": 0
+        }
+      },
+      "phase": "seed",
+      "index": 1,
+      "language": "ja",
+      "promptTokens": 3937,
+      "cachedTokens": 8,
+      "uncachedTokens": 3929,
+      "responseMs": 7112.398875000001,
+      "availableBytes": 11212734464
+    },
+    {
+      "prefill": {
+        "batch.prefill": {
+          "calls": 13,
+          "wallMs": 97.92312299999867
+        },
+        "sequential.prefill_first": {
+          "calls": 0,
+          "wallMs": 0
+        }
+      },
+      "phase": "append",
+      "index": 1,
+      "language": "ja",
+      "promptTokens": 3966,
+      "cachedTokens": 3944,
+      "uncachedTokens": 22,
+      "responseMs": 383.0996249999989,
+      "availableBytes": 11230248960
+    },
+    {
+      "prefill": {
+        "batch.prefill": {
+          "calls": 14,
+          "wallMs": 6844.411749999996
+        },
+        "sequential.prefill_first": {
+          "calls": 0,
+          "wallMs": 0
+        }
+      },
+      "phase": "seed",
+      "index": 2,
+      "language": "zh",
+      "promptTokens": 3930,
+      "cachedTokens": 8,
+      "uncachedTokens": 3922,
+      "responseMs": 7173.329458,
+      "availableBytes": 9881059328
+    },
+    {
+      "prefill": {
+        "batch.prefill": {
+          "calls": 13,
+          "wallMs": 94.94162499999948
+        },
+        "sequential.prefill_first": {
+          "calls": 0,
+          "wallMs": 0
+        }
+      },
+      "phase": "append",
+      "index": 2,
+      "language": "zh",
+      "promptTokens": 3954,
+      "cachedTokens": 3937,
+      "uncachedTokens": 17,
+      "responseMs": 382.45195800000147,
+      "availableBytes": 9827844096
+    }
+  ]
+}

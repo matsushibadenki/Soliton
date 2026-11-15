@@ -1,0 +1,81 @@
+{
+  "result": "passed",
+  "workload": "fresh-long",
+  "prefillBasis": "Session ledger deltas on an isolated serial workload, host wall time without added GPU synchronization",
+  "historyPreserved": true,
+  "evidenceSha256": "f38611bf042a1c633aa7675b16e7d18962aaf6586b27950c4606787a29794109",
+  "peakRetainedBytes": 1260060672,
+  "minimumAvailableBytes": 8051507200,
+  "totalsByPhase": {
+    "churn": {
+      "requests": 3,
+      "promptTokens": 11802,
+      "cachedTokens": 16,
+      "uncachedTokens": 11786,
+      "prefillCalls": 42,
+      "prefillWallMs": 20493.555791999992
+    }
+  },
+  "samples": [
+    {
+      "prefill": {
+        "batch.prefill": {
+          "calls": 14,
+          "wallMs": 6848.398248
+        },
+        "sequential.prefill_first": {
+          "calls": 0,
+          "wallMs": 0
+        }
+      },
+      "phase": "churn",
+      "index": 0,
+      "language": "en",
+      "promptTokens": 3935,
+      "cachedTokens": 0,
+      "uncachedTokens": 3935,
+      "responseMs": 7953.689583999999,
+      "availableBytes": 9208430592
+    },
+    {
+      "prefill": {
+        "batch.prefill": {
+          "calls": 14,
+          "wallMs": 6814.048168999993
+        },
+        "sequential.prefill_first": {
+          "calls": 0,
+          "wallMs": 0
+        }
+      },
+      "phase": "churn",
+      "index": 1,
+      "language": "ja",
+      "promptTokens": 3937,
+      "cachedTokens": 8,
+      "uncachedTokens": 3929,
+      "responseMs": 7122.086417,
+      "availableBytes": 8387117056
+    },
+    {
+      "prefill": {
+        "batch.prefill": {
+          "calls": 14,
+          "wallMs": 6831.109374999998
+        },
+        "sequential.prefill_first": {
+          "calls": 0,
+          "wallMs": 0
+        }
+      },
+      "phase": "churn",
+      "index": 2,
+      "language": "zh",
+      "promptTokens": 3930,
+      "cachedTokens": 8,
+      "uncachedTokens": 3922,
+      "responseMs": 7133.516417000003,
+      "availableBytes": 8051507200
+    }
+  ]
+}

@@ -51,7 +51,39 @@ This priority order supersedes older engine-related Next entries below; historic
 日本語：24件の途中集計では、新規長履歴10件がprefill計測時間の91.2%を占めました。25件目でホスト空きメモリが4 GiBを下回り、計測を終了しました。
 
 简体中文：已通过检查的24次请求中，10次新增长历史占预填充计时的91.2%。第25次请求触发4 GiB主机可用内存下限，测试结束。
-- 🟠 [Next] Reduce work on fresh long histories. Use `verify-kv-pressure.mjs --mixed --prefill-spans` to compare prefill by workload phase on the qualified 4,096-token profile. Test exact prefix reuse on growing conversations and prefill chunk sizes separately. Compare answer and token-count parity, first-content latency and peak memory before promoting a candidate.
+- 🟢 [Done] Verified existing exact-prefix reuse for growing conversations with `verify-kv-pressure.mjs --append --prefill-spans`. All six qualified Gemma 2 requests returned the expected answer in EN/JA/ZH. The three appended requests reused 11,823 of 11,882 input tokens, with 0.29 s aggregate prefill host wall time versus 20.44 s for their seed requests. This compares different inputs on the same engine. [Measurements](evaluation/append-kv-20261114.json).
+
+日本語：会話を追記した3件で入力トークンの99.5%を再利用し、英日中の全6件で期待した回答を確認しました。
+
+简体中文：追加对话的3次请求复用了99.5%的输入令牌，英、日、中文的6次请求均返回预期答案。
+- 🟢 [Done] Added `verify-kv-pressure.mjs --fresh-long` for the prefill comparison baseline. The qualified 4,096-token profile with the MLX-LM 0.32.2 default step of 2,048 passed all three EN/JA/ZH cases. It recorded 11,786 uncached input tokens and 20.49 s of aggregate prefill host wall time. [Measurements](evaluation/fresh-long-prefill-20261114.json).
+
+日本語：新規長履歴の比較用に、英日中3件の実モデル基準値を取得しました。既定の分割サイズ2,048でprefill計測時間は合計20.49秒でした。
+
+简体中文：已取得英、日、中文三条新增长历史的真实模型基准。默认分块大小为2,048时，预填充累计耗时20.49秒。
+- 🟢 [Done] Compared prefill steps 512, 1,024 and 2,048 on Gemma 2 / MLX-LM 0.32.2 at 4,096 context, 1,536 MiB retained KV and 512 MiB allocator cache. All 18 serial direct-backend requests matched raw answers and prompt, completion and cached token counts. Median full response was 6.82 / 6.88 / 7.06 s. Peak MLX active memory was 3,152 / 3,209 / 3,102 MiB. Maximum sampled physical footprint after requests was 3,524 / 3,504 / 3,522 MiB. All trials passed the CPU load and 4 GiB headroom checks. [Measurements](evaluation/fresh-long-prefill-steps-20261114.json).
+- 🟢 [Done] Shared API prefill comparison at 4,096 tokens. All 24 requests matched full answers and prompt, completion and cached token counts across the two profiles. For 512 / 2,048, median first content was 12.24 / 12.44 s, median response completion was 12.60 / 12.68 s, and sampled peak physical footprint during inference was 4,225 / 4,279 MiB across the gateway process tree. Both profiles exceeded the background CPU criteria for latency comparisons. The 512 trial passed its separate 30-minute qualification with 9,116 successes and zero failures. The initial comparison deferred the adoption decision. [Measurements](evaluation/shared-prefill-steps-20261114.json).
+
+日本語：共有APIの全24件で回答とトークン数が一致しました。両設定でバックグラウンドCPU負荷が計測基準を超え、初回の比較では512の採用判断を保留しました。
+
+简体中文：共享 API 的24次请求均通过回答与令牌数一致性检查。两种配置的后台 CPU 负载均超出延迟比较标准，首次比较暂缓采用决定。
+
+- 🟢 [Done] Repeated the 24-request shared API comparison within the existing background CPU limits. All answers and prompt, completion and cached token counts matched. For 512 / 2,048, median first output was 6.755 / 7.009 s, median completion was 6.955 / 7.222 s, and sampled peak physical footprint during inference was 4,176 / 4,264 MiB. All 24 requests passed the load criteria. Approve 512 for integration on the measured Gemma 2 / MLX-LM 0.32.2 profile at 4,096 tokens, concurrency one, 1,536 MiB retained KV and 512 MiB allocator cache. [Measurements](evaluation/shared-prefill-quiet-20261115.json).
+- 🟢 [Done] Integrated prefill step 512 into the reviewed Gemma 2 controller launcher. The exact patched runtime passed 1,800.243 seconds of qualification with 13,482 successes, zero failures and clean shutdown. The production Rust startup path accepted the new evidence, launched with step 512, and passed all 33 shared API mixed KV requests with history preservation. [Measurements](evaluation/integrated-prefill512-20261115.json).
+- 🟢 [Done] Verified the integrated 512 profile's recovery through the shared API. Three fresh long histories passed. The patched controller refused the previous 2,048-profile evidence with a runtime identity mismatch and reached ready after restoring the matching evidence. [Verification](evaluation/integrated-prefill512-recovery-20261115.json).
+
+日本語：旧資格情報での起動拒否と、対応する資格情報への切り替えによる復旧を確認しました。
+
+简体中文：已验证旧资格凭据会被拒绝，恢复匹配的凭据后可正常启动。
+
+
+日本語：CPU負荷が基準内の全24件で回答と各トークン数が一致しました。512は初回出力が3.6%、応答完了が3.7%短く、物理メモリのサンプル最大値も約87 MiB低下しました。実測した構成で512の採用を決定し、組み込み後の30分再資格確認と共有API全33件が合格しました。
+
+简体中文：24次请求均符合后台CPU负载标准，回答和各项令牌计数一致。512的首段输出和响应完成时间分别缩短3.6%和3.7%，采样物理内存峰值降低约87 MiB。决定在实测配置中采用512，集成后的30分钟重新认证及共享API的33次请求均通过。
+
+日本語：全18件で回答とトークン数が一致しました。512は応答中央値が3.4%短く、MLX割当ピークは約50 MiB増えました。次は共有APIで再現性を確認します。
+
+简体中文：18次请求的回答和令牌数均一致。512的响应中位数缩短3.4%，MLX分配峰值增加约50 MiB。下一步通过共享API验证可复现性。
 - 🔴 [Later] Compare speculative decoding on decode-heavy requests and continuous batching under concurrent requests. Evaluate model cascades offline with routing errors, fallback cost and response quality included. Treat adaptive layer/head/Expert skipping as a separate research track with quality and end-to-end cost measurements.
 
 日本語：新規長履歴のprefillを優先し、会話の追記で共有できる接頭辞とprefillの分割幅を個別に比較します。先読み生成、バッチ処理、モデル振り分けは対象の負荷ごとに評価します。

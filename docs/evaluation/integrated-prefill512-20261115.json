@@ -1,0 +1,1152 @@
+{
+  "result": "passed",
+  "scope": "Qualified shared API, more histories than retained capacity; functional cap/recompute/reheat verification, no controlled performance claim",
+  "samples": [
+    {
+      "prefill": {
+        "batch.prefill": {
+          "calls": 20,
+          "wallMs": 8811.415000000003
+        },
+        "sequential.prefill_first": {
+          "calls": 0,
+          "wallMs": 0
+        }
+      },
+      "phase": "cold",
+      "index": 0,
+      "language": "en",
+      "promptTokens": 3935,
+      "cachedTokens": 0,
+      "uncachedTokens": 3935,
+      "responseMs": 9503.825499999999,
+      "kv": {
+        "bytes": 420126720,
+        "entries": 1,
+        "limitBytes": 1610612736
+      },
+      "availableBytes": 11987173376,
+      "engineMemory": {
+        "pid": 20274,
+        "processCount": 2,
+        "rootBytes": 69141128,
+        "sampledAt": 1794720452508,
+        "usedBytes": 2908425192
+      }
+    },
+    {
+      "prefill": {
+        "batch.prefill": {
+          "calls": 12,
+          "wallMs": 0.010376000000178465
+        },
+        "sequential.prefill_first": {
+          "calls": 0,
+          "wallMs": 0
+        }
+      },
+      "phase": "hot",
+      "index": 0,
+      "language": "en",
+      "promptTokens": 3935,
+      "cachedTokens": 3934,
+      "uncachedTokens": 1,
+      "responseMs": 337.40241700000115,
+      "kv": {
+        "bytes": 420126720,
+        "entries": 1,
+        "limitBytes": 1610612736
+      },
+      "availableBytes": 11765907456,
+      "engineMemory": {
+        "pid": 20274,
+        "processCount": 2,
+        "rootBytes": 69141128,
+        "sampledAt": 1794720452855,
+        "usedBytes": 3129084904
+      }
+    },
+    {
+      "prefill": {
+        "batch.prefill": {
+          "calls": 20,
+          "wallMs": 9630.315874000007
+        },
+        "sequential.prefill_first": {
+          "calls": 0,
+          "wallMs": 0
+        }
+      },
+      "phase": "churn",
+      "index": 1,
+      "language": "ja",
+      "promptTokens": 3937,
+      "cachedTokens": 8,
+      "uncachedTokens": 3929,
+      "responseMs": 9975.372583999999,
+      "kv": {
+        "bytes": 840466432,
+        "entries": 2,
+        "limitBytes": 1610612736
+      },
+      "availableBytes": 11910856704,
+      "engineMemory": {
+        "pid": 20274,
+        "processCount": 2,
+        "rootBytes": 69157512,
+        "sampledAt": 1794720462841,
+        "usedBytes": 3331525608
+      }
+    },
+    {
+      "prefill": {
+        "batch.prefill": {
+          "calls": 12,
+          "wallMs": 283.7054999999964
+        },
+        "sequential.prefill_first": {
+          "calls": 0,
+          "wallMs": 0
+        }
+      },
+      "phase": "short",
+      "index": 0,
+      "language": "en",
+      "promptTokens": 152,
+      "cachedTokens": 4,
+      "uncachedTokens": 148,
+      "responseMs": 545.1762920000001,
+      "kv": {
+        "bytes": 857718784,
+        "entries": 3,
+        "limitBytes": 1610612736
+      },
+      "availableBytes": 12320522240,
+      "engineMemory": {
+        "pid": 20274,
+        "processCount": 2,
+        "rootBytes": 69173896,
+        "sampledAt": 1794720463392,
+        "usedBytes": 2924383208
+      }
+    },
+    {
+      "prefill": {
+        "batch.prefill": {
+          "calls": 20,
+          "wallMs": 9528.160833999995
+        },
+        "sequential.prefill_first": {
+          "calls": 0,
+          "wallMs": 0
+        }
+      },
+      "phase": "churn",
+      "index": 2,
+      "language": "zh",
+      "promptTokens": 3930,
+      "cachedTokens": 8,
+      "uncachedTokens": 3922,
+      "responseMs": 9882.006500000003,
+      "kv": {
+        "bytes": 1277313024,
+        "entries": 4,
+        "limitBytes": 1610612736
+      },
+      "availableBytes": 11556962304,
+      "engineMemory": {
+        "pid": 20274,
+        "processCount": 2,
+        "rootBytes": 64930440,
+        "sampledAt": 1794720473283,
+        "usedBytes": 3792358376
+      }
+    },
+    {
+      "prefill": {
+        "batch.prefill": {
+          "calls": 13,
+          "wallMs": 184.44904100000713
+        },
+        "sequential.prefill_first": {
+          "calls": 0,
+          "wallMs": 0
+        }
+      },
+      "phase": "short",
+      "index": 1,
+      "language": "ja",
+      "promptTokens": 154,
+      "cachedTokens": 64,
+      "uncachedTokens": 90,
+      "responseMs": 435.87054100000387,
+      "kv": {
+        "bytes": 1294778368,
+        "entries": 5,
+        "limitBytes": 1610612736
+      },
+      "availableBytes": 11962023936,
+      "engineMemory": {
+        "pid": 20274,
+        "processCount": 2,
+        "rootBytes": 64930440,
+        "sampledAt": 1794720473728,
+        "usedBytes": 3386690536
+      }
+    },
+    {
+      "prefill": {
+        "batch.prefill": {
+          "calls": 20,
+          "wallMs": 9603.122669
+        },
+        "sequential.prefill_first": {
+          "calls": 0,
+          "wallMs": 0
+        }
+      },
+      "phase": "churn",
+      "index": 3,
+      "language": "en",
+      "promptTokens": 3935,
+      "cachedTokens": 8,
+      "uncachedTokens": 3927,
+      "responseMs": 9976.483332999996,
+      "kv": {
+        "bytes": 1294778368,
+        "entries": 5,
+        "limitBytes": 1610612736
+      },
+      "availableBytes": 12312690688,
+      "engineMemory": {
+        "pid": 20274,
+        "processCount": 2,
+        "rootBytes": 64930440,
+        "sampledAt": 1794720483715,
+        "usedBytes": 3816655848
+      }
+    },
+    {
+      "prefill": {
+        "batch.prefill": {
+          "calls": 13,
+          "wallMs": 181.6302929999947
+        },
+        "sequential.prefill_first": {
+          "calls": 0,
+          "wallMs": 0
+        }
+      },
+      "phase": "short",
+      "index": 2,
+      "language": "zh",
+      "promptTokens": 147,
+      "cachedTokens": 64,
+      "uncachedTokens": 83,
+      "responseMs": 420.447957999997,
+      "kv": {
+        "bytes": 1311498240,
+        "entries": 6,
+        "limitBytes": 1610612736
+      },
+      "availableBytes": 12715999232,
+      "engineMemory": {
+        "pid": 20274,
+        "processCount": 2,
+        "rootBytes": 64930440,
+        "sampledAt": 1794720484142,
+        "usedBytes": 3417197544
+      }
+    },
+    {
+      "prefill": {
+        "batch.prefill": {
+          "calls": 12,
+          "wallMs": 0.009666999998444226
+        },
+        "sequential.prefill_first": {
+          "calls": 0,
+          "wallMs": 0
+        }
+      },
+      "phase": "recent",
+      "index": 3,
+      "language": "en",
+      "promptTokens": 3935,
+      "cachedTokens": 3934,
+      "uncachedTokens": 1,
+      "responseMs": 328.05312499999854,
+      "kv": {
+        "bytes": 891158528,
+        "entries": 5,
+        "limitBytes": 1610612736
+      },
+      "availableBytes": 12504907776,
+      "engineMemory": {
+        "pid": 20274,
+        "processCount": 2,
+        "rootBytes": 64946824,
+        "sampledAt": 1794720484478,
+        "usedBytes": 3633056744
+      }
+    },
+    {
+      "prefill": {
+        "batch.prefill": {
+          "calls": 20,
+          "wallMs": 9670.662165999995
+        },
+        "sequential.prefill_first": {
+          "calls": 0,
+          "wallMs": 0
+        }
+      },
+      "phase": "churn",
+      "index": 4,
+      "language": "ja",
+      "promptTokens": 3937,
+      "cachedTokens": 8,
+      "uncachedTokens": 3929,
+      "responseMs": 10048.578875,
+      "kv": {
+        "bytes": 1311498240,
+        "entries": 6,
+        "limitBytes": 1610612736
+      },
+      "availableBytes": 12301123584,
+      "engineMemory": {
+        "pid": 20274,
+        "processCount": 2,
+        "rootBytes": 45023880,
+        "sampledAt": 1794720494537,
+        "usedBytes": 3840314344
+      }
+    },
+    {
+      "prefill": {
+        "batch.prefill": {
+          "calls": 12,
+          "wallMs": 0.00899899999058107
+        },
+        "sequential.prefill_first": {
+          "calls": 0,
+          "wallMs": 0
+        }
+      },
+      "phase": "short",
+      "index": 0,
+      "language": "en",
+      "promptTokens": 152,
+      "cachedTokens": 151,
+      "uncachedTokens": 1,
+      "responseMs": 233.33612500000163,
+      "kv": {
+        "bytes": 1311498240,
+        "entries": 6,
+        "limitBytes": 1610612736
+      },
+      "availableBytes": 12245729280,
+      "engineMemory": {
+        "pid": 20274,
+        "processCount": 2,
+        "rootBytes": 45023880,
+        "sampledAt": 1794720494779,
+        "usedBytes": 3900738536
+      }
+    },
+    {
+      "prefill": {
+        "batch.prefill": {
+          "calls": 20,
+          "wallMs": 9531.757543000007
+        },
+        "sequential.prefill_first": {
+          "calls": 0,
+          "wallMs": 0
+        }
+      },
+      "phase": "churn",
+      "index": 5,
+      "language": "zh",
+      "promptTokens": 3930,
+      "cachedTokens": 8,
+      "uncachedTokens": 3922,
+      "responseMs": 9901.060540999999,
+      "kv": {
+        "bytes": 1311498240,
+        "entries": 6,
+        "limitBytes": 1610612736
+      },
+      "availableBytes": 12388745216,
+      "engineMemory": {
+        "pid": 20274,
+        "processCount": 2,
+        "rootBytes": 37765744,
+        "sampledAt": 1794720504691,
+        "usedBytes": 3874507728
+      }
+    },
+    {
+      "prefill": {
+        "batch.prefill": {
+          "calls": 12,
+          "wallMs": 0.010082999993755948
+        },
+        "sequential.prefill_first": {
+          "calls": 0,
+          "wallMs": 0
+        }
+      },
+      "phase": "short",
+      "index": 1,
+      "language": "ja",
+      "promptTokens": 154,
+      "cachedTokens": 153,
+      "uncachedTokens": 1,
+      "responseMs": 245.2763330000016,
+      "kv": {
+        "bytes": 1311498240,
+        "entries": 6,
+        "limitBytes": 1610612736
+      },
+      "availableBytes": 12315410432,
+      "engineMemory": {
+        "pid": 20274,
+        "processCount": 2,
+        "rootBytes": 37765744,
+        "sampledAt": 1794720504947,
+        "usedBytes": 3943009232
+      }
+    },
+    {
+      "prefill": {
+        "batch.prefill": {
+          "calls": 20,
+          "wallMs": 9583.792457999989
+        },
+        "sequential.prefill_first": {
+          "calls": 0,
+          "wallMs": 0
+        }
+      },
+      "phase": "churn",
+      "index": 6,
+      "language": "en",
+      "promptTokens": 3935,
+      "cachedTokens": 8,
+      "uncachedTokens": 3927,
+      "responseMs": 9961.739958999991,
+      "kv": {
+        "bytes": 1294778368,
+        "entries": 5,
+        "limitBytes": 1610612736
+      },
+      "availableBytes": 12466356224,
+      "engineMemory": {
+        "pid": 20274,
+        "processCount": 2,
+        "rootBytes": 37765744,
+        "sampledAt": 1794720514919,
+        "usedBytes": 3824602064
+      }
+    },
+    {
+      "prefill": {
+        "batch.prefill": {
+          "calls": 13,
+          "wallMs": 189.70329200002016
+        },
+        "sequential.prefill_first": {
+          "calls": 0,
+          "wallMs": 0
+        }
+      },
+      "phase": "short",
+      "index": 2,
+      "language": "zh",
+      "promptTokens": 147,
+      "cachedTokens": 64,
+      "uncachedTokens": 83,
+      "responseMs": 446.09120899999107,
+      "kv": {
+        "bytes": 1311498240,
+        "entries": 6,
+        "limitBytes": 1610612736
+      },
+      "availableBytes": 12892471296,
+      "engineMemory": {
+        "pid": 20274,
+        "processCount": 2,
+        "rootBytes": 37765744,
+        "sampledAt": 1794720515377,
+        "usedBytes": 3402812368
+      }
+    },
+    {
+      "prefill": {
+        "batch.prefill": {
+          "calls": 12,
+          "wallMs": 0.009916000024531968
+        },
+        "sequential.prefill_first": {
+          "calls": 0,
+          "wallMs": 0
+        }
+      },
+      "phase": "recent",
+      "index": 6,
+      "language": "en",
+      "promptTokens": 3935,
+      "cachedTokens": 3934,
+      "uncachedTokens": 1,
+      "responseMs": 340.702667000005,
+      "kv": {
+        "bytes": 891158528,
+        "entries": 5,
+        "limitBytes": 1610612736
+      },
+      "availableBytes": 12892471296,
+      "engineMemory": {
+        "pid": 20274,
+        "processCount": 2,
+        "rootBytes": 37765744,
+        "sampledAt": 1794720515728,
+        "usedBytes": 3615427536
+      }
+    },
+    {
+      "prefill": {
+        "batch.prefill": {
+          "calls": 20,
+          "wallMs": 9595.240669000035
+        },
+        "sequential.prefill_first": {
+          "calls": 0,
+          "wallMs": 0
+        }
+      },
+      "phase": "churn",
+      "index": 7,
+      "language": "ja",
+      "promptTokens": 3937,
+      "cachedTokens": 8,
+      "uncachedTokens": 3929,
+      "responseMs": 9949.84141600001,
+      "kv": {
+        "bytes": 1311498240,
+        "entries": 6,
+        "limitBytes": 1610612736
+      },
+      "availableBytes": 12468879360,
+      "engineMemory": {
+        "pid": 20274,
+        "processCount": 2,
+        "rootBytes": 37782128,
+        "sampledAt": 1794720525689,
+        "usedBytes": 3842608080
+      }
+    },
+    {
+      "prefill": {
+        "batch.prefill": {
+          "calls": 12,
+          "wallMs": 0.01008300001558382
+        },
+        "sequential.prefill_first": {
+          "calls": 0,
+          "wallMs": 0
+        }
+      },
+      "phase": "short",
+      "index": 0,
+      "language": "en",
+      "promptTokens": 152,
+      "cachedTokens": 151,
+      "uncachedTokens": 1,
+      "responseMs": 237.32720800000243,
+      "kv": {
+        "bytes": 1311498240,
+        "entries": 6,
+        "limitBytes": 1610612736
+      },
+      "availableBytes": 12408717312,
+      "engineMemory": {
+        "pid": 20274,
+        "processCount": 2,
+        "rootBytes": 37782128,
+        "sampledAt": 1794720525937,
+        "usedBytes": 3902999504
+      }
+    },
+    {
+      "prefill": {
+        "batch.prefill": {
+          "calls": 20,
+          "wallMs": 9656.186501000018
+        },
+        "sequential.prefill_first": {
+          "calls": 0,
+          "wallMs": 0
+        }
+      },
+      "phase": "churn",
+      "index": 8,
+      "language": "zh",
+      "promptTokens": 3930,
+      "cachedTokens": 8,
+      "uncachedTokens": 3922,
+      "responseMs": 10028.96312500001,
+      "kv": {
+        "bytes": 1311498240,
+        "entries": 6,
+        "limitBytes": 1610612736
+      },
+      "availableBytes": 12357926912,
+      "engineMemory": {
+        "pid": 20274,
+        "processCount": 2,
+        "rootBytes": 37782128,
+        "sampledAt": 1794720535977,
+        "usedBytes": 3884764112
+      }
+    },
+    {
+      "prefill": {
+        "batch.prefill": {
+          "calls": 12,
+          "wallMs": 0.009002000006148592
+        },
+        "sequential.prefill_first": {
+          "calls": 0,
+          "wallMs": 0
+        }
+      },
+      "phase": "short",
+      "index": 1,
+      "language": "ja",
+      "promptTokens": 154,
+      "cachedTokens": 153,
+      "uncachedTokens": 1,
+      "responseMs": 237.88945799999055,
+      "kv": {
+        "bytes": 1311498240,
+        "entries": 6,
+        "limitBytes": 1610612736
+      },
+      "availableBytes": 12304875520,
+      "engineMemory": {
+        "pid": 20274,
+        "processCount": 2,
+        "rootBytes": 37782128,
+        "sampledAt": 1794720536226,
+        "usedBytes": 3937848272
+      }
+    },
+    {
+      "prefill": {
+        "batch.prefill": {
+          "calls": 20,
+          "wallMs": 9574.154001999967
+        },
+        "sequential.prefill_first": {
+          "calls": 0,
+          "wallMs": 0
+        }
+      },
+      "phase": "churn",
+      "index": 9,
+      "language": "en",
+      "promptTokens": 3935,
+      "cachedTokens": 8,
+      "uncachedTokens": 3927,
+      "responseMs": 9949.976666999995,
+      "kv": {
+        "bytes": 1294778368,
+        "entries": 5,
+        "limitBytes": 1610612736
+      },
+      "availableBytes": 12421169152,
+      "engineMemory": {
+        "pid": 20274,
+        "processCount": 2,
+        "rootBytes": 37782128,
+        "sampledAt": 1794720546188,
+        "usedBytes": 3824634856
+      }
+    },
+    {
+      "prefill": {
+        "batch.prefill": {
+          "calls": 13,
+          "wallMs": 187.1718310000142
+        },
+        "sequential.prefill_first": {
+          "calls": 0,
+          "wallMs": 0
+        }
+      },
+      "phase": "short",
+      "index": 2,
+      "language": "zh",
+      "promptTokens": 147,
+      "cachedTokens": 64,
+      "uncachedTokens": 83,
+      "responseMs": 436.4516250000015,
+      "kv": {
+        "bytes": 1311498240,
+        "entries": 6,
+        "limitBytes": 1610612736
+      },
+      "availableBytes": 12842254336,
+      "engineMemory": {
+        "pid": 20274,
+        "processCount": 2,
+        "rootBytes": 37782128,
+        "sampledAt": 1794720546636,
+        "usedBytes": 3402845160
+      }
+    },
+    {
+      "prefill": {
+        "batch.prefill": {
+          "calls": 12,
+          "wallMs": 0.011291000046185218
+        },
+        "sequential.prefill_first": {
+          "calls": 0,
+          "wallMs": 0
+        }
+      },
+      "phase": "recent",
+      "index": 9,
+      "language": "en",
+      "promptTokens": 3935,
+      "cachedTokens": 3934,
+      "uncachedTokens": 1,
+      "responseMs": 343.7720830000035,
+      "kv": {
+        "bytes": 891158528,
+        "entries": 5,
+        "limitBytes": 1610612736
+      },
+      "availableBytes": 12628803584,
+      "engineMemory": {
+        "pid": 20274,
+        "processCount": 2,
+        "rootBytes": 37782128,
+        "sampledAt": 1794720546991,
+        "usedBytes": 3615460328
+      }
+    },
+    {
+      "prefill": {
+        "batch.prefill": {
+          "calls": 20,
+          "wallMs": 9731.675249999971
+        },
+        "sequential.prefill_first": {
+          "calls": 0,
+          "wallMs": 0
+        }
+      },
+      "phase": "churn",
+      "index": 10,
+      "language": "ja",
+      "promptTokens": 3937,
+      "cachedTokens": 7,
+      "uncachedTokens": 3930,
+      "responseMs": 10086.674708000006,
+      "kv": {
+        "bytes": 1311498240,
+        "entries": 6,
+        "limitBytes": 1610612736
+      },
+      "availableBytes": 12400934912,
+      "engineMemory": {
+        "pid": 20274,
+        "processCount": 2,
+        "rootBytes": 37782128,
+        "sampledAt": 1794720557090,
+        "usedBytes": 3842821096
+      }
+    },
+    {
+      "prefill": {
+        "batch.prefill": {
+          "calls": 12,
+          "wallMs": 0.009377000023960136
+        },
+        "sequential.prefill_first": {
+          "calls": 0,
+          "wallMs": 0
+        }
+      },
+      "phase": "short",
+      "index": 0,
+      "language": "en",
+      "promptTokens": 152,
+      "cachedTokens": 151,
+      "uncachedTokens": 1,
+      "responseMs": 238.05495900000096,
+      "kv": {
+        "bytes": 1311498240,
+        "entries": 6,
+        "limitBytes": 1610612736
+      },
+      "availableBytes": 12345425920,
+      "engineMemory": {
+        "pid": 20274,
+        "processCount": 2,
+        "rootBytes": 37782128,
+        "sampledAt": 1794720557340,
+        "usedBytes": 3903212520
+      }
+    },
+    {
+      "prefill": {
+        "batch.prefill": {
+          "calls": 20,
+          "wallMs": 9678.919332999983
+        },
+        "sequential.prefill_first": {
+          "calls": 0,
+          "wallMs": 0
+        }
+      },
+      "phase": "churn",
+      "index": 11,
+      "language": "zh",
+      "promptTokens": 3930,
+      "cachedTokens": 8,
+      "uncachedTokens": 3922,
+      "responseMs": 10026.91966700001,
+      "kv": {
+        "bytes": 1311498240,
+        "entries": 6,
+        "limitBytes": 1610612736
+      },
+      "availableBytes": 12546850816,
+      "engineMemory": {
+        "pid": 20274,
+        "processCount": 2,
+        "rootBytes": 37782128,
+        "sampledAt": 1794720567379,
+        "usedBytes": 3868593128
+      }
+    },
+    {
+      "prefill": {
+        "batch.prefill": {
+          "calls": 12,
+          "wallMs": 0.009960000024875626
+        },
+        "sequential.prefill_first": {
+          "calls": 0,
+          "wallMs": 0
+        }
+      },
+      "phase": "short",
+      "index": 1,
+      "language": "ja",
+      "promptTokens": 154,
+      "cachedTokens": 153,
+      "uncachedTokens": 1,
+      "responseMs": 237.6542080000072,
+      "kv": {
+        "bytes": 1311498240,
+        "entries": 6,
+        "limitBytes": 1610612736
+      },
+      "availableBytes": 12488261632,
+      "engineMemory": {
+        "pid": 20274,
+        "processCount": 2,
+        "rootBytes": 37782128,
+        "sampledAt": 1794720567628,
+        "usedBytes": 3921677288
+      }
+    },
+    {
+      "prefill": {
+        "batch.prefill": {
+          "calls": 20,
+          "wallMs": 9668.029414999997
+        },
+        "sequential.prefill_first": {
+          "calls": 0,
+          "wallMs": 0
+        }
+      },
+      "phase": "churn",
+      "index": 12,
+      "language": "en",
+      "promptTokens": 3935,
+      "cachedTokens": 8,
+      "uncachedTokens": 3927,
+      "responseMs": 10032.454583000013,
+      "kv": {
+        "bytes": 1294778368,
+        "entries": 5,
+        "limitBytes": 1610612736
+      },
+      "availableBytes": 12596838400,
+      "engineMemory": {
+        "pid": 20274,
+        "processCount": 2,
+        "rootBytes": 37782128,
+        "sampledAt": 1794720577673,
+        "usedBytes": 3808447464
+      }
+    },
+    {
+      "prefill": {
+        "batch.prefill": {
+          "calls": 13,
+          "wallMs": 181.19895799999358
+        },
+        "sequential.prefill_first": {
+          "calls": 0,
+          "wallMs": 0
+        }
+      },
+      "phase": "short",
+      "index": 2,
+      "language": "zh",
+      "promptTokens": 147,
+      "cachedTokens": 64,
+      "uncachedTokens": 83,
+      "responseMs": 432.5531250000058,
+      "kv": {
+        "bytes": 1311498240,
+        "entries": 6,
+        "limitBytes": 1610612736
+      },
+      "availableBytes": 13018120192,
+      "engineMemory": {
+        "pid": 20274,
+        "processCount": 2,
+        "rootBytes": 37782128,
+        "sampledAt": 1794720578118,
+        "usedBytes": 3386657768
+      }
+    },
+    {
+      "prefill": {
+        "batch.prefill": {
+          "calls": 12,
+          "wallMs": 0.012875000044004992
+        },
+        "sequential.prefill_first": {
+          "calls": 0,
+          "wallMs": 0
+        }
+      },
+      "phase": "recent",
+      "index": 12,
+      "language": "en",
+      "promptTokens": 3935,
+      "cachedTokens": 3934,
+      "uncachedTokens": 1,
+      "responseMs": 335.9193749999977,
+      "kv": {
+        "bytes": 891158528,
+        "entries": 5,
+        "limitBytes": 1610612736
+      },
+      "availableBytes": 12789235712,
+      "engineMemory": {
+        "pid": 20274,
+        "processCount": 2,
+        "rootBytes": 37782128,
+        "sampledAt": 1794720578466,
+        "usedBytes": 3620293608
+      }
+    },
+    {
+      "prefill": {
+        "batch.prefill": {
+          "calls": 20,
+          "wallMs": 9583.838254999951
+        },
+        "sequential.prefill_first": {
+          "calls": 0,
+          "wallMs": 0
+        }
+      },
+      "phase": "revisit",
+      "index": 0,
+      "language": "en",
+      "promptTokens": 3935,
+      "cachedTokens": 7,
+      "uncachedTokens": 3928,
+      "responseMs": 9944.574583000009,
+      "kv": {
+        "bytes": 1311285248,
+        "entries": 6,
+        "limitBytes": 1610612736
+      },
+      "availableBytes": 12564414464,
+      "engineMemory": {
+        "pid": 20274,
+        "processCount": 2,
+        "rootBytes": 37782128,
+        "sampledAt": 1794720588424,
+        "usedBytes": 3842575336
+      }
+    },
+    {
+      "prefill": {
+        "batch.prefill": {
+          "calls": 12,
+          "wallMs": 0.010750999907031655
+        },
+        "sequential.prefill_first": {
+          "calls": 0,
+          "wallMs": 0
+        }
+      },
+      "phase": "reheat",
+      "index": 0,
+      "language": "en",
+      "promptTokens": 3935,
+      "cachedTokens": 3934,
+      "uncachedTokens": 1,
+      "responseMs": 340.80145900000934,
+      "kv": {
+        "bytes": 874438656,
+        "entries": 4,
+        "limitBytes": 1610612736
+      },
+      "availableBytes": 12780863488,
+      "engineMemory": {
+        "pid": 20274,
+        "processCount": 2,
+        "rootBytes": 37782128,
+        "sampledAt": 1794720588777,
+        "usedBytes": 3625061352
+      }
+    },
+    {
+      "prefill": {
+        "batch.prefill": {
+          "calls": 12,
+          "wallMs": 0.008917999919503927
+        },
+        "sequential.prefill_first": {
+          "calls": 0,
+          "wallMs": 0
+        }
+      },
+      "phase": "recent",
+      "index": 12,
+      "language": "en",
+      "promptTokens": 3935,
+      "cachedTokens": 3934,
+      "uncachedTokens": 1,
+      "responseMs": 337.27229200000875,
+      "kv": {
+        "bytes": 874438656,
+        "entries": 4,
+        "limitBytes": 1610612736
+      },
+      "availableBytes": 12779864064,
+      "engineMemory": {
+        "pid": 20274,
+        "processCount": 2,
+        "rootBytes": 37782128,
+        "sampledAt": 1794720589126,
+        "usedBytes": 3625995240
+      }
+    }
+  ],
+  "workload": "mixed",
+  "evidenceSha256": "37a7f03e605bfad95028ff9806aec5121f4bb08160a435ba0fb89318f1867aae",
+  "engineSession": "b9c549ca-dd56-4b73-a5e3-e0ed037ac990",
+  "prefillBasis": "Session ledger deltas on an isolated serial workload, host wall time without added GPU synchronization",
+  "shortReuse": {
+    "repeats": 9,
+    "fullHits": 6,
+    "uncachedTokens": 255
+  },
+  "exactRepeatOpportunity": {
+    "requests": 17,
+    "observedUncachedTokens": 55559,
+    "additionalReusableTokens": 4173,
+    "remainingUncachedTokens": 51386
+  },
+  "totalsByPhase": {
+    "cold": {
+      "requests": 1,
+      "promptTokens": 3935,
+      "cachedTokens": 0,
+      "uncachedTokens": 3935,
+      "prefillCalls": 20,
+      "prefillWallMs": 8811.415000000003
+    },
+    "hot": {
+      "requests": 1,
+      "promptTokens": 3935,
+      "cachedTokens": 3934,
+      "uncachedTokens": 1,
+      "prefillCalls": 12,
+      "prefillWallMs": 0.010376000000178465
+    },
+    "churn": {
+      "requests": 12,
+      "promptTokens": 47208,
+      "cachedTokens": 95,
+      "uncachedTokens": 47113,
+      "prefillCalls": 240,
+      "prefillWallMs": 115452.01671399997
+    },
+    "short": {
+      "requests": 12,
+      "promptTokens": 1812,
+      "cachedTokens": 1236,
+      "uncachedTokens": 576,
+      "prefillCalls": 149,
+      "prefillWallMs": 1207.916419000081
+    },
+    "recent": {
+      "requests": 5,
+      "promptTokens": 19675,
+      "cachedTokens": 19670,
+      "uncachedTokens": 5,
+      "prefillCalls": 60,
+      "prefillWallMs": 0.05266700003267033
+    },
+    "revisit": {
+      "requests": 1,
+      "promptTokens": 3935,
+      "cachedTokens": 7,
+      "uncachedTokens": 3928,
+      "prefillCalls": 20,
+      "prefillWallMs": 9583.838254999951
+    },
+    "reheat": {
+      "requests": 1,
+      "promptTokens": 3935,
+      "cachedTokens": 3934,
+      "uncachedTokens": 1,
+      "prefillCalls": 12,
+      "prefillWallMs": 0.010750999907031655
+    }
+  },
+  "peakRetainedBytes": 1311498240,
+  "minimumAvailableBytes": 11556962304,
+  "historyPreserved": true,
+  "qualification": {
+    "elapsed_seconds": 1800.243,
+    "successes": 13482,
+    "failures": 0,
+    "shutdownClean": true
+  },
+  "profile": {
+    "mlxLm": "0.32.2",
+    "context": 4096,
+    "concurrency": 1,
+    "prefillStep": 512,
+    "kvCacheMiB": 1536,
+    "allocatorCacheMiB": 512
+  }
+}

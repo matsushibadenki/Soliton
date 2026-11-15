@@ -69,3 +69,11 @@ Bounded atomic scalar ledgers record host wall durations for full evidence verif
 日本語：既存の資格確認済みcontrollerを残した別候補へ適用します。新しいgenerateソース検査、完全なidentity照合、元の30分試験を維持します。区間はCPU側の壁時計・プロセス累積値で、GPU時間や要求単位の計測とは扱いません。SSD保存／復元は別工程です。
 
 简体中文：在保留原认证controller的独立候选副本上应用；新增generate源码校验，保留完整identity验证及原30分钟测试。记录的是进程累计主机壁钟时间，不是GPU内核或单请求计时。SSD保存／恢复另行处理。
+
+## Gemma 2 prefill step 512
+
+Apply [the prefill patch](vllm-apple-gemma2-prefill512.patch) after the internal spans patch. The managed MLX-LM 0.32.2 launcher selects step 512 at a 4,096-token context with 1,536 MiB retained KV and 512 MiB allocator cache when the local model config matches the measured Gemma 2 2B IT 4-bit config. Soliton's managed serve path uses concurrency one. Generate new 30-minute architecture evidence from the patched controller and select that controller and evidence in Soliton. The runtime fingerprint includes the launcher change.
+
+日本語：内部計測パッチの後に適用し、変更後のcontrollerで30分の資格情報を発行します。共有APIの起動設定では、そのcontrollerと対応する資格情報を指定します。
+
+简体中文：在内部计时补丁之后应用，并使用修改后的 controller 生成30分钟资格凭据。启动共享 API 时选用该 controller 及其对应的凭据。

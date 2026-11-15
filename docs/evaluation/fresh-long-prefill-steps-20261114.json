@@ -1,0 +1,386 @@
+{
+  "passed": true,
+  "certification": false,
+  "context": 4096,
+  "kvCacheMiB": 1536,
+  "allocatorCacheMiB": 512,
+  "order": [
+    2048,
+    512,
+    1024,
+    1024,
+    512,
+    2048
+  ],
+  "fixturesSha256": "0cbf6ccb7c7258df00bc6b25e545412c1178c7618b7f860fb433cac27628002a",
+  "trials": [
+    {
+      "step": 2048,
+      "cases": [
+        {
+          "language": "en",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 3935,
+          "completionTokens": 10,
+          "cachedTokens": 0,
+          "responseMs": 6975.956124995719,
+          "mlxPeakActiveBytes": 2397019518,
+          "postRequestPhysicalBytes": 2829191376,
+          "availableBytes": 12373000192,
+          "backgroundCpu": {
+            "averageBusyPercent": 2.8023942394292662,
+            "peakBusyPercent": 5.252505217360142,
+            "sustainedHighSeconds": 0
+          },
+          "backgroundCpuBefore": 3.4143779590711585
+        },
+        {
+          "language": "ja",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 3937,
+          "completionTokens": 10,
+          "cachedTokens": 8,
+          "responseMs": 6991.603875001601,
+          "mlxPeakActiveBytes": 2817845474,
+          "postRequestPhysicalBytes": 3252013264,
+          "availableBytes": 12232015872,
+          "backgroundCpu": {
+            "averageBusyPercent": 3.3933091625615246,
+            "peakBusyPercent": 22.866243119861636,
+            "sustainedHighSeconds": 0
+          },
+          "backgroundCpuBefore": 4.997714713926083
+        },
+        {
+          "language": "zh",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 3930,
+          "completionTokens": 10,
+          "cachedTokens": 8,
+          "responseMs": 7016.871708001418,
+          "mlxPeakActiveBytes": 3252919682,
+          "postRequestPhysicalBytes": 3689236688,
+          "availableBytes": 12009848832,
+          "backgroundCpu": {
+            "averageBusyPercent": 2.9159573335351325,
+            "peakBusyPercent": 12.076548733210263,
+            "sustainedHighSeconds": 0
+          },
+          "backgroundCpuBefore": 4.341269479195829
+        }
+      ],
+      "shutdownClean": true
+    },
+    {
+      "step": 512,
+      "cases": [
+        {
+          "language": "en",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 3935,
+          "completionTokens": 10,
+          "cachedTokens": 0,
+          "responseMs": 6790.445750004437,
+          "mlxPeakActiveBytes": 2461869066,
+          "postRequestPhysicalBytes": 2835515696,
+          "availableBytes": 12504350720,
+          "backgroundCpu": {
+            "averageBusyPercent": 10.26902983550692,
+            "peakBusyPercent": 23.90466328826082,
+            "sustainedHighSeconds": 0
+          },
+          "backgroundCpuBefore": 5.666160254817983
+        },
+        {
+          "language": "ja",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 3937,
+          "completionTokens": 10,
+          "cachedTokens": 8,
+          "responseMs": 6782.8382500010775,
+          "mlxPeakActiveBytes": 2876695566,
+          "postRequestPhysicalBytes": 3257895216,
+          "availableBytes": 12213747712,
+          "backgroundCpu": {
+            "averageBusyPercent": 5.926061063634733,
+            "peakBusyPercent": 12.842985813143702,
+            "sustainedHighSeconds": 0
+          },
+          "backgroundCpuBefore": 9.094138209148372
+        },
+        {
+          "language": "zh",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 3930,
+          "completionTokens": 10,
+          "cachedTokens": 8,
+          "responseMs": 6803.696250004577,
+          "mlxPeakActiveBytes": 3305333772,
+          "postRequestPhysicalBytes": 3694692656,
+          "availableBytes": 11909087232,
+          "backgroundCpu": {
+            "averageBusyPercent": 4.854646692490897,
+            "peakBusyPercent": 12.312436316051002,
+            "sustainedHighSeconds": 0
+          },
+          "backgroundCpuBefore": 8.22114051906017
+        }
+      ],
+      "shutdownClean": true
+    },
+    {
+      "step": 1024,
+      "cases": [
+        {
+          "language": "en",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 3935,
+          "completionTokens": 10,
+          "cachedTokens": 0,
+          "responseMs": 6845.873375001247,
+          "mlxPeakActiveBytes": 2513474476,
+          "postRequestPhysicalBytes": 2818410800,
+          "availableBytes": 12531351552,
+          "backgroundCpu": {
+            "averageBusyPercent": 5.836206407545285,
+            "peakBusyPercent": 32.72537918764323,
+            "sustainedHighSeconds": 0
+          },
+          "backgroundCpuBefore": 8.846476686119523
+        },
+        {
+          "language": "ja",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 3937,
+          "completionTokens": 10,
+          "cachedTokens": 8,
+          "responseMs": 6875.894915996469,
+          "mlxPeakActiveBytes": 2931856304,
+          "postRequestPhysicalBytes": 3237398832,
+          "availableBytes": 12221284352,
+          "backgroundCpu": {
+            "averageBusyPercent": 3.111626569578088,
+            "peakBusyPercent": 9.084472555298536,
+            "sustainedHighSeconds": 0
+          },
+          "backgroundCpuBefore": 2.721115823622976
+        },
+        {
+          "language": "zh",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 3930,
+          "completionTokens": 10,
+          "cachedTokens": 8,
+          "responseMs": 6892.148791994259,
+          "mlxPeakActiveBytes": 3364557744,
+          "postRequestPhysicalBytes": 3674638640,
+          "availableBytes": 12026970112,
+          "backgroundCpu": {
+            "averageBusyPercent": 2.5547130271623004,
+            "peakBusyPercent": 4.659111307857382,
+            "sustainedHighSeconds": 0
+          },
+          "backgroundCpuBefore": 3.6880769861621348
+        }
+      ],
+      "shutdownClean": true
+    },
+    {
+      "step": 1024,
+      "cases": [
+        {
+          "language": "en",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 3935,
+          "completionTokens": 10,
+          "cachedTokens": 0,
+          "responseMs": 6867.575290998502,
+          "mlxPeakActiveBytes": 2513474476,
+          "postRequestPhysicalBytes": 2818378032,
+          "availableBytes": 12595298304,
+          "backgroundCpu": {
+            "averageBusyPercent": 4.136265875607983,
+            "peakBusyPercent": 14.620832854140533,
+            "sustainedHighSeconds": 0
+          },
+          "backgroundCpuBefore": 2.0521955223283923
+        },
+        {
+          "language": "ja",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 3937,
+          "completionTokens": 10,
+          "cachedTokens": 8,
+          "responseMs": 6895.26483300142,
+          "mlxPeakActiveBytes": 2931856304,
+          "postRequestPhysicalBytes": 3237284144,
+          "availableBytes": 12221038592,
+          "backgroundCpu": {
+            "averageBusyPercent": 2.5372752952933526,
+            "peakBusyPercent": 9.338524102954816,
+            "sustainedHighSeconds": 0
+          },
+          "backgroundCpuBefore": 4.4071396873162065
+        },
+        {
+          "language": "zh",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 3930,
+          "completionTokens": 10,
+          "cachedTokens": 8,
+          "responseMs": 6920.09529099596,
+          "mlxPeakActiveBytes": 3364557744,
+          "postRequestPhysicalBytes": 3674556720,
+          "availableBytes": 12000985088,
+          "backgroundCpu": {
+            "averageBusyPercent": 2.809709845656227,
+            "peakBusyPercent": 10.487002267141811,
+            "sustainedHighSeconds": 0
+          },
+          "backgroundCpuBefore": 4.591741404222165
+        }
+      ],
+      "shutdownClean": true
+    },
+    {
+      "step": 512,
+      "cases": [
+        {
+          "language": "en",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 3935,
+          "completionTokens": 10,
+          "cachedTokens": 0,
+          "responseMs": 6835.054167000635,
+          "mlxPeakActiveBytes": 2461869066,
+          "postRequestPhysicalBytes": 2835777912,
+          "availableBytes": 12575195136,
+          "backgroundCpu": {
+            "averageBusyPercent": 2.213129704032101,
+            "peakBusyPercent": 3.992770780157489,
+            "sustainedHighSeconds": 0
+          },
+          "backgroundCpuBefore": 3.2807725090484476
+        },
+        {
+          "language": "ja",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 3937,
+          "completionTokens": 10,
+          "cachedTokens": 8,
+          "responseMs": 6862.1644169979845,
+          "mlxPeakActiveBytes": 2876695566,
+          "postRequestPhysicalBytes": 3258239352,
+          "availableBytes": 12116377600,
+          "backgroundCpu": {
+            "averageBusyPercent": 2.689929281004344,
+            "peakBusyPercent": 5.184524820892809,
+            "sustainedHighSeconds": 0
+          },
+          "backgroundCpuBefore": 4.725871972202703
+        },
+        {
+          "language": "zh",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 3930,
+          "completionTokens": 10,
+          "cachedTokens": 8,
+          "responseMs": 6898.013209000055,
+          "mlxPeakActiveBytes": 3305333772,
+          "postRequestPhysicalBytes": 3695020408,
+          "availableBytes": 11878023168,
+          "backgroundCpu": {
+            "averageBusyPercent": 3.479178976393179,
+            "peakBusyPercent": 9.271611949938347,
+            "sustainedHighSeconds": 0
+          },
+          "backgroundCpuBefore": 3.4989751394876087
+        }
+      ],
+      "shutdownClean": true
+    },
+    {
+      "step": 2048,
+      "cases": [
+        {
+          "language": "en",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 3935,
+          "completionTokens": 10,
+          "cachedTokens": 0,
+          "responseMs": 7097.609542004648,
+          "mlxPeakActiveBytes": 2397019518,
+          "postRequestPhysicalBytes": 2833418448,
+          "availableBytes": 12469862400,
+          "backgroundCpu": {
+            "averageBusyPercent": 2.357579576131664,
+            "peakBusyPercent": 3.6452329036075266,
+            "sustainedHighSeconds": 0
+          },
+          "backgroundCpuBefore": 1.9996616411036703
+        },
+        {
+          "language": "ja",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 3937,
+          "completionTokens": 10,
+          "cachedTokens": 8,
+          "responseMs": 7177.117250001174,
+          "mlxPeakActiveBytes": 2817845474,
+          "postRequestPhysicalBytes": 3256142032,
+          "availableBytes": 12090556416,
+          "backgroundCpu": {
+            "averageBusyPercent": 2.2222267364720056,
+            "peakBusyPercent": 6.667456044287464,
+            "sustainedHighSeconds": 0
+          },
+          "backgroundCpuBefore": 3.2983330400983615
+        },
+        {
+          "language": "zh",
+          "answer": "STRATA-7391 \n",
+          "promptTokens": 3930,
+          "completionTokens": 10,
+          "cachedTokens": 8,
+          "responseMs": 7263.669040999957,
+          "mlxPeakActiveBytes": 3252919682,
+          "postRequestPhysicalBytes": 3693365456,
+          "availableBytes": 11866832896,
+          "backgroundCpu": {
+            "averageBusyPercent": 3.6438372118625972,
+            "peakBusyPercent": 21.15944774219172,
+            "sustainedHighSeconds": 0
+          },
+          "backgroundCpuBefore": 2.717065831618885
+        }
+      ],
+      "shutdownClean": true
+    }
+  ],
+  "summary": {
+    "512": {
+      "requests": 6,
+      "medianResponseMs": 6819.375208502606,
+      "mlxPeakActiveBytes": 3305333772,
+      "maxPostRequestPhysicalBytes": 3695020408,
+      "minimumAvailableBytes": 11878023168,
+      "latencyEligible": true
+    },
+    "1024": {
+      "requests": 6,
+      "medianResponseMs": 6884.021853995364,
+      "mlxPeakActiveBytes": 3364557744,
+      "maxPostRequestPhysicalBytes": 3674638640,
+      "minimumAvailableBytes": 12000985088,
+      "latencyEligible": true
+    },
+    "2048": {
+      "requests": 6,
+      "medianResponseMs": 7057.240625003033,
+      "mlxPeakActiveBytes": 3252919682,
+      "maxPostRequestPhysicalBytes": 3693365456,
+      "minimumAvailableBytes": 11866832896,
+      "latencyEligible": true
+    }
+  }
+}

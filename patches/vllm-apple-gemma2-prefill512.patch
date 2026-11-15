@@ -1,0 +1,34 @@
+diff --git a/vllm_apple/backend.py b/vllm_apple/backend.py
+--- a/vllm_apple/backend.py
++++ b/vllm_apple/backend.py
+@@ -131,6 +131,21 @@
+         if any(argument in reserved for argument in self.extra_arguments):
+             raise BackendConfigurationError("extra_arguments cannot override managed options")
+ 
++    def _uses_reviewed_prefill_step(self) -> bool:
++        if (self.max_model_len != 4096 or self.kv_cache_bytes != 1536 * 1024**2
++                or self.allocator_cache_bytes != 512 * 1024**2):
++            return False
++        if any(arg.split("=", 1)[0] == "--prefill-step-size" for arg in self.extra_arguments):
++            raise BackendConfigurationError("prefill step is managed for the reviewed profile")
++        try:
++            config = (Path(self.model) / "config.json").read_bytes()
++        except OSError:
++            return False
++        # This launcher already requires the reviewed MLX-LM 0.32.2 sources.
++        return hashlib.sha256(config).hexdigest() == (
++            "41c1077a8a8b14f3e016c0000365aae99fb9eb128596c8378a178f717dca1640"
++        )
++
+     def command(self) -> list[str]:
+         if self.backend_kind == "mlx_lm":
+             command = [str(self.executable)]
+@@ -151,6 +166,8 @@
+                 "WARNING",
+                 *self.extra_arguments,
+             ])
++            if self._uses_reviewed_prefill_step():
++                command.extend(("--prefill-step-size", "512"))
+             if self.kv_cache_bytes is not None:
+                 command.extend(("--prompt-cache-bytes", str(self.kv_cache_bytes)))
+             return command
