@@ -112,3 +112,9 @@ On that profile, send `"soliton_output_validation": {"one_of": ["OK"], "retry_on
 日本語：検証済みの資格情報を使う構成でのみ、`OK` の再生成を明示的に制約できます。
 
 简体中文：仅在使用已验证资格凭据的配置中，可显式限制 `OK` 的重试输出。
+
+### Qualified YES/NO retry constraint
+
+Rebuild from the controller base and apply `mlx-0322`, `internal-spans`, `gemma2-prefill512`, and [the YES/NO patch](vllm-apple-yes-no-constraint.patch) in order. Select the resulting controller and its matching YES/NO qualification evidence in Soliton. The gateway recognizes the exact reviewed launcher and evidence digests. The singleton OK profile uses its own controller and evidence.
+
+On the YES/NO profile, use a non-streaming chat request with `"soliton_output_validation": {"one_of": ["YES", "NO"], "retry_once": true, "retry_language": "en", "constrain_yes_no_retry": true}`. The constraint applies only to the single retry after a completed format mismatch. A successful constrained retry returns `x-soliton-output-retry: constrained`.

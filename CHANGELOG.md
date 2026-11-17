@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.1.10 — 2026-11-17
+
+- The existing language-specific retry remains the default. On the exact qualified YES/NO controller and evidence, set `constrain_yes_no_retry: true` with `retry_once: true` and `one_of: ["YES", "NO"]` in `soliton_output_validation` for a non-streaming chat request. After a completed format mismatch, one retry lets the model choose YES or NO and then emit EOS.
+- Apply the MLX-LM 0.32.2, internal spans, Gemma 2 prefill 512 and YES/NO constraint patches in that order. Select the rebuilt controller and its matching qualification evidence in Soliton. [Application steps](patches/README.md#qualified-yesno-retry-constraint)
+- In 576 fixed-history English, Japanese and Simplified Chinese turns through the shared API, the instruction strategy matched format and content on 286/288 requests and the constraint on 288/288. The gateway reported 148 successful constrained retries. Observed completion medians were 313.5 and 263.1 ms. [Real-model comparison](docs/evaluation/shared-yes-no-gateway-20261117.json)
+- Clean reconstruction verified invalid allowlist and old evidence rejection. After a native desktop restart using normal settings, the shared API exercised both retry modes, and all six existing messages matched the backup. [Clean verification](docs/evaluation/shared-yes-no-clean-20261117.json) · [Desktop verification](docs/evaluation/normal-app-yes-no-20261117.json)
+
+日本語：検証済み構成向けのYES／NO再生成オプションを追加しました。既定は言語別指示です。
+
+简体中文：为已通过验证的配置新增 YES／NO 重试选项，默认使用本地化指令。
+
 ## 0.1.9 — 2026-11-15
 
 - The shared chat API can validate a single non-streaming response against an exact allowlist and retry once after a completed mismatch. The default retry uses an instruction. Callers can select a shorter localized instruction with `retry_language` (`en`, `ja`, or `zh-CN`).

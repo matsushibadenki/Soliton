@@ -41,7 +41,7 @@ def conversations():
             yield language, index, list(map(replace, prompts)), list(map(replace, expected))
 
 
-def yes_no_conversations():
+def yes_no_conversations(localized=False):
     variants = {
         'en': [('Cedar', 'Maple'), ('Birch', 'Oak'), ('Pine', 'Elm'), ('Ash', 'Willow')],
         'ja': [('松', '桜'), ('梅', '竹'), ('楓', '椿'), ('桃', '藤')],
@@ -78,6 +78,49 @@ def yes_no_conversations():
                     f'最初的会议地点是{new}吗？',
                 ]
                 prompts = [prompt + '只回答 YES 或 NO。' for prompt in prompts]
+            if localized:
+                # The API contract still expects the English literals. Ask in the
+                # conversation's own language, as clients with external schemas may.
+                original, replacement = {
+                    'en': ('Answer YES or NO.', 'Give a brief yes-or-no answer.'),
+                    'ja': ('YES または NO だけで答えてください。', 'はい・いいえで短く答えてください。'),
+                    'zh': ('只回答 YES 或 NO。', '请用“是”或“否”简短回答。'),
+                }[language]
+                assert all(original in prompt for prompt in prompts)
+                prompts = [prompt.replace(original, replacement) for prompt in prompts]
+            yield language, index, prompts, ['YES', 'NO', 'YES', 'NO', 'YES', 'NO']
+
+
+def varied_yes_no_conversations():
+    templates = {
+        'en': ('The {subject} was {old}. It changed to {new}.',
+               'Is the current {subject} {value}?', 'Was the original {subject} {value}?',
+               ' Give a brief yes-or-no answer.'),
+        'ja': ('{subject}は当初{old}でした。{new}に変更しました。',
+               '現在の{subject}は{value}ですか？', '当初の{subject}は{value}でしたか？',
+               ' はい・いいえで短く答えてください。'),
+        'zh': ('{subject}原来是{old}，现已改为{new}。',
+               '现在的{subject}是{value}吗？', '原来的{subject}是{value}吗？',
+               '请用“是”或“否”简短回答。'),
+    }
+    scenarios = {
+        'en': [('appointment time', '9 AM', '2 PM'), ('delivery day', 'Monday', 'Friday'),
+               ('stock count', '12 units', '7 units'), ('reserved quantity', '3 items', '8 items')],
+        'ja': [('予約時刻', '午前9時', '午後2時'), ('配達日', '月曜日', '金曜日'),
+               ('在庫数', '12個', '7個'), ('取り置き数', '3個', '8個')],
+        'zh': [('预约时间', '上午9点', '下午2点'), ('送货日期', '星期一', '星期五'),
+               ('库存数量', '12件', '7件'), ('预留数量', '3件', '8件')],
+    }
+    for language, cases in scenarios.items():
+        update, current, original, suffix = templates[language]
+        for index, (subject, old, new) in enumerate(cases, 4):
+            questions = [
+                (current, new), (current, old), (original, old),
+                (original, new), (current, new), (current, old),
+            ]
+            prompts = [question.format(subject=subject, value=value) + suffix
+                       for question, value in questions]
+            prompts[0] = update.format(subject=subject, old=old, new=new) + ' ' + prompts[0]
             yield language, index, prompts, ['YES', 'NO', 'YES', 'NO', 'YES', 'NO']
 
 
@@ -95,8 +138,13 @@ def main():
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--gateway-option', action='store_true')
     parser.add_argument('--yes-no', action='store_true')
+    parser.add_argument('--localized-questions', action='store_true')
+    parser.add_argument('--fixed-history', action='store_true')
+    parser.add_argument('--varied-cases', action='store_true')
     args = parser.parse_args()
-    assert not (args.yes_no and args.gateway_option)
+    assert not args.varied_cases or (args.yes_no and args.fixed_history)
+    assert not args.fixed_history or args.yes_no
+    assert not args.localized_questions or args.yes_no
     evidence = args.evidence.read_bytes()
     qualification = json.loads(evidence)
     assert qualification['passed'] and qualification['shutdown_clean']
@@ -121,6 +169,8 @@ def main():
         rule = dict(one_of=[expected], retry_once=True,
                     retry_language='zh-CN' if language == 'zh' else language,
                     constrain_ok_retry=use_constraint and expected == 'OK')
+        if args.yes_no:
+            rule.update(one_of=['YES', 'NO'], constrain_yes_no_retry=use_constraint)
         body = dict(model='default_model', messages=messages, stream=False, temperature=0,
                     max_tokens=64, soliton_output_validation=rule)
         req = urllib.request.Request(args.api + '/v1/chat/completions',
@@ -134,9 +184,9 @@ def main():
             return None, None, False, False
         assert retry in {'none', 'instruction', 'constrained'}
         answer = result['choices'][0]['message']['content']
-        assert answer.strip() == expected
+        assert answer.strip() in rule['one_of']
         if retry == 'constrained':
-            assert use_constraint and answer == 'OK' and result['usage']['completion_tokens'] <= 2
+            assert use_constraint and answer in rule['one_of'] and result['usage']['completion_tokens'] <= 2
         return answer, result['usage'], retry != 'none', retry == 'constrained'
 
     headers['x-studio-token'] = call('/studio/session', {})['token']
@@ -149,9 +199,15 @@ def main():
                   qualificationSeconds=qualification['soak']['elapsed_seconds'],
                   qualificationSuccesses=qualification['soak']['successes'], cases=[])
     order = ('current', 'constrained', 'constrained', 'current')
+    report['variedCases'] = args.varied_cases
+    workload = list(yes_no_conversations(args.localized_questions) if args.yes_no else conversations())
+    if args.varied_cases:
+        workload.extend(varied_yes_no_conversations())
     report['order'] = order
     report['gatewayOption'] = args.gateway_option
     report['yesNo'] = args.yes_no
+    report['fixedHistory'] = args.fixed_history
+    report['localizedQuestions'] = args.localized_questions
     report['warmup'] = []
     sessions = set()
     with args.output.open('x') as output:
@@ -176,12 +232,13 @@ def main():
                         _, _, usage = complete([dict(role='user', content=text)])
                         warmup.append(dict(language=language, usage=usage))
                     report['warmup'].append(dict(run=run, mode=mode, cases=warmup))
-                    for language, case, prompts, targets in (yes_no_conversations() if args.yes_no else conversations()):
+                    for language, case, prompts, targets in workload:
                         messages = []
                         for turn, (prompt, expected) in enumerate(zip(prompts, targets), 1):
                             messages.append(dict(role='user', content=prompt))
                             start = time.monotonic()
                             allowed = {'YES', 'NO'} if args.yes_no else {expected}
+                            initial_ms = retry_ms = None
                             if args.gateway_option:
                                 answer, usage, retry, forced = gateway_complete(
                                     messages, language, expected, mode == 'constrained')
@@ -190,6 +247,7 @@ def main():
                                 first, retry_usage = None, None
                             else:
                                 first, finish, usage = complete(messages)
+                                initial_ms = (time.monotonic() - start) * 1000
                                 retry = finish == 'stop' and first.strip() not in allowed
                                 forced = retry and mode == 'constrained' and (args.yes_no or expected == 'OK')
                                 answer, retry_usage = first, None
@@ -199,18 +257,22 @@ def main():
                                     target = '["YES","NO"]' if args.yes_no else expected
                                     revised = messages[:-1] + [dict(role='user',
                                         content=f'{prompt}\n\n{instruction}\n{target}')]
+                                    retry_started = time.monotonic()
                                     answer, finish, retry_usage = complete(revised, forced)
+                                    retry_ms = (time.monotonic() - retry_started) * 1000
                                 elapsed = (time.monotonic() - start) * 1000
                                 accepted = finish == 'stop' and answer.strip() in allowed
                                 if forced:
                                     assert accepted and answer in allowed and retry_usage['completion_tokens'] <= 2
                             # Use the same whitespace normalization as the output validator.
-                            messages.append(dict(role='assistant', content=answer.strip() if accepted else ''))
+                            history_answer = expected if args.fixed_history else (answer.strip() if accepted else '')
+                            messages.append(dict(role='assistant', content=history_answer))
                             report['cases'].append(dict(run=run, mode=mode, language=language,
                                 case=case, turn=turn, expected=expected, first=first, answer=answer,
                                 retried=retry, constrained=forced, accepted=accepted,
                                 correct=accepted and answer.strip() == expected,
-                                responseMs=elapsed, initialUsage=usage, retryUsage=retry_usage))
+                                responseMs=elapsed, initialMs=initial_ms, retryMs=retry_ms,
+                                initialUsage=usage, retryUsage=retry_usage))
                     final = call('/studio/state')
                     assert final['engineSession'] == session
                     assert final['document']['messages'] == initial['document']['messages']
@@ -221,7 +283,7 @@ def main():
             report['summary'] = {}
             for mode in ('current', 'constrained'):
                 rows = [r for r in report['cases'] if r['mode'] == mode]
-                assert len(rows) == (144 if args.yes_no else 108)
+                assert len(rows) == 2 * sum(len(prompts) for _, _, prompts, _ in workload)
                 recalls = [r for r in rows if r['turn'] == 4]
                 retries = [r for r in rows if r['retried']]
                 ok_retries = [r for r in retries if r['expected'] == 'OK']

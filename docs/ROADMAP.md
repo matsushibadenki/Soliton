@@ -86,7 +86,47 @@ This priority order supersedes older engine-related Next entries below; historic
 - 🟢 [Done] Replayed all four controller patches from the clean base. The source matched the qualified acknowledgement controller and the shared API ran constrained retries on natural EN/ZH mismatches. The gateway rejected a non-`OK` allowlist with HTTP 400. The patched controller refused prefill-only evidence, and the original controller with its valid evidence rejected the option with HTTP 422. The default localized retry worked on both controllers. Restoring the matching pair recovered startup and preserved history. [Application steps](../patches/README.md#qualified-singleton-acknowledgement-constraint) · [Verification](evaluation/clean-ack-constraint-20261115.json).
 - 🟢 [Done] Applied the qualified acknowledgement constraint profile to normal desktop settings and restarted the rebuilt native app. Through its shared API, natural EN/ZH mismatches used the default localized retry when the option was absent and the token constraint only when requested. JA matched on the first attempt in both modes. All six requests returned the expected acknowledgement. All six existing conversation messages matched the backup in the API and on disk. [Verification](evaluation/normal-app-ack-constraint-20261115.json).
 - 🟢 [Done] Verified a two-choice token mask for `YES` and `NO` on the reviewed Gemma 2 tokenizer. The first step preserves model logits for both allowed tokens and masks alternatives, then allows EOS. Each mode completed 12 paired EN/JA/ZH turns. Both accepted 12/12 formats and answered 10/12 facts correctly. Two natural mismatches occurred in ZH and both policies recovered their format with one retry. One recovered answer in each mode still selected the wrong allowed value. Median completion was 133.1 ms current versus 156.6 ms constrained across all turns, and 339.2 versus 183.4 ms on the two retried turns. This is a direct backend diagnostic with shared KV. Keep the production option scoped to singleton `OK`. [Measurements](evaluation/yes-no-token-constraint-20261115.json).
-- 🟠 [Next] Before adopting multiple choices, broaden the set of natural mismatches and verify semantic accuracy and retry latency on the qualified shared API.
+- 🟢 [Done] Completed 288 multilingual YES/NO turns through the qualified shared API in four fresh engine sessions with identical warm-ups. Each policy matched the required format and answered correctly on all 144 turns, with 10,530 cached input tokens per policy. Median completion was 159.4 ms for the current policy and 159.6 ms for the constraint candidate. There were zero natural format mismatches, so these timings cover first attempts only. Keep the production constraint scoped to `OK`. [Measurements](evaluation/shared-yes-no-controlled-20261116.json).
+- 🟢 [Done] Exercised natural YES/NO mismatches through the qualified shared API using localized questions and an API contract that expects the English literals. Four fresh, equally warmed sessions covered 288 turns. Current instructions matched the format and expected fact on 142/144 turns, and the candidate matched both on 144/144. Natural retries occurred in all three languages (74 current, 68 constrained). Median response completion across retried turns was 333.0 ms current and 294.3 ms constrained. Later histories incorporated each arm’s accepted answers, so retry populations and observed KV reuse differ. [Measurements](evaluation/shared-yes-no-localized-20261116.json).
+- 🟢 [Done] Compared 288 EN/JA/ZH YES/NO turns through the qualified shared API using fixed reference answers in the conversation history and identical warm-ups across four fresh sessions. First responses, retry triggers and initial token usage matched across sessions (12,142 cached input tokens per policy). Both retried the same 68 natural mismatches. Format and factual accuracy were 142/144 with current instructions and 144/144 with constrained retries. Median completion was 169.5 versus 224.7 ms across all turns and 330.7 versus 324.5 ms on retried turns. Defer production adoption pending a broader semantic workload and reproducible latency measurements. [Measurements](evaluation/shared-yes-no-fixed-history-20261116.json).
+- 🟢 [Done] Added per-attempt timings to the shared API comparison and reran all 288 fixed-history turns. First-attempt medians were 164.3 ms current and 165.1 ms constrained, with 12,142 cached input tokens per policy. On 68 natural mismatches per policy, retry-only medians were 163.2 and 118.4 ms, respectively. Overall medians were 170.0 ms for both policies. The constrained policy again recovered both format failures and reached 144/144 correct answers versus 142/144. [Measurements](evaluation/shared-yes-no-stage-timing-20261116.json).
+- 🟢 [Done] Evaluated 576 fixed-history EN/JA/ZH turns spanning room changes, scheduling and inventory on the qualified shared API. Initial outputs, token usage, and the 148 natural retry triggers per policy matched across four equally warmed sessions. Format and factual correctness were 286/288 with instructions and 288/288 with constraints. Both policies passed every schedule and inventory case. Median retry request time was 204.5 versus 170.6 ms, and median completion for retried turns was 444.0 versus 418.7 ms. Overall completion medians were 325.5 versus 329.5 ms. Approve an explicit option scoped to the measured YES/NO pair and qualified profile. [Measurements](evaluation/shared-yes-no-varied-20261116.json).
+- 🟢 [Done] Integrated the explicit `constrain_yes_no_retry` gateway option for the qualified YES/NO controller and evidence. The gateway applies the mask only on the existing single format retry. In 576 fixed-history EN/JA/ZH turns through the product API, instructions accepted 286/288 and the option accepted 288/288, with the same factual correctness counts. The gateway reported 148 successful constrained retries. Median completion was 313.5 versus 263.1 ms across all turns. [Setup](../patches/README.md#qualified-yesno-retry-constraint) · [Measurements](evaluation/shared-yes-no-gateway-20261117.json).
+- 🟢 [Done] Replayed the four patches from the clean controller base. The rebuilt runtime matched the qualified source and returned `YES` on a natural format retry with the reversed allowlist. The gateway rejected three invalid allowlists with HTTP 400 and rejected the option on the old qualified profile with HTTP 422. The old profile retained instruction retry. The patched controller rejected old evidence and recovered with matching evidence. Conversation history was preserved. [Verification](evaluation/shared-yes-no-clean-20261117.json).
+- 🟢 [Done] Applied the qualified YES/NO controller and evidence to ordinary desktop settings and restarted the rebuilt native app. A natural Simplified Chinese format mismatch returned `YES` with instruction retry by default and with a constrained retry on explicit request. An earlier smoke request returned the expected validation rejection HTTP 422 after failing to match. All six existing messages matched the backup in the API and on disk. [Verification](evaluation/normal-app-yes-no-20261117.json).
+
+日本語：通常設定でアプリを再起動し、既定と明示オプションの再生成、および既存メッセージ6件の保持を確認しました。
+
+简体中文：使用常规设置重启应用后，验证了默认重试、显式约束重试及原有6条消息的保留。
+
+日本語：クリーン適用後に実モデルの再生成、旧構成と不正な許可値での拒否、資格情報を戻した後の復旧を確認しました。
+
+简体中文：从干净环境应用补丁后，验证了真实模型重试、旧配置和无效允许值的拒绝，以及恢复匹配凭据后的启动。
+
+日本語：資格情報が一致する構成向けに明示オプションを組み込み、共有APIで制約付き再生成148件を確認しました。
+
+简体中文：已为凭据匹配的配置集成显式选项，并通过共享 API 验证148次受约束的重试。
+
+日本語：予定・在庫を含む576ターンでは制約付きが288/288件で形式と内容に一致し、再生成単体の中央値が16.6%短縮しました。検証済み構成向けの明示オプションとして採用方針とします。
+
+简体中文：在涵盖日程和库存的576轮测试中，约束方式每项均为288/288轮正确，重试耗时中位数缩短16.6%。决定在已验证配置中提供显式选项。
+
+日本語：初回と再生成を個別に測定しました。再生成だけの中央値は制約付きで27.4%短縮し、全ターンの中央値は両方式とも約170 msでした。
+
+简体中文：分别测量首次生成与重试。受约束的重试耗时中位数缩短27.4%，两种方式的整体中位数均约170毫秒。
+
+
+日本語：固定履歴の比較では制約付きで2件の形式不一致が解消しました。再生成時の中央値は約6 ms短く、全体の中央値は約55 ms長かったため、本番採用は保留します。
+
+简体中文：固定对话历史后，令牌约束修复了两次格式不匹配。重试耗时中位数缩短约6毫秒，整体响应耗时中位数增加约55毫秒，暂缓生产采用。
+
+日本語：三言語すべてで自然な不一致が発生し、YES／NO制約の候補は144/144件で形式・内容とも一致しました。両方式で再生成対象が異なるため、次は会話履歴を固定して比較します。
+
+简体中文：三种语言均出现了自然格式不匹配，YES／NO 约束候选的144轮全部符合格式且回答正确。两种策略触发重试的轮次不同，下一步将固定对话历史后复测。
+
+日本語：全288ターンで初回から形式・内容とも一致しました。再生成対象は0件で、YES／NO制約の採用は保留します。
+
+简体中文：288轮首次输出均符合格式且回答正确。未触发重试，暂缓采用 YES／NO 令牌约束。
 
 日本語：YES／NOを制約できることを確認しました。両方式とも形式一致12/12、内容の正答10/12でした。再生成の実測は中国語2件に限られたため、本番オプションはOKのみとします。
 

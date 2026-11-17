@@ -1,0 +1,33 @@
+diff --git a/vllm_apple/mlx_internal_spans.py b/vllm_apple/mlx_internal_spans.py
+--- a/vllm_apple/mlx_internal_spans.py
++++ b/vllm_apple/mlx_internal_spans.py
+@@ -123,6 +123,29 @@
+     raw = os.environ.get('VLLM_APPLE_KV_CACHE_MIB', '')
+     if not raw.isascii() or not raw.isdecimal() or not 1 <= len(raw) <= 4 or not 64 <= int(raw) <= 4096:
+         raise ValueError('explicit reviewed retained budget required')
++    import mlx.core as mx
++    yes_no_sentinel = {17480: 100.0, 5349: 100.0}
++    original = server._make_logits_processors
++
++    def processors(args):
++        if args.logits.logit_bias == yes_no_sentinel:
++            first_tokens = tuple(yes_no_sentinel)
++        else:
++            return original(args)
++        allowed_tokens = first_tokens
++
++        def force_token(_tokens, logits):
++            nonlocal allowed_tokens
++            vocabulary = mx.arange(logits.shape[-1])
++            allowed = vocabulary == allowed_tokens[0]
++            for token in allowed_tokens[1:]:
++                allowed = allowed | (vocabulary == token)
++            allowed_tokens = (1,)
++            return mx.where(allowed, logits, -float('inf'))
++
++        return [force_token]
++
++    server._make_logits_processors = processors
+     ledger = SpanLedger()
+     install(ledger, server, cache, generate)
+     budget['main'](diagnostics=ledger.snapshot)

@@ -201,7 +201,7 @@ struct Process {
     allocation_report: Option<allocation_report::Session>,
     vllm_memory_binding: Option<engine::VllmSettings>,
     vllm_backend_port: Option<u16>,
-    qualified_ack_constraint: bool,
+    qualified_ack_constraint: Option<RetryConstraint>,
     backend_budget: Option<backend_budget::Sample>,
     backend_budget_request: Option<String>,
     child: Option<Child>,
@@ -288,7 +288,7 @@ impl Studio {
                 allocation_report: None,
                 vllm_memory_binding: None,
                 vllm_backend_port: None,
-                qualified_ack_constraint: false,
+                qualified_ack_constraint: None,
                 backend_budget: None,
                 backend_budget_request: None,
                 child: None,
@@ -400,7 +400,7 @@ impl Studio {
         let mut p = self.process.lock().await;
         p.allocation_report = None;
         p.vllm_memory_binding = None;
-        p.qualified_ack_constraint = false;
+        p.qualified_ack_constraint = None;
         p.vllm_backend_port = None;
         p.backend_budget = None;
         p.backend_budget_request = None;
@@ -1672,8 +1672,14 @@ async fn action(State(s): State<Arc<Studio>>, h: HeaderMap, Json(v): Json<Value>
         Err(e) => error(StatusCode::BAD_REQUEST, e),
     }
 }
+#[derive(Clone, Copy, PartialEq, Eq)]
+enum RetryConstraint {
+    Ok,
+    YesNo,
+}
+
 // Exact evidence and controller bytes from the certified diagnostic profile.
-fn qualified_ack_constraint(settings: &engine::VllmSettings) -> bool {
+fn qualified_ack_constraint(settings: &engine::VllmSettings) -> Option<RetryConstraint> {
     use sha2::{Digest, Sha256};
     use std::io::Read;
     fn matches(path: &std::path::Path, expected: &str) -> bool {
@@ -1690,18 +1696,31 @@ fn qualified_ack_constraint(settings: &engine::VllmSettings) -> bool {
                 == expected
     }
 
-    settings.backend == "mlx_lm"
-        && settings.context == 4096
-        && settings.kv_cache_mib == 1536
-        && settings.allocator_cache_mib == 512
-        && matches(
-            &std::path::Path::new(&settings.root).join("vllm_apple/mlx_internal_spans.py"),
+    if settings.backend != "mlx_lm"
+        || settings.context != 4096
+        || settings.kv_cache_mib != 1536
+        || settings.allocator_cache_mib != 512
+    {
+        return None;
+    }
+    let launcher = std::path::Path::new(&settings.root).join("vllm_apple/mlx_internal_spans.py");
+    let evidence = std::path::Path::new(&settings.evidence);
+    [
+        (
+            RetryConstraint::Ok,
             "3fe156b8527016f9d8ae63c43ba133a8da4e7d2b3b8a1df1a01bf84c4ebd00ac",
-        )
-        && matches(
-            std::path::Path::new(&settings.evidence),
             "655f5454d7b275d135d1a332b0d0d43f89ce0423c91963ef4929e1a86c0e4143",
-        )
+        ),
+        (
+            RetryConstraint::YesNo,
+            "bf2484cc2fe3d6171ee75105bd2548f06c72772c8b2cf6d6e6a8c4f067236c42",
+            "b67df33fa7d83f00c1e01816799dc1f4dc5de7b468cecf0f4b5d60b15a629324",
+        ),
+    ]
+    .into_iter()
+    .find_map(|(kind, source, proof)| {
+        (matches(&launcher, source) && matches(evidence, proof)).then_some(kind)
+    })
 }
 
 #[derive(serde::Deserialize)]
@@ -1715,6 +1734,8 @@ struct OutputValidation {
     retry_acknowledgement: bool,
     #[serde(default)]
     constrain_ok_retry: bool,
+    #[serde(default)]
+    constrain_yes_no_retry: bool,
 }
 
 #[derive(serde::Deserialize)]
@@ -1791,6 +1812,10 @@ impl OutputValidation {
         if self.constrain_ok_retry {
             retry["seed"] = json!(0);
             retry["logit_bias"] = json!({"4083": 100.0});
+        }
+        if self.constrain_yes_no_retry {
+            retry["seed"] = json!(0);
+            retry["logit_bias"] = json!({"17480": 100.0, "5349": 100.0});
         }
         Some(retry)
     }
@@ -1889,7 +1914,7 @@ async fn proxy(State(s): State<Arc<Studio>>, req: Request) -> Response {
     trace.tracker.admission_started();
     let mut output_validation = None;
     let mut retry_body = None;
-    if ack_constraint
+    if ack_constraint.is_some()
         && serde_json::from_slice::<Value>(&body)
             .ok()
             .is_some_and(|value| value.get("logit_bias").is_some())
@@ -1936,10 +1961,31 @@ async fn proxy(State(s): State<Arc<Studio>>, req: Request) -> Response {
                         "Token constraint requires retry_once and exactly one allowed value: OK",
                     ));
                 }
-                if !ack_constraint {
+                if ack_constraint != Some(RetryConstraint::Ok) {
                     return trace.reject(error(
                         StatusCode::UNPROCESSABLE_ENTITY,
                         "Token constraint requires the qualified acknowledgement profile",
+                    ));
+                }
+            }
+            if let Some(rule) = validation
+                .as_ref()
+                .filter(|rule| rule.constrain_yes_no_retry)
+            {
+                if !rule.retry_once
+                    || rule.constrain_ok_retry
+                    || rule.retry_acknowledgement
+                    || (rule.one_of != ["YES", "NO"] && rule.one_of != ["NO", "YES"])
+                {
+                    return trace.reject(error(
+                        StatusCode::BAD_REQUEST,
+                        "YES/NO constraint requires retry_once and exactly YES and NO",
+                    ));
+                }
+                if ack_constraint != Some(RetryConstraint::YesNo) {
+                    return trace.reject(error(
+                        StatusCode::UNPROCESSABLE_ENTITY,
+                        "Token constraint requires the qualified YES/NO profile",
                     ));
                 }
             }
@@ -2140,13 +2186,14 @@ async fn proxy(State(s): State<Arc<Studio>>, req: Request) -> Response {
         }
         trace.json = true;
         trace.feed(&bytes);
-        let retry_status = if retried && validation.constrain_ok_retry {
-            "constrained"
-        } else if retried {
-            "instruction"
-        } else {
-            "none"
-        };
+        let retry_status =
+            if retried && (validation.constrain_ok_retry || validation.constrain_yes_no_retry) {
+                "constrained"
+            } else if retried {
+                "instruction"
+            } else {
+                "none"
+            };
         return (
             status,
             [
