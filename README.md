@@ -2,11 +2,17 @@
 
 Version 0.1.6 adds bounded internal wall-time diagnostics for startup verification, RAM cache operations and MLX prefill/decode, with a separate fully requalified Gemma2/MLX-LM0.32.2 profile. Existing runtime/evidence and ordinary settings are preserved. See [measurements and limits](docs/ENGINE_INTERNAL_SPANS.md) and [release notes](CHANGELOG.md).
 
-![Soliton](docs/images/stratastudio-image.png)
-
 [日本語](README.ja.md) · [简体中文](README.zh-CN.md)
 
 A Tauri 2 workbench for local inference, knowledge-editing experiments and OpenAI-assisted editing plans on Apple Silicon, with a shared Rust API gateway for Strata and vLLM-Apple. Rust owns conversations, history, logs and metrics across all windows. Engines run separately and are selected manually.
+
+## Screenshots
+
+![Inference workspace](docs/images/soliton-inference.png)
+
+![Knowledge Lab editor](docs/images/soliton-knowledge-edit.png)
+
+![Movable and resizable Preferences](docs/images/soliton-preferences.png)
 
 ## Knowledge Lab
 

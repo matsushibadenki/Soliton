@@ -2,11 +2,17 @@
 
 0.1.6では、資格確認・RAMキャッシュ・MLXのprefill/decodeの内部壁時計計測を追加し、独立したGemma2／MLX-LM0.32.2プロファイルで30分再資格確認を完了しました。既存環境・証跡・通常設定は保持しています。[計測値と範囲](docs/ENGINE_INTERNAL_SPANS.md)・[変更履歴](CHANGELOG.md)を参照してください。
 
-![Soliton](docs/images/stratastudio-image.png)
-
 [English](README.md) · [简体中文](README.zh-CN.md)
 
 ローカル推論・知識編集実験・OpenAIによる編集計画作成を行う、Apple Silicon向けTauri 2アプリです。Rust APIゲートウェイはStrataとvLLM-Appleに対応します。会話・履歴・ログ・計測はRustで共有し、推論エンジンを手動で切り替えます。
+
+## スクリーンショット
+
+![推論ワークスペース](docs/images/soliton-inference.png)
+
+![知識ラボの編集画面](docs/images/soliton-knowledge-edit.png)
+
+![移動・サイズ変更ができる環境設定](docs/images/soliton-preferences.png)
 
 ## 知識ラボ
 

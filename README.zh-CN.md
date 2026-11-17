@@ -2,11 +2,17 @@
 
 0.1.6增加了启动资格验证、RAM缓存与MLX prefill/decode的内部壁钟计时，并通过独立Gemma2／MLX-LM0.32.2配置的完整30分钟重新认证。保留原环境、证据和普通设置。参阅[测量与范围](docs/ENGINE_INTERNAL_SPANS.md)及[更新记录](CHANGELOG.md)。
 
-![Soliton](docs/images/stratastudio-image.png)
-
 [English](README.md) · [日本語](README.ja.md)
 
 面向Apple Silicon的Tauri 2应用，支持本地推理、知识编辑实验及OpenAI辅助编辑规划；Rust API网关支持Strata和vLLM-Apple。Rust统一管理会话、历史、日志和指标，推理引擎手动切换。
+
+## 界面截图
+
+![推理工作区](docs/images/soliton-inference.png)
+
+![知识实验室编辑界面](docs/images/soliton-knowledge-edit.png)
+
+![可移动和调整大小的偏好设置](docs/images/soliton-preferences.png)
 
 ## 知识实验室
 
