@@ -1,6 +1,6 @@
 # Soliton
 
-0.1.6增加了启动资格验证、RAM缓存与MLX prefill/decode的内部壁钟计时，并通过独立Gemma2／MLX-LM0.32.2配置的完整30分钟重新认证。保留原环境、证据和普通设置。参阅[测量与范围](docs/ENGINE_INTERNAL_SPANS.md)及[更新记录](CHANGELOG.md)。
+0.1.11 新增了在 Apple Silicon 上通过资格验证的 LFM3-Omni-2B 实时 API，并改进了知识实验室编辑界面与偏好设置。参见[实时配置步骤](docs/LFM3_OMNI.md#qualified-realtime-setup)和[更新记录](CHANGELOG.md)。
 
 [English](README.md) · [日本語](README.ja.md)
 

@@ -1,6 +1,6 @@
 # Soliton
 
-0.1.6では、資格確認・RAMキャッシュ・MLXのprefill/decodeの内部壁時計計測を追加し、独立したGemma2／MLX-LM0.32.2プロファイルで30分再資格確認を完了しました。既存環境・証跡・通常設定は保持しています。[計測値と範囲](docs/ENGINE_INTERNAL_SPANS.md)・[変更履歴](CHANGELOG.md)を参照してください。
+0.1.11では、Apple Siliconで資格確認済みのLFM3-Omni-2B Realtime APIを追加し、知識ラボの編集画面と環境設定を改善しました。[Realtimeの適用手順](docs/LFM3_OMNI.md#qualified-realtime-setup)と[変更履歴](CHANGELOG.md)を参照してください。
 
 [English](README.md) · [简体中文](README.zh-CN.md)
 

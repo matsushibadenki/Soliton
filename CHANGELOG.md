@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.1.11 — 2026-11-17
+
+- Qualified the patched LFM3-Omni-2B official GGUF runtime on Apple Silicon. Media input and text output passed 1,800.092 s with 9,311 successes. The authenticated Realtime route passed 1,802.804 s with 196 turns. Both completed with zero failures and clean shutdown. [Media qualification](docs/evaluation/lfm3-omni-patched-media-20261117.json) · [Realtime qualification](docs/evaluation/lfm3-omni-managed-realtime-qualification-20261117.json)
+- Verified exact and one-position-over output reservations across text, audio and mixed output, rejection of an invalid token, and disposal of partial audio on cancellation. An ordinary Soliton restart accepted the matching Realtime evidence and completed two voice-input turns. [Setup and verification](docs/LFM3_OMNI.md#qualified-realtime-setup)
+- Increased editor and Preferences text sizes, reorganized evaluation fields for narrow layouts, aligned top-level menu items to the left, and made Preferences movable and resizable within the app. [Latest screenshots](README.md#screenshots)
+
+日本語：LFM3-Omni-2BのメディアとRealtimeの資格確認結果、適用手順、知識ラボと環境設定の表示改善を収録しました。
+
+简体中文：包含 LFM3-Omni-2B 媒体与实时资格验证结果、配置步骤，以及知识实验室和偏好设置的界面改进。
+
 ## 0.1.10 — 2026-11-17
 
 - The existing language-specific retry remains the default. On the exact qualified YES/NO controller and evidence, set `constrain_yes_no_retry: true` with `retry_once: true` and `one_of: ["YES", "NO"]` in `soliton_output_validation` for a non-streaming chat request. After a completed format mismatch, one retry lets the model choose YES or NO and then emit EOS.

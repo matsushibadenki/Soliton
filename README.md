@@ -1,6 +1,6 @@
 # Soliton
 
-Version 0.1.6 adds bounded internal wall-time diagnostics for startup verification, RAM cache operations and MLX prefill/decode, with a separate fully requalified Gemma2/MLX-LM0.32.2 profile. Existing runtime/evidence and ordinary settings are preserved. See [measurements and limits](docs/ENGINE_INTERNAL_SPANS.md) and [release notes](CHANGELOG.md).
+Version 0.1.11 adds the qualified LFM3-Omni-2B Realtime API on Apple Silicon and improves the Knowledge Lab editor and Preferences. See the [Realtime setup](docs/LFM3_OMNI.md#qualified-realtime-setup) and [changelog](CHANGELOG.md).
 
 [日本語](README.ja.md) · [简体中文](README.zh-CN.md)
 

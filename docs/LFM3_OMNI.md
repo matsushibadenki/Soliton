@@ -1,6 +1,6 @@
 # LFM3-Omni-2B integration
 
-Full requested scope: text/image/audio/video input; text/speech/interleaved output, including realtime voice. **Full Omni support is unfinished. Media-input/text-output has passed qualification and shared API tests; speech/Realtime and GUI enablement remain gated.**
+The official GGUF runtime is qualified for media input with text output and for the authenticated Realtime route on the tested Apple Silicon host. See [Qualified Realtime setup](#qualified-realtime-setup) for the matching evidence. Desktop recording and playback are planned.
 
 Official sources: [BF16 model](https://huggingface.co/LiquidAI/LFM3-Omni-2B), [GGUF runtime instructions](https://huggingface.co/LiquidAI/LFM3-Omni-2B-GGUF). Use the official GGUF path on Apple Silicon, rather than treating this as an existing MLX-LM text architecture. No auto-execution of Transformers remote code and no generic compatibility exception. The configuration advertises128000 text positions while the model card states32K for this checkpoint; neither is a locally qualified Soliton limit.
 
@@ -54,3 +54,15 @@ The output collector now discards partial PCM on local cancellation and refuses 
 日本語: キャンセル時の部分音声破棄と不明な完了・使用量の拒否を追加し、全92テストが通過しました。実モデルの音声検証は低負荷待ちで、公開経路は未有効化です。
 
 简体中文：已增加取消时丢弃部分音频及拒绝未知完成状态/用量的处理，92项测试通过。语音实模型验证仍等待低负载，公开路径尚未启用。
+
+## Qualified Realtime setup
+
+1. Use the official LFM3-Omni-2B Q4_K_M GGUF and Q8_0 projector identified above. Apply [the Realtime reservation patch](../patches/llama-realtime-reservation-b11960.patch) to llama.cpp revision `8642541b2` and build the arm64 `llama-server` with Metal. Keep the executable and its libraries together.
+2. Configure Soliton's `lfm3Omni` engine with that runtime directory, both GGUF paths, a private media directory, and a context of 4,096. Set `evidence` to the matching media/text qualification JSON and `realtimeEvidence` to the matching Realtime qualification JSON. Soliton checks the reviewed runtime digest and binds evidence to the runtime, model, projector and host. The archived files document the tested build and host. A different build requires review of its runtime digest and matching qualification.
+3. Start the engine through Soliton. Connect a local WebSocket client to `/v1/realtime` with the current `x-studio-token` header. Send an explicit `max_output_tokens` in `session.update`. Voice input uses 16 kHz mono PCM16, and the relay collects 24 kHz output PCM in Rust. The release exposes the authenticated API; desktop recording and playback remain roadmap work.
+
+The media qualification passed 9,311 requests in 1,800.092 s. The Realtime qualification passed 196 turns in 1,802.804 s. Both reported zero failures and clean shutdown. Audio-input reservations of 4,032 (text), 4,031 (audio), and 4,028 (mixed) passed on the measured prompt. One extra position was rejected before output in each mode. Cancellation cleared buffered audio. [Media evidence](evaluation/lfm3-omni-patched-media-20261117.json) · [Realtime evidence](evaluation/lfm3-omni-managed-realtime-qualification-20261117.json) · [Managed route results](evaluation/lfm3-omni-managed-realtime-20261117.json)
+
+日本語：公式GGUFとパッチ適用済みランタイムを選び、同じ環境で発行されたメディアとRealtimeの資格情報を指定します。
+
+简体中文：选择官方 GGUF 与应用补丁后的运行时，并指定与该环境匹配的媒体和实时资格凭据。
