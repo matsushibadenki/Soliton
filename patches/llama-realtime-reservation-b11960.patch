@@ -1,0 +1,101 @@
+diff --git a/tools/server/server-task.h b/tools/server/server-task.h
+--- a/tools/server/server-task.h
++++ b/tools/server/server-task.h
+@@ -561,6 +561,12 @@
+     bool               cancelled     = false;
+     int32_t            n_decoded     = 0;
+ 
++    int32_t            input_positions = 0;
++    int32_t            context_positions = 0;
++    int32_t            output_reservation = 0;
++    int32_t            available_positions = 0;
++    bool               admission = false;
++
+     virtual bool is_stop() override {
+         return false; // the session ends when the client leaves, the task is cancelled then
+     }
+diff --git a/tools/server/server-realtime.h b/tools/server/server-realtime.h
+--- a/tools/server/server-realtime.h
++++ b/tools/server/server-realtime.h
+@@ -78,6 +78,8 @@
+     bool        cancelled  = false;
+     int32_t     n_predict  = 0;
+     int32_t     n_decoded  = 0;
++    int32_t     previous_end = 0;
++    int32_t     input_positions = 0;
+     llama_token sampled    = LLAMA_TOKEN_NULL; // next text token of the response, sampled right after the slot's own decode
+ 
+     mtmd::audio_stream_ptr stream;   // the audio of the open turn
+diff --git a/tools/server/server-realtime.cpp b/tools/server/server-realtime.cpp
+--- a/tools/server/server-realtime.cpp
++++ b/tools/server/server-realtime.cpp
+@@ -734,6 +734,13 @@
+ 
+     void on_result(const server_task_result_realtime & res) {
+         std::lock_guard<std::mutex> lock(mutex);
++        if (res.admission) {
++            send_event({{"type", "soliton.realtime.admission"}, {"response_id", response_id},
++                        {"input_tokens", res.input_positions}, {"context_positions", res.context_positions},
++                        {"output_reservation", res.output_reservation}, {"available_positions", res.available_positions},
++                        {"accepted", res.output_reservation > 0 && res.output_reservation <= res.available_positions}});
++            return;
++        }
+         if (!transcribe_item_id.empty()) {
+             if (!res.text.empty()) {
+                 transcript += res.text;
+@@ -809,7 +816,7 @@
+             last_item_id = output[i]["id"];
+         }
+         send_event({{"type", "response.done"}, {"response", {{"id", response_id}, {"object", "realtime.response"}, {"status", status},
+-                    {"output", output}, {"usage", {{"output_tokens", res.n_decoded}}}}}});
++                    {"output", output}, {"usage", {{"input_tokens", res.input_positions}, {"output_tokens", res.n_decoded}}}}}});
+         parse.reset();
+     }
+ 
+@@ -928,6 +935,7 @@
+     res->response_done = response_done;
+     res->cancelled     = response_done && cancelled;
+     res->n_decoded     = n_decoded;
++    res->input_positions = input_positions;
+     queue_results.send(std::move(res));
+ }
+ 
+@@ -1030,6 +1038,22 @@
+             return false;
+         }
+     }
++    const int32_t positions = llama_memory_seq_pos_max(llama_get_memory(ctx), seq_id) + 1;
++    input_positions = positions - previous_end;
++    // Keep one position free, as required by the native generation stop condition.
++    const int32_t available = n_ctx - positions - 1;
++    auto admission = std::make_unique<server_task_result_realtime>();
++    admission->id = id_task;
++    admission->index = index;
++    admission->admission = true;
++    admission->input_positions = input_positions;
++    admission->context_positions = positions;
++    admission->output_reservation = n_predict;
++    admission->available_positions = available;
++    queue_results.send(std::move(admission));
++    if (input_positions <= 0 || n_predict <= 0 || n_predict > available) {
++        return fail("realtime output reservation exceeds available context", ERROR_TYPE_INVALID_REQUEST);
++    }
+     smpl.reset(common_sampler_init(model, sparams));
+     preserved = sparams.preserved_tokens;
+     // the logits of the last decode are this slot's only until another slot decodes
+@@ -1099,6 +1123,7 @@
+             // the pipeline decoded the response, the sequence ends where it stopped
+             n_past = llama_memory_seq_pos_max(llama_get_memory(ctx), seq_id) + 1;
+         }
++        previous_end = llama_memory_seq_pos_max(llama_get_memory(ctx), seq_id) + 1;
+         send_result({}, {}, true);
+         responding = false;
+         cancelled  = false;
+@@ -1160,6 +1185,7 @@
+                     llama_memory_seq_rm(llama_get_memory(ctx), seq_id, -1, -1);
+                     stream.reset();
+                     n_past = 0;
++                    previous_end = 0;
+                 } break;
+             default:
+                 break;

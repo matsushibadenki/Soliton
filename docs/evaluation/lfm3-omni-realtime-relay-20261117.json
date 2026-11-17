@@ -1,0 +1,310 @@
+{
+  "transportPassed": true,
+  "qualified": false,
+  "admissionVerified": false,
+  "scope": "native WebSocket speech transport probe only",
+  "runtimeIdentity": {
+    "scope": "realtime_preflight",
+    "qualified": false,
+    "revision": "8642541b2",
+    "files": {
+      "libggml-base.0.28.0.dylib": "8b3c532def241117ef5df823e2da516cef19b667162953c538b5da814ed4e5a8",
+      "libllama-server-impl.dylib": "1e44785c2a7ee26fdcba549002a836e57bc9a33ebadcce57583584c3b1080bae",
+      "libllama-common.0.8.0.dylib": "019231cbc88ae67b6ad137938ae079ade1a61a89f8063e852d8127a8b499fd1c",
+      "libllama.0.8.0.dylib": "d72fa07f222ad8b381e8a829f0bc3b03d2e3b0442f7b37dfe440731a498abdc8",
+      "libmtmd.0.8.0.dylib": "0e4845cba0835300ffd5ac6b004e1965ef2d20093c0b659c289b77df8e6d83e1",
+      "libggml-blas.0.28.0.dylib": "2af34e2149898a737fac4869dc9b0eb4c6db282537431e7d73baee6860705219",
+      "llama-server": "93c3b1fb8395ba3cea5c9227dc32a8d75487d75bcebbeab381f1ae676e50a390",
+      "libggml-metal.0.28.0.dylib": "8ed240fac26b96484a3ec6a33d4a545579232c55825def67df753afc6af5ba2c",
+      "libggml.0.28.0.dylib": "3e62ef6618434ae721c601e221f034181f1eba1f9b1d19cd21d5a243818c8995",
+      "libggml-cpu.0.28.0.dylib": "fc74543b6049e2a724e004cfda30da9933dc4027597b3612e7e7aae2ec18f71e"
+    }
+  },
+  "sharedRelayExercised": true,
+  "cancellation": {
+    "nativeStatus": "cancelled",
+    "discardedAudio": true,
+    "wavCreated": false
+  },
+  "multiturnAccounting": {
+    "text": {
+      "admission": [
+        {
+          "accepted": true,
+          "available_positions": 4032,
+          "context_positions": 63,
+          "input_tokens": 63,
+          "output_reservation": 128,
+          "type": "soliton.realtime.admission"
+        },
+        {
+          "accepted": true,
+          "available_positions": 3968,
+          "context_positions": 127,
+          "input_tokens": 62,
+          "output_reservation": 128,
+          "type": "soliton.realtime.admission"
+        }
+      ],
+      "usage": [
+        {
+          "input_tokens": 63,
+          "output_tokens": 3
+        },
+        {
+          "input_tokens": 62,
+          "output_tokens": 2
+        }
+      ]
+    },
+    "audio": {
+      "admission": [
+        {
+          "accepted": true,
+          "available_positions": 4031,
+          "context_positions": 64,
+          "input_tokens": 64,
+          "output_reservation": 128,
+          "type": "soliton.realtime.admission"
+        },
+        {
+          "accepted": true,
+          "available_positions": 3933,
+          "context_positions": 162,
+          "input_tokens": 63,
+          "output_reservation": 128,
+          "type": "soliton.realtime.admission"
+        }
+      ],
+      "usage": [
+        {
+          "input_tokens": 64,
+          "output_tokens": 36
+        },
+        {
+          "input_tokens": 63,
+          "output_tokens": 4
+        }
+      ]
+    },
+    "interleaved": {
+      "admission": [
+        {
+          "accepted": true,
+          "available_positions": 4028,
+          "context_positions": 67,
+          "input_tokens": 67,
+          "output_reservation": 128,
+          "type": "soliton.realtime.admission"
+        },
+        {
+          "accepted": true,
+          "available_positions": 3941,
+          "context_positions": 154,
+          "input_tokens": 63,
+          "output_reservation": 128,
+          "type": "soliton.realtime.admission"
+        }
+      ],
+      "usage": [
+        {
+          "input_tokens": 67,
+          "output_tokens": 25
+        },
+        {
+          "input_tokens": 63,
+          "output_tokens": 21
+        }
+      ]
+    }
+  },
+  "boundaries": {
+    "text": [
+      {
+        "case": "discover",
+        "admission": {
+          "accepted": true,
+          "available_positions": 4032,
+          "context_positions": 63,
+          "input_tokens": 63,
+          "output_reservation": 1,
+          "type": "soliton.realtime.admission"
+        },
+        "usage": [
+          {
+            "input_tokens": 63,
+            "output_tokens": 1
+          }
+        ],
+        "errors": [],
+        "outputDeltas": 1
+      },
+      {
+        "case": "exact",
+        "admission": {
+          "accepted": true,
+          "available_positions": 4032,
+          "context_positions": 63,
+          "input_tokens": 63,
+          "output_reservation": 4032,
+          "type": "soliton.realtime.admission"
+        },
+        "usage": [
+          {
+            "input_tokens": 63,
+            "output_tokens": 3
+          }
+        ],
+        "errors": [],
+        "outputDeltas": 2
+      },
+      {
+        "case": "overflow",
+        "admission": {
+          "accepted": false,
+          "available_positions": 4032,
+          "context_positions": 63,
+          "input_tokens": 63,
+          "output_reservation": 4033,
+          "type": "soliton.realtime.admission"
+        },
+        "usage": [],
+        "errors": [
+          {
+            "code": null,
+            "message": "realtime output reservation exceeds available context",
+            "param": null,
+            "type": "server_error"
+          }
+        ],
+        "outputDeltas": 0
+      }
+    ],
+    "audio": [
+      {
+        "case": "discover",
+        "admission": {
+          "accepted": true,
+          "available_positions": 4031,
+          "context_positions": 64,
+          "input_tokens": 64,
+          "output_reservation": 1,
+          "type": "soliton.realtime.admission"
+        },
+        "usage": [
+          {
+            "input_tokens": 64,
+            "output_tokens": 1
+          }
+        ],
+        "errors": [],
+        "outputDeltas": 1
+      },
+      {
+        "case": "exact",
+        "admission": {
+          "accepted": true,
+          "available_positions": 4031,
+          "context_positions": 64,
+          "input_tokens": 64,
+          "output_reservation": 4031,
+          "type": "soliton.realtime.admission"
+        },
+        "usage": [
+          {
+            "input_tokens": 64,
+            "output_tokens": 106
+          }
+        ],
+        "errors": [],
+        "outputDeltas": 105
+      },
+      {
+        "case": "overflow",
+        "admission": {
+          "accepted": false,
+          "available_positions": 4031,
+          "context_positions": 64,
+          "input_tokens": 64,
+          "output_reservation": 4032,
+          "type": "soliton.realtime.admission"
+        },
+        "usage": [],
+        "errors": [
+          {
+            "code": null,
+            "message": "realtime output reservation exceeds available context",
+            "param": null,
+            "type": "server_error"
+          }
+        ],
+        "outputDeltas": 0
+      }
+    ],
+    "interleaved": [
+      {
+        "case": "discover",
+        "admission": {
+          "accepted": true,
+          "available_positions": 4028,
+          "context_positions": 67,
+          "input_tokens": 67,
+          "output_reservation": 1,
+          "type": "soliton.realtime.admission"
+        },
+        "usage": [
+          {
+            "input_tokens": 67,
+            "output_tokens": 1
+          }
+        ],
+        "errors": [],
+        "outputDeltas": 1
+      },
+      {
+        "case": "exact",
+        "admission": {
+          "accepted": true,
+          "available_positions": 4028,
+          "context_positions": 67,
+          "input_tokens": 67,
+          "output_reservation": 4028,
+          "type": "soliton.realtime.admission"
+        },
+        "usage": [
+          {
+            "input_tokens": 67,
+            "output_tokens": 25
+          }
+        ],
+        "errors": [],
+        "outputDeltas": 23
+      },
+      {
+        "case": "overflow",
+        "admission": {
+          "accepted": false,
+          "available_positions": 4028,
+          "context_positions": 67,
+          "input_tokens": 67,
+          "output_reservation": 4029,
+          "type": "soliton.realtime.admission"
+        },
+        "usage": [],
+        "errors": [
+          {
+            "code": null,
+            "message": "realtime output reservation exceeds available context",
+            "param": null,
+            "type": "server_error"
+          }
+        ],
+        "outputDeltas": 0
+      }
+    ]
+  },
+  "ownedShutdownClean": true,
+  "productionRouterExercised": false,
+  "relayCancellationBufferBytes": 0,
+  "publicQualificationReady": false
+}

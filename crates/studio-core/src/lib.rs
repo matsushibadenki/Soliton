@@ -217,6 +217,7 @@ pub struct Studio {
     knowledge_job: Mutex<Option<tokio::sync::watch::Sender<bool>>>,
     pub root: PathBuf,
     pub port: u16,
+    omni_realtime_qualification: bool,
     pub token: String,
     pub settings: RwLock<Settings>,
     pub document: RwLock<Document>,
@@ -279,6 +280,7 @@ impl Studio {
         Self {
             root,
             port,
+            omni_realtime_qualification: false,
             token: uuid::Uuid::new_v4().to_string(),
             settings: RwLock::new(settings),
             document: RwLock::new(Document::default()),
@@ -328,6 +330,13 @@ impl Studio {
             },
         }
     }
+    /// Enable the media-qualified candidate on an isolated loopback test server.
+    pub fn with_omni_realtime_qualification(mut self) -> Self {
+        assert_ne!(self.port, 8080);
+        self.omni_realtime_qualification = true;
+        self
+    }
+
     pub fn with_storage(mut self, path: PathBuf) -> Self {
         if let Ok(bytes) = std::fs::read(&path) {
             if let Ok(value) = serde_json::from_slice::<Value>(&bytes) {
@@ -2638,6 +2647,77 @@ async fn omni_capabilities(State(studio): State<Arc<Studio>>, h: HeaderMap) -> R
     }
     Json(omni::capabilities()).into_response()
 }
+async fn omni_realtime_route(
+    State(studio): State<Arc<Studio>>,
+    headers: HeaderMap,
+    upgrade: axum::extract::ws::WebSocketUpgrade,
+) -> Response {
+    if !authorized(&headers, &studio) {
+        return error(StatusCode::UNAUTHORIZED, "Studio token required");
+    }
+    let lifecycle = studio.lifecycle.lock().await;
+    let settings = studio.settings.read().await.clone();
+    if settings.engine != engine::Engine::Lfm3Omni {
+        return error(StatusCode::SERVICE_UNAVAILABLE, "Omni must be selected");
+    }
+    let config = settings.omni.clone();
+    let qualification = studio.omni_realtime_qualification;
+    let approval = tokio::task::spawn_blocking(move || {
+        let identity = config.verify()?;
+        if identity["runtimeSha256"] != omni_runtime::REALTIME_RUNTIME_HASH {
+            return Err("Native Realtime reservation capability required".into());
+        }
+        if qualification {
+            return Ok(());
+        }
+        use std::io::Read;
+        let mut bytes = Vec::new();
+        std::fs::File::open(&config.realtime_evidence)
+            .map_err(|e| e.to_string())?
+            .take(65537)
+            .read_to_end(&mut bytes)
+            .map_err(|e| e.to_string())?;
+        if bytes.len() > 65536 {
+            return Err("Realtime evidence too large".into());
+        }
+        let proof = serde_json::from_slice(&bytes).map_err(|e| e.to_string())?;
+        let now = std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .map_err(|e| e.to_string())?
+            .as_secs();
+        omni_realtime::verify_audio_scope(&proof, &identity, now)
+    })
+    .await;
+    if !matches!(approval, Ok(Ok(()))) {
+        return error(
+            StatusCode::SERVICE_UNAVAILABLE,
+            "Realtime qualification required",
+        );
+    }
+    if studio.active_requests.load(Ordering::SeqCst) != 0 {
+        return error(StatusCode::CONFLICT, "Omni is busy");
+    }
+    let (port, key) = {
+        let mut process = studio.process.lock().await;
+        if !process
+            .child
+            .as_mut()
+            .is_some_and(|child| matches!(child.try_wait(), Ok(None)))
+        {
+            return error(StatusCode::SERVICE_UNAVAILABLE, "Omni is offline");
+        }
+        (process.port, process.key.clone())
+    };
+    let inference = InferenceGuard::new(studio.clone()).await;
+    drop(lifecycle);
+    upgrade
+        .max_message_size(1024 * 1024)
+        .on_upgrade(move |socket| async move {
+            let _inference = inference;
+            let _ = omni_realtime::relay(socket, port, key, settings.omni.context.into()).await;
+        })
+}
+
 pub fn router(s: Arc<Studio>) -> Router {
     Router::new()
         .route("/studio/session", post(session))
@@ -2659,6 +2739,7 @@ pub fn router(s: Arc<Studio>) -> Router {
             "/health",
             get(|| async { Json(json!({"service":"soliton","status":"ok"})) }),
         )
+        .route("/v1/realtime", get(omni_realtime_route))
         .route("/v1/{*path}", axum::routing::any(proxy))
         .route("/status", get(proxy))
         .fallback_service(ServeDir::new("dist").append_index_html_on_directories(true))

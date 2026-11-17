@@ -10,7 +10,17 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let storage = std::env::var_os("STUDIO_STATE_PATH")
         .map(PathBuf::from)
         .unwrap_or(std::env::current_dir()?.join(".studio-state.json"));
-    let state = Arc::new(studio_core::Studio::new(root, port).with_storage(storage));
+    let mut state = studio_core::Studio::new(root, port).with_storage(storage);
+    if std::env::args()
+        .skip(1)
+        .any(|arg| arg == "--omni-realtime-qualification")
+    {
+        if port == 8080 || std::env::var_os("STUDIO_STATE_PATH").is_none() {
+            return Err("Realtime qualification requires an isolated port and state file".into());
+        }
+        state = state.with_omni_realtime_qualification();
+    }
+    let state = Arc::new(state);
     let listener = tokio::net::TcpListener::bind((std::net::Ipv4Addr::LOCALHOST, port)).await?;
     println!("Soliton: http://127.0.0.1:{port}");
     let cleanup = state.clone();

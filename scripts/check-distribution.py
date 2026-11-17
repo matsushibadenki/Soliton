@@ -141,7 +141,8 @@ def check(app, smoke=False):
         for required in ['serve/server.py','metal/setup_mac.py','build-metal/metal/kernels',
                          'build-metal/metal/engine-msl','build-metal/metal/ggml-common.h',
                          'third_party/gemma3-gguf/gguf/__init__.py','third_party/gemma3-LICENSE',
-                         'third_party/llama.cpp/LICENSE']:
+                         'third_party/strata-ggml/LICENSE', 'third_party/strata-gguf-py/LICENSE',
+                         'third_party/strata-gguf-py/gguf/__init__.py']:
             if not (strata/required).exists():
                 report['errors'].append('missing bundled resource: '+required)
         for label, root in roots:

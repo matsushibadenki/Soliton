@@ -1,4 +1,4 @@
-import { useEffect, useRef, type ReactNode } from "react";
+import { useEffect, useRef, type PointerEvent, type ReactNode } from "react";
 import { Cpu, Link, Settings, X } from "lucide-react";
 import { words, type Language } from "./i18n";
 export type PreferenceTab = "general" | "engine" | "api";
@@ -10,6 +10,7 @@ export function Modal({
   onClose,
   className = "",
   dismissible = true,
+  movable = false,
 }: {
   title: string;
   language: Language;
@@ -17,14 +18,52 @@ export function Modal({
   onClose: () => void;
   className?: string;
   dismissible?: boolean;
+  movable?: boolean;
 }) {
   const ref = useRef<HTMLDialogElement>(null);
+  const drag = useRef<{ pointer: number; x: number; y: number } | null>(null);
+
+  function startMove(event: PointerEvent<HTMLElement>) {
+    if (event.button !== 0 || (event.target as HTMLElement).closest("button")) return;
+    const dialog = ref.current!;
+    const rect = dialog.getBoundingClientRect();
+    Object.assign(dialog.style, {
+      width: `${rect.width}px`,
+      height: `${rect.height}px`,
+      margin: "0",
+      inset: "auto",
+      left: `${rect.left}px`,
+      top: `${rect.top}px`,
+    });
+    drag.current = { pointer: event.pointerId, x: event.clientX - rect.left, y: event.clientY - rect.top };
+    event.currentTarget.setPointerCapture(event.pointerId);
+  }
+
+  function move(event: PointerEvent<HTMLElement>) {
+    if (drag.current?.pointer !== event.pointerId) return;
+    const dialog = ref.current!;
+    const left = Math.max(0, Math.min(event.clientX - drag.current.x, innerWidth - dialog.offsetWidth));
+    const top = Math.max(0, Math.min(event.clientY - drag.current.y, innerHeight - dialog.offsetHeight));
+    dialog.style.left = `${left}px`;
+    dialog.style.top = `${top}px`;
+  }
+
   const headingId = "dialog-" + className;
   useEffect(() => {
     const dialog = ref.current!;
     dialog.showModal();
-    return () => dialog.close();
-  }, []);
+    const fitViewport = () => {
+      if (!movable || !dialog.style.left) return;
+      const bounds = dialog.getBoundingClientRect();
+      dialog.style.left = `${Math.max(0, Math.min(bounds.left, innerWidth - bounds.width))}px`;
+      dialog.style.top = `${Math.max(0, Math.min(bounds.top, innerHeight - bounds.height))}px`;
+    };
+    if (movable) window.addEventListener("resize", fitViewport);
+    return () => {
+      window.removeEventListener("resize", fitViewport);
+      dialog.close();
+    };
+  }, [movable]);
   return (
     <dialog
       ref={ref}
@@ -35,7 +74,12 @@ export function Modal({
         onClose();
       }}
     >
-      <header className="dialog-header">
+      <header
+        className="dialog-header"
+        onPointerDown={movable ? startMove : undefined}
+        onPointerMove={movable ? move : undefined}
+        onLostPointerCapture={() => { drag.current = null; }}
+      >
         <h2 id={headingId}>{title}</h2>
         {dismissible && <button
           className="icon-button"
@@ -73,6 +117,7 @@ export function PreferencesDialog({
       language={language}
       onClose={onClose}
       className="preferences-dialog"
+      movable
     >
       <div
         role="tablist"

@@ -388,6 +388,12 @@ Target: [realrebelai/P-H3-Image_GGUFs](https://huggingface.co/realrebelai/P-H3-I
 
 ## LFM3-Omni-2B — 2026-10-29
 
+Target model: [LiquidAI/LFM3-Omni-2B](https://huggingface.co/LiquidAI/LFM3-Omni-2B). The official GGUF build is the planned local deployment path for Soliton on Apple Silicon.
+
+日本語：公式GGUFを使う既存の検証を土台に、音声出力とリアルタイム対話の対応を後続工程で進めます。
+
+简体中文：基于现有的官方 GGUF 验证，后续推进语音输出与实时对话支持。
+
 - 🟢 [Done] Official GGUF revision2918dd47cfceb4f260cd1734cd1aac1b22bbe4b6 Q4_K_M + Q8_0 projector fetched and SHA256-verified; reviewed llama.cpp b11960/8642541b2 arm64 release verified. No global package/dependency upgrade or remote model code executed.
 - 🟢 [Done] Isolated low-load official-runtime smoke: text42, red image/video identification, audio ingestion/number42 recognition and24 kHz nonempty TTS waveform. Original raw output retained; ASR transcript differs from fixture and is **not** quality-approved. No Soliton/full certification claim.
 - 🟢 [Done] Rust Omni input/output contracts, opaque asset IDs, missing processed-token refusal, exact boundary/one-token-over/overflow guards; authenticated `/studio/omni/capabilities` reports unqualified/unrunnable. All77 core tests pass, including six new Omni tests. These initial contracts are now used by the shared media/text bridge below.
@@ -395,7 +401,37 @@ Target: [realrebelai/P-H3-Image_GGUFs](https://huggingface.co/realrebelai/P-H3-I
 - 🟢 [Done] Native real-model exact pre-count parity for text28/image100/audio52/video109 tokens. English voice fixture corrected; transcription now “The secret number is42.” Native runtime results are distinct from shared Rust validation. [Raw parity](evaluation/lfm3-omni-count-parity-20261029.json).
 - 🟢 [Done] LFM3 media/text full qualification passed1,800.120s/10,072 successes/zero failures/clean shutdown, identity bound to the exact runtime/model/projector/hardware/decoder. Soliton common API passed real text/image/audio/video exact pre-count=usage (25/94/60/103),4 exact4096 admissions/4 one-token-over refusals with unchanged rejected history, stored attachment references, exclusive switch/history preservation, wrong-identity startup refusal and unchanged ordinary settings/evidence. These counts differ from earlier native probes because their prompts differ. [Raw qualification](evaluation/lfm3-omni-media-text-qualification-20261029.json), [shared API](evaluation/lfm3-omni-soliton-20261029.json). No normal Omni selection was changed.
 - 🟢 [Done] Bounded Rust Realtime output collector,24 kHz PCM16 WAV storage and separate full-identity/expiry/30min+Realtime-check gate implemented; text-only evidence is rejected. All92 core tests and experimental WebSocket client build pass; cancellation discards partial PCM, terminal events cannot resume output, and missing completion/usage cannot become playable success. These cancellation checks are unit tests, not real Realtime approval. No public speech/Realtime route enabled.
-- 🟠 [Next] Native Realtime transport probe for text/audio/interleaved output is waiting for low load. Compare native session usage against chat processor counts and validate output reservation semantics before connecting the public route; rerun shared media/text API against the latest dependency build serially after probe cleanup.
+- 🟢 [Done] Official Q4_K_M GGUF and Q8_0 projector on arm64 llama.cpp b11960 generated a nonempty 3.12 s mono 24 kHz PCM WAV. Native Realtime WebSocket completed two turns each in text, audio and interleaved modes. Text and interleaved output recalled the prior code 42, and both speech modes sent audio on both turns. Terminal usage contained output tokens only. [Measurements](evaluation/lfm3-omni-realtime-20261117.json).
+- 🟢 [Done] Sent two English voice fixtures as 16 kHz mono PCM16 over native Realtime on Apple Silicon. Both turns committed and completed in text, audio and interleaved output. Text and interleaved recalled 42 at a cap of 128. At a cap of one, all six turns reported one output step, including partial speech or text. Chat processor reference counts for the first audio turn were 63, 63 and 66 by mode. Native usage supplied no input count, and the probe records parity as unavailable. [Measurements](evaluation/lfm3-omni-realtime-voice-20261117.json).
+- 🟢 [Done] Patched native Realtime at revision `8642541b2` to report pre-generation context positions and per-turn input positions, then reject reservations beyond the remaining context. On Apple Silicon with official GGUF and mixed output, the first audio turn occupied 67 of 4,096 positions. Reserving 4,028 positions passed with one position held back by the native stop rule. Reserving 4,029 returned an error before any output. Later sessions succeeded, and six speech-input turns matched admission and terminal input counts across all three modes. The first rejection implementation triggered a native assertion and was corrected before the successful rerun. [Patch](../patches/llama-realtime-reservation-b11960.patch) · [Measurements](evaluation/lfm3-omni-realtime-reservation-20261117.json).
+- 🟢 [Done] Bound the patched native executable and libraries to a SHA-256 preflight manifest. The authenticated native WebSocket probe used the Rust admission validator and audio collector. With audio input at 4,096 positions, exact reservations passed for text 4,032, audio 4,031 and interleaved 4,028. Each one-position overflow produced no output. A native audio cancellation after the first PCM delta cleared the Rust buffer and produced no WAV. Later requests completed successfully. [Measurements](evaluation/lfm3-omni-realtime-preflight-20261117.json).
+- 🟢 [Done] Added the authenticated Soliton `/v1/realtime` route and its shared Rust relay. A loopback preflight host ran that relay against the hash-verified native runtime. With real speech input, exact reservations 4,032 text, 4,031 audio and 4,028 interleaved passed. Each one-position overflow produced zero output. The gateway received a native cancellation after the first buffered audio event and reported zero retained bytes. A first relay run disconnected during long audio generation. Handling WebSocket control frames corrected the failure in the rerun. [Measurements](evaluation/lfm3-omni-realtime-relay-20261117.json).
+- 🟢 [Done] Qualified the patched native runtime for media input and text output. The complete runtime, GGUF, projector and host identity matched after 1,800.092 s, 9,311 successes, zero failures and clean shutdown. Exact input counts matched JSON and SSE for text, image, audio and video. [Media evidence](evaluation/lfm3-omni-patched-media-20261117.json).
+- 🟢 [Done] Started the media-qualified runtime through regular Soliton engine management in isolated state. The authenticated `/v1/realtime` route rejected an invalid token, passed exact and one-position overflow for text 4,032/4,033, audio 4,031/4,032 and interleaved 4,028/4,029, and discarded buffered PCM on cancellation. The Realtime soak passed 1,802.804 s, 196 completed turns, zero failures and clean shutdown. A standalone Soliton restart without qualification mode accepted the separate Realtime evidence and completed a two-turn audio-input session through the ordinary route. [Realtime evidence](evaluation/lfm3-omni-managed-realtime-qualification-20261117.json) · [Managed verification](evaluation/lfm3-omni-managed-realtime-20261117.json).
+
+日本語：変更済みバイナリでメディア用とRealtime用の30分資格確認に合格しました。通常モードでもRealtime資格情報を受理し、音声入力の2ターンを確認しました。
+
+简体中文：修改后的二进制通过媒体和实时两项30分钟资格验证。常规模式接受实时凭据，并通过了语音输入的两轮对话。
+
+日本語：認証付きルートと共通リレーを実装しました。隔離リレーで全モードの境界とキャンセルが合格し、通常起動経路での資格確認は保留です。
+
+简体中文：已实现认证路由与共用转发。隔离环境中三种模式的边界与取消测试通过，常规启动路径的正式资格验证仍待完成。
+
+日本語：全3モードの予約境界と音声キャンセルは実モデルで合格しました。次はSolitonの認証付きRealtimeルートで確認し、その後に30分の本資格確認へ進みます。
+
+简体中文：三种输出模式的预留边界和语音取消均通过真实模型验证。下一步通过 Soliton 的认证实时接口复测，再启动30分钟正式资格验证。
+
+日本語：音声入力後の使用位置67をネイティブ側で取得し、予約4,028の受理と4,029の生成前拒否を確認しました。公開APIの資格確認に向け、次は変更済みバイナリの証跡と公開経路の境界・キャンセルを検証します。
+
+简体中文：原生实时路径报告了语音输入后的67个上下文位置，接受4,028的预留并在生成前拒绝4,029。下一步验证修改后二进制的资格凭据、公开路径的边界行为及取消。
+
+日本語：実際の音声データを入力した2ターン対話と出力上限を確認しました。固定版の初回試験ではRealtime入力カウントが未報告でした。
+
+简体中文：已验证真实音频输入的两轮对话和输出上限。固定版本的首次测试未报告实时输入令牌数。
+
+日本語：公式GGUFで音声生成と3モードの2ターン対話を確認しました。入力トークン数の報告は確認できず、製品経路の資格確認は保留です。
+
+简体中文：官方 GGUF 已通过语音生成及三种模式的两轮对话验证。实时响应缺少输入令牌数，产品接口的资格验证仍待完成。
 - 🟠 [Next] WebView attachments/recording/playback and Realtime/interleaved audio-output bridge with processor-aware output reservations. Current shared bridge refuses speech/realtime modes until separately qualified. Preserve existing Strata/vLLM ownership and exact counting.
 - 🟠 [Next] EN/JA/ZH image/audio/video/TTS quality, real interleaved output, cancellation/tree cleanup and context admission tests, then separate identity-bound speech/Realtime qualification before enabling those modes. Broad ASR quality remains unfinished.
 - 🔴 [Later] Sustained video/voice performance and memory tuning after the complete functional path is qualified.
@@ -460,3 +496,5 @@ See [design and validation scope](INFERENCE.md#kapitsaから取り入れた計�
 - 🟢 [Done] Optimized MLX SSD freshly requalified for 1800.730s / 2458 successes / zero failures / sampled RSS +8.72MiB; duplicate suppression, live mutation repair and quota-retry gates passed. Final worker: 3 saves, 2441 skipped saves. [Measurements](evaluation/mlx-ssd-write-comparison-20261104.json).
 
 - 🟢 [Done] 2026-11-09 weekly verification: direct dependencies/Strata remain current; jiff lockfile patch trio updated; all-target/workspace tests, app build and 66-native-file distribution preflight passed. No runtime capability change. [Scope](DEPENDENCY_UPDATE_20261109.md).
+
+- 🟢 [Done] 2026-11-16: Strata 0.2.14.1 and six Cargo updates; vendored ggml packaging, authenticated Q2_0 inference, and local distribution preflight passed. [Verification](UPSTREAM_COMPATIBILITY.md#dependency-update--2026-11-16).

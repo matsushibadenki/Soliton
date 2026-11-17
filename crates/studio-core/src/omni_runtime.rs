@@ -18,6 +18,7 @@ pub struct Settings {
     pub projector: String,
     pub media_root: String,
     pub evidence: String,
+    pub realtime_evidence: String,
     pub context: u32,
 }
 fn digest_hex(bytes: &[u8]) -> String {
@@ -94,6 +95,11 @@ fn private_directory(root: &Path) -> Result<(), String> {
     }
     Ok(())
 }
+pub(crate) const REALTIME_RUNTIME_HASH: &str =
+    "37858e5c943f41a247a3257a8bb8411ce0b29b4756e0b0430f12dbeac4c7c8d3";
+const ORIGINAL_RUNTIME_HASH: &str =
+    "3d573493c4ff356474c6a6e874fb5e38799af62f4c05682e07a7c78d8e60ea2e";
+
 impl Settings {
     pub fn valid(&self) -> bool {
         (1..=4096).contains(&self.context)
@@ -129,8 +135,10 @@ impl Settings {
         let runtime_hash = digest_hex(&h.finalize());
         let model_hash = hash_file(Path::new(&self.model))?;
         let projector_hash = hash_file(Path::new(&self.projector))?;
-        if runtime_hash != "3d573493c4ff356474c6a6e874fb5e38799af62f4c05682e07a7c78d8e60ea2e"
-            || model_hash != "9f8d30e9d4fd7a9349d586e077988229b3ca0a0e4ad730897563d1eccc9893e2"
+        if !matches!(
+            runtime_hash.as_str(),
+            ORIGINAL_RUNTIME_HASH | REALTIME_RUNTIME_HASH
+        ) || model_hash != "9f8d30e9d4fd7a9349d586e077988229b3ca0a0e4ad730897563d1eccc9893e2"
             || projector_hash != "720ff4fc09df0e026c4ec641d0c698bf27b5bcd50561944c88eda5e3dffe1839"
         {
             return Err("Unreviewed Omni runtime or model assets".into());
@@ -146,7 +154,7 @@ impl Settings {
             json!({"runtimeSha256":runtime_hash,"modelSha256":model_hash,"projectorSha256":projector_hash,"platform":format!("{}-{}",std::env::consts::OS,std::env::consts::ARCH),"osVersion":String::from_utf8_lossy(&os.stdout).trim(),"hardware":hardware()?,"ffmpegSha256":hash_file(Path::new("/opt/homebrew/bin/ffmpeg"))?,"ffprobeSha256":hash_file(Path::new("/opt/homebrew/bin/ffprobe"))?,"context":self.context,"parallel":1,"reasoning":false,"admissionVersion":1}),
         )
     }
-    pub fn verify(&self) -> Result<(), String> {
+    pub fn verify(&self) -> Result<Value, String> {
         let meta = fs::metadata(&self.evidence).map_err(|e| e.to_string())?;
         if meta.len() > 1048576 {
             return Err("Omni evidence too large".into());
@@ -158,12 +166,19 @@ impl Settings {
             .duration_since(UNIX_EPOCH)
             .map_err(|e| e.to_string())?
             .as_secs();
-        validate_evidence(&v, &self.identity()?, now)
+        let identity = self.identity()?;
+        validate_evidence(&v, &identity, now)?;
+        Ok(identity)
     }
     pub fn command(&self, port: u16, key: &str) -> Result<Command, String> {
-        self.verify()?;
+        let identity = self.verify()?;
         private_directory(Path::new(&self.media_root))?;
-        let mut c = Command::new(Path::new(&self.runtime_dir).join("llama"));
+        let realtime = identity["runtimeSha256"] == REALTIME_RUNTIME_HASH;
+        let launcher = if realtime { "llama-server" } else { "llama" };
+        let mut c = Command::new(Path::new(&self.runtime_dir).join(launcher));
+        if !realtime {
+            c.arg("serve");
+        }
         for (k, _) in std::env::vars_os() {
             let s = k.to_string_lossy();
             if s.starts_with("LLAMA_") || s.starts_with("GGML_") {
@@ -171,7 +186,6 @@ impl Settings {
             }
         }
         c.args([
-            "serve",
             "--alias",
             crate::omni::MODEL_ID,
             "-m",

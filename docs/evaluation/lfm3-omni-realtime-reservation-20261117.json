@@ -1,0 +1,165 @@
+{
+  "transportPassed": true,
+  "qualified": false,
+  "admissionVerified": false,
+  "scope": "native WebSocket speech transport probe only",
+  "multiturnAccounting": {
+    "text": {
+      "admission": [
+        {
+          "type": "soliton.realtime.admission",
+          "input_tokens": 63,
+          "context_positions": 63,
+          "output_reservation": 128,
+          "available_positions": 4032,
+          "accepted": true
+        },
+        {
+          "type": "soliton.realtime.admission",
+          "input_tokens": 62,
+          "context_positions": 127,
+          "output_reservation": 128,
+          "available_positions": 3968,
+          "accepted": true
+        }
+      ],
+      "usage": [
+        {
+          "input_tokens": 63,
+          "output_tokens": 3
+        },
+        {
+          "input_tokens": 62,
+          "output_tokens": 2
+        }
+      ]
+    },
+    "audio": {
+      "admission": [
+        {
+          "type": "soliton.realtime.admission",
+          "input_tokens": 64,
+          "context_positions": 64,
+          "output_reservation": 128,
+          "available_positions": 4031,
+          "accepted": true
+        },
+        {
+          "type": "soliton.realtime.admission",
+          "input_tokens": 63,
+          "context_positions": 255,
+          "output_reservation": 128,
+          "available_positions": 3840,
+          "accepted": true
+        }
+      ],
+      "usage": [
+        {
+          "input_tokens": 64,
+          "output_tokens": 128
+        },
+        {
+          "input_tokens": 63,
+          "output_tokens": 4
+        }
+      ]
+    },
+    "interleaved": {
+      "admission": [
+        {
+          "type": "soliton.realtime.admission",
+          "input_tokens": 67,
+          "context_positions": 67,
+          "output_reservation": 128,
+          "available_positions": 4028,
+          "accepted": true
+        },
+        {
+          "type": "soliton.realtime.admission",
+          "input_tokens": 63,
+          "context_positions": 153,
+          "output_reservation": 128,
+          "available_positions": 3942,
+          "accepted": true
+        }
+      ],
+      "usage": [
+        {
+          "input_tokens": 67,
+          "output_tokens": 24
+        },
+        {
+          "input_tokens": 63,
+          "output_tokens": 25
+        }
+      ]
+    }
+  },
+  "boundary": [
+    {
+      "case": "discover",
+      "admission": {
+        "type": "soliton.realtime.admission",
+        "input_tokens": 67,
+        "context_positions": 67,
+        "output_reservation": 1,
+        "available_positions": 4028,
+        "accepted": true
+      },
+      "usage": [
+        {
+          "input_tokens": 67,
+          "output_tokens": 1
+        }
+      ],
+      "errors": [],
+      "outputDeltas": 1
+    },
+    {
+      "case": "exact",
+      "admission": {
+        "type": "soliton.realtime.admission",
+        "input_tokens": 67,
+        "context_positions": 67,
+        "output_reservation": 4028,
+        "available_positions": 4028,
+        "accepted": true
+      },
+      "usage": [
+        {
+          "input_tokens": 67,
+          "output_tokens": 19
+        }
+      ],
+      "errors": [],
+      "outputDeltas": 17
+    },
+    {
+      "case": "overflow",
+      "admission": {
+        "type": "soliton.realtime.admission",
+        "input_tokens": 67,
+        "context_positions": 67,
+        "output_reservation": 4029,
+        "available_positions": 4028,
+        "accepted": false
+      },
+      "usage": [],
+      "errors": [
+        {
+          "type": "server_error",
+          "code": null,
+          "message": "realtime output reservation exceeds available context",
+          "param": null
+        }
+      ],
+      "outputDeltas": 0
+    }
+  ],
+  "ownedShutdownClean": true,
+  "audioBoundaryVerified": true,
+  "contextLimit": 4096,
+  "sourceRevision": "8642541b2",
+  "publicQualificationReady": false,
+  "initialOverflowErrorPathCrashed": true
+}

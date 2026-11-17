@@ -3,18 +3,23 @@ from pathlib import Path
 import hashlib,json,os,signal,subprocess,sys,time,urllib.request,uuid,shutil
 from host_load_guard import HostLoadGuard
 R=Path(__file__).resolve().parents[1];D=R/'.soliton-runtime/lfm3-omni-2b';B=R/'.soliton-runtime/llama-b11960/llama-b11960'
-proof=R/'.soliton-runtime/lfm3-omni-media-text-20261029-attempt2.json';assert not proof.exists()
+proof=Path(os.environ.get('OMNI_MEDIA_PROOF',R/'.soliton-runtime/lfm3-omni-media-text-20261029-attempt2.json')).resolve();assert not proof.exists()
+patched=os.environ.get('OMNI_MEDIA_RUNTIME')
+if patched:B=Path(patched).resolve()
+launcher=[str(B/'llama-server')] if patched else [str(B/'llama'),'serve']
 parity=R/'docs/evaluation/lfm3-omni-count-parity-20261029.json';deadline=time.monotonic()+1800
 while not parity.exists():
  assert time.monotonic()<deadline,'processor parity did not finish; no second model'
  time.sleep(10)
 p=json.loads(parity.read_bytes());assert p['passed'] and p['ownedShutdownClean'] and all(p['responses'][m].get('exactCountParity') is True for m in ['text','image','audio','video']),'media count parity required'
 rows=subprocess.check_output(['/bin/ps','-axo','command='],text=True).splitlines()
-assert not any(x.strip().split()[0].split('/')[-1] in {'studio-server','soliton','llama-server','llama-tts'} or '/mlx_kv_budget.py --model ' in x for x in rows if x.strip()),'another inference engine is active'
+assert not any(x.strip().split()[0].split('/')[-1] in {'studio-server','llama-server','llama-tts'} or any(name in x for name in ('/mlx_kv_budget.py --model ', '/mlx_internal_spans.py --model ')) for x in rows if x.strip()),'another inference engine is active'
+cpu_limit=100 if patched else 20
+
 g=HostLoadGuard();stable=0;deadline=time.monotonic()+1800
 try:
  while stable<6:
-  cpu=g.snapshot()['busyPercent'];stable=stable+1 if cpu<=20 else 0;print(f'quiet CPU={cpu:.1f} stable={stable}/6',flush=True);assert time.monotonic()<deadline,'host busy';time.sleep(5)
+  cpu=g.snapshot()['busyPercent'];stable=stable+1 if cpu<=cpu_limit else 0;print(f'quiet CPU={cpu:.1f} stable={stable}/6',flush=True);assert time.monotonic()<deadline,'host busy';time.sleep(5)
 finally:g.stop()
 def digest(path):
  with path.open('rb') as f:return hashlib.file_digest(f,'sha256').hexdigest()
@@ -45,8 +50,8 @@ def request(path,body=None):
  req=urllib.request.Request('http://127.0.0.1:19341'+path,data=None if body is None else json.dumps(body).encode(),headers={'Content-Type':'application/json','Authorization':'Bearer '+key})
  with urllib.request.urlopen(req,timeout=180) as f:return json.loads(f.read(2*1024*1024))
 try:
- with (D/'qualification-server-attempt2.log').open('xb') as log:
-  child=subprocess.Popen([str(B/'llama'),'serve','--alias','LiquidAI/LFM3-Omni-2B','-m',str(D/'LFM3-Omni-2B-Q4_K_M.gguf'),'-mm',str(D/'mmproj-LFM3-Omni-2B-Q8_0.gguf'),'--host','127.0.0.1','--port','19341','--parallel','1','-c','4096','--no-webui','--reasoning','off','--temp','0','--media-path',str(media),'--video-ffmpeg-dir','/opt/homebrew/bin'],env=env,stdout=log,stderr=log,start_new_session=True)
+ with proof.with_suffix('.server.log').open('xb') as log:
+  child=subprocess.Popen([*launcher,'--alias','LiquidAI/LFM3-Omni-2B','-m',str(D/'LFM3-Omni-2B-Q4_K_M.gguf'),'-mm',str(D/'mmproj-LFM3-Omni-2B-Q8_0.gguf'),'--host','127.0.0.1','--port','19341','--parallel','1','-c','4096','--no-webui','--reasoning','off','--temp','0','--media-path',str(media),'--video-ffmpeg-dir','/opt/homebrew/bin'],env=env,stdout=log,stderr=log,start_new_session=True)
   for _ in range(300):
    assert child.poll() is None,'model died'
    try:

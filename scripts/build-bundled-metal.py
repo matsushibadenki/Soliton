@@ -58,7 +58,7 @@ sys.path.insert(0, str(source))
 spec = importlib.util.spec_from_file_location('bundled_metal_setup', source / 'metal/setup_mac.py')
 metal = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(metal)
-llama = metal.S.get_llama_cpp()
+llama = None  # Build against the immutable, vendored Strata ggml source.
 # Reconfigure even when upstream's source-only stamp matches: it does not bind
 # the deployment target. Ninja still reuses objects whose flags have not changed.
 metal.engine_current = lambda: False
@@ -83,7 +83,6 @@ def _soliton_engine(_llama, jobs=None):
 build_engine = _soliton_engine
 _original_mac_problems = mac_problems
 mac_problems = lambda info: _original_mac_problems(info, need_compiler=False)
-S.get_llama_cpp = lambda: ROOT / 'third_party/llama.cpp'
 def _soliton_dependencies(*args, **kwargs):
     import numpy, jinja2, regex, PIL, requests, yaml, psutil
 S.pip_install = _soliton_dependencies
@@ -106,7 +105,7 @@ with tarfile.open(archive, 'w:gz') as handle:
     handle.add(engine, arcname='build-metal/strata')
     handle.add(source / 'metal/kernels', arcname='build-metal/metal/kernels')
     handle.add(source / 'metal/src/engine/msl', arcname='build-metal/metal/engine-msl')
-    handle.add(source / 'third_party/ggml/ggml-common.h', arcname='build-metal/metal/ggml-common.h')
+    handle.add(source / 'third_party/strata-ggml/strata-quant-common.h', arcname='build-metal/metal/ggml-common.h')
     if (source / 'data').is_dir():
         handle.add(source / 'data', arcname='build-metal/metal/data')
     handle.add(marker, arcname='.bundled-metal.json')
@@ -114,6 +113,4 @@ with tarfile.open(archive, 'w:gz') as handle:
     handle.add(gemma_manifest, arcname='.bundled-gemma3.json')
     handle.add(gemma_source / 'gguf-py', arcname='third_party/gemma3-gguf', filter=lambda i: None if '__pycache__' in i.name else i)
     handle.add(gemma_source / 'LICENSE', arcname='third_party/gemma3-LICENSE')
-    handle.add(llama / 'gguf-py', arcname='third_party/llama.cpp/gguf-py', filter=lambda i: None if '__pycache__' in i.name else i)
-    handle.add(llama / 'LICENSE', arcname='third_party/llama.cpp/LICENSE')
 print(f'Distribution archive: {archive}')

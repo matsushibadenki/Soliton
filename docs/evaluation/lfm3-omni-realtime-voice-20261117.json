@@ -1,0 +1,159 @@
+{
+  "input": "Two synthesized spoken English turns, PCM16 mono at 16 kHz",
+  "contextReservationVerified": false,
+  "publicQualificationReady": false,
+  "runs": {
+    "128": {
+      "text": {
+        "chatReferenceInputTokens": 63,
+        "realtimeInputParity": null,
+        "turns": [
+          {
+            "status": "completed",
+            "usage": {
+              "output_tokens": 3
+            },
+            "audioBytes": 0,
+            "text": [
+              "Hello!"
+            ]
+          },
+          {
+            "status": "completed",
+            "usage": {
+              "output_tokens": 2
+            },
+            "audioBytes": 0,
+            "text": [
+              "42"
+            ]
+          }
+        ]
+      },
+      "audio": {
+        "chatReferenceInputTokens": 63,
+        "realtimeInputParity": null,
+        "turns": [
+          {
+            "status": "completed",
+            "usage": {
+              "output_tokens": 128
+            },
+            "audioBytes": 491520,
+            "text": []
+          },
+          {
+            "status": "completed",
+            "usage": {
+              "output_tokens": 4
+            },
+            "audioBytes": 7680,
+            "text": []
+          }
+        ]
+      },
+      "interleaved": {
+        "chatReferenceInputTokens": 66,
+        "realtimeInputParity": null,
+        "turns": [
+          {
+            "status": "completed",
+            "usage": {
+              "output_tokens": 23
+            },
+            "audioBytes": 69120,
+            "text": [
+              "Hello!"
+            ]
+          },
+          {
+            "status": "completed",
+            "usage": {
+              "output_tokens": 31
+            },
+            "audioBytes": 92160,
+            "text": [
+              "Forty-two."
+            ]
+          }
+        ]
+      }
+    },
+    "1": {
+      "text": {
+        "chatReferenceInputTokens": 63,
+        "realtimeInputParity": null,
+        "turns": [
+          {
+            "status": "completed",
+            "usage": {
+              "output_tokens": 1
+            },
+            "audioBytes": 0,
+            "text": [
+              "Hello"
+            ]
+          },
+          {
+            "status": "completed",
+            "usage": {
+              "output_tokens": 1
+            },
+            "audioBytes": 0,
+            "text": [
+              "42"
+            ]
+          }
+        ]
+      },
+      "audio": {
+        "chatReferenceInputTokens": 63,
+        "realtimeInputParity": null,
+        "turns": [
+          {
+            "status": "completed",
+            "usage": {
+              "output_tokens": 1
+            },
+            "audioBytes": 3840,
+            "text": []
+          },
+          {
+            "status": "completed",
+            "usage": {
+              "output_tokens": 1
+            },
+            "audioBytes": 3840,
+            "text": []
+          }
+        ]
+      },
+      "interleaved": {
+        "chatReferenceInputTokens": 66,
+        "realtimeInputParity": null,
+        "turns": [
+          {
+            "status": "completed",
+            "usage": {
+              "output_tokens": 1
+            },
+            "audioBytes": 0,
+            "text": [
+              "Hello"
+            ]
+          },
+          {
+            "status": "completed",
+            "usage": {
+              "output_tokens": 1
+            },
+            "audioBytes": 0,
+            "text": [
+              "Fort"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,72 @@
+{
+  "transportPassed": true,
+  "qualified": false,
+  "admissionVerified": false,
+  "ownedShutdownClean": true,
+  "model": "LiquidAI/LFM3-Omni-2B Q4_K_M + Q8_0 projector",
+  "runtime": "llama.cpp b11960 arm64",
+  "modes": {
+    "text": [
+      {
+        "text": [
+          "Hello!"
+        ],
+        "audioBytes": 0,
+        "usage": {
+          "output_tokens": 3
+        }
+      },
+      {
+        "text": [
+          "42"
+        ],
+        "audioBytes": 0,
+        "usage": {
+          "output_tokens": 2
+        }
+      }
+    ],
+    "audio": [
+      {
+        "text": [],
+        "audioBytes": 107520,
+        "usage": {
+          "output_tokens": 30
+        }
+      },
+      {
+        "text": [],
+        "audioBytes": 49920,
+        "usage": {
+          "output_tokens": 15
+        }
+      }
+    ],
+    "interleaved": [
+      {
+        "text": [
+          "Hello! Nice to hear from you."
+        ],
+        "audioBytes": 161280,
+        "usage": {
+          "output_tokens": 53
+        }
+      },
+      {
+        "text": [
+          "The code is forty-two."
+        ],
+        "audioBytes": 122880,
+        "usage": {
+          "output_tokens": 41
+        }
+      }
+    ]
+  },
+  "tts": {
+    "sampleRate": 24000,
+    "channels": 1,
+    "frames": 74880,
+    "durationSeconds": 3.12
+  }
+}

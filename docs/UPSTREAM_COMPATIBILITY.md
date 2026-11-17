@@ -1,3 +1,13 @@
+# Dependency update · 2026-11-16
+
+- 🟢 [Done] Strata v0.2.14.1 (`3af562d541ec76c8da63d568248a919c8a54906b`), Metal source 0.1.60.1. Source and distribution pins match. The bundle now uses upstream vendored ggml/GGUF; its real quant header is installed under the existing compatibility filename.
+- 🟢 [Done] Six compatible Cargo updates (Brotli, Brotli decompressor, Jiff trio, rand). npm and Tauri 2 were unchanged. Frontend build, workspace check and 174 Rust tests passed (one ignored); the upstream contract, 54 focused upstream tests (one skipped), seven distribution checker tests and three-language engine-switch fixtures passed.
+- 🟢 [Done] Existing Q2_0 passed authenticated exact-response inference, HTTP 401 without credentials and clean shutdown on the rebuilt Metal engine, with a temporary configuration. [Evidence](evaluation/strata-real-20261116.json).
+- 🟢 [Done] Final Apple Silicon distribution preflight passed: 66 native files, no errors.
+- ⭕️ [Pending] Full model re-preparation and installed-version migration were not repeated. No model download or ordinary settings changes.
+- 日本語：Strata 0.2.14.1とRust間接依存6件を更新し、同梱ggmlへの移行に対応。既存Q2_0で実推論に成功。モデル再準備と旧版からの実機移行は未検証です。
+- 简体中文：已更新Strata 0.2.14.1和六项Rust传递依赖，适配内置ggml。已有Q2_0真实推理通过；未重新准备模型或实测旧版安装迁移。
+
 # Dependency update · 2026-11-15
 
 - 🟢 [Done] Strata source and distribution pin: v0.2.13.1 (`628f74955a56fcba092495b800dd02af75373a0f`); local Metal build source version 0.1.59.1. This is a source build, not installation of the upstream Linux-only Control artifact for this tag.
