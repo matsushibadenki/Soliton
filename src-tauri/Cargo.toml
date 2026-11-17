@@ -3,8 +3,10 @@ name = "soliton"
 version = "0.1.11"
 edition = "2021"
 [build-dependencies]
+cc = "1"
 tauri-build = { version = "2.7.4", features = [] }
 [dependencies]
+base64 = "0.22"
 tauri = { version = "2.12.5", features = [] }
 studio-core = { path = "../crates/studio-core" }
 tokio = { version = "1.54.1", features = ["full"] }

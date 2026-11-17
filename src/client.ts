@@ -23,6 +23,11 @@ export async function connect() {
 export function token() {
   return credentials?.token || "";
 }
+export function realtimeSocket() {
+  const url = new URL("/v1/realtime", desktop ? credentials.url : location.href);
+  url.protocol = url.protocol === "https:" ? "wss:" : "ws:";
+  return new WebSocket(url, ["soliton.realtime", "soliton-token." + token()]);
+}
 export async function request(
   path: string,
   body?: unknown,

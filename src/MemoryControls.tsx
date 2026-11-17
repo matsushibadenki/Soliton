@@ -2,8 +2,6 @@ import { useEffect, useState } from "react";
 import { Info, Cpu } from "lucide-react";
 import { words, type Language } from "./i18n";
 
-import { MemoryHistory } from "./MemoryHistory";
-import { MemoryUsage, type MemoryUsageState } from "./MemoryUsage";
 
 export type MemoryValues = {
   context: number;
@@ -26,7 +24,6 @@ export const defaultMemory: MemorySettings = {
 export function MemoryControls({
   value,
   tuning,
-  usage,
   memoryBytes,
   disabled,
   language,
@@ -37,7 +34,6 @@ export function MemoryControls({
 }: {
   value: MemorySettings;
   tuning?: MemoryTuning;
-  usage?: MemoryUsageState;
   memoryBytes: number | null;
   disabled: boolean;
   language: Language;
@@ -123,7 +119,6 @@ export function MemoryControls({
           <Info size={14} />
         </span>
       </div>
-      <MemoryUsage usage={usage} language={language} />
       <div className="memory-mode" role="group" aria-label={t.memoryMode}>
         {[true, false].map((automatic) => (
           <button
@@ -200,11 +195,6 @@ export function MemoryControls({
           </button>
         </div>
       </div>
-      <MemoryHistory
-        history={usage?.history}
-        events={usage?.events}
-        language={language}
-      />
       {generating && <small className="memory-hint">{t.memoryWaitReply}</small>}
       {error && (
         <div role="alert" className="notice error">

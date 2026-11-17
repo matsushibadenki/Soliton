@@ -99,6 +99,7 @@ export function PreferencesDialog({
   onTab,
   onClose,
   error,
+  standalone = false,
   children,
 }: {
   language: Language;
@@ -106,19 +107,14 @@ export function PreferencesDialog({
   onTab: (tab: PreferenceTab) => void;
   onClose: () => void;
   error: string;
+  standalone?: boolean;
   children: ReactNode;
 }) {
   const t = words[language];
   const tabs = ["general", "engine", "api"] as const;
   const icons = { general: <Settings />, engine: <Cpu />, api: <Link /> };
-  return (
-    <Modal
-      title={t.preferences.replace("…", "")}
-      language={language}
-      onClose={onClose}
-      className="preferences-dialog"
-      movable
-    >
+  const content = (
+    <>
       <div
         role="tablist"
         aria-label={t.preferences}
@@ -165,6 +161,22 @@ export function PreferencesDialog({
       >
         {children}
       </div>
+    </>
+  );
+  if (standalone) {
+    return <main className="preferences-dialog preferences-window" aria-label={t.preferences}>
+      {content}
+    </main>;
+  }
+  return (
+    <Modal
+      title={t.preferences.replace("…", "")}
+      language={language}
+      onClose={onClose}
+      className="preferences-dialog"
+      movable
+    >
+      {content}
     </Modal>
   );
 }

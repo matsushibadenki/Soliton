@@ -27,6 +27,7 @@ try {
   await page.screenshot({ path: "/tmp/soliton-desktop.png" });
   assert.equal(await page.title(), "Soliton");
   await preferences(page, "engine");
+  await page.getByText("Advanced settings", { exact: true }).click();
   await page
     .getByRole("textbox", { name: "Python path", exact: true })
     .fill(process.env.STUDIO_TEST_PYTHON || "python3");

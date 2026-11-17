@@ -146,6 +146,28 @@ npm run desktop:build -- --bundles app --no-sign
 
 Production builds use Thin LTO, one codegen unit, and stripped symbols; the desktop build command targets `aarch64-apple-darwin` and macOS 15+. Signing/notarization requires the distributor's Apple credentials.
 
+To build a DMG on Apple Silicon, install the Xcode Command Line Tools, Node.js, Rust, uv and CMake, then run:
+
+```sh
+git submodule update --init --recursive
+npm ci
+npm run desktop:dmg
+```
+
+The command builds the app and its bundled runtimes, checks the distribution, and writes the DMG and SHA-256 checksum to `target/aarch64-apple-darwin/release/bundle/dmg/`. Open the DMG, drag Soliton into Applications, then launch it. Soliton provisions the bundled Python and Strata runtime in its application data folder on first launch. Select or download a model from the app when prompted.
+
+日本語：`npm run desktop:dmg` でDMGとチェックサムを作成します。DMGを開いてSolitonを「アプリケーション」に移し、起動してください。同梱ランタイムは初回起動時に展開されます。モデルはアプリ内で選択またはダウンロードします。
+
+简体中文：运行 `npm run desktop:dmg` 生成 DMG 和校验文件。打开 DMG，将 Soliton 拖入“应用程序”后启动。首次启动会自动安装内置运行时。请在应用中选择或下载模型。
+
+On 2026-11-17, the Apple Silicon Soliton 0.1.11 DMG passed SHA-256 and app signature verification. The app was copied from the mounted image to an isolated Applications folder and launched with an empty data directory and a system-only PATH. First launch provisioned bundled Python 3.12.16 and Strata. The installed app’s local API selected an existing Gemma 3 1B IT SafeTensors model, completed preparation in the new data directory, and returned `4` for `What is 2 + 2?` through the bundled Metal engine (20 input tokens, 3 output tokens). Model download and a separate Mac were outside this run.
+
+日本語：空のデータ領域で初回起動し、同梱ランタイムの自動展開、手元のGemma 3 1B ITの選択と準備、実モデルの応答を確認しました。モデルのダウンロードと別のMacでの確認は今回の対象外です。
+
+简体中文：使用空数据目录首次启动，确认了内置运行时自动安装、本地 Gemma 3 1B IT 的选择与准备，以及实模型回复。本次验证使用已有模型文件，并在当前 Mac 上完成。
+
+For public distribution, configure the Tauri macOS signing identity with a Developer ID Application certificate and supply Apple notarization credentials to the build environment. Run `SOLITON_DMG_PUBLIC=1 npm run desktop:dmg` to require a stapled notarization ticket and Gatekeeper approval for the app before creating the DMG. The default local build uses ad hoc signing.
+
 For end-to-end tests, keep the Rust server and Vite running, install the Playwright Chromium runtime (`npx playwright install chromium`), then run `npm run test:e2e`. `STUDIO_TEST_PYTHON` selects the test interpreter; `PLAYWRIGHT_CHROMIUM_EXECUTABLE` can select an existing Chromium installation. Use an isolated `STUDIO_STATE_PATH` for test runs and keep the desktop app closed. `npm run test:roadmap` additionally checks preparation diagnostics, config discovery/selection, consent enforcement without downloading, tabbed preferences and workspace navigation. `npm run test:menus` checks menus, About, editing, export, shortcuts, three locales and responsive preferences. Rust tests use a fake setup script to verify completion, failure, cancellation and environment isolation without model downloads. The base test covers lifecycle, streamed GUI chat, API compatibility/authentication, three languages, and 320/375/414/768/1440px widths.
 
 See [architecture](docs/ARCHITECTURE.md) and [roadmap](docs/ROADMAP.md).

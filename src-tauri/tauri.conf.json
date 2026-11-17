@@ -22,7 +22,7 @@
       }
     ],
     "security": {
-      "csp": "default-src 'self'; connect-src 'self' ipc: http://ipc.localhost http://127.0.0.1:8080; style-src 'self' 'unsafe-inline'; img-src 'self' data:"
+      "csp": "default-src 'self'; connect-src 'self' ipc: http://ipc.localhost http://127.0.0.1:8080 ws://127.0.0.1:8080; media-src 'self' blob:; style-src 'self' 'unsafe-inline'; img-src 'self' data:"
     }
   },
   "bundle": {
@@ -33,6 +33,8 @@
     ],
     "macOS": {
       "minimumSystemVersion": "15.0",
+      "infoPlist": "Info.plist",
+      "entitlements": "Entitlements.plist",
       "signingIdentity": "-"
     },
     "resources": {

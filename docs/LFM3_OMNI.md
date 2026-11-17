@@ -59,10 +59,14 @@ The output collector now discards partial PCM on local cancellation and refuses 
 
 1. Use the official LFM3-Omni-2B Q4_K_M GGUF and Q8_0 projector identified above. Apply [the Realtime reservation patch](../patches/llama-realtime-reservation-b11960.patch) to llama.cpp revision `8642541b2` and build the arm64 `llama-server` with Metal. Keep the executable and its libraries together.
 2. Configure Soliton's `lfm3Omni` engine with that runtime directory, both GGUF paths, a private media directory, and a context of 4,096. Set `evidence` to the matching media/text qualification JSON and `realtimeEvidence` to the matching Realtime qualification JSON. Soliton checks the reviewed runtime digest and binds evidence to the runtime, model, projector and host. The archived files document the tested build and host. A different build requires review of its runtime digest and matching qualification.
-3. Start the engine through Soliton. Connect a local WebSocket client to `/v1/realtime` with the current `x-studio-token` header. Send an explicit `max_output_tokens` in `session.update`. Voice input uses 16 kHz mono PCM16, and the relay collects 24 kHz output PCM in Rust. The release exposes the authenticated API; desktop recording and playback remain roadmap work.
+3. Start the engine through Soliton. Connect a local WebSocket client to `/v1/realtime` with the current `x-studio-token` header. Send an explicit `max_output_tokens` in `session.update`. Voice input uses 16 kHz mono PCM16, and the relay collects 24 kHz output PCM in Rust. In desktop Soliton, select LFM3-Omni-2B in Preferences and enter those paths. When the engine is ready, use the microphone button in Chat, then stop and send. The same Realtime session retains context between voice turns until you end it. Completed replies appear in the audio player with playback controls. Use the cancel button during recording or generation to discard the current turn’s audio.
 
 The media qualification passed 9,311 requests in 1,800.092 s. The Realtime qualification passed 196 turns in 1,802.804 s. Both reported zero failures and clean shutdown. Audio-input reservations of 4,032 (text), 4,031 (audio), and 4,028 (mixed) passed on the measured prompt. One extra position was rejected before output in each mode. Cancellation cleared buffered audio. [Media evidence](evaluation/lfm3-omni-patched-media-20261117.json) · [Realtime evidence](evaluation/lfm3-omni-managed-realtime-qualification-20261117.json) · [Managed route results](evaluation/lfm3-omni-managed-realtime-20261117.json)
 
 日本語：公式GGUFとパッチ適用済みランタイムを選び、同じ環境で発行されたメディアとRealtimeの資格情報を指定します。
 
 简体中文：选择官方 GGUF 与应用补丁后的运行时，并指定与该环境匹配的媒体和实时资格凭据。
+
+日本語：チャットのマイクボタンで録音し、停止ボタンで送信します。応答音声はプレーヤーから再生できます。生成中はキャンセルでき、音声対話を終了するまで次の録音に文脈を引き継ぎます。
+
+简体中文：在聊天中点击麦克风开始录音，点击停止按钮发送。可通过播放器播放回复，也可在生成期间取消。结束语音对话前，后续录音会沿用会话上下文。

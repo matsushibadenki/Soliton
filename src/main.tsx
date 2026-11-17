@@ -1,5 +1,6 @@
+import { ChatMath } from "./ChatMath";
 import { ModelPlan, type ModelPlanState } from "./ModelPlan";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useEffectEvent, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { getCurrentWindow } from "@tauri-apps/api/window";
 import { invoke } from "@tauri-apps/api/core";
@@ -70,10 +71,12 @@ import {
 import { MemoryUsage, type MemoryUsageState } from "./MemoryUsage";
 import { MemoryHistory } from "./MemoryHistory";
 import { PrefixEngineSettings, defaultPrefixSettings, type PrefixSettings } from "./PrefixEngineSettings";
+import { OmniSettings, OmniVoice } from "./OmniVoice";
 import { KnowledgeLab } from "./KnowledgeLab";
 import { knowledgeWords } from "./knowledge-i18n";
 type Settings = {
-  engine: "strata" | "vllmApple" | "mlxPrefix";
+  engine: "strata" | "vllmApple" | "mlxPrefix" | "lfm3Omni";
+  omni: { runtimeDir: string; model: string; projector: string; mediaRoot: string; evidence: string; realtimeEvidence: string; context: number };
   prefixCache: PrefixSettings;
   vllm: {
     root: string;
@@ -99,6 +102,39 @@ type Settings = {
   modelDirectories: string[];
   metalMemory: MemorySettings;
 };
+const enginePresetKeys = {
+  strata: ["strataRoot", "python", "config", "mock", "metalMemory"],
+  vllmApple: ["vllm"],
+  mlxPrefix: ["prefixCache"],
+  lfm3Omni: ["omni"],
+} as const;
+type EnginePreset = {
+  engine: Settings["engine"];
+  name: string;
+  settings: Partial<Settings>;
+};
+const enginePresetStorage = "soliton.engine-presets.v1";
+const engineWords = {
+  en: { preset: "Preset", current: "Current settings", name: "Preset name", save: "Save preset", details: "Advanced settings" },
+  ja: { preset: "プリセット", current: "現在の設定", name: "プリセット名", save: "プリセットを保存", details: "詳細設定" },
+  zh: { preset: "预设", current: "当前设置", name: "预设名称", save: "保存预设", details: "高级设置" },
+};
+function readEnginePresets(): EnginePreset[] {
+  try {
+    const value: unknown = JSON.parse(localStorage.getItem(enginePresetStorage) ?? "[]");
+    return Array.isArray(value) ? value.filter((item) =>
+      item && Object.hasOwn(enginePresetKeys, item.engine) &&
+      typeof item.name === "string" && item.settings && typeof item.settings === "object",
+    ) : [];
+  } catch {
+    return [];
+  }
+}
+function presetSettings(engine: Settings["engine"], source: Partial<Settings>) {
+  return Object.fromEntries(enginePresetKeys[engine]
+    .filter((key) => Object.hasOwn(source, key))
+    .map((key) => [key, source[key]])) as Partial<Settings>;
+}
 type Message = { role: string; content: string; inference?: Inference };
 type Snapshot = {
   modelPlan?: ModelPlanState;
@@ -127,8 +163,11 @@ type Snapshot = {
   endpoint: string;
   root: string;
   health: { model?: string } | null;
+  strataModel?: string | null;
 };
 const defaults: Settings = {
+  omni: { runtimeDir: "", model: "", projector: "", mediaRoot: "", evidence: "", realtimeEvidence: "", context: 4096 },
+
   prefixCache: defaultPrefixSettings,
   engine: "strata",
   vllm: {
@@ -154,7 +193,12 @@ const defaults: Settings = {
   modelDirectories: [],
   metalMemory: defaultMemory,
 };
-const panelView = new URLSearchParams(location.search).get("panel");
+const windowParams = new URLSearchParams(location.search);
+const panelView = windowParams.get("panel");
+const preferencesWindow = panelView === "preferences";
+const initialTab = windowParams.get("tab");
+const initialPreferenceTab: PreferenceTab =
+  initialTab === "engine" || initialTab === "api" ? initialTab : "general";
 function App() {
   const [conversationsOpen, setConversationsOpen] = useState(false);
   const [modelsOpen, setModelsOpen] = useState(false);
@@ -162,7 +206,9 @@ function App() {
   const [setupOpen, setSetupOpen] = useState(false);
   const [inspection, setInspection] = useState<Inspection | null>(null);
   const [preferencesOpen, setPreferencesOpen] = useState(false);
-  const [preferenceTab, setPreferenceTab] = useState<PreferenceTab>("general");
+  const [enginePresets, setEnginePresets] = useState(readEnginePresets);
+  const [presetName, setPresetName] = useState("");
+  const [preferenceTab, setPreferenceTab] = useState<PreferenceTab>(initialPreferenceTab);
   const [aboutOpen, setAboutOpen] = useState(false);
 
   const editor = useRef<{
@@ -558,6 +604,31 @@ function App() {
     }
   }
   const status = online ? snapshot?.status || "offline" : "offline";
+  const runningSettings = status === "offline" ? undefined : snapshot?.settings;
+  const engineLabel = (selected: Settings) => ({
+    strata: selected.mock ? t.mock : "Strata",
+    vllmApple: "vLLM-Apple",
+    mlxPrefix: "MLX SSD",
+    lfm3Omni: "LFM3-Omni",
+  })[selected.engine];
+  const configuredModel = (selected: Settings) => ({
+    strata: !selected.mock && selected.config === snapshot?.settings.config
+      ? snapshot.strataModel : undefined,
+    vllmApple: selected.vllm.model,
+    mlxPrefix: selected.prefixCache.model,
+    lfm3Omni: selected.omni.model,
+  })[selected.engine]?.trim().split(/[\\/]/).filter(Boolean).at(-1);
+  const engineName = runningSettings && engineLabel(runningSettings);
+  const reportedModel = snapshot?.health?.model?.trim();
+  const modelName = status === "ready" && runningSettings &&
+    !(runningSettings.engine === "strata" && runningSettings.mock)
+    ? (reportedModel !== "default_model" && reportedModel) ||
+      configuredModel(runningSettings)
+    : undefined;
+  const runtimeLabel = [snapshot?.architecture, engineName, modelName]
+    .filter(Boolean)
+    .join(" / ") || "—";
+
   function button(
     icon: React.ReactNode,
     title: string,
@@ -584,7 +655,7 @@ function App() {
     return (
       <header
         className="panel-header"
-        draggable={desktop && !!panelView}
+        draggable={desktop && !!panelView && !preferencesWindow}
         onDragStart={(e) => e.dataTransfer.setData("text/plain", id)}
       >
         <h2>
@@ -594,6 +665,7 @@ function App() {
         <div className="tools">
           {extra}
           {panelView &&
+            !preferencesWindow &&
             !workspaceWindow &&
             button(
               panelView ? <PanelLeftClose /> : <ExternalLink />,
@@ -605,6 +677,37 @@ function App() {
     );
   }
   function engine() {
+    const labels = engineWords[language];
+    const presets = enginePresets.filter((item) => item.engine === settings.engine);
+    const currentPreset = presets.find((item) =>
+      JSON.stringify(presetSettings(item.engine, item.settings)) ===
+      JSON.stringify(presetSettings(settings.engine, settings)),
+    );
+    const presetLocked = !online || pending || preparing || status !== "offline";
+    const name = presetName.trim();
+    const nameTaken = presets.some((item) => item.name === name);
+    function savePreset() {
+      void run(async () => {
+        if (dirty.current) await persist();
+        const engine = draftRef.current.engine;
+        const next = [...enginePresets, { engine, name, settings: presetSettings(engine, draftRef.current) }];
+        localStorage.setItem(enginePresetStorage, JSON.stringify(next));
+        setEnginePresets(next);
+        setPresetName("");
+      });
+    }
+    function applyPreset(name: string) {
+      const preset = presets.find((item) => item.name === name);
+      if (!preset) return;
+      void run(async () => {
+        const next = { ...draftRef.current, ...presetSettings(preset.engine, preset.settings) };
+        await action("settings", { settings: next });
+        draftRef.current = next;
+        setSettings(next);
+        dirty.current = false;
+      });
+    }
+
     return (
       <section className="panel engine">
         {panelHeader(
@@ -668,7 +771,23 @@ function App() {
             )}
           </>,
         )}
-        <div className="panel-body">
+        <div className="panel-body engine-settings-body">
+          <div className="engine-memory-overview">
+            <MemoryUsage
+              usage={snapshot?.memoryUsage}
+              language={language}
+              selectedEngine={engineLabel(settings)}
+              selectedModel={configuredModel(settings) || (
+                settings.engine === runningSettings?.engine &&
+                !(settings.engine === "strata" && settings.mock) ? modelName : undefined
+              )}
+            />
+            <MemoryHistory
+              history={snapshot?.memoryUsage?.history}
+              events={snapshot?.memoryUsage?.events}
+              language={language}
+            />
+          </div>
           <label>
             {t.engineSelector}
             <span title={t.engineSwitchHelp}>
@@ -701,193 +820,309 @@ function App() {
               <option value="strata">Strata</option>
               <option value="vllmApple">vLLM-Apple</option>
               <option value="mlxPrefix">MLX SSD</option>
+              <option value="lfm3Omni">LFM3-Omni</option>
             </select>
           </label>
-          {!dirty.current && snapshot?.modelPlan && (
-            <ModelPlan value={snapshot.modelPlan} language={language}
-              onRefresh={settings.engine === "vllmApple" ? async()=>{await run(async()=>{try {await action("refreshBackendBudget");} catch {throw new Error(words[language].planRuntimeError);}});}:undefined}
-              refreshDisabled={!online || pending || status === "offline"} />
-          )}
-          {settings.engine === "mlxPrefix" ? (
-            <PrefixEngineSettings value={settings.prefixCache || defaultPrefixSettings} language={language}
-              locked={status !== "offline" || pending} running={status === "ready"}
-              onChange={(value) => update("prefixCache", value)} onSave={persist} />
-          ) : settings.engine === "strata" ? (
-            <>
-              {snapshot?.backend === "Metal" && (
-                <MemoryControls
-                  value={settings.metalMemory ?? defaultMemory}
-                  tuning={snapshot?.memoryTuning}
-                  usage={snapshot?.memoryUsage}
-                  memoryBytes={snapshot?.memoryBytes ?? null}
-                  language={language}
-                  disabled={preparing || pending || !online}
-                  running={status !== "offline"}
-                  generating={busy || !!snapshot?.document.generating}
-                  onRestart={async (value) => {
-                    await action("applyMemoryRestart", { memory: value });
-                    const next = { ...draftRef.current, metalMemory: value };
-                    draftRef.current = next;
-                    setSettings(next);
-                  }}
-                  onSave={async (value) => {
-                    update("metalMemory", value);
-                    await persist();
-                  }}
+          <label>
+            {labels.preset}
+            <select
+              aria-label={labels.preset}
+              value={currentPreset?.name ?? ""}
+              disabled={presetLocked || presets.length === 0}
+              onChange={(event) => applyPreset(event.target.value)}
+            >
+              <option value="" disabled>{labels.current}</option>
+              {presets.map((preset) => <option key={preset.name}>{preset.name}</option>)}
+            </select>
+          </label>
+          <details className="engine-details" key={settings.engine}>
+            <summary>{labels.details}</summary>
+            <div className="engine-details-content">
+              <div className="engine-preset-save">
+                <input
+                  aria-label={labels.name}
+                  placeholder={labels.name}
+                  value={presetName}
+                  maxLength={60}
+                  onChange={(event) => setPresetName(event.target.value)}
                 />
+                <button type="button" disabled={presetLocked || !name || nameTaken} onClick={savePreset}>
+                  {labels.save}
+                </button>
+              </div>
+              {!dirty.current && snapshot?.modelPlan && (
+                <ModelPlan value={snapshot.modelPlan} language={language}
+                  onRefresh={settings.engine === "vllmApple" ? async()=>{await run(async()=>{try {await action("refreshBackendBudget");} catch {throw new Error(words[language].planRuntimeError);}});}:undefined}
+                  refreshDisabled={!online || pending || status === "offline"} />
               )}
-              <label>
-                {t.root}
-                <div className="path-input">
-                  <input
-                    aria-label={t.root}
-                    value={settings.strataRoot}
-                    disabled={status !== "offline" || preparing}
-                    onChange={(e) => update("strataRoot", e.target.value)}
-                    onBlur={() =>
-                      persist().catch((e: Error) => setError(e.message))
-                    }
-                  />
-                  {desktop
-                    ? button(
-                        <FolderOpen />,
-                        t.browse + " · " + t.root,
-                        () => browse("root"),
-                        status !== "offline" || preparing || pending,
-                      )
-                    : null}
-                </div>
-              </label>
-              <label>
-                {t.config}
-                <span title={t.configHelp}>
-                  <Info size={13} />
-                </span>
-                <div className="path-input">
-                  <input
-                    aria-label={t.config}
-                    value={settings.config}
-                    placeholder="strata-iq3_s.json"
-                    disabled={status !== "offline" || preparing}
-                    onBlur={() =>
-                      persist().catch((e: Error) => setError(e.message))
-                    }
-                    onChange={(e) => update("config", e.target.value)}
-                  />
-                  {desktop
-                    ? button(
-                        <FolderOpen />,
-                        t.browse + " · " + t.config,
-                        () => browse("config"),
-                        status !== "offline" || preparing || pending,
-                      )
-                    : null}
-                </div>
-              </label>
-              <label>
-                {t.python}
-                <div className="path-input">
-                  <input
-                    aria-label={t.python}
-                    value={settings.python}
-                    disabled={status !== "offline" || preparing}
-                    onBlur={() =>
-                      persist().catch((e: Error) => setError(e.message))
-                    }
-                    onChange={(e) => update("python", e.target.value)}
-                  />
-                  {desktop
-                    ? button(
-                        <FolderOpen />,
-                        t.browse + " · " + t.python,
-                        () => browse("python"),
-                        status !== "offline" || preparing || pending,
-                      )
-                    : null}
-                </div>
-              </label>
-            </>
-          ) : (
-            <>
-              <label>
-                {t.vllmBackend}
-                <select
-                  aria-label={t.vllmBackend}
-                  value={settings.vllm.backend}
-                  disabled={status !== "offline" || pending}
-                  onChange={(e) => {
-                    update("vllm", {
-                      ...settings.vllm,
-                      backend: e.target.value as Settings["vllm"]["backend"],
-                      allocatorCacheMiB:
-                        e.target.value === "mlx_lm"
-                          ? settings.vllm.allocatorCacheMiB
-                          : 0,
-                      kvCacheMiB:
-                        e.target.value === "mlx_lm"
-                          ? settings.vllm.kvCacheMiB
-                          : 0,
-                    });
-                    void run(persist);
-                  }}
-                >
-                  <option value="mlx_lm">MLX LM</option>
-                  <option value="vllm_metal">vLLM-Metal</option>
-                </select>
-              </label>
-              <label>
-                {t.mpsFallback}
-                <span title={t.mpsFallbackHelp}><Info size={13} /></span>
-                <select
-                  aria-label={t.mpsFallback}
-                  value={settings.vllm.mpsFallback == null ? "inherit" : settings.vllm.mpsFallback ? "1" : "0"}
-                  disabled={status !== "offline" || pending}
-                  onChange={(e) => {
-                    update("vllm", {
-                      ...settings.vllm,
-                      mpsFallback: e.target.value === "inherit" ? null : e.target.value === "1",
-                    });
-                    void run(persist);
-                  }}
-                >
-                  <option value="inherit">{t.mpsInherit}</option>
-                  <option value="1">{t.mpsEnabled}</option>
-                  <option value="0">{t.mpsDisabled}</option>
-                </select>
-              </label>
-              {!dirty.current && snapshot?.vllmInspection && (
-                <VllmInspectionView
-                  value={snapshot.vllmInspection}
-                  language={language}
-                />
-              )}
-              {(
-                [
-                  ["root", t.vllmRoot, "root"],
-                  ["python", t.python, "python"],
-                  ["model", t.vllmModel, "models"],
-                  ["executable", t.vllmExecutable, "python"],
-                  ["evidence", t.vllmEvidence, "evidence"],
-                ] as const
-              ).map(([key, label, kind]) => (
-                <label key={key}>
-                  {label}
-                  {key === "evidence" && (
-                    <span title={t.vllmEvidenceHelp} tabIndex={0}>
+              {settings.engine === "mlxPrefix" ? (
+                <PrefixEngineSettings value={settings.prefixCache || defaultPrefixSettings} language={language}
+                  locked={status !== "offline" || pending} running={status === "ready"}
+                  onChange={(value) => update("prefixCache", value)} onSave={persist} />
+              ) : settings.engine === "lfm3Omni" ? (
+                <OmniSettings language={language} value={settings.omni}
+                  locked={status !== "offline" || pending}
+                  onChange={value => update("omni", value)}
+                  onSave={() => void persist().catch((e: Error) => setError(e.message))} />
+              ) : settings.engine === "strata" ? (
+                <>
+                  {snapshot?.backend === "Metal" && (
+                    <MemoryControls
+                      value={settings.metalMemory ?? defaultMemory}
+                      tuning={snapshot?.memoryTuning}
+                      memoryBytes={snapshot?.memoryBytes ?? null}
+                      language={language}
+                      disabled={preparing || pending || !online}
+                      running={status !== "offline"}
+                      generating={busy || !!snapshot?.document.generating}
+                      onRestart={async (value) => {
+                        await action("applyMemoryRestart", { memory: value });
+                        const next = { ...draftRef.current, metalMemory: value };
+                        draftRef.current = next;
+                        setSettings(next);
+                      }}
+                      onSave={async (value) => {
+                        update("metalMemory", value);
+                        await persist();
+                      }}
+                    />
+                  )}
+                  <label>
+                    {t.root}
+                    <div className="path-input">
+                      <input
+                        aria-label={t.root}
+                        value={settings.strataRoot}
+                        disabled={status !== "offline" || preparing}
+                        onChange={(e) => update("strataRoot", e.target.value)}
+                        onBlur={() =>
+                          persist().catch((e: Error) => setError(e.message))
+                        }
+                      />
+                      {desktop
+                        ? button(
+                            <FolderOpen />,
+                            t.browse + " · " + t.root,
+                            () => browse("root"),
+                            status !== "offline" || preparing || pending,
+                          )
+                        : null}
+                    </div>
+                  </label>
+                  <label>
+                    {t.config}
+                    <span title={t.configHelp}>
                       <Info size={13} />
                     </span>
+                    <div className="path-input">
+                      <input
+                        aria-label={t.config}
+                        value={settings.config}
+                        placeholder="strata-iq3_s.json"
+                        disabled={status !== "offline" || preparing}
+                        onBlur={() =>
+                          persist().catch((e: Error) => setError(e.message))
+                        }
+                        onChange={(e) => update("config", e.target.value)}
+                      />
+                      {desktop
+                        ? button(
+                            <FolderOpen />,
+                            t.browse + " · " + t.config,
+                            () => browse("config"),
+                            status !== "offline" || preparing || pending,
+                          )
+                        : null}
+                    </div>
+                  </label>
+                  <label>
+                    {t.python}
+                    <div className="path-input">
+                      <input
+                        aria-label={t.python}
+                        value={settings.python}
+                        disabled={status !== "offline" || preparing}
+                        onBlur={() =>
+                          persist().catch((e: Error) => setError(e.message))
+                        }
+                        onChange={(e) => update("python", e.target.value)}
+                      />
+                      {desktop
+                        ? button(
+                            <FolderOpen />,
+                            t.browse + " · " + t.python,
+                            () => browse("python"),
+                            status !== "offline" || preparing || pending,
+                          )
+                        : null}
+                    </div>
+                  </label>
+                </>
+              ) : (
+                <>
+                  <label>
+                    {t.vllmBackend}
+                    <select
+                      aria-label={t.vllmBackend}
+                      value={settings.vllm.backend}
+                      disabled={status !== "offline" || pending}
+                      onChange={(e) => {
+                        update("vllm", {
+                          ...settings.vllm,
+                          backend: e.target.value as Settings["vllm"]["backend"],
+                          allocatorCacheMiB:
+                            e.target.value === "mlx_lm"
+                              ? settings.vllm.allocatorCacheMiB
+                              : 0,
+                          kvCacheMiB:
+                            e.target.value === "mlx_lm"
+                              ? settings.vllm.kvCacheMiB
+                              : 0,
+                        });
+                        void run(persist);
+                      }}
+                    >
+                      <option value="mlx_lm">MLX LM</option>
+                      <option value="vllm_metal">vLLM-Metal</option>
+                    </select>
+                  </label>
+                  <label>
+                    {t.mpsFallback}
+                    <span title={t.mpsFallbackHelp}><Info size={13} /></span>
+                    <select
+                      aria-label={t.mpsFallback}
+                      value={settings.vllm.mpsFallback == null ? "inherit" : settings.vllm.mpsFallback ? "1" : "0"}
+                      disabled={status !== "offline" || pending}
+                      onChange={(e) => {
+                        update("vllm", {
+                          ...settings.vllm,
+                          mpsFallback: e.target.value === "inherit" ? null : e.target.value === "1",
+                        });
+                        void run(persist);
+                      }}
+                    >
+                      <option value="inherit">{t.mpsInherit}</option>
+                      <option value="1">{t.mpsEnabled}</option>
+                      <option value="0">{t.mpsDisabled}</option>
+                    </select>
+                  </label>
+                  {!dirty.current && snapshot?.vllmInspection && (
+                    <VllmInspectionView
+                      value={snapshot.vllmInspection}
+                      language={language}
+                    />
                   )}
-                  <div className="path-input">
+                  {(
+                    [
+                      ["root", t.vllmRoot, "root"],
+                      ["python", t.python, "python"],
+                      ["model", t.vllmModel, "models"],
+                      ["executable", t.vllmExecutable, "python"],
+                      ["evidence", t.vllmEvidence, "evidence"],
+                    ] as const
+                  ).map(([key, label, kind]) => (
+                    <label key={key}>
+                      {label}
+                      {key === "evidence" && (
+                        <span title={t.vllmEvidenceHelp} tabIndex={0}>
+                          <Info size={13} />
+                        </span>
+                      )}
+                      <div className="path-input">
+                        <input
+                          aria-label={label}
+                          value={settings.vllm[key]}
+                          disabled={status !== "offline" || pending}
+                          onChange={(e) =>
+                            update("vllm", {
+                              ...draftRef.current.vllm,
+                              [key]: e.target.value,
+                              ...(key === "evidence" && !e.target.value.trim()
+                                ? { kvCacheMiB: 0, allocatorCacheMiB: 0 }
+                                : {}),
+                            })
+                          }
+                          onBlur={() => {
+                            void persist().catch((e: Error) => setError(e.message));
+                          }}
+                        />
+                        {desktop
+                          ? button(
+                              <FolderOpen />,
+                              t.browse + " · " + label,
+                              () => {
+                                void run(async () => {
+                                  const path = await invoke<string | null>(
+                                    "select_path",
+                                    { kind },
+                                  );
+                                  if (path) {
+                                    update("vllm", {
+                                      ...draftRef.current.vllm,
+                                      [key]: path,
+                                    });
+                                    await persist();
+                                  }
+                                });
+                              },
+                              status !== "offline" || pending,
+                            )
+                          : null}
+                      </div>
+                    </label>
+                  ))}
+                  <label>
+                    {t.contextLength}
                     <input
-                      aria-label={label}
-                      value={settings.vllm[key]}
+                      type="number"
+                      aria-label={t.contextLength}
+                      min={1}
+                      max={131072}
+                      value={
+                        Number.isFinite(settings.vllm.context)
+                          ? settings.vllm.context
+                          : ""
+                      }
                       disabled={status !== "offline" || pending}
                       onChange={(e) =>
                         update("vllm", {
                           ...draftRef.current.vllm,
-                          [key]: e.target.value,
-                          ...(key === "evidence" && !e.target.value.trim()
-                            ? { kvCacheMiB: 0, allocatorCacheMiB: 0 }
+                          context: e.target.valueAsNumber,
+                        })
+                      }
+                      onBlur={() => {
+                        void persist().catch((e: Error) => setError(e.message));
+                      }}
+                    />
+                  </label>
+                  <label>
+                    {t.vllmKvCache}
+                    <span title={t.vllmKvCacheHelp} tabIndex={0}>
+                      <Info size={13} />
+                    </span>
+                    <input
+                      type="number"
+                      aria-label={t.vllmKvCache}
+                      min={0}
+                      max={4096}
+                      step={1}
+                      value={
+                        Number.isFinite(settings.vllm.kvCacheMiB)
+                          ? settings.vllm.kvCacheMiB
+                          : ""
+                      }
+                      disabled={
+                        status !== "offline" ||
+                        pending ||
+                        !settings.vllm.evidence ||
+                        settings.vllm.backend !== "mlx_lm"
+                      }
+                      onChange={(e) =>
+                        update("vllm", {
+                          ...draftRef.current.vllm,
+                          kvCacheMiB: e.target.valueAsNumber,
+                          ...(e.target.valueAsNumber === 0
+                            ? { allocatorCacheMiB: 0 }
                             : {}),
                         })
                       }
@@ -895,160 +1130,72 @@ function App() {
                         void persist().catch((e: Error) => setError(e.message));
                       }}
                     />
-                    {desktop
-                      ? button(
-                          <FolderOpen />,
-                          t.browse + " · " + label,
-                          () => {
-                            void run(async () => {
-                              const path = await invoke<string | null>(
-                                "select_path",
-                                { kind },
-                              );
-                              if (path) {
-                                update("vllm", {
-                                  ...draftRef.current.vllm,
-                                  [key]: path,
-                                });
-                                await persist();
-                              }
-                            });
-                          },
-                          status !== "offline" || pending,
-                        )
-                      : null}
-                  </div>
+                  </label>
+                  <label>
+                    {t.vllmAllocatorCache}
+                    <span title={t.vllmAllocatorCacheHelp} tabIndex={0}>
+                      <Info size={13} />
+                    </span>
+                    <input
+                      type="number"
+                      aria-label={t.vllmAllocatorCache}
+                      min={0}
+                      max={4096}
+                      step={1}
+                      value={
+                        Number.isFinite(settings.vllm.allocatorCacheMiB)
+                          ? settings.vllm.allocatorCacheMiB
+                          : ""
+                      }
+                      disabled={
+                        status !== "offline" ||
+                        pending ||
+                        !settings.vllm.evidence ||
+                        !settings.vllm.kvCacheMiB ||
+                        settings.vllm.backend !== "mlx_lm"
+                      }
+                      onChange={(e) =>
+                        update("vllm", {
+                          ...draftRef.current.vllm,
+                          allocatorCacheMiB: e.target.valueAsNumber,
+                        })
+                      }
+                      onBlur={() => {
+                        void persist().catch((e: Error) => setError(e.message));
+                      }}
+                    />
+                  </label>
+                </>
+              )}
+              <div className="value-row">
+                <span>{t.port}</span>
+                <code>8080</code>
+              </div>
+              <div className="value-row">
+                <span>{t.platform}</span>
+                <code>
+                  {snapshot?.architecture || "—"} / {snapshot?.backend || "—"}
+                </code>
+              </div>
+              {settings.engine === "strata" && (
+                <label className="toggle">
+                  <input
+                    type="checkbox"
+                    checked={settings.mock}
+                    disabled={status !== "offline" || preparing}
+                    onChange={(e) => {
+                      update("mock", e.target.checked);
+                      run(persist);
+                    }}
+                  />
+                  {t.mock}
+                  <span title={t.mockHelp}>
+                    <Info size={13} />
+                  </span>
                 </label>
-              ))}
-              <label>
-                {t.contextLength}
-                <input
-                  type="number"
-                  aria-label={t.contextLength}
-                  min={1}
-                  max={131072}
-                  value={
-                    Number.isFinite(settings.vllm.context)
-                      ? settings.vllm.context
-                      : ""
-                  }
-                  disabled={status !== "offline" || pending}
-                  onChange={(e) =>
-                    update("vllm", {
-                      ...draftRef.current.vllm,
-                      context: e.target.valueAsNumber,
-                    })
-                  }
-                  onBlur={() => {
-                    void persist().catch((e: Error) => setError(e.message));
-                  }}
-                />
-              </label>
-              <label>
-                {t.vllmKvCache}
-                <span title={t.vllmKvCacheHelp} tabIndex={0}>
-                  <Info size={13} />
-                </span>
-                <input
-                  type="number"
-                  aria-label={t.vllmKvCache}
-                  min={0}
-                  max={4096}
-                  step={1}
-                  value={
-                    Number.isFinite(settings.vllm.kvCacheMiB)
-                      ? settings.vllm.kvCacheMiB
-                      : ""
-                  }
-                  disabled={
-                    status !== "offline" ||
-                    pending ||
-                    !settings.vllm.evidence ||
-                    settings.vllm.backend !== "mlx_lm"
-                  }
-                  onChange={(e) =>
-                    update("vllm", {
-                      ...draftRef.current.vllm,
-                      kvCacheMiB: e.target.valueAsNumber,
-                      ...(e.target.valueAsNumber === 0
-                        ? { allocatorCacheMiB: 0 }
-                        : {}),
-                    })
-                  }
-                  onBlur={() => {
-                    void persist().catch((e: Error) => setError(e.message));
-                  }}
-                />
-              </label>
-              <label>
-                {t.vllmAllocatorCache}
-                <span title={t.vllmAllocatorCacheHelp} tabIndex={0}>
-                  <Info size={13} />
-                </span>
-                <input
-                  type="number"
-                  aria-label={t.vllmAllocatorCache}
-                  min={0}
-                  max={4096}
-                  step={1}
-                  value={
-                    Number.isFinite(settings.vllm.allocatorCacheMiB)
-                      ? settings.vllm.allocatorCacheMiB
-                      : ""
-                  }
-                  disabled={
-                    status !== "offline" ||
-                    pending ||
-                    !settings.vllm.evidence ||
-                    !settings.vllm.kvCacheMiB ||
-                    settings.vllm.backend !== "mlx_lm"
-                  }
-                  onChange={(e) =>
-                    update("vllm", {
-                      ...draftRef.current.vllm,
-                      allocatorCacheMiB: e.target.valueAsNumber,
-                    })
-                  }
-                  onBlur={() => {
-                    void persist().catch((e: Error) => setError(e.message));
-                  }}
-                />
-              </label>
-              <MemoryUsage usage={snapshot?.memoryUsage} language={language} />
-              <MemoryHistory
-                history={snapshot?.memoryUsage?.history}
-                events={snapshot?.memoryUsage?.events}
-                language={language}
-              />
-            </>
-          )}
-          <div className="value-row">
-            <span>{t.port}</span>
-            <code>8080</code>
-          </div>
-          <div className="value-row">
-            <span>{t.platform}</span>
-            <code>
-              {snapshot?.architecture || "—"} / {snapshot?.backend || "—"}
-            </code>
-          </div>
-          {settings.engine === "strata" && (
-            <label className="toggle">
-              <input
-                type="checkbox"
-                checked={settings.mock}
-                disabled={status !== "offline" || preparing}
-                onChange={(e) => {
-                  update("mock", e.target.checked);
-                  run(persist);
-                }}
-              />
-              {t.mock}
-              <span title={t.mockHelp}>
-                <Info size={13} />
-              </span>
-            </label>
-          )}
+              )}
+            </div>
+          </details>
           <div className="divider" />
           <div className="value-row">
             <span>{t.status}</span>
@@ -1223,7 +1370,7 @@ function App() {
                   <InferenceView value={m.inference} language={language} />
                 )}
                 {m.content ? (
-                  <p>{m.content}</p>
+                  <ChatMath content={m.content} />
                 ) : !m.inference || m.inference.metrics.status === "running" ? (
                   <p>…</p>
                 ) : null}
@@ -1242,6 +1389,9 @@ function App() {
             </div>
           )}
         </div>
+        {status === "ready" && snapshot?.settings.engine === "lfm3Omni" && (
+          <OmniVoice key={language} language={language} />
+        )}
         <form
           className="composer"
           onSubmit={(e) => {
@@ -1257,8 +1407,9 @@ function App() {
             onKeyDown={(e) => {
               if (
                 e.key === "Enter" &&
-                !e.shiftKey &&
-                !e.nativeEvent.isComposing
+                e.shiftKey &&
+                !e.nativeEvent.isComposing &&
+                e.nativeEvent.keyCode !== 229
               ) {
                 e.preventDefault();
                 send();
@@ -1279,6 +1430,7 @@ function App() {
             <button
               className="primary"
               aria-label={t.send}
+              aria-keyshortcuts="Shift+Enter"
               title={t.send}
               disabled={
                 status !== "ready" ||
@@ -1294,17 +1446,34 @@ function App() {
     );
   }
   function openPreferences(tab: PreferenceTab = "general") {
+    if (desktop) {
+      if (!preferencesWindow) {
+        void invoke("open_preferences", { tab, title: t.preferences.replace("…", "") })
+          .catch((e: unknown) => setError(String(e)));
+      }
+      return;
+    }
     setPreferenceTab(tab);
     setPreferencesOpen(true);
   }
   async function closePreferences() {
     try {
       if (dirty.current && !preparing) await persist();
-      setPreferencesOpen(false);
+      if (preferencesWindow) await invoke("close_preferences");
+      else setPreferencesOpen(false);
     } catch (e) {
       setError(String((e as Error).message));
     }
   }
+  const closePreferencesWindow = useEffectEvent(closePreferences);
+  useEffect(() => {
+    if (!preferencesWindow || !desktop) return;
+    const unlisten = getCurrentWindow().onCloseRequested((event) => {
+      event.preventDefault();
+      void closePreferencesWindow();
+    });
+    return () => { void unlisten.then(dispose => dispose()); };
+  }, []);
   function captureEditor() {
     const element = document.activeElement;
     if (
@@ -1550,149 +1719,152 @@ function App() {
     return () => document.removeEventListener("keydown", shortcuts);
   });
   return (
-    <div className={"workbench app-shell " + (panelView ? "floating" : "")}>
-      <header className="app-header">
-        <AppMenus menus={menus} onBeforeOpen={captureEditor} />
-        {button(<SettingsIcon />, t.preferences, () => openPreferences())}
-      </header>
-      {!online ? (
-        <div className="notice" role="status">
-          {connectionFailed ? t.connectionError : t.connecting}
-        </div>
-      ) : null}
-      {error ? (
-        <div className="notice error" role="alert">
-          {readableError}
-          {button(<Square />, t.clear, () => setError(""))}
-        </div>
-      ) : null}
-      {panelView && !workspaceWindow ? (
-        <main className="floating-main">
-          {panelView === "engine"
-            ? engine()
-            : panelView === "api"
-              ? api()
-              : logs()}
-        </main>
-      ) : (
-        <main className="workspace-host workspace-with-modes">
-          <div
-            className="workspace-mode-tabs"
-            role="tablist"
-            aria-label="Soliton"
-          >
-            {(["inference", "knowledge"] as const).map((mode) => (
-              <button
-                key={mode}
-                id={`mode-${mode}`}
-                role="tab"
-                aria-selected={workspaceMode === mode}
-                aria-controls={`mode-content-${mode}`}
-                tabIndex={workspaceMode === mode ? 0 : -1}
-                disabled={!online || pending}
-                onClick={() =>
-                  void run(() => action("workspaceMode", { mode }))
-                }
-                onKeyDown={(e) => {
-                  if (
-                    !["ArrowLeft", "ArrowRight", "Home", "End"].includes(e.key)
-                  )
-                    return;
-                  e.preventDefault();
-                  const next =
-                    e.key === "Home"
-                      ? "inference"
-                      : e.key === "End"
-                        ? "knowledge"
-                        : mode === "inference"
+    <div className={"workbench app-shell " + (panelView && !preferencesWindow ? "floating" : "")}>
+      {!preferencesWindow && (<>
+        <header className="app-header">
+          <AppMenus menus={menus} onBeforeOpen={captureEditor} />
+          {button(<SettingsIcon />, t.preferences, () => openPreferences())}
+        </header>
+        {!online ? (
+          <div className="notice" role="status">
+            {connectionFailed ? t.connectionError : t.connecting}
+          </div>
+        ) : null}
+        {error ? (
+          <div className="notice error" role="alert">
+            {readableError}
+            {button(<Square />, t.clear, () => setError(""))}
+          </div>
+        ) : null}
+        {panelView && !workspaceWindow ? (
+          <main className="floating-main">
+            {panelView === "engine"
+              ? engine()
+              : panelView === "api"
+                ? api()
+                : logs()}
+          </main>
+        ) : (
+          <main className="workspace-host workspace-with-modes">
+            <div
+              className="workspace-mode-tabs"
+              role="tablist"
+              aria-label="Soliton"
+            >
+              {(["inference", "knowledge"] as const).map((mode) => (
+                <button
+                  key={mode}
+                  id={`mode-${mode}`}
+                  role="tab"
+                  aria-selected={workspaceMode === mode}
+                  aria-controls={`mode-content-${mode}`}
+                  tabIndex={workspaceMode === mode ? 0 : -1}
+                  disabled={!online || pending}
+                  onClick={() =>
+                    void run(() => action("workspaceMode", { mode }))
+                  }
+                  onKeyDown={(e) => {
+                    if (
+                      !["ArrowLeft", "ArrowRight", "Home", "End"].includes(e.key)
+                    )
+                      return;
+                    e.preventDefault();
+                    const next =
+                      e.key === "Home"
+                        ? "inference"
+                        : e.key === "End"
                           ? "knowledge"
-                          : "inference";
-                  void run(() => action("workspaceMode", { mode: next })).then(
-                    () => document.getElementById(`mode-${next}`)?.focus(),
-                  );
-                }}
-              >
-                {mode === "inference" ? (
-                  <MessageSquare size={15} />
-                ) : (
-                  <Layers size={15} />
-                )}
-                {knowledgeWords[language][mode]}
-              </button>
-            ))}
-            {workspaceMode === "knowledge" && desktop && (
-              <button
-                className="icon-button knowledge-float"
-                title={windowGroup ? t.dockGroup : t.floatGroup}
-                aria-label={windowGroup ? t.dockGroup : t.floatGroup}
-                disabled={pending}
-                onClick={() =>
-                  windowGroup
-                    ? dockWorkspace(currentGroup)
-                    : float(currentGroup)
+                          : mode === "inference"
+                            ? "knowledge"
+                            : "inference";
+                    void run(() => action("workspaceMode", { mode: next })).then(
+                      () => document.getElementById(`mode-${next}`)?.focus(),
+                    );
+                  }}
+                >
+                  {mode === "inference" ? (
+                    <MessageSquare size={15} />
+                  ) : (
+                    <Layers size={15} />
+                  )}
+                  {knowledgeWords[language][mode]}
+                </button>
+              ))}
+              {workspaceMode === "knowledge" && desktop && (
+                <button
+                  className="icon-button knowledge-float"
+                  title={windowGroup ? t.dockGroup : t.floatGroup}
+                  aria-label={windowGroup ? t.dockGroup : t.floatGroup}
+                  disabled={pending}
+                  onClick={() =>
+                    windowGroup
+                      ? dockWorkspace(currentGroup)
+                      : float(currentGroup)
+                  }
+                >
+                  {windowGroup ? (
+                    <PanelLeftClose size={15} />
+                  ) : (
+                    <ExternalLink size={15} />
+                  )}
+                </button>
+              )}
+            </div>
+            <div
+              id="mode-content-inference"
+              role="tabpanel"
+              aria-labelledby="mode-inference"
+              hidden={workspaceMode !== "inference"}
+              className="workspace-mode-content"
+            >
+              <WorkspaceDock
+                groups={groups}
+                trace={snapshot?.dockingDiagnostics?.enabled}
+                layout={layout}
+                detached={detached}
+                hosts={hosts}
+                windowGroup={windowGroup}
+                language={language}
+                native={desktop}
+                disabled={!online || pending}
+                structureDisabled={structureDisabled}
+                onSelect={setWorkspaceTab}
+                onMove={moveWorkspaceTab}
+                onFloat={(group) => float(group)}
+                onDockWindow={(group) => dockWorkspace(group)}
+                onDockTab={dockWorkspaceTab}
+                onResize={(ratio) =>
+                  run(() => action("resizeWorkspace", { ratio }))
                 }
-              >
-                {windowGroup ? (
-                  <PanelLeftClose size={15} />
-                ) : (
-                  <ExternalLink size={15} />
-                )}
-              </button>
-            )}
-          </div>
-          <div
-            id="mode-content-inference"
-            role="tabpanel"
-            aria-labelledby="mode-inference"
-            hidden={workspaceMode !== "inference"}
-            className="workspace-mode-content"
-          >
-            <WorkspaceDock
-              groups={groups}
-              trace={snapshot?.dockingDiagnostics?.enabled}
-              layout={layout}
-              detached={detached}
-              hosts={hosts}
-              windowGroup={windowGroup}
-              language={language}
-              native={desktop}
-              disabled={!online || pending}
-              structureDisabled={structureDisabled}
-              onSelect={setWorkspaceTab}
-              onMove={moveWorkspaceTab}
-              onFloat={(group) => float(group)}
-              onDockWindow={(group) => dockWorkspace(group)}
-              onDockTab={dockWorkspaceTab}
-              onResize={(ratio) =>
-                run(() => action("resizeWorkspace", { ratio }))
-              }
-              render={(tab) => (tab === "chat" ? chat() : logs())}
-            />
-          </div>
-          <div
-            id="mode-content-knowledge"
-            role="tabpanel"
-            aria-labelledby="mode-knowledge"
-            hidden={workspaceMode !== "knowledge"}
-            className="workspace-mode-content"
-          >
-            <KnowledgeLab
-              language={language}
-              active={workspaceMode === "knowledge"}
-              online={online}
-              engineOffline={snapshot?.status === "offline"}
-            />
-          </div>
-        </main>
-      )}
-      <InstallationRepair language={language} />
-      {preferencesOpen && (
+                render={(tab) => (tab === "chat" ? chat() : logs())}
+              />
+            </div>
+            <div
+              id="mode-content-knowledge"
+              role="tabpanel"
+              aria-labelledby="mode-knowledge"
+              hidden={workspaceMode !== "knowledge"}
+              className="workspace-mode-content"
+            >
+              <KnowledgeLab
+                language={language}
+                active={workspaceMode === "knowledge"}
+                online={online}
+                engineOffline={snapshot?.status === "offline"}
+              />
+            </div>
+          </main>
+        )}
+        <InstallationRepair language={language} />
+      </>)}
+      {(preferencesOpen || preferencesWindow) && (
         <PreferencesDialog
           language={language}
           tab={preferenceTab}
           onTab={setPreferenceTab}
           onClose={closePreferences}
           error={readableError}
+          standalone={preferencesWindow}
         >
           {preferenceTab === "general" ? (
             <section className="general-settings">
@@ -1869,9 +2041,9 @@ function App() {
       ) : null}
       <footer className="statusbar">
         <span>Soliton</span>
-        <span>
-          <Monitor size={14} />
-          {snapshot?.architecture || "—"} / {snapshot?.backend || "—"}
+        <span className="statusbar-runtime" title={runtimeLabel}>
+          <Monitor size={14} aria-hidden="true" />
+          <span>{runtimeLabel}</span>
         </span>
         <span className={"status " + status}>
           <i />

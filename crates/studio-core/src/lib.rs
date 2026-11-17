@@ -218,6 +218,7 @@ pub struct Studio {
     pub root: PathBuf,
     pub port: u16,
     omni_realtime_qualification: bool,
+    omni_playback: omni_realtime::Playback,
     pub token: String,
     pub settings: RwLock<Settings>,
     pub document: RwLock<Document>,
@@ -281,6 +282,7 @@ impl Studio {
             root,
             port,
             omni_realtime_qualification: false,
+            omni_playback: Default::default(),
             token: uuid::Uuid::new_v4().to_string(),
             settings: RwLock::new(settings),
             document: RwLock::new(Document::default()),
@@ -1261,7 +1263,13 @@ impl Studio {
                 }
             }
         }
-        json!({"engineSession":engine_session,"modelPlan":model_plan,"omniCounterFailed":self.omni_counter_failed.load(Ordering::SeqCst),"startup":startup,"vllmInspection":vllm_inspection,"dockingDiagnostics":*self.docking_diagnostics.lock().await,"requests":requests,"memoryUsage":memory_usage,"memoryTuning":memory_tuning,"preparation":self.preparation.lock().await.snapshot(),"status":status,"health":health,"settings":*self.settings.read().await,"document":document,"logs":*self.logs.lock().await,"architecture":std::env::consts::ARCH,"memoryBytes":self.memory_bytes,"selectedEngine":settings.engine,"backend":if settings.engine == engine::Engine::MlxPrefix {"MLX SSD"}else if settings.engine == engine::Engine::Lfm3Omni {"LFM3-Omni"}else if settings.engine == engine::Engine::VllmApple {"vLLM-Apple"} else if preparation::inspect_config(std::path::Path::new(&settings.config), std::path::Path::new(&settings.strata_root)).backend == "strata-gemma3-metal" {"Gemma 3 Metal"} else if cfg!(all(target_os="macos",target_arch="aarch64")){"Metal"}else{"Strata"},"endpoint":format!("http://127.0.0.1:{}/v1",self.port),"root":self.root})
+        let strata_config = (settings.engine == engine::Engine::Strata).then(|| {
+            preparation::inspect_config(
+                std::path::Path::new(&settings.config),
+                std::path::Path::new(&settings.strata_root),
+            )
+        });
+        json!({"engineSession":engine_session,"modelPlan":model_plan,"omniCounterFailed":self.omni_counter_failed.load(Ordering::SeqCst),"startup":startup,"vllmInspection":vllm_inspection,"dockingDiagnostics":*self.docking_diagnostics.lock().await,"requests":requests,"memoryUsage":memory_usage,"memoryTuning":memory_tuning,"preparation":self.preparation.lock().await.snapshot(),"status":status,"health":health,"settings":*self.settings.read().await,"document":document,"logs":*self.logs.lock().await,"architecture":std::env::consts::ARCH,"memoryBytes":self.memory_bytes,"selectedEngine":settings.engine,"strataModel":strata_config.as_ref().map(|config| &config.model),"backend":if settings.engine == engine::Engine::MlxPrefix {"MLX SSD"}else if settings.engine == engine::Engine::Lfm3Omni {"LFM3-Omni"}else if settings.engine == engine::Engine::VllmApple {"vLLM-Apple"} else if strata_config.is_some_and(|config| config.backend == "strata-gemma3-metal") {"Gemma 3 Metal"} else if cfg!(all(target_os="macos",target_arch="aarch64")){"Metal"}else{"Strata"},"endpoint":format!("http://127.0.0.1:{}/v1",self.port),"root":self.root})
     }
 }
 fn pump<T: tokio::io::AsyncRead + Unpin + Send + 'static>(
@@ -1935,7 +1943,7 @@ async fn proxy(State(s): State<Arc<Studio>>, req: Request) -> Response {
     }
     if path.split('?').next() == Some("/v1/chat/completions") {
         let Ok(mut value) = serde_json::from_slice::<Value>(&body) else {
-            return trace.reject(error(StatusCode::BAD_REQUEST, "Invalid inference JSON"));
+            return trace.reject(error(StatusCode::BAD_REQUEST, "Invalid inference JSON"))
         };
         if let Some(raw) = value
             .as_object_mut()
@@ -2652,7 +2660,27 @@ async fn omni_realtime_route(
     headers: HeaderMap,
     upgrade: axum::extract::ws::WebSocketUpgrade,
 ) -> Response {
-    if !authorized(&headers, &studio) {
+    let browser_session = headers
+        .get("origin")
+        .and_then(|v| v.to_str().ok())
+        .is_some_and(|origin| {
+            matches!(
+                origin,
+                "tauri://localhost"
+                    | "http://tauri.localhost"
+                    | "https://tauri.localhost"
+                    | "http://127.0.0.1:5180"
+            ) || origin == format!("http://127.0.0.1:{}", studio.port)
+        })
+        && headers
+            .get("sec-websocket-protocol")
+            .and_then(|v| v.to_str().ok())
+            .is_some_and(|protocols| {
+                protocols
+                    .split(',')
+                    .any(|value| value.trim().strip_prefix("soliton-token.") == Some(&studio.token))
+            });
+    if !authorized(&headers, &studio) && !browser_session {
         return error(StatusCode::UNAUTHORIZED, "Studio token required");
     }
     let lifecycle = studio.lifecycle.lock().await;
@@ -2711,11 +2739,40 @@ async fn omni_realtime_route(
     let inference = InferenceGuard::new(studio.clone()).await;
     drop(lifecycle);
     upgrade
+        .protocols(["soliton.realtime"])
         .max_message_size(1024 * 1024)
         .on_upgrade(move |socket| async move {
             let _inference = inference;
-            let _ = omni_realtime::relay(socket, port, key, settings.omni.context.into()).await;
+            let _ = omni_realtime::relay_with_playback(
+                socket,
+                port,
+                key,
+                settings.omni.context.into(),
+                browser_session.then_some(&studio.omni_playback),
+            )
+            .await;
         })
+}
+
+async fn omni_realtime_audio(
+    State(studio): State<Arc<Studio>>,
+    axum::extract::Path(id): axum::extract::Path<String>,
+    headers: HeaderMap,
+) -> Response {
+    if !authorized(&headers, &studio) {
+        return error(StatusCode::UNAUTHORIZED, "Studio token required");
+    }
+    let Ok(id) = uuid::Uuid::parse_str(&id) else {
+        return StatusCode::NOT_FOUND.into_response();
+    };
+    match studio.omni_playback.take(id).await {
+        Some(bytes) => (
+            [("content-type", "audio/wav"), ("cache-control", "no-store")],
+            bytes,
+        )
+            .into_response(),
+        None => StatusCode::NOT_FOUND.into_response(),
+    }
 }
 
 pub fn router(s: Arc<Studio>) -> Router {
@@ -2740,6 +2797,7 @@ pub fn router(s: Arc<Studio>) -> Router {
             get(|| async { Json(json!({"service":"soliton","status":"ok"})) }),
         )
         .route("/v1/realtime", get(omni_realtime_route))
+        .route("/v1/realtime/audio/{id}", get(omni_realtime_audio))
         .route("/v1/{*path}", axum::routing::any(proxy))
         .route("/status", get(proxy))
         .fallback_service(ServeDir::new("dist").append_index_html_on_directories(true))

@@ -111,6 +111,20 @@ try {
   assert.equal(await page.locator("vite-error-overlay").count(), 0);
   await page.screenshot({ path: "/tmp/soliton-kv-initial.png" });
   await preferences(page, "engine");
+  const advanced = page.getByText("Advanced settings", { exact: true });
+  const pythonPath = page.getByRole("textbox", { name: "Python path" });
+  assert.equal(await pythonPath.isVisible(), false);
+  assert(await page.locator(".engine-memory-overview").isVisible());
+  await advanced.click();
+  await page.getByRole("textbox", { name: "Preset name" }).fill("Fixture Strata");
+  await page.getByRole("button", { name: "Save preset" }).click();
+  const preset = page.getByRole("combobox", { name: "Preset", exact: true });
+  await preset.locator('option:checked', { hasText: "Fixture Strata" }).waitFor({state: "attached"});
+  await pythonPath.fill("python3");
+  await pythonPath.blur();
+  await waitFor(async () => (await state()).settings.python === "python3", "custom Python saved");
+  await preset.selectOption("Fixture Strata");
+  await waitFor(async () => (await state()).settings.python === python, "preset restored Python");
   await page.getByRole("button", { name: "Start", exact: true }).click();
   await waitFor(
     async () => (await state()).status === "ready",
@@ -138,6 +152,7 @@ try {
     return s.settings.engine === "vllmApple" && s.status === "offline";
   }, "stop then select Apple");
   assert.equal((await state()).document.messages.length, 2);
+  await advanced.click();
   await page.getByRole("textbox", { name: "Local model directory" }).waitFor();
   const kv = page.getByRole("spinbutton", {
     name: "Retained KV (MiB)",
@@ -200,6 +215,7 @@ try {
   }, "clearing evidence clears inapplicable KV policy");
   await page.reload();
   await preferences(page, "engine");
+  await advanced.click();
   await waitFor(
     async () =>
       (await page
@@ -296,6 +312,7 @@ try {
     await preferences(page, "engine");
     await page.getByRole("combobox", { name: selector, exact: true }).waitFor();
     await page.setViewportSize({ width: 320, height: 960 });
+    await page.locator(".engine-details > summary").click();
     const allocatorLabel = {
       日本語: "アロケータ保持上限（MiB）",
       简体中文: "分配器缓存上限（MiB）",

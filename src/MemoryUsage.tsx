@@ -36,13 +36,39 @@ function delta(n: number) {
 export function MemoryUsage({
   usage,
   language,
+  selectedEngine,
+  selectedModel,
 }: {
   usage?: MemoryUsageState;
   language: Language;
+  selectedEngine: string;
+  selectedModel?: string;
 }) {
   const t = words[language];
   const now = usage?.current;
   const before = usage?.beforeChange;
+  function systemStat(key: "usedBytes" | "availableBytes", label: string) {
+    return (
+      <div className="memory-live-stat">
+        <span>{label}</span>
+        <strong data-memory={key}>{now ? gib(now[key]) : "—"}</strong>
+        <small
+          title={
+            before
+              ? new Date(before.sampledAt).toLocaleTimeString()
+              : undefined
+          }
+        >
+          {t.memoryBefore}: {before ? gib(before[key]) : "—"}
+          <span data-delta={key}>
+            {" "}
+            {t.memoryDelta}:{" "}
+            {now && before ? delta(now[key] - before[key]) : "—"}
+          </span>
+        </small>
+      </div>
+    );
+  }
   return (
     <section className="memory-usage" aria-label={t.memoryLive}>
       <div className="memory-live-heading">
@@ -63,71 +89,53 @@ export function MemoryUsage({
         </small>
       </div>
       <div className="memory-live-values">
-        {(
-          [
-            ["usedBytes", t.memoryUsed],
-            ["availableBytes", t.memoryAvailable],
-          ] as const
-        ).map(([key, label]) => (
-          <div key={key} className="memory-live-stat">
-            <span>{label}</span>
-            <strong data-memory={key}>{now ? gib(now[key]) : "—"}</strong>
-            <small
-              title={
-                before
-                  ? new Date(before.sampledAt).toLocaleTimeString()
-                  : undefined
-              }
+        {systemStat("usedBytes", t.memoryUsed)}
+        <div className="memory-engine memory-live-stat">
+          <span>
+            {t.memoryEngine}{" "}
+            <span
+              title={t.memoryEngineHelp}
+              tabIndex={0}
+              aria-label={t.memoryEngineHelp}
             >
-              {t.memoryBefore}: {before ? gib(before[key]) : "—"}
-              <span data-delta={key}>
-                {" "}
-                {t.memoryDelta}:{" "}
-                {now && before ? delta(now[key] - before[key]) : "—"}
-              </span>
-            </small>
-          </div>
-        ))}
-      </div>
-      <div className="memory-engine memory-live-stat">
-        <span>
-          {t.memoryEngine}{" "}
-          <span
-            title={t.memoryEngineHelp}
-            tabIndex={0}
-            aria-label={t.memoryEngineHelp}
-          >
-            <Info size={12} />
+              <Info size={12} />
+            </span>
           </span>
-        </span>
-        <strong data-memory="engine">
-          {usage?.engine?.current
-            ? engineBytes(usage.engine.current.usedBytes)
-            : "—"}
-        </strong>
-        <small
-          title={
-            usage?.engine?.beforeChange
-              ? new Date(
-                  usage.engine.beforeChange.sampledAt,
-                ).toLocaleTimeString()
-              : undefined
-          }
-        >
-          {t.memoryBefore}:{" "}
-          {usage?.engine?.beforeChange
-            ? engineBytes(usage.engine.beforeChange.usedBytes)
-            : "—"}
-          <span data-delta="engine">
-            {t.memoryDelta}:{" "}
-            {usage?.engine?.current && usage.engine.beforeChange
-              ? engineDelta(
-                  usage.engine.current.usedBytes -
-                    usage.engine.beforeChange.usedBytes,
-                )
+          <strong data-memory="engine">
+            {usage?.engine?.current
+              ? engineBytes(usage.engine.current.usedBytes)
               : "—"}
-          </span>
-        </small>
+          </strong>
+          <small
+            title={
+              usage?.engine?.beforeChange
+                ? new Date(
+                    usage.engine.beforeChange.sampledAt,
+                  ).toLocaleTimeString()
+                : undefined
+            }
+          >
+            {t.memoryBefore}:{" "}
+            {usage?.engine?.beforeChange
+              ? engineBytes(usage.engine.beforeChange.usedBytes)
+              : "—"}
+            <span data-delta="engine">
+              {t.memoryDelta}:{" "}
+              {usage?.engine?.current && usage.engine.beforeChange
+                ? engineDelta(
+                    usage.engine.current.usedBytes -
+                      usage.engine.beforeChange.usedBytes,
+                  )
+                : "—"}
+            </span>
+          </small>
+        </div>
+        {systemStat("availableBytes", t.memoryAvailable)}
+        <div className="memory-live-stat memory-selection">
+          <span>{t.engine} / {t.model}</span>
+          <b>{selectedEngine}</b>
+          <span title={selectedModel}>{selectedModel || "—"}</span>
+        </div>
       </div>
       <div
         className="memory-meter"

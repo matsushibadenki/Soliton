@@ -37,10 +37,12 @@
     "benchmark:engine": "node scripts/benchmark-engine-gateway.mjs",
     "test:engine-baseline": "node --test scripts/benchmark-engine-gateway.test.mjs",
     "benchmark:kv-retention": "vLLM-apple/.venv/bin/python scripts/compare-kv-retention.py",
-    "test:kv-retention": "python3 scripts/compare-kv-retention.test.py"
+    "test:kv-retention": "python3 scripts/compare-kv-retention.test.py",
+    "desktop:dmg": "npm run desktop:build -- --bundles app && bash scripts/package-dmg.sh"
   },
   "dependencies": {
     "@tauri-apps/api": "^2.12.4",
+    "katex": "^0.19.1",
     "lucide-react": "^1.73.0",
     "react": "^19.3.1",
     "react-dom": "^19.3.1"

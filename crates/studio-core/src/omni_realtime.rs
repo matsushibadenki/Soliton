@@ -109,11 +109,7 @@ impl Output {
         json!({"done":self.done,"cancelled":self.cancelled,"sampleRate":self.rate,"audioBytes":self.pcm.len(),"text":self.text,"usage":self.usage})
     }
     pub fn write_wav(&self, path: &Path) -> Result<(), String> {
-        if !self.done || self.rate != Some(24000) || self.pcm.is_empty() || self.pcm.len() % 2 != 0
-        {
-            return Err("Speech response is incomplete or invalid PCM16".into());
-        }
-        let size = self.pcm.len() as u32;
+        let wav = self.wav_bytes()?;
         let mut f = fs::OpenOptions::new()
             .write(true)
             .create_new(true)
@@ -125,6 +121,17 @@ impl Output {
             f.set_permissions(fs::Permissions::from_mode(0o600))
                 .map_err(|e| e.to_string())?;
         }
+        f.write_all(&wav)
+            .and_then(|_| f.sync_all())
+            .map_err(|e| e.to_string())
+    }
+
+    fn wav_bytes(&self) -> Result<Vec<u8>, String> {
+        if !self.done || self.rate != Some(24000) || self.pcm.is_empty() || self.pcm.len() % 2 != 0
+        {
+            return Err("Speech response is incomplete or invalid PCM16".into());
+        }
+        let size = self.pcm.len() as u32;
         let mut header = Vec::new();
         header.extend(b"RIFF");
         header.extend((36 + size).to_le_bytes());
@@ -138,10 +145,8 @@ impl Output {
         header.extend(16u16.to_le_bytes());
         header.extend(b"data");
         header.extend(size.to_le_bytes());
-        f.write_all(&header)
-            .and_then(|_| f.write_all(&self.pcm))
-            .and_then(|_| f.sync_all())
-            .map_err(|e| e.to_string())
+        header.extend_from_slice(&self.pcm);
+        Ok(header)
     }
 }
 /// A text-only certificate never authorizes an audio/Realtime bridge.
@@ -236,6 +241,30 @@ mod tests {
     }
 }
 
+#[derive(Default)]
+pub(crate) struct Playback {
+    latest: tokio::sync::Mutex<Option<(uuid::Uuid, std::time::Instant, Vec<u8>)>>,
+}
+
+impl Playback {
+    async fn publish(&self, wav: Vec<u8>) -> uuid::Uuid {
+        let id = uuid::Uuid::new_v4();
+        *self.latest.lock().await = Some((id, std::time::Instant::now(), wav));
+        id
+    }
+
+    pub(crate) async fn take(&self, id: uuid::Uuid) -> Option<Vec<u8>> {
+        let mut latest = self.latest.lock().await;
+        if latest
+            .as_ref()
+            .is_some_and(|(stored, at, _)| *stored == id && at.elapsed().as_secs() < 120)
+        {
+            return latest.take().map(|(_, _, wav)| wav);
+        }
+        None
+    }
+}
+
 /// Authenticated loopback transport shared by the qualification router and the
 /// production route. The caller must establish the runtime identity first.
 pub async fn relay(
@@ -243,6 +272,16 @@ pub async fn relay(
     port: u16,
     key: String,
     context: u64,
+) -> Result<(), String> {
+    relay_with_playback(socket, port, key, context, None).await
+}
+
+pub(crate) async fn relay_with_playback(
+    socket: axum::extract::ws::WebSocket,
+    port: u16,
+    key: String,
+    context: u64,
+    playback: Option<&Playback>,
 ) -> Result<(), String> {
     use axum::extract::ws::Message as ClientMessage;
     use futures_util::{SinkExt, StreamExt};
@@ -342,6 +381,13 @@ pub async fn relay(
                         }
                         let mut event = event;
                         event["soliton_output"] = output.metadata();
+                        if let Some(playback) = playback {
+                            if !cancelled && !output.pcm.is_empty() {
+                                let id = playback.publish(output.wav_bytes()?).await;
+                                event["soliton_output"]["audioUrl"] =
+                                    json!(format!("/v1/realtime/audio/{id}"));
+                            }
+                        }
                         let rate = output.rate;
                         output = Output { rate, ..Output::default() };
                         event

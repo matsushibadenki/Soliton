@@ -488,6 +488,18 @@ h3 {
   align-items: center;
   gap: 10px;
 }
+.statusbar > .statusbar-runtime {
+  min-width: 0;
+}
+.statusbar-runtime svg,
+.statusbar > .status {
+  flex-shrink: 0;
+}
+.statusbar-runtime > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 .statusbar > span:last-child {
   margin-left: auto;
 }
@@ -1567,7 +1579,11 @@ button:focus-visible {
   }
 }
 
+.preferences-dialog .engine {
+  --engine-header-height: 42px;
+}
 .preferences-dialog .engine > .panel-header {
+  height: var(--engine-header-height);
   position: sticky;
   top: 0;
   z-index: 2;
@@ -1624,7 +1640,7 @@ button:focus-visible {
 }
 .memory-live-values {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 12px;
 }
 .memory-live-stat {
@@ -3086,4 +3102,96 @@ body > .dock-menu-items {
   min-height: 42px;
   flex-wrap: wrap;
   gap: 4px;
+}
+
+.omni-voice {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 0 12px 8px;
+}
+.omni-voice audio {
+  width: min(300px, 100%);
+  height: 36px;
+}
+.omni-voice span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.chat-message-content .chat-math-display {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+  white-space: normal;
+}
+.chat-message-content .chat-math-inline {
+  white-space: normal;
+}
+
+.preferences-dialog .engine-settings-body {
+  gap: 12px;
+}
+.engine-memory-overview {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 16px;
+  padding: 6px 0;
+  background: var(--panel);
+  border-bottom: 1px solid var(--line);
+}
+.engine-memory-overview :is(.memory-usage, .memory-history, .memory-engine) {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.engine-memory-overview .memory-history-readout {
+  margin-top: 2px;
+}
+.engine-details > summary {
+  cursor: pointer;
+  padding-block: 5px;
+}
+.engine-details-content {
+  display: grid;
+  gap: 12px;
+  padding-top: 8px;
+}
+.engine-preset-save {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.engine-preset-save input {
+  flex: 1 1 140px;
+  min-width: 0;
+}
+
+.preferences-window {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  width: 100%;
+  min-height: 0;
+  background: var(--panel);
+}
+
+.engine-memory-overview .memory-live-stat strong {
+  font-size: clamp(16px, 3.4vw, 30px);
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+
+.memory-selection > b {
+  font-size: 16px;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.memory-selection > span:last-child {
+  font-size: 12px;
+  overflow-wrap: anywhere;
 }

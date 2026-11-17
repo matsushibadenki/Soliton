@@ -1,6 +1,8 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 mod hub;
 mod installation;
+#[cfg(target_os = "macos")]
+mod microphone;
 use std::{path::PathBuf, sync::Arc};
 use tauri::{Emitter, Manager, State};
 use tauri_plugin_dialog::DialogExt;
@@ -23,6 +25,41 @@ fn provision(resources: &std::path::Path, data: &std::path::Path) -> Result<(), 
         .map_err(|e| installation::failure(data, "installation", &e))?;
     Ok(())
 }
+#[tauri::command]
+async fn open_preferences(app: tauri::AppHandle, tab: String, title: String) -> Result<(), String> {
+    const LABEL: &str = "panel-preferences";
+    if let Some(window) = app.get_webview_window(LABEL) {
+        window.show().map_err(|e| e.to_string())?;
+        window.set_focus().map_err(|e| e.to_string())?;
+        return Ok(());
+    }
+    let tab = match tab.as_str() {
+        "engine" => "engine",
+        "api" => "api",
+        _ => "general",
+    };
+    tauri::WebviewWindowBuilder::new(
+        &app,
+        LABEL,
+        tauri::WebviewUrl::App(format!("index.html?panel=preferences&tab={tab}").into()),
+    )
+    .title(title)
+    .inner_size(800., 720.)
+    .min_inner_size(420., 320.)
+    .disable_drag_drop_handler()
+    .build()
+    .map_err(|e| e.to_string())?;
+    Ok(())
+}
+
+#[tauri::command]
+fn close_preferences(window: tauri::WebviewWindow) -> Result<(), String> {
+    if window.label() != "panel-preferences" {
+        return Err("Expected the Preferences window".into());
+    }
+    window.destroy().map_err(|e| e.to_string())
+}
+
 #[tauri::command]
 fn installation_status(runtime: State<Runtime>) -> Option<serde_json::Value> {
     runtime.installation.lock().unwrap().clone()
@@ -766,6 +803,14 @@ fn main() {
         })
         .invoke_handler(tauri::generate_handler![
             connection,
+            open_preferences,
+            close_preferences,
+            #[cfg(target_os = "macos")]
+            microphone::microphone_permission,
+            #[cfg(target_os = "macos")]
+            microphone::microphone_start,
+            #[cfg(target_os = "macos")]
+            microphone::microphone_stop,
             installation_status,
             retry_installation,
             download_huggingface_file,
