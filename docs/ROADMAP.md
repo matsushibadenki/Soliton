@@ -413,6 +413,37 @@ Target model: [LiquidAI/LFM3-Omni-2B](https://huggingface.co/LiquidAI/LFM3-Omni-
 - 🟢 [Done] Fixed the signed macOS package's missing `com.apple.security.device.audio-input` entitlement, which macOS TCC reported as blocking the permission prompt. The rebuilt arm64 app requested microphone access through AVFoundation. TCC recorded the prompt and an allow decision. With the internal microphone and speakers selected, the signed package captured two turns from speech fixtures played acoustically through the speakers, submitted them over the qualified Realtime API, and rendered audio replies. The WKWebView player advanced to the end of a 12-second reply.
 - ⭕️ [Pending] The second acoustic turn repeated the first turn's instruction containing 42, so it did not establish independent recall. Cancelling a third submitted turn returned to the record button with no player, but closed the session before accepted admission was observed. Repeat with a distinct, intelligible follow-up and confirm cancellation after admission while generation is active.
 
+- 🟢 [Done] Retested cancellation with the published 0.1.12 arm64 DMG on 2026-11-18. The disk image matched the GitHub release SHA-256. The packaged app used its qualified LFM3-Omni-2B Q4_K_M Realtime configuration at 4,096 positions and captured synthesized test speech played acoustically through the MacBook Air's built-in speakers and microphone. In the first cancellation attempt the session closed before accepted admission. On retry, cancellation returned to Record voice while End voice session remained available, which distinguishes the admitted cancellation path in the desktop client. No reply player appeared. The terminal WebSocket event was not captured separately.
+- 🟢 [Done] Recorded the earlier packaged acoustic failure before the controlled comparison below. The first turn asked the model to remember 42. The follow-up did not contain 42 and asked it to recall the number. The second reply played but repeated the follow-up question, so this run did not pass recall. Compare controlled recording lengths and model response instructions with the successful direct PCM case.
+
+- 🟢 [Done] Reproduced recall with the rebuilt arm64 desktop package on 2026-11-18. Used the same two speech fixtures, identical English interleaved response instructions, a 256-output-token reservation, and the same qualified 4,096-position Realtime runtime for PCM and acoustic trials. Direct PCM at 3.2465 s and 3.798875 s returned “Hello!” then “Forty-two.” Padding both PCM inputs to 10 s with digital silence also returned “Forty-two.” Input usage rose from 67/63 to 151/140 tokens. The macOS capture path now trims quiet audio at the edges with 150 ms of padding and uses the same English instructions as the direct probe. On the MacBook Air's built-in speakers and microphone, the revised app returned “The number is forty-two.” on the second turn and its reply player advanced to two seconds. The first acoustic reply was off-topic. Actual trimmed recording lengths were not logged, and the acoustic result covers one pair of turns. Digital silence alone did not reproduce the earlier echo. The changes to the recording path and instructions were shipped together in the test build, so the individual cause remains undetermined.
+
+- 🟢 [Done] Compared trim on/off and both English prompts in 12 fresh two-turn Realtime sessions on 2026-11-18. Soliton captured three pairs of the same speech fixtures played over the MacBook Air built-in speakers into the built-in microphone. Replayed each pair once per condition into the same authenticated LFM3-Omni-2B Q4_K_M runtime at 4,096 positions and a 256-token output reservation, in shuffled order. Kept the captured PCM paired between conditions. Each untrimmed turn was 7.00 s. Trimmed pairs were 7.00/6.75 s, 7.00/7.00 s, and 7.00/7.00 s. The only shortened turn saved three input tokens.
+
+| Silence trim | English instruction | First turn said hello as requested | Follow-up correctly recalled 42 |
+| --- | --- | ---: | ---: |
+| Off | “Respond in interleaved text and audio in English.” | 0/3 | 3/3 |
+| On | “Respond in interleaved text and audio in English.” | 0/3 | 3/3 |
+| Off | “Respond in interleaved text and audio.” | 3/3 | 3/3 |
+| On | “Respond in interleaved text and audio.” | 3/3 | 3/3 |
+
+- 🟢 [Done] Adopted the shorter English instruction and turned off experimental edge trimming. The old instruction echoed the initial speech in all six sessions. The shorter one returned “Hello!” in all six. All second replies recalled 42 and generated audio. The controlled run did not reproduce the earlier second-turn echo. This was paired replay of three real microphone captures through the local API. Per-condition speaker playback and acoustic settings outside this room were not evaluated.
+
+- 🟢 [Done] The Realtime voice client now shows generation after the first text delta or buffered audio event and confirms cancellation on the server's cancelled completion. Labels cover EN/JA/ZH. On Apple Silicon, the production frontend in Chromium drove the qualified real model through the local API using synthesized input. The two completed turns played 1.20 s and 1.60 s replies and returned “Hello!” and “Forty-two.” A third turn was cancelled after the first buffered PCM event. The UI showed generation and confirmed cancellation, the server retained zero audio bytes and returned no playback URL, and the session remained available.
+- ⭕️ [Pending] Check the new generation and cancellation labels in the packaged macOS WebView using the physical microphone and speakers.
+
+日本語：実機録音3組を4条件で比較し、短い英語指示では初回6/6件が適切、旧指示では0/6件でした。後続の42は12/12件が正答しました。トリミングで短くなったのは6録音中1件だけだったため、短い英語指示を採用し、トリミングを外しました。
+
+简体中文：使用三组实机录音比较了四种条件。短版英语指令的首轮回答符合要求 6/6 次，旧指令为 0/6 次。后续轮次 12/12 次正确回答 42。静音裁剪仅缩短了六段录音中的一段，因此采用短版指令并关闭裁剪。
+
+日本語：PCMの長さを無音で10秒に延ばしても「42」と応答し、無音だけでは復唱を再現できませんでした。同じ音声素材と応答指示で、前後の静音を切り詰める修正版を内蔵マイクとスピーカーで試し、後続ターンの「42」と応答音声の再生を確認しました。録音・指示のどちらが改善に効いたかは未確定です。
+
+简体中文：将直接输入的 PCM 用静音补到 10 秒后，模型仍正确回答 42。修正版使用相同语音素材和回复指令，经内置扬声器与麦克风测试，第二轮正确回答 42 并播放了回复。分别由录音处理和指令带来的影响仍未确定。
+
+日本語：公開版0.1.12の実機試験では、受付後のキャンセルでセッションが維持され、音声プレーヤーは表示されませんでした。後続ターンでは質問を復唱し、42の想起は不合格でした。
+
+简体中文：公开版 0.1.12 实机测试中，生成请求获准后取消仍保留会话，且未显示音频播放器。后续轮次复述了问题，未能正确回答 42。
+
 日本語：デスクトップに録音・再生・キャンセルを追加しました。Apple Siliconで合成音声を入力し、資格確認済みの実モデルで2ターン目の「42」の想起と、3ターン目の生成中キャンセル時に音声が再生されないことを確認しました。パッケージ版では署名権限の不足を修正し、macOSの権限ログでダイアログ表示と許可を確認しました。内蔵マイクで2ターンを収録し、内蔵スピーカーを選択した状態で応答を再生しました。後続ターンでの想起と、生成開始後のキャンセルは再確認が必要です。
 
 简体中文：桌面端已加入录音、播放和取消。在 Apple Silicon 上使用合成语音与已通过资格验证的实模型进行了测试，第二轮正确回忆出 42，第三轮在生成期间取消后未播放音频。已修复打包应用缺失的麦克风签名权限。macOS 日志确认了权限提示和授权。使用内置麦克风采集两轮语音，并在选中内置扬声器的情况下播放了应答。后续轮次的准确回忆及生成启动后的取消仍需复验。

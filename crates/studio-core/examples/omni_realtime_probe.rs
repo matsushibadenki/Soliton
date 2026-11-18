@@ -29,6 +29,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .unwrap_or_else(|_| "128".into())
         .parse::<u32>()?;
     let selected_mode = std::env::var("OMNI_PROBE_MODE").ok();
+    let instruction_override = std::env::var("OMNI_PROBE_INSTRUCTIONS").ok();
     let cancel = std::env::var_os("OMNI_PROBE_CANCEL").is_some();
     let boundary = std::env::var_os("OMNI_PROBE_BOUNDARY").is_some();
     let turn_events = |turn: usize, text: &str| {
@@ -52,6 +53,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
             "Respond in interleaved text and audio.",
         ),
     ] {
+        let instructions = instruction_override.as_deref().unwrap_or(instructions);
         if selected_mode
             .as_deref()
             .is_some_and(|selected| selected != mode)
