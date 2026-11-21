@@ -1,4 +1,5 @@
 import { ChatMath } from "./ChatMath";
+import { EngineGuide, type Profile } from "./EngineGuide";
 import { ModelPlan, type ModelPlanState } from "./ModelPlan";
 import { useEffect, useEffectEvent, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
@@ -23,6 +24,8 @@ import {
   Info,
   Trash2,
   Plus,
+  Paperclip,
+  X,
   Monitor,
   Layers,
   FolderOpen,
@@ -135,8 +138,19 @@ function presetSettings(engine: Settings["engine"], source: Partial<Settings>) {
     .filter((key) => Object.hasOwn(source, key))
     .map((key) => [key, source[key]])) as Partial<Settings>;
 }
-type Message = { role: string; content: string; inference?: Inference };
+type MediaKind = "image" | "audio" | "video";
+type Attachment = { id: string; kind: MediaKind };
+type Message = { role: string; content: string; inference?: Inference; attachments?: Attachment[] };
+const mediaKinds: Partial<Record<string, MediaKind>> = {
+  png: "image", jpg: "image", jpeg: "image", wav: "audio", mp4: "video",
+};
+const mediaWords = {
+  en: { attach: "Attach media", remove: "Remove attachment", unsupported: "Choose a PNG, JPEG, WAV, or MP4 file.", image: "Image", audio: "Audio", video: "Video" },
+  ja: { attach: "メディアを添付", remove: "添付を削除", unsupported: "PNG、JPEG、WAV、MP4のファイルを選択してください。", image: "画像", audio: "音声", video: "動画" },
+  zh: { attach: "添加媒体附件", remove: "移除附件", unsupported: "请选择 PNG、JPEG、WAV 或 MP4 文件。", image: "图片", audio: "音频", video: "视频" },
+};
 type Snapshot = {
+  engineCapabilities?: Profile[];
   modelPlan?: ModelPlanState;
   vllmInspection?: VllmInspection | null;
   requests?: Metrics[];
@@ -233,6 +247,7 @@ function App() {
   const [pending, setPending] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [prompt, setPrompt] = useState("");
+  const [mediaDraft, setMediaDraft] = useState<{ path: string; name: string; kind: MediaKind } | null>(null);
   const [busy, setBusy] = useState(false);
   const [copied, setCopied] = useState("");
   const controller = useRef<AbortController | null>(null);
@@ -539,9 +554,25 @@ function App() {
       setError(String(e));
     }
   }
+  async function selectMedia() {
+    const epoch = conversationEpoch.current;
+    try {
+      const path = await invoke<string | null>("select_path", { kind: "omni-media" });
+      if (!path || epoch !== conversationEpoch.current || busyRef.current) return;
+      const name = path.split(/[\\/]/).at(-1) || path;
+      const kind = mediaKinds[name.split(".").at(-1)?.toLowerCase() || ""];
+      if (!kind) { setError(mediaWords[language].unsupported); return; }
+      setMediaDraft({ path, name, kind });
+    } catch (e) {
+      setError(String(e));
+    }
+  }
+
   async function send() {
     if (
-      !prompt.trim() ||
+      (!prompt.trim() && !mediaDraft) ||
+      (mediaDraft && snapshot?.settings.engine !== "lfm3Omni") ||
+      busyRef.current ||
       busy ||
       snapshot?.document.generating ||
       snapshot?.status !== "ready"
@@ -549,16 +580,29 @@ function App() {
       return;
     setError("");
     followOutput.current = true;
-    const next = [...messages, { role: "user", content: prompt.trim() }];
-    setPrompt("");
+    const text = prompt.trim();
     busyRef.current = true;
     setBusy(true);
     const c = new AbortController();
     controller.current = c;
     let answer = "";
-    setMessages([...next, { role: "assistant", content: "" }]);
     try {
       await persist();
+      let attachment: Attachment | undefined;
+      if (mediaDraft) {
+        const response = await request("/studio/omni/assets/import", {
+          path: mediaDraft.path,
+          kind: mediaDraft.kind,
+        }, c.signal);
+        attachment = await response.json();
+      }
+      c.signal.throwIfAborted();
+      const message: Message = { role: "user", content: text };
+      if (attachment) message.attachments = [attachment];
+      const next = [...messages, message];
+      setPrompt(current => current === prompt ? "" : current);
+      setMediaDraft(null);
+      setMessages([...next, { role: "assistant", content: "" }]);
       await streamChat(
         {
           conversationId: snapshot.document.conversations?.activeId,
@@ -835,6 +879,7 @@ function App() {
               {presets.map((preset) => <option key={preset.name}>{preset.name}</option>)}
             </select>
           </label>
+          {snapshot?.engineCapabilities && <EngineGuide profiles={snapshot.engineCapabilities} language={language} />}
           <details className="engine-details" key={settings.engine}>
             <summary>{labels.details}</summary>
             <div className="engine-details-content">
@@ -1369,9 +1414,12 @@ function App() {
                 {m.role === "assistant" && (
                   <InferenceView value={m.inference} language={language} />
                 )}
+                {m.attachments?.map(asset => (
+                  <span className="media-chip" key={asset.id}>{mediaWords[language][asset.kind]}</span>
+                ))}
                 {m.content ? (
                   <ChatMath content={m.content} />
-                ) : !m.inference || m.inference.metrics.status === "running" ? (
+                ) : m.attachments?.length ? null : !m.inference || m.inference.metrics.status === "running" ? (
                   <p>…</p>
                 ) : null}
                 {m.role === "assistant" && m.inference && (
@@ -1392,6 +1440,13 @@ function App() {
         {status === "ready" && snapshot?.settings.engine === "lfm3Omni" && (
           <OmniVoice key={language} language={language} />
         )}
+        {mediaDraft && (
+          <div className="media-draft">
+            <span className="media-chip" title={mediaDraft.name}>{mediaDraft.name}</span>
+            <button type="button" className="icon-button" disabled={busy}
+              aria-label={mediaWords[language].remove} onClick={() => setMediaDraft(null)}><X size={14} /></button>
+          </div>
+        )}
         <form
           className="composer"
           onSubmit={(e) => {
@@ -1399,6 +1454,11 @@ function App() {
             send();
           }}
         >
+          {desktop && status === "ready" && snapshot?.settings.engine === "lfm3Omni" && (
+            <button type="button" disabled={busy || snapshot.document.generating}
+              aria-label={mediaWords[language].attach} title={mediaWords[language].attach}
+              onClick={() => void selectMedia()}><Paperclip size={16} /></button>
+          )}
           <textarea
             aria-label={t.placeholder}
             placeholder={t.placeholder}
@@ -1435,7 +1495,8 @@ function App() {
               disabled={
                 status !== "ready" ||
                 snapshot?.document.generating ||
-                !prompt.trim()
+                (mediaDraft && snapshot?.settings.engine !== "lfm3Omni") ||
+                (!prompt.trim() && !mediaDraft)
               }
             >
               <Send />
@@ -1555,8 +1616,10 @@ function App() {
         name !== "deleteConversation" ||
         next.document.conversations?.activeId !==
           snapshot?.document.conversations?.activeId
-      )
+      ) {
         setPrompt("");
+        setMediaDraft(null);
+      }
       setWorkspaceTab("chat");
     } finally {
       conversationEpoch.current++;
@@ -1949,6 +2012,7 @@ function App() {
       )}
       {modelsOpen && (
         <ModelLibraryDialog
+          profiles={snapshot?.engineCapabilities ?? []}
           language={language}
           directories={settings.modelDirectories || []}
           locked={preparing}

@@ -1,5 +1,7 @@
+mod omni_ssd;
 mod allocation_report;
 mod backend_budget;
+mod capabilities;
 pub mod catalog;
 pub mod conversations;
 pub mod docking;
@@ -197,6 +199,7 @@ impl Startup {
     }
 }
 struct Process {
+    omni_ssd: Option<Arc<omni_ssd::Cache>>,
     metrics_session: Option<String>,
     allocation_report: Option<allocation_report::Session>,
     vllm_memory_binding: Option<engine::VllmSettings>,
@@ -289,6 +292,7 @@ impl Studio {
             docking_diagnostics: Mutex::new(docking::DragDiagnostics::default()),
             process: Mutex::new(Process {
                 metrics_session: None,
+                omni_ssd: None,
                 allocation_report: None,
                 vllm_memory_binding: None,
                 vllm_backend_port: None,
@@ -484,6 +488,7 @@ impl Studio {
             p.group = None;
             push_log(&self.logs, "[studio] Process stopped".into()).await;
         }
+        p.omni_ssd = None;
         Ok(())
     }
     pub async fn switch_engine(&self, target: engine::Engine) -> Result<(), String> {
@@ -662,6 +667,12 @@ impl Studio {
             let mut cmd = tokio::task::spawn_blocking(move || config.command(port, &command_key))
                 .await
                 .map_err(|e| e.to_string())??;
+            #[cfg(target_os = "macos")]
+            let cache = std::env::var_os("SOLITON_OMNI_SSD_DIR")
+                .map(|root| omni_ssd::Cache::configure(&mut cmd, std::path::Path::new(&root), &key))
+                .transpose()?.map(Arc::new);
+            #[cfg(not(target_os = "macos"))]
+            let cache = None;
             cmd.kill_on_drop(true)
                 .stdout(std::process::Stdio::piped())
                 .stderr(std::process::Stdio::piped());
@@ -673,16 +684,22 @@ impl Studio {
                 .spawn()
                 .map_err(|e| format!("Cannot launch Omni: {e}"))?;
             let spawn_completed = std::time::Instant::now();
+            let report = allocation_report::Session::omni(
+                &s.omni,
+                child.id().ok_or("Missing Omni process ID")?,
+            );
             if let Some(out) = child.stdout.take() {
                 pump(out, self.logs.clone());
             }
             if let Some(out) = child.stderr.take() {
-                pump(out, self.logs.clone());
+                pump_allocations(out, self.logs.clone(), report.collector.clone());
             }
+            p.allocation_report = Some(report);
             let mut startup = Startup::new();
             startup.record_launch(preparation_started, spawn_started, spawn_completed);
             p.startup = Some(startup);
             p.group = child.id();
+            p.omni_ssd = cache;
             p.child = Some(child);
             p.port = port;
             p.key = key;
@@ -1269,7 +1286,7 @@ impl Studio {
                 std::path::Path::new(&settings.strata_root),
             )
         });
-        json!({"engineSession":engine_session,"modelPlan":model_plan,"omniCounterFailed":self.omni_counter_failed.load(Ordering::SeqCst),"startup":startup,"vllmInspection":vllm_inspection,"dockingDiagnostics":*self.docking_diagnostics.lock().await,"requests":requests,"memoryUsage":memory_usage,"memoryTuning":memory_tuning,"preparation":self.preparation.lock().await.snapshot(),"status":status,"health":health,"settings":*self.settings.read().await,"document":document,"logs":*self.logs.lock().await,"architecture":std::env::consts::ARCH,"memoryBytes":self.memory_bytes,"selectedEngine":settings.engine,"strataModel":strata_config.as_ref().map(|config| &config.model),"backend":if settings.engine == engine::Engine::MlxPrefix {"MLX SSD"}else if settings.engine == engine::Engine::Lfm3Omni {"LFM3-Omni"}else if settings.engine == engine::Engine::VllmApple {"vLLM-Apple"} else if strata_config.is_some_and(|config| config.backend == "strata-gemma3-metal") {"Gemma 3 Metal"} else if cfg!(all(target_os="macos",target_arch="aarch64")){"Metal"}else{"Strata"},"endpoint":format!("http://127.0.0.1:{}/v1",self.port),"root":self.root})
+        json!({"engineCapabilities":capabilities::inventory(&settings),"engineSession":engine_session,"modelPlan":model_plan,"omniCounterFailed":self.omni_counter_failed.load(Ordering::SeqCst),"startup":startup,"vllmInspection":vllm_inspection,"dockingDiagnostics":*self.docking_diagnostics.lock().await,"requests":requests,"memoryUsage":memory_usage,"memoryTuning":memory_tuning,"preparation":self.preparation.lock().await.snapshot(),"status":status,"health":health,"settings":*self.settings.read().await,"document":document,"logs":*self.logs.lock().await,"architecture":std::env::consts::ARCH,"memoryBytes":self.memory_bytes,"selectedEngine":settings.engine,"strataModel":strata_config.as_ref().map(|config| &config.model),"backend":if settings.engine == engine::Engine::MlxPrefix {"MLX SSD"}else if settings.engine == engine::Engine::Lfm3Omni {"LFM3-Omni"}else if settings.engine == engine::Engine::VllmApple {"vLLM-Apple"} else if strata_config.is_some_and(|config| config.backend == "strata-gemma3-metal") {"Gemma 3 Metal"} else if cfg!(all(target_os="macos",target_arch="aarch64")){"Metal"}else{"Strata"},"endpoint":format!("http://127.0.0.1:{}/v1",self.port),"root":self.root})
     }
 }
 fn pump<T: tokio::io::AsyncRead + Unpin + Send + 'static>(
@@ -1287,14 +1304,23 @@ fn pump_allocations<T: tokio::io::AsyncRead + Unpin + Send + 'static>(
     stream: T,
     logs: Arc<Mutex<VecDeque<String>>>,
     collector: Arc<Mutex<allocation_report::Collector>>,
-) {
+) -> tokio::task::JoinHandle<()> {
     tokio::spawn(async move {
-        let mut lines = BufReader::new(stream).lines();
-        while let Ok(Some(line)) = lines.next_line().await {
-            collector.lock().await.observe(&line);
+        let mut reader = BufReader::new(stream);
+        let mut bytes = Vec::new();
+        loop {
+            bytes.clear();
+            match reader.read_until(b'\n', &mut bytes).await {
+                Ok(0) | Err(_) => break,
+                Ok(_) => {}
+            }
+            // GGUF metadata can contain non-UTF-8 bytes. Keep reading later allocation lines.
+            let line = String::from_utf8_lossy(&bytes);
+            let line = line.trim_end_matches(['\r', '\n']);
+            collector.lock().await.observe(line);
             push_log(&logs, line.chars().take(4096).collect()).await;
         }
-    });
+    })
 }
 async fn push_log(logs: &Mutex<VecDeque<String>>, line: String) {
     let mut l = logs.lock().await;
@@ -1482,8 +1508,12 @@ async fn action(State(s): State<Arc<Studio>>, h: HeaderMap, Json(v): Json<Value>
             .await
         }
         "inspectLocalModel" => {
-            return match s.inspect_local(v["path"].as_str().unwrap_or("")).await {
-                Ok(info) => Json(info).into_response(),
+            let path = v["path"].as_str().unwrap_or("");
+            return match s.inspect_local(path).await {
+                Ok(mut info) => {
+                    info["capabilityModel"] = json!(capabilities::library_model(std::path::Path::new(path), &info));
+                    Json(info).into_response()
+                },
                 Err(e) => error(StatusCode::BAD_REQUEST, e),
             };
         }
@@ -2293,8 +2323,12 @@ impl Drop for ProxyTrace {
 struct InferenceGuard(Arc<Studio>);
 impl InferenceGuard {
     async fn new(s: Arc<Studio>) -> Self {
-        s.active_requests.fetch_add(1, Ordering::SeqCst);
-        s.memory_usage.lock().await.inference(true);
+        {
+            // Acquire telemetry before taking ownership, so cancelling the wait cannot leak a busy request.
+            let mut memory = s.memory_usage.lock().await;
+            s.active_requests.fetch_add(1, Ordering::SeqCst);
+            memory.inference(true);
+        }
         Self(s)
     }
 }
@@ -2385,6 +2419,8 @@ async fn chat(State(s): State<Arc<Studio>>, h: HeaderMap, Json(mut body): Json<V
     let gateway = tracker.info.metrics.gateway.as_mut().unwrap();
     gateway.engine_session = engine_session;
     gateway.lifecycle_wait_ms = Some(lifecycle_wait_ms);
+    let inference;
+    let conversation;
     {
         let mut d = s.document.write().await;
         if body["conversationId"]
@@ -2455,6 +2491,8 @@ async fn chat(State(s): State<Arc<Studio>>, h: HeaderMap, Json(mut body): Json<V
                 return rejection.response();
             }
         }
+        conversation = d.conversations.active_id.clone();
+        inference = InferenceGuard::new(s.clone()).await;
         d.generating = true;
         d.conversations.touch();
         let mut user = user;
@@ -2469,13 +2507,165 @@ async fn chat(State(s): State<Arc<Studio>>, h: HeaderMap, Json(mut body): Json<V
         });
     }
     body.as_object_mut().unwrap().remove("conversationId");
-    let inference = InferenceGuard::new(s.clone()).await;
     drop(lifecycle);
+    if is_omni {
+        body["_ssdConversation"] = json!(conversation);
+    }
+    let dispatch = dispatch_chat(s, inference, tracker, port, key, body, is_omni);
+    if is_omni {
+        // The native request and document cleanup outlive the HTTP handler.
+        return tokio::spawn(dispatch)
+            .await
+            .unwrap_or_else(|e| error(StatusCode::INTERNAL_SERVER_ERROR, e));
+    }
+    dispatch.await
+}
+
+enum OmniDispatchState {
+    Unconfirmed,
+    Processing,
+}
+
+async fn wait_for_omni_slot_idle(
+    studio: &Studio,
+    port: u16,
+    key: &str,
+    mut state: OmniDispatchState,
+) {
+    #[derive(serde::Deserialize)]
+    struct Slot {
+        id: usize,
+        is_processing: bool,
+    }
+
+    push_log(
+        &studio.logs,
+        match state {
+            OmniDispatchState::Unconfirmed => "[studio] Omni dispatch was interrupted before generation was confirmed. Waiting for a busy-to-idle transition. Restart the engine if it stays unavailable.",
+            OmniDispatchState::Processing => "[studio] Waiting for Omni slot after an interrupted response",
+        }.into(),
+    )
+    .await;
+    loop {
+        {
+            let mut process = studio.process.lock().await;
+            if process.port != port
+                || process.key != key
+                || process
+                    .child
+                    .as_mut()
+                    .is_none_or(|child| matches!(child.try_wait(), Ok(Some(_))))
+            {
+                return;
+            }
+        }
+        if let Ok(response) = studio
+            .client
+            .get(format!("http://127.0.0.1:{port}/slots"))
+            .bearer_auth(key)
+            .timeout(Duration::from_secs(1))
+            .send()
+            .await
+        {
+            if response.status().is_success() {
+                if let Ok(
+                    [Slot {
+                        id: 0,
+                        is_processing,
+                    }],
+                ) = response.json::<[Slot; 1]>().await
+                {
+                    // Native slot probes have priority over queued completion requests.
+                    // An idle observation alone cannot clear an unacknowledged dispatch.
+                    if is_processing {
+                        state = OmniDispatchState::Processing;
+                    } else if matches!(state, OmniDispatchState::Processing) {
+                        return;
+                    }
+                }
+            }
+        }
+        tokio::time::sleep(Duration::from_millis(100)).await;
+    }
+}
+
+async fn fail_omni_ssd_dispatch(
+    studio: Arc<Studio>,
+    guard: InferenceGuard,
+    mut tracker: inference::Tracker,
+    port: u16,
+    key: String,
+) -> Response {
+    tracker.finish("error", false);
+    studio.document.write().await.generating = false;
+    studio.record_request(tracker.info.metrics.clone()).await;
+    tokio::spawn(async move {
+        let _guard = guard;
+        wait_for_omni_slot_idle(&studio, port, &key, OmniDispatchState::Unconfirmed).await;
+    });
+    error(StatusCode::BAD_GATEWAY, "Omni SSD slot operation failed")
+}
+
+async fn dispatch_chat(
+    s: Arc<Studio>,
+    inference: InferenceGuard,
+    mut tracker: inference::Tracker,
+    port: u16,
+    key: String,
+    mut body: Value,
+    is_omni: bool,
+) -> Response {
+    let conversation = body
+        .as_object_mut()
+        .and_then(|body| body.remove("_ssdConversation"));
+    let cache = s
+        .process
+        .lock()
+        .await
+        .omni_ssd
+        .clone()
+        .filter(|cache| is_omni && cache.matches(&key));
+    let mut snapshot = None;
+    let mut cache_status = "miss";
+    if let (Some(cache), Some(conversation), Some(messages)) = (
+        &cache,
+        conversation.as_ref().and_then(Value::as_str),
+        body["messages"].as_array(),
+    ) {
+        // Every diagnostic request starts with an erased slot, including misses and media.
+        if cache.action(&s.client, port, "erase").await.is_err() {
+            return fail_omni_ssd_dispatch(s, inference, tracker, port, key).await;
+        }
+        if messages
+            .iter()
+            .all(|message| message["content"].is_string())
+        {
+            snapshot = Some(cache.identity(conversation, messages));
+            if messages.len() >= 3 {
+                let predecessor = cache.identity(conversation, &messages[..messages.len() - 2]);
+                let reader = cache.clone();
+                if matches!(
+                    tokio::task::spawn_blocking(move || reader.restore(&predecessor)).await,
+                    Ok(Ok(true))
+                ) {
+                    push_log(&s.logs, "[studio] Omni SSD restoring".into()).await;
+                    tokio::time::sleep(cache.verification_delay).await;
+                    let restored = cache.action(&s.client, port, "restore").await.is_ok();
+                    if !restored {
+                        return fail_omni_ssd_dispatch(s, inference, tracker, port, key).await;
+                    }
+                    cache.clear();
+                    cache_status = "hit";
+                    push_log(&s.logs, "[studio] Omni SSD cache restored".into()).await;
+                }
+            }
+        }
+    }
     tracker.dispatched();
     let response = s
         .client
         .post(format!("http://127.0.0.1:{port}/v1/chat/completions"))
-        .bearer_auth(key)
+        .bearer_auth(&key)
         .json(&body)
         .send()
         .await;
@@ -2501,14 +2691,25 @@ async fn chat(State(s): State<Arc<Studio>>, h: HeaderMap, Json(mut body): Json<V
                     let bytes = r.bytes().await.unwrap_or_default();
                     (status, bytes).into_response()
                 }
-                Err(e) => error(StatusCode::BAD_GATEWAY, e),
+                Err(e) => {
+                    if is_omni && !e.is_connect() && !e.is_builder() {
+                        tokio::spawn(async move {
+                            let _inference = inference;
+                            wait_for_omni_slot_idle(&s, port, &key, OmniDispatchState::Unconfirmed)
+                                .await;
+                        });
+                    }
+                    error(StatusCode::BAD_GATEWAY, e)
+                }
             };
         }
     };
     let (tx, rx) = tokio::sync::mpsc::channel::<Result<axum::body::Bytes, std::io::Error>>(8);
+    let report_cache = cache.is_some();
     tokio::spawn(async move {
         let _inference = inference;
         let mut fallback = "error";
+        let mut transport_lost = false;
         loop {
             let chunk = tokio::select! {_ = tx.closed()=>{fallback="cancelled";break},chunk=response.chunk()=>chunk};
             match chunk {
@@ -2528,9 +2729,66 @@ async fn chat(State(s): State<Arc<Studio>>, h: HeaderMap, Json(mut body): Json<V
                 }
                 Ok(None) => break,
                 Err(e) => {
+                    transport_lost = true;
                     let _ = tx.send(Err(std::io::Error::other(e))).await;
                     break;
                 }
+            }
+        }
+        let mut saw_content = !tracker.answer.is_empty();
+        if is_omni && fallback == "cancelled" {
+            // Stop the native request as soon as a content delta confirms it started.
+            // Keep any post-disconnect tokens separate from the conversation.
+            let mut discarded = inference::Tracker::new("chat", "");
+            if !saw_content {
+                loop {
+                    match response.chunk().await {
+                        Ok(Some(bytes)) => {
+                            discarded.feed(&bytes);
+                            if !discarded.answer.is_empty() {
+                                break;
+                            }
+                        }
+                        Ok(None) => break,
+                        Err(_) => {
+                            transport_lost = true;
+                            break;
+                        }
+                    }
+                }
+            }
+            saw_content |= !discarded.answer.is_empty();
+            transport_lost |= saw_content;
+        }
+        if is_omni && transport_lost {
+            drop(response);
+            let state = if saw_content {
+                OmniDispatchState::Processing
+            } else {
+                OmniDispatchState::Unconfirmed
+            };
+            wait_for_omni_slot_idle(&s, port, &key, state).await;
+        }
+        if fallback != "cancelled"
+            && !transport_lost
+            && tracker.info.metrics.finish_reason.as_deref() == Some("stop")
+        {
+            if let (Some(cache), Some(identity)) = (cache, snapshot) {
+                push_log(&s.logs, "[studio] Omni SSD saving".into()).await;
+                tokio::time::sleep(cache.verification_delay).await;
+                let exported = cache.action(&s.client, port, "save").await;
+                if exported.is_ok() {
+                    let writer = cache.clone();
+                    if matches!(
+                        tokio::task::spawn_blocking(move || writer.save(&identity)).await,
+                        Ok(Ok(()))
+                    ) {
+                        push_log(&s.logs, "[studio] Omni SSD cache saved".into()).await;
+                    }
+                } else if exported.is_err_and(|error| !error.is_status()) {
+                    wait_for_omni_slot_idle(&s, port, &key, OmniDispatchState::Unconfirmed).await;
+                }
+                cache.clear();
             }
         }
         tracker.finish(fallback, false);
@@ -2551,6 +2809,9 @@ async fn chat(State(s): State<Arc<Studio>>, h: HeaderMap, Json(mut body): Json<V
     let mut r = Response::new(Body::from_stream(
         tokio_stream::wrappers::ReceiverStream::new(rx),
     ));
+    if report_cache {
+        r.headers_mut().insert("x-soliton-omni-ssd", axum::http::HeaderValue::from_static(cache_status));
+    }
     r.headers_mut()
         .insert("content-type", "text/event-stream".parse().unwrap());
     r.headers_mut()
@@ -2848,7 +3109,242 @@ pub async fn serve(
 
 #[cfg(test)]
 mod tests {
+    #[tokio::test]
+    async fn allocation_pump_keeps_reading_after_non_utf8_metadata() {
+        let collector = std::sync::Arc::new(tokio::sync::Mutex::new(
+            crate::allocation_report::Collector::default(),
+        ));
+        let logs = std::sync::Arc::new(tokio::sync::Mutex::new(Default::default()));
+        let stream: &[u8] = b"metadata \xff\nllama_kv_cache: Metal KV buffer size = 16.00 MiB\n";
+        super::pump_allocations(stream, logs, collector.clone()).await.unwrap();
+        let report = collector.lock().await.report("test".into(), 1);
+        assert_eq!(report.kv_bytes, Some(16 * 1024 * 1024));
+    }
+
     use super::*;
+    #[tokio::test]
+    async fn cancelled_inference_admission_does_not_leave_engine_busy() {
+        let studio = Arc::new(Studio::new(PathBuf::new(), 8080));
+        let memory = studio.memory_usage.lock().await;
+        {
+            let mut admission = Box::pin(InferenceGuard::new(studio.clone()));
+            assert!(futures_util::poll!(admission.as_mut()).is_pending());
+        }
+        assert_eq!(studio.active_requests.load(Ordering::SeqCst), 0);
+        drop(memory);
+        let guard = InferenceGuard::new(studio.clone()).await;
+        assert_eq!(studio.active_requests.load(Ordering::SeqCst), 1);
+        drop(guard);
+        assert_eq!(studio.active_requests.load(Ordering::SeqCst), 0);
+    }
+
+    #[tokio::test]
+    async fn cancelled_omni_chat_holds_engine_until_native_stream_finishes() {
+        check_cancelled_omni_chat(false, false).await;
+    }
+
+    #[tokio::test]
+    async fn cancelled_omni_chat_with_broken_stream_waits_for_idle_slot() {
+        check_cancelled_omni_chat(true, false).await;
+    }
+
+    #[tokio::test]
+    async fn cancelled_omni_chat_discards_first_late_content_and_closes_native_stream() {
+        check_cancelled_omni_chat(false, true).await;
+    }
+
+    async fn check_cancelled_omni_chat(break_stream: bool, late_content: bool) {
+        let studio = Arc::new(Studio::new(PathBuf::new(), 8080));
+        studio.document.write().await.generating = true;
+        let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+        let port = listener.local_addr().unwrap().port();
+        let (upstream_tx, upstream_rx) =
+            tokio::sync::mpsc::channel::<Result<axum::body::Bytes, std::io::Error>>(2);
+        upstream_tx
+            .send(Ok(axum::body::Bytes::from_static(b": ready\n\n")))
+            .await
+            .unwrap();
+        let upstream_rx = Arc::new(Mutex::new(Some(upstream_rx)));
+        let idle = Arc::new(std::sync::atomic::AtomicBool::new(false));
+        let probes = Arc::new(AtomicUsize::new(0));
+        let probe_idle = idle.clone();
+        let probe_count = probes.clone();
+        let upstream = axum::Router::new()
+            .route(
+                "/v1/chat/completions",
+                axum::routing::post(move || {
+                    let upstream_rx = upstream_rx.clone();
+                    async move {
+                        let rx = upstream_rx.lock().await.take().unwrap();
+                        Body::from_stream(tokio_stream::wrappers::ReceiverStream::new(rx))
+                    }
+                }),
+            )
+            .route(
+                "/slots",
+                axum::routing::get(move || {
+                    let idle = probe_idle.clone();
+                    let count = probe_count.clone();
+                    async move {
+                        count.fetch_add(1, Ordering::SeqCst);
+                        Json(json!([{"id": 0, "is_processing": !idle.load(Ordering::SeqCst)}]))
+                    }
+                }),
+            );
+        if break_stream || late_content {
+            let mut process = studio.process.lock().await;
+            process.key = "test".into();
+            process.port = port;
+            process.child = Some(
+                Command::new("/bin/sleep")
+                    .arg("10")
+                    .kill_on_drop(true)
+                    .spawn()
+                    .unwrap(),
+            );
+        }
+        let server = tokio::spawn(async move { axum::serve(listener, upstream).await.unwrap() });
+        let inference = InferenceGuard::new(studio.clone()).await;
+        let mut tracker = inference::Tracker::new("chat", "test");
+        tracker.begin_gateway(std::time::Instant::now());
+        let reply = dispatch_chat(
+            studio.clone(),
+            inference,
+            tracker,
+            port,
+            "test".into(),
+            json!({}),
+            true,
+        )
+        .await;
+        assert_eq!(reply.status(), StatusCode::OK);
+        drop(reply);
+        // The same native connection remains open after the downstream body is dropped.
+        upstream_tx
+            .send(Ok(axum::body::Bytes::from_static(b": native tail\n\n")))
+            .await
+            .unwrap();
+        let wait_until_released = || async {
+            while studio.active_requests.load(Ordering::SeqCst) != 0 {
+                tokio::time::sleep(Duration::from_millis(5)).await;
+            }
+        };
+        assert!(
+            tokio::time::timeout(Duration::from_millis(50), wait_until_released())
+                .await
+                .is_err()
+        );
+        assert!(studio.document.read().await.generating);
+        if break_stream {
+            upstream_tx
+                .send(Err(std::io::Error::other("broken upstream")))
+                .await
+                .unwrap();
+        }
+        if late_content {
+            upstream_tx
+                .send(Ok(axum::body::Bytes::from_static(
+                    b"data: {\"choices\":[{\"delta\":{\"content\":\"discarded\"}}]}\n\n",
+                )))
+                .await
+                .unwrap();
+            tokio::time::timeout(Duration::from_secs(3), upstream_tx.closed())
+                .await
+                .unwrap();
+        }
+        drop(upstream_tx);
+        if break_stream || late_content {
+            tokio::time::timeout(Duration::from_secs(3), async {
+                while probes.load(Ordering::SeqCst) == 0 {
+                    tokio::time::sleep(Duration::from_millis(5)).await;
+                }
+            })
+            .await
+            .unwrap();
+            assert_eq!(studio.active_requests.load(Ordering::SeqCst), 1);
+            idle.store(true, Ordering::SeqCst);
+        }
+        tokio::time::timeout(Duration::from_secs(3), wait_until_released())
+            .await
+            .unwrap();
+        assert!(!studio.document.read().await.generating);
+        assert_eq!(
+            studio.requests.lock().await.back().unwrap().status,
+            "cancelled"
+        );
+        server.abort();
+    }
+
+    #[tokio::test]
+    async fn interrupted_omni_dispatch_before_headers_keeps_queued_slot_owned() {
+        use tokio::io::{AsyncBufReadExt, BufReader};
+        let studio = Arc::new(Studio::new(PathBuf::new(), 8080));
+        let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+        let port = listener.local_addr().unwrap().port();
+        let (observed_tx, mut observed_rx) = tokio::sync::mpsc::unbounded_channel();
+        let busy = Arc::new(std::sync::atomic::AtomicBool::new(false));
+        let native_busy = busy.clone();
+        let server = tokio::spawn(async move {
+            let (connection, _) = listener.accept().await.unwrap();
+            let mut connection = BufReader::new(connection);
+            let mut first_line = String::new();
+            connection.read_line(&mut first_line).await.unwrap();
+            assert!(first_line.starts_with("POST /v1/chat/completions "));
+            drop(connection);
+            let slots = axum::Router::new().route(
+                "/slots",
+                axum::routing::get(move || {
+                    let observed = native_busy.load(Ordering::SeqCst);
+                    observed_tx.send(observed).unwrap();
+                    async move { Json(json!([{"id":0,"is_processing":observed}])) }
+                }),
+            );
+            axum::serve(listener, slots).await.unwrap();
+        });
+        {
+            let mut process = studio.process.lock().await;
+            process.port = port;
+            process.key = "test".into();
+            process.child = Some(
+                Command::new("/bin/sleep")
+                    .arg("15")
+                    .kill_on_drop(true)
+                    .spawn()
+                    .unwrap(),
+            );
+        }
+        let guard = InferenceGuard::new(studio.clone()).await;
+        let tracker = inference::Tracker::new("chat", "test");
+        let response = dispatch_chat(
+            studio.clone(),
+            guard,
+            tracker,
+            port,
+            "test".into(),
+            json!({}),
+            true,
+        )
+        .await;
+        assert_eq!(response.status(), StatusCode::BAD_GATEWAY);
+        tokio::time::timeout(Duration::from_secs(5), async {
+            // Two idle polls show the first observation was consumed without releasing.
+            for _ in 0..2 {
+                assert_eq!(observed_rx.recv().await, Some(false));
+            }
+            assert_eq!(studio.active_requests.load(Ordering::SeqCst), 1);
+            busy.store(true, Ordering::SeqCst);
+            while observed_rx.recv().await == Some(false) {}
+            assert_eq!(studio.active_requests.load(Ordering::SeqCst), 1);
+            busy.store(false, Ordering::SeqCst);
+            while studio.active_requests.load(Ordering::SeqCst) != 0 {
+                tokio::time::sleep(Duration::from_millis(5)).await;
+            }
+        })
+        .await
+        .unwrap();
+        server.abort();
+    }
+
     #[tokio::test]
     async fn request_log_is_bounded_and_contains_no_response_text() {
         let s = Studio::new(PathBuf::new(), 8080);

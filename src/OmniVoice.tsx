@@ -5,9 +5,9 @@ import { desktop, request, realtimeSocket } from "./client";
 import type { Language } from "./i18n";
 
 const labels = {
-  en: { record: "Record voice", send: "Stop and send", cancel: "Cancel voice turn", end: "End voice session", play: "Play response", failed: "Voice session failed", connecting: "Connecting voice session…", waiting: "Waiting for response…", generating: "Generating voice response…", cancelling: "Cancelling voice response…", cancelled: "Voice response cancelled" },
-  ja: { record: "音声を録音", send: "録音を停止して送信", cancel: "音声ターンをキャンセル", end: "音声対話を終了", play: "応答を再生", failed: "音声対話に失敗しました", connecting: "音声対話に接続中…", waiting: "応答を待っています…", generating: "音声応答を生成中…", cancelling: "音声応答をキャンセル中…", cancelled: "音声応答をキャンセルしました" },
-  zh: { record: "录制语音", send: "停止录音并发送", cancel: "取消语音轮次", end: "结束语音对话", play: "播放回复", failed: "语音对话失败", connecting: "正在连接语音对话…", waiting: "正在等待回复…", generating: "正在生成语音回复…", cancelling: "正在取消语音回复…", cancelled: "语音回复已取消" },
+  en: { record: "Record voice", send: "Stop and send", cancel: "Cancel voice turn", end: "End voice session", play: "Play response", failed: "Voice session failed", audioFailed: "Could not load the voice response", connecting: "Connecting voice session…", waiting: "Waiting for response…", generating: "Generating voice response…", loadingAudio: "Preparing voice playback…", cancelPlayback: "Cancel voice playback", cancelling: "Cancelling voice response…", cancelled: "Voice response cancelled" },
+  ja: { record: "音声を録音", send: "録音を停止して送信", cancel: "音声ターンをキャンセル", end: "音声対話を終了", play: "応答を再生", failed: "音声対話に失敗しました", audioFailed: "応答音声を読み込めませんでした", connecting: "音声対話に接続中…", waiting: "応答を待っています…", generating: "音声応答を生成中…", loadingAudio: "音声を再生準備中…", cancelPlayback: "音声再生をキャンセル", cancelling: "音声応答をキャンセル中…", cancelled: "音声応答をキャンセルしました" },
+  zh: { record: "录制语音", send: "停止录音并发送", cancel: "取消语音轮次", end: "结束语音对话", play: "播放回复", failed: "语音对话失败", audioFailed: "无法加载回复音频", connecting: "正在连接语音对话…", waiting: "正在等待回复…", generating: "正在生成语音回复…", loadingAudio: "正在准备播放语音…", cancelPlayback: "取消语音播放", cancelling: "正在取消语音回复…", cancelled: "语音回复已取消" },
 };
 
 type Recording = {
@@ -35,19 +35,22 @@ type Phase = "idle" | "connecting" | "recording" | "waiting";
 export function OmniVoice({ language }: { language: Language }) {
   const t = labels[language];
   const [phase, setPhase] = useState<Phase>("idle");
-  const [responseStatus, setResponseStatus] = useState<"waiting" | "generating" | "cancelling" | "cancelled">("waiting");
-  const [error, setError] = useState(false);
+  const [responseStatus, setResponseStatus] = useState<"waiting" | "generating" | "loadingAudio" | "cancelling" | "cancelled">("waiting");
+  const [error, setError] = useState<false | true | "audio">(false);
   const [audio, setAudio] = useState("");
   const [transcript, setTranscript] = useState("");
   const socket = useRef<WebSocket | null>(null);
   const recording = useRef<Recording | null>(null);
   const nativeRecording = useRef<number | null>(null);
   const playback = useRef("");
-  const admitted = useRef(false);
+  const audioRequest = useRef<AbortController | null>(null);
+  const turn = useRef<"unsent" | "submitted" | "admitted">("unsent");
   const cancelled = useRef(false);
   const generation = useRef(0);
 
   function clearAudio() {
+    audioRequest.current?.abort();
+    audioRequest.current = null;
     if (playback.current) URL.revokeObjectURL(playback.current);
     playback.current = "";
     setAudio("");
@@ -69,7 +72,7 @@ export function OmniVoice({ language }: { language: Language }) {
     const ws = socket.current;
     socket.current = null;
     ws?.close();
-    admitted.current = false;
+    turn.current = "unsent";
     setResponseStatus("waiting");
     clearAudio();
     setPhase("idle");
@@ -79,6 +82,7 @@ export function OmniVoice({ language }: { language: Language }) {
     generation.current++;
     void stopNative(false)?.catch(() => {});
     socket.current?.close();
+    audioRequest.current?.abort();
     if (recording.current) release(recording.current);
     if (playback.current) URL.revokeObjectURL(playback.current);
   }, []);
@@ -110,23 +114,34 @@ export function OmniVoice({ language }: { language: Language }) {
         } else if (event.type === "session.updated") {
           ready();
         } else if (event.type === "soliton.realtime.admission") {
-          admitted.current = event.accepted === true;
+          if (event.accepted === true) {
+            turn.current = "admitted";
+            if (cancelled.current) send(ws, { type: "response.cancel" });
+          }
         } else if (event.type === "response.output_text.delta" || event.type === "soliton.audio.buffered") {
           if (!cancelled.current) setResponseStatus("generating");
         } else if (event.type === "response.done") {
-          admitted.current = false;
+          turn.current = "unsent";
           const output = event.soliton_output;
           if (event.response?.status === "cancelled") setResponseStatus("cancelled");
           if (event.response?.status === "completed" && !cancelled.current) {
             setTranscript(output?.text || "");
             if (typeof output?.audioUrl === "string" && /^\/v1\/realtime\/audio\/[a-f0-9-]+$/.test(output.audioUrl)) {
-              const result = await request(output.audioUrl);
-              const blob = await result.blob();
-              if (socket.current !== ws) return;
-              if (cancelled.current) { setPhase("idle"); return; }
-              clearAudio();
-              playback.current = URL.createObjectURL(blob);
-              setAudio(playback.current);
+              const controller = new AbortController();
+              audioRequest.current = controller;
+              setResponseStatus("loadingAudio");
+              try {
+                const result = await request(output.audioUrl, undefined, controller.signal);
+                const blob = await result.blob();
+                if (socket.current !== ws || controller.signal.aborted) return;
+                playback.current = URL.createObjectURL(blob);
+                setAudio(playback.current);
+              } catch {
+                if (socket.current !== ws || controller.signal.aborted) return;
+                setError("audio");
+              } finally {
+                if (audioRequest.current === controller) audioRequest.current = null;
+              }
             }
           }
           setPhase("idle");
@@ -208,6 +223,7 @@ export function OmniVoice({ language }: { language: Language }) {
   }
 
   async function finishRecording() {
+    const current = generation.current;
     const active = recording.current;
     const ws = socket.current;
     if (!ws || (!active && nativeRecording.current === null)) return;
@@ -216,13 +232,13 @@ export function OmniVoice({ language }: { language: Language }) {
       setPhase("waiting");
       try {
         const chunks = await stopNative(true);
-        if (socket.current !== ws || cancelled.current || !chunks) return;
+        if (socket.current !== ws || generation.current !== current || cancelled.current || !chunks) return;
         for (const audio of chunks) send(ws, { type: "input_audio_buffer.append", audio });
         send(ws, { type: "input_audio_buffer.commit" });
+        turn.current = "submitted";
         send(ws, { type: "response.create" });
       } catch {
-        end();
-        setError(true);
+        if (generation.current === current) { end(); setError(true); }
       }
       return;
     }
@@ -242,7 +258,7 @@ export function OmniVoice({ language }: { language: Language }) {
       source.connect(rendered.destination);
       source.start();
       const samples = (await rendered.startRendering()).getChannelData(0);
-      if (socket.current !== ws || cancelled.current) return;
+      if (socket.current !== ws || generation.current !== current || cancelled.current) return;
       for (let start = 0; start < samples.length; start += RATE) {
         const pcm = new DataView(new ArrayBuffer(Math.min(RATE, samples.length - start) * 2));
         for (let i = 0; i < pcm.byteLength / 2; i++) {
@@ -252,10 +268,10 @@ export function OmniVoice({ language }: { language: Language }) {
         send(ws, { type: "input_audio_buffer.append", audio: btoa(String.fromCharCode(...new Uint8Array(pcm.buffer))) });
       }
       send(ws, { type: "input_audio_buffer.commit" });
+      turn.current = "submitted";
       send(ws, { type: "response.create" });
     } catch {
-      end();
-      setError(true);
+      if (generation.current === current) { end(); setError(true); }
     }
   }
 
@@ -263,10 +279,22 @@ export function OmniVoice({ language }: { language: Language }) {
     if (phase === "waiting" && cancelled.current) return;
     cancelled.current = true;
     const ws = socket.current;
+    const loadingAudio = audioRequest.current !== null;
     clearAudio();
-    if (ws && phase === "waiting" && admitted.current) {
+    if (loadingAudio) {
+      setResponseStatus("waiting");
+      setPhase("idle");
+      return;
+    }
+    if (ws && phase === "waiting") {
+      if (turn.current === "unsent") {
+        generation.current++;
+        setResponseStatus("waiting");
+        setPhase("idle");
+        return;
+      }
       setResponseStatus("cancelling");
-      send(ws, { type: "response.cancel" });
+      if (turn.current === "admitted") send(ws, { type: "response.cancel" });
     } else if (phase === "recording") {
       if (recording.current) release(recording.current);
       void stopNative(false)?.catch(() => {});
@@ -277,15 +305,17 @@ export function OmniVoice({ language }: { language: Language }) {
     }
   }
 
+  const cancelLabel = responseStatus === "loadingAudio" ? t.cancelPlayback : t.cancel;
+
   return (
     <div className="omni-voice">
       {phase === "idle" && <button type="button" onClick={() => void startRecording()} aria-label={t.record} title={t.record}><Mic size={16} /></button>}
       {phase === "recording" && <button type="button" onClick={() => void finishRecording()} aria-label={t.send} title={t.send}><Square size={16} /></button>}
-      {phase !== "idle" && <button type="button" onClick={cancelTurn} aria-label={t.cancel} title={t.cancel}><X size={16} /></button>}
+      {phase !== "idle" && <button type="button" onClick={cancelTurn} aria-label={cancelLabel} title={cancelLabel}><X size={16} /></button>}
       {phase === "idle" && socket.current && <button type="button" onClick={end} aria-label={t.end} title={t.end}><X size={16} /></button>}
       {phase === "connecting" && <span role="status">{t.connecting}</span>}
       {(phase === "waiting" || responseStatus === "cancelled") && <span role="status">{t[responseStatus]}</span>}
-      {error && <span role="alert">{t.failed}</span>}
+      {error && <span role="alert">{error === "audio" ? t.audioFailed : t.failed}</span>}
       {transcript && <span>{transcript}</span>}
       {audio && <><Volume2 size={16} aria-hidden="true" /><audio controls autoPlay src={audio} aria-label={t.play} /></>}
     </div>

@@ -105,6 +105,40 @@ impl Output {
         }
         Ok(())
     }
+    fn finish_turn(
+        &mut self,
+        event: &Value,
+        frame: &[u8],
+        admission: Option<u64>,
+        reservation: Option<u64>,
+    ) -> Result<Self, String> {
+        let response = &event["response"];
+        let status = response["status"].as_str();
+        if !(self.cancelled && status == Some("cancelled")) {
+            if self.cancelled && status != Some("completed") {
+                return Err("Unexpected terminal status after cancellation".into());
+            }
+            let usage = &response["usage"];
+            if admission.is_none()
+                || usage["input_tokens"].as_u64() != admission
+                || !usage["output_tokens"]
+                    .as_u64()
+                    .zip(reservation)
+                    .is_some_and(|(used, cap)| used <= cap)
+            {
+                return Err("Native usage differs from admission".into());
+            }
+            if !self.cancelled {
+                self.ingest(frame)?;
+            }
+        }
+        let next = Self {
+            rate: self.rate,
+            ..Self::default()
+        };
+        Ok(std::mem::replace(self, next))
+    }
+
     pub fn metadata(&self) -> Value {
         json!({"done":self.done,"cancelled":self.cancelled,"sampleRate":self.rate,"audioBytes":self.pcm.len(),"text":self.text,"usage":self.usage})
     }
@@ -197,14 +231,19 @@ mod tests {
     fn complete_pcm_wav_is_private_and_bounded() {
         let mut o = Output::default();
         o.ingest(br#"{"type":"session.created","session":{"audio":{"output":{"format":{"rate":24000}}}}}"#).unwrap();
-        o.ingest(br#"{"type":"response.output_audio.delta","delta":"AAAAAA=="}"#)
+        o.ingest(br#"{"type":"response.output_audio.delta","delta":"AQD+/w=="}"#)
+            .unwrap();
+        o.ingest(br#"{"type":"response.output_audio.delta","delta":"AID/fw=="}"#)
             .unwrap();
         o.ingest(br#"{"type":"response.done","response":{"status":"completed","usage":{"input_tokens":1,"output_tokens":1}}}"#).unwrap();
         let p = std::env::temp_dir().join(uuid::Uuid::new_v4().to_string());
         o.write_wav(&p).unwrap();
         let b = fs::read(&p).unwrap();
         assert_eq!(&b[..4], b"RIFF");
-        assert_eq!(b.len(), 48);
+        assert_eq!(u16::from_le_bytes(b[22..24].try_into().unwrap()), 1);
+        assert_eq!(u32::from_le_bytes(b[24..28].try_into().unwrap()), 24_000);
+        assert_eq!(u16::from_le_bytes(b[34..36].try_into().unwrap()), 16);
+        assert_eq!(&b[44..], &[1, 0, 254, 255, 0, 128, 255, 127]);
         fs::remove_file(p).unwrap();
     }
     #[test]
@@ -221,6 +260,34 @@ mod tests {
         assert!(!p.exists());
         assert!(o.ingest(br#"{"type":"response.done","response":{"status":"completed","usage":{"input_tokens":1,"output_tokens":1}}}"#).is_err());
     }
+    #[test]
+    fn completion_after_cancel_discards_audio_and_preserves_format_for_next_turn() {
+        let mut output = Output {
+            rate: Some(24000),
+            ..Output::default()
+        };
+        let delta = br#"{"type":"response.output_audio.delta","delta":"AAAAAA=="}"#;
+        output.ingest(delta).unwrap();
+        output.cancel();
+
+        let invalid = json!({"type":"response.done","response":{
+            "status":"completed","usage":{"input_tokens":7,"output_tokens":3}
+        }});
+        let frame = serde_json::to_vec(&invalid).unwrap();
+        assert!(output.finish_turn(&invalid, &frame, Some(6), Some(3)).is_err());
+        assert!(output.finish_turn(&invalid, &frame, Some(7), Some(2)).is_err());
+
+        let discarded = output.finish_turn(&invalid, &frame, Some(7), Some(3)).unwrap();
+        assert_eq!(discarded.metadata()["audioBytes"], 0);
+        assert_eq!(discarded.metadata()["cancelled"], true);
+        assert!(discarded.wav_bytes().is_err());
+
+        output.ingest(delta).unwrap();
+        let finished = output.finish_turn(&invalid, &frame, Some(7), Some(3)).unwrap();
+        assert_eq!(finished.metadata()["cancelled"], false);
+        assert_eq!(finished.wav_bytes().unwrap().len(), 48);
+    }
+
     #[test]
     fn unknown_completion_or_usage_cannot_be_success() {
         for r in [
@@ -333,6 +400,8 @@ pub(crate) async fn relay_with_playback(
                         cancelled = false;
                         audio_bytes = 0;
                     }
+                    // Completion can reach the relay while the client still shows a running turn.
+                    Some("response.cancel") if !pending && reservation.is_some() => continue,
                     Some("response.cancel") if pending && admission.is_some() && !cancelled => {
                         cancelled = true;
                         output.cancel();
@@ -370,26 +439,16 @@ pub(crate) async fn relay_with_playback(
                     }
                     Some("response.done") if pending => {
                         pending = false;
-                        if cancelled {
-                            if event["response"]["status"] != "cancelled" { return Err("Native cancellation not confirmed".into()); }
-                        } else {
-                            if admission.is_none() || event["response"]["usage"]["input_tokens"].as_u64() != admission
-                                || !event["response"]["usage"]["output_tokens"].as_u64().zip(reservation).is_some_and(|(used, cap)| used <= cap) {
-                                return Err("Native usage differs from admission".into());
-                            }
-                            output.ingest(frame.as_bytes())?;
-                        }
+                        let finished = output.finish_turn(&event, frame.as_bytes(), admission, reservation)?;
                         let mut event = event;
-                        event["soliton_output"] = output.metadata();
+                        event["soliton_output"] = finished.metadata();
                         if let Some(playback) = playback {
-                            if !cancelled && !output.pcm.is_empty() {
-                                let id = playback.publish(output.wav_bytes()?).await;
+                            if !finished.cancelled && !finished.pcm.is_empty() {
+                                let id = playback.publish(finished.wav_bytes()?).await;
                                 event["soliton_output"]["audioUrl"] =
                                     json!(format!("/v1/realtime/audio/{id}"));
                             }
                         }
-                        let rate = output.rate;
-                        output = Output { rate, ..Output::default() };
                         event
                     }
                     Some("session.created" | "session.updated") => {

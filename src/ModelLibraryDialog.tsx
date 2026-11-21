@@ -1,3 +1,4 @@
+import { EngineGuide, type Profile } from "./EngineGuide";
 import { DiskBudget, type DiskPlan } from "./DiskBudget";
 import { useEffect, useRef, useState } from "react";
 import { invoke } from "@tauri-apps/api/core";
@@ -42,6 +43,7 @@ type Scan = {
 };
 const sources: Source[] = ["strata", "lmstudio", "unsloth", "ollama", "custom"];
 export function ModelLibraryDialog({
+  profiles,
   language,
   directories,
   locked,
@@ -51,6 +53,7 @@ export function ModelLibraryDialog({
   onClose,
 }: {
   language: Language;
+  profiles: Profile[];
   directories: string[];
   locked: boolean;
   onDirectories: (paths: string[]) => Promise<void>;
@@ -61,6 +64,7 @@ export function ModelLibraryDialog({
   const t = words[language];
   const [selection, setSelection] = useState<ModelFile | null>(null);
   const [check, setCheck] = useState<{
+    capabilityModel?: string | null;
     kind: string;
     model?: string;
     diskPlan?: DiskPlan;
@@ -445,6 +449,7 @@ export function ModelLibraryDialog({
         <footer className="model-use-footer">
           <div>
             <strong>{check?.model || selection.name}</strong>
+            {check && <EngineGuide profiles={profiles} language={language} model={check.capabilityModel ?? null} />}
             <small role="status">
               {checking
                 ? t.checkingModel
@@ -452,7 +457,7 @@ export function ModelLibraryDialog({
                   ? t.configuredModel
                   : check?.kind === "prepare"
                     ? `${t.localReuse} · ${check.workingGb?.toFixed(1)} GB ${t.workspace}`
-                    : t.unsupportedLocal}
+                    : check?.capabilityModel ? "Strata · " + t.unsupportedLocal : t.unsupportedLocal}
             </small>
             {check?.reason && <p role="alert">{check.reason}</p>}
             {!engineOffline && <small>{t.stopForSetup}</small>}

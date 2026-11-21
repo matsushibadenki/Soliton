@@ -1,0 +1,191 @@
+{
+  "cases": [
+    {
+      "kind": "text",
+      "cold": {
+        "answer": "42",
+        "prompt": 201,
+        "completion": 2,
+        "cached": 0,
+        "processed": 201,
+        "finish": "stop"
+      },
+      "save": {
+        "id_slot": 0,
+        "filename": "probe.bin",
+        "n_saved": 202,
+        "n_written": 8504868,
+        "timings": {
+          "save_ms": 5.361
+        }
+      },
+      "files": [
+        {
+          "name": "probe.bin",
+          "bytes": 8504868,
+          "sha256": "5dfb31d4657296a26b9994d7d9971913f0d8a54148eaef62f46b799c3fe5d04d"
+        }
+      ],
+      "totalBytes": 8504868,
+      "residentReuse": {
+        "answer": "42",
+        "prompt": 201,
+        "completion": 2,
+        "cached": 1,
+        "processed": 200,
+        "finish": "stop"
+      },
+      "restore": {
+        "id_slot": 0,
+        "filename": "probe.bin",
+        "n_restored": 202,
+        "n_read": 8504868,
+        "timings": {
+          "restore_ms": 2.055
+        }
+      },
+      "restored": {
+        "answer": "42",
+        "prompt": 201,
+        "completion": 2,
+        "cached": 1,
+        "processed": 200,
+        "finish": "stop"
+      },
+      "answerAndTokenParity": true
+    },
+    {
+      "kind": "long_text",
+      "cold": {
+        "answer": "42",
+        "prompt": 1469,
+        "completion": 2,
+        "cached": 0,
+        "processed": 1469,
+        "finish": "stop"
+      },
+      "save": {
+        "id_slot": 0,
+        "filename": "probe.bin",
+        "n_saved": 1470,
+        "n_written": 28528828,
+        "timings": {
+          "save_ms": 11.647
+        }
+      },
+      "files": [
+        {
+          "name": "probe.bin",
+          "bytes": 28528828,
+          "sha256": "9494f2e3a529dac0048d209ef2e46102755678b7061ca5ac70ea518fe12999b2"
+        }
+      ],
+      "totalBytes": 28528828,
+      "residentReuse": {
+        "answer": "42",
+        "prompt": 1469,
+        "completion": 2,
+        "cached": 953,
+        "processed": 516,
+        "finish": "stop"
+      },
+      "restore": {
+        "id_slot": 0,
+        "filename": "probe.bin",
+        "n_restored": 1470,
+        "n_read": 28528828,
+        "timings": {
+          "restore_ms": 3.104
+        }
+      },
+      "restored": {
+        "answer": "42",
+        "prompt": 1469,
+        "completion": 2,
+        "cached": 953,
+        "processed": 516,
+        "finish": "stop"
+      },
+      "answerAndTokenParity": true,
+      "restoreAfterRestart": {
+        "id_slot": 0,
+        "filename": "probe.bin",
+        "n_restored": 1470,
+        "n_read": 28528828,
+        "timings": {
+          "restore_ms": 7.575
+        }
+      },
+      "restoredAfterRestart": {
+        "answer": "42",
+        "prompt": 1469,
+        "completion": 2,
+        "cached": 953,
+        "processed": 516,
+        "finish": "stop"
+      }
+    },
+    {
+      "kind": "image",
+      "cold": {
+        "answer": "Red",
+        "prompt": 89,
+        "completion": 2,
+        "cached": 0,
+        "processed": 89,
+        "finish": "stop"
+      },
+      "save": {
+        "id_slot": 0,
+        "filename": "probe.bin",
+        "n_saved": 90,
+        "n_written": 4830540,
+        "timings": {
+          "save_ms": 4.024
+        }
+      },
+      "files": [
+        {
+          "name": "probe.bin",
+          "bytes": 4830540,
+          "sha256": "44851d0b94925f2a1faff96d4447f18d41df8591a2806b028b08aa99c4eaff52"
+        }
+      ],
+      "totalBytes": 4830540,
+      "residentReuse": {
+        "answer": "Red",
+        "prompt": 89,
+        "completion": 2,
+        "cached": 1,
+        "processed": 88,
+        "finish": "stop"
+      },
+      "restore": {
+        "id_slot": 0,
+        "filename": "probe.bin",
+        "n_restored": 90,
+        "n_read": 4830540,
+        "timings": {
+          "restore_ms": 1.98
+        }
+      },
+      "restored": {
+        "answer": "Red",
+        "prompt": 89,
+        "completion": 2,
+        "cached": 1,
+        "processed": 88,
+        "finish": "stop"
+      },
+      "answerAndTokenParity": true
+    }
+  ],
+  "identity": {
+    "binarySha256": "93c3b1fb8395ba3cea5c9227dc32a8d75487d75bcebbeab381f1ae676e50a390",
+    "modelSha256": "9f8d30e9d4fd7a9349d586e077988229b3ca0a0e4ad730897563d1eccc9893e2",
+    "projectorSha256": "720ff4fc09df0e026c4ec641d0c698bf27b5bcd50561944c88eda5e3dffe1839",
+    "context": 4096,
+    "parallel": 1
+  },
+  "shutdownExitCode": 0
+}

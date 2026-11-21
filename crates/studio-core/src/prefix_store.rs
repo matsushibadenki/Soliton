@@ -64,6 +64,13 @@ pub struct Store {
     quota: u64,
 }
 struct StoreLock(File);
+
+enum LockMode {
+    Read,
+    Write,
+    TryWrite,
+}
+
 impl Drop for StoreLock {
     fn drop(&mut self) {
         #[cfg(unix)]
@@ -120,9 +127,9 @@ impl Store {
         })
     }
     fn lock(&self) -> io::Result<StoreLock> {
-        self.lock_with(false)
+        self.lock_with(LockMode::Write)
     }
-    fn lock_with(&self, nonblocking: bool) -> io::Result<StoreLock> {
+    fn lock_with(&self, mode: LockMode) -> io::Result<StoreLock> {
         let file = private_options()
             .read(true)
             .write(true)
@@ -132,13 +139,12 @@ impl Store {
         #[cfg(unix)]
         {
             use std::os::fd::AsRawFd;
-            if unsafe {
-                libc::flock(
-                    file.as_raw_fd(),
-                    libc::LOCK_EX | if nonblocking { libc::LOCK_NB } else { 0 },
-                )
-            } != 0
-            {
+            let operation = match mode {
+                LockMode::Read => libc::LOCK_SH,
+                LockMode::Write => libc::LOCK_EX,
+                LockMode::TryWrite => libc::LOCK_EX | libc::LOCK_NB,
+            };
+            if unsafe { libc::flock(file.as_raw_fd(), operation) } != 0 {
                 return Err(io::Error::last_os_error());
             }
         }
@@ -367,7 +373,7 @@ impl Store {
     }
     /// Returns a verified, positioned file handle plus exact payload length, never GPU arrays.
     pub fn get(&self, identity: &Identity) -> io::Result<Option<(File, u64)>> {
-        let Some((mut file, header)) = self.read_verified(identity, &mut io::sink())? else {
+        let Some((mut file, header)) = self.read_verified(identity, &mut io::sink(), false)? else {
             return Ok(None);
         };
         file.seek(SeekFrom::Start(4104))?;
@@ -380,10 +386,29 @@ impl Store {
         identity: &Identity,
         destination: &Path,
     ) -> io::Result<Option<(u64, u128)>> {
+        self.restore_with_options(identity, destination, false)
+    }
+
+    /// Restore using a source descriptor with macOS data caching disabled.
+    #[cfg(target_os = "macos")]
+    pub fn restore_without_page_cache(
+        &self,
+        identity: &Identity,
+        destination: &Path,
+    ) -> io::Result<Option<(u64, u128)>> {
+        self.restore_with_options(identity, destination, true)
+    }
+
+    fn restore_with_options(
+        &self,
+        identity: &Identity,
+        destination: &Path,
+        no_cache: bool,
+    ) -> io::Result<Option<(u64, u128)>> {
         let temp = destination.with_file_name(format!(".{}.tmp", uuid::Uuid::new_v4()));
         let mut output = private_options().write(true).create_new(true).open(&temp)?;
         let result = (|| {
-            let Some((_, header)) = self.read_verified(identity, &mut output)? else {
+            let Some((_, header)) = self.read_verified(identity, &mut output, no_cache)? else {
                 return Ok(None);
             };
             let durability = std::time::Instant::now();
@@ -404,9 +429,10 @@ impl Store {
         &self,
         identity: &Identity,
         output: &mut impl Write,
+        no_cache: bool,
     ) -> io::Result<Option<(File, Header)>> {
         let key = identity.key()?;
-        let _lock = self.lock()?;
+        let _lock = self.lock_with(LockMode::Read)?;
         let mut file = match private_options()
             .read(true)
             .open(self.root.join(format!("{key}.cache")))
@@ -417,6 +443,18 @@ impl Store {
         };
         if !file.metadata()?.is_file() {
             return Err(invalid("Invalid cache file"));
+        }
+        if no_cache {
+            #[cfg(target_os = "macos")]
+            {
+                use std::os::fd::AsRawFd;
+                // SAFETY: the file owns a valid descriptor and F_NOCACHE takes an integer.
+                if unsafe { libc::fcntl(file.as_raw_fd(), libc::F_NOCACHE, 1) } == -1 {
+                    return Err(io::Error::last_os_error());
+                }
+            }
+            #[cfg(not(target_os = "macos"))]
+            return Err(io::Error::new(io::ErrorKind::Unsupported, "Requires macOS"));
         }
         let mut length = [0; 8];
         file.read_exact(&mut length)?;
@@ -619,13 +657,13 @@ impl Store {
         Ok((report, candidates))
     }
     pub fn capacity(&self) -> io::Result<Capacity> {
-        let _lock = self.lock_with(true)?;
+        let _lock = self.lock_with(LockMode::TryWrite)?;
         Ok(self.inventory()?.0)
     }
     /// Explicit maintenance, called only while Soliton's engine is stopped.
     /// Old recognized states are recomputable; unknown files and recent temporary files stay intact.
     pub fn trim(&self) -> io::Result<TrimResult> {
-        let _lock = self.lock_with(true)?;
+        let _lock = self.lock_with(LockMode::TryWrite)?;
         let (before, candidates) = self.inventory()?;
         let mut used = before.used_bytes;
         let (mut removed_entries, mut removed_bytes, mut failed_entries) = (0, 0, 0);
@@ -908,6 +946,28 @@ mod tests {
             format: "mlx-prompt-cache/0.32.0/research-v1".into(),
         }
     }
+    #[cfg(unix)]
+    #[test]
+    fn verified_readers_share_access_while_maintenance_stays_exclusive() {
+        let root = std::env::temp_dir().join(format!("soliton-read-{}", uuid::Uuid::new_v4()));
+        let store = Store::open(&root, 16000).unwrap();
+        store.put(&identity(), &mut &b"state"[..], 5).unwrap();
+        let reader = store.lock_with(LockMode::Read).unwrap();
+        let (tx, rx) = std::sync::mpsc::channel();
+        std::thread::scope(|scope| {
+            scope.spawn(|| {
+                let bytes = store.get(&identity()).unwrap().unwrap().1;
+                tx.send(bytes).unwrap();
+            });
+            let concurrent = rx.recv_timeout(std::time::Duration::from_secs(2));
+            assert_eq!(store.trim().unwrap_err().kind(), io::ErrorKind::WouldBlock);
+            drop(reader);
+            assert_eq!(concurrent.unwrap(), 5);
+        });
+        store.trim().unwrap();
+        fs::remove_dir_all(root).unwrap();
+    }
+
     #[test]
     fn roundtrip_identity_corruption_and_quota() {
         let root = std::env::temp_dir().join(format!("soliton-prefix-{}", uuid::Uuid::new_v4()));
@@ -951,6 +1011,14 @@ mod tests {
         f.write_all(b"X").unwrap();
         assert!(store.get(&id).is_err());
         assert!(store.restore_to(&id, &restored).is_err());
+        #[cfg(target_os = "macos")]
+        assert_eq!(
+            store
+                .restore_without_page_cache(&id, &restored)
+                .unwrap_err()
+                .to_string(),
+            "Cache checksum mismatch"
+        );
         assert_eq!(fs::read_dir(&staging).unwrap().count(), 0);
         fs::remove_dir(staging).unwrap();
         fs::remove_dir_all(root).unwrap();

@@ -4,7 +4,7 @@ Version 0.1.11 adds the qualified LFM3-Omni-2B Realtime API on Apple Silicon and
 
 [日本語](README.ja.md) · [简体中文](README.zh-CN.md)
 
-A Tauri 2 workbench for local inference, knowledge-editing experiments and OpenAI-assisted editing plans on Apple Silicon, with a shared Rust API gateway for Strata and vLLM-Apple. Rust owns conversations, history, logs and metrics across all windows. Engines run separately and are selected manually.
+A Tauri 2 workbench for local inference, knowledge-editing experiments and OpenAI-assisted editing plans on Apple Silicon, with a shared Rust API gateway for its four managed engines. Rust owns conversations, history, logs and metrics across all windows. Engines run separately and are selected manually.
 
 ## Screenshots
 
@@ -46,7 +46,9 @@ Stop inference, then **Train & evaluate** runs base-model evaluation → LoRA/QL
 
 ## Engine selection
 
-Preferences → Engine → Inference engine selects **Strata** or **vLLM-Apple**. Switching stops the previous managed engine and its workers, then saves the selection; click Start to load the selected engine. Active GUI/API requests and model preparation block switching. Only one managed engine runs at a time. Independently started processes are outside Soliton's lifecycle; stop those before using Soliton.
+Preferences → Engine → Inference engine offers **Strata** (bundled text inference), **vLLM-Apple** (configured text backends), **LFM3-Omni** (media and voice) and **MLX SSD** (qualified text with persistent prefix caching). Switching stops the previous managed engine and its workers, then saves the selection; click Start to load the selected engine. Active GUI/API requests and model preparation block switching. Only one managed engine runs at a time. Independently started processes are outside Soliton's lifecycle; stop those before using Soliton.
+
+**How to choose.** Start with Strata for supported local text models in the packaged app. Choose vLLM-Apple / MLX LM for a separately prepared MLX model, or LFM3-Omni for voice and media. MLX SSD is an optional text profile for reusing prompt state after an engine restart. We plan to offer persistence as an MLX setting if it preserves restart recovery and improves real conversations at the same context and memory budget. In Preferences, choose a model and task under Execution profiles, or select a file in Local models. The guide shows the limits measured for each profile. Soliton checks this Mac’s configuration and required evidence when the engine or Realtime session starts. The manual engine selector controls switching.
 
 For vLLM-Apple, set its source directory (`vLLM-apple/` beside `Strata/`), absolute Python path, existing absolute local model directory, backend (`MLX LM` or `vLLM-Metal`) and absolute backend executable path. Use a compatible environment already prepared by vLLM-Apple. The packaged Strata runtime includes Python and dependencies; vLLM-Apple keeps its separate environment. Local models can download files from a Hugging Face URL, but engine compatibility is checked separately. Moving a virtual environment may leave executable shebangs pointing to its previous directory; repair or recreate the selected environment when necessary. MLX uses model alias `default_model`; vLLM-Metal uses the configured model path. The daemon's `inference_ready` controls chat availability.
 

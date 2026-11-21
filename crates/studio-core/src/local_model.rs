@@ -135,7 +135,7 @@ async fn validated(settings: &Settings, path: &str) -> Result<LocalInput, String
     }
     Ok(input)
 }
-fn ready_config(settings: &Settings, path: &str) -> Option<String> {
+fn ready_config(settings: &Settings, path: &str) -> Option<preparation::ConfigInfo> {
     let selected = Path::new(path).canonicalize().ok()?;
     let root = PathBuf::from(&settings.strata_root);
     let mut configs = preparation::configs(&root);
@@ -164,7 +164,8 @@ fn ready_config(settings: &Settings, path: &str) -> Option<String> {
             continue;
         };
         for pair in args.windows(2) {
-            if !["--native", "--ple-gguf", "--native-dense-gguf", "--pack"]
+            let gemma_weight = info.backend == "strata-gemma3-metal" && pair[0] == "--model";
+            if !gemma_weight && !["--native", "--ple-gguf", "--native-dense-gguf", "--pack"]
                 .contains(&pair[0].as_str().unwrap_or(""))
             {
                 continue;
@@ -182,7 +183,7 @@ fn ready_config(settings: &Settings, path: &str) -> Option<String> {
                             .as_ref()
                             == Some(&p);
                     if selected == p || p.is_dir() && pack_file {
-                        return Some(info.path);
+                        return Some(info);
                     }
                 }
             }
@@ -194,7 +195,7 @@ impl Studio {
     pub async fn inspect_local(&self, path: &str) -> Result<Value, String> {
         let s = self.settings.read().await.clone();
         if let Some(config) = ready_config(&s, path) {
-            return Ok(json!({"kind":"configured","config":config,"path":path}));
+            return Ok(json!({"kind":"configured","config":config.path,"backend":config.backend,"path":path}));
         }
         let input = match validated(&s, path).await {
             Ok(input) => input,
@@ -245,7 +246,7 @@ impl Studio {
             if python.is_file() {
                 current.python = python.to_string_lossy().into_owned();
             }
-            current.config = config;
+            current.config = config.path;
             current.mock = false;
             return Ok(());
         }

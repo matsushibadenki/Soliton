@@ -21,6 +21,8 @@ export type ModelPlanState = {
     kvBytes: number | null;
     computeBytes: number | null;
     outputBytes: number | null;
+    recurrentBytes?: number | null;
+    projectorMaxBufferBytes?: number | null;
     workspaceBytes: number | null;
   } | null;
   backend: string;
@@ -99,6 +101,12 @@ export function ModelPlan({
         amount == null ? "—" : `≈ ${bytes(amount)}`,
         t.planReportedHelp,
       ]);
+    }
+    if (r.recurrentBytes != null) {
+      rows.push([t.planReportedRecurrent, `≈ ${bytes(r.recurrentBytes)}`, t.planReportedHelp]);
+    }
+    if (r.projectorMaxBufferBytes != null) {
+      rows.push([t.planReportedProjector, `≈ ${bytes(r.projectorMaxBufferBytes)}`, t.planReportedProjectorHelp]);
     }
   }
   if (value.backendBudget) {

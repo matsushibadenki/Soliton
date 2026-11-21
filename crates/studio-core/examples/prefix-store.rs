@@ -7,7 +7,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let args: Vec<_> = std::env::args().collect();
     if args.len() != 6 {
         return Err(
-            "Usage: prefix-store ROOT QUOTA_BYTES put|get IDENTITY_JSON PAYLOAD_PATH".into(),
+            "Usage: prefix-store ROOT QUOTA_BYTES put|get|get-uncached IDENTITY_JSON PAYLOAD_PATH"
+                .into(),
         );
     }
     let store = Store::open(Path::new(&args[1]), args[2].parse()?)?;
@@ -29,11 +30,20 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             );
             serde_json::to_value(timing)?
         }
-        "get" => {
+        "get" | "get-uncached" => {
             let started = Instant::now();
-            let (n, durability_ns) = store
-                .restore_to(&identity, Path::new(&args[5]))?
-                .ok_or("Cache miss")?;
+            let destination = Path::new(&args[5]);
+            let restored = if args[3] == "get-uncached" {
+                #[cfg(target_os = "macos")]
+                {
+                    store.restore_without_page_cache(&identity, destination)?
+                }
+                #[cfg(not(target_os = "macos"))]
+                return Err("Uncached reads require macOS".into());
+            } else {
+                store.restore_to(&identity, destination)?
+            };
+            let (n, durability_ns) = restored.ok_or("Cache miss")?;
             let restore_ns = started.elapsed().as_nanos();
             println!(
                 "{}",

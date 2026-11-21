@@ -1,0 +1,724 @@
+{
+  "identity": {
+    "runtimeSha256": "37858e5c943f41a247a3257a8bb8411ce0b29b4756e0b0430f12dbeac4c7c8d3",
+    "modelSha256": "9f8d30e9d4fd7a9349d586e077988229b3ca0a0e4ad730897563d1eccc9893e2",
+    "projectorSha256": "720ff4fc09df0e026c4ec641d0c698bf27b5bcd50561944c88eda5e3dffe1839",
+    "platform": "macos-aarch64",
+    "hardware": "Mac16,13\n34359738368\nApple M4",
+    "ffmpegSha256": "1d35c048f613d22cea937dba0e9806156bca032bc0c3a47995be77472cd1027c",
+    "ffprobeSha256": "5c013cf8429c6e3d647b2a83888eba3d286303120567aa612ee75947c319a995",
+    "osVersion": "27.2.1",
+    "context": 4096,
+    "parallel": 1,
+    "reasoning": false,
+    "admissionVersion": 1
+  },
+  "cases": [
+    {
+      "rows": 70,
+      "cold": {
+        "answer": "42",
+        "finish": "stop",
+        "prompt": 797,
+        "completion": 2,
+        "cached": 0
+      },
+      "restored": {
+        "answer": "42",
+        "finish": "stop",
+        "prompt": 797,
+        "completion": 2,
+        "cached": 281
+      },
+      "afterRestart": true,
+      "stageBytes": 23524552,
+      "payloadSha256": "da26267d299d3bf97ba765cbe68114d5f2a564ca53bd0a25a09cea8dd6c3c194",
+      "coldMs": 1037.291,
+      "saveMs": 13.758,
+      "putMs": 32.27,
+      "getMs": 43.432,
+      "restoreMs": 7.556,
+      "responseMs": 640.971,
+      "restoreAndReplyMs": 691.959,
+      "saveRestoreAndReplyMs": 737.987,
+      "competingReadPairMs": null
+    },
+    {
+      "rows": 70,
+      "cold": {
+        "answer": "73",
+        "finish": "stop",
+        "prompt": 797,
+        "completion": 2,
+        "cached": 0
+      },
+      "restored": {
+        "answer": "73",
+        "finish": "stop",
+        "prompt": 797,
+        "completion": 2,
+        "cached": 281
+      },
+      "afterRestart": false,
+      "stageBytes": 23524552,
+      "payloadSha256": "2e6917258a03dea571b5b29bbf1f3965a8643c3b72ec3686bb22b2730c25b93f",
+      "coldMs": 1002.302,
+      "saveMs": 5.165,
+      "putMs": 30.146,
+      "getMs": 47.602,
+      "restoreMs": 3.563,
+      "responseMs": 640.2,
+      "restoreAndReplyMs": 691.365,
+      "saveRestoreAndReplyMs": 726.676,
+      "competingReadPairMs": 49.502
+    },
+    {
+      "rows": 70,
+      "cold": {
+        "answer": "91",
+        "finish": "stop",
+        "prompt": 821,
+        "completion": 2,
+        "cached": 0
+      },
+      "restored": {
+        "answer": "91",
+        "finish": "stop",
+        "prompt": 821,
+        "completion": 2,
+        "cached": 305
+      },
+      "afterRestart": false,
+      "stageBytes": 23819848,
+      "payloadSha256": "f2e2429d2145a9522341e32e0b20b85c83d89850ac4fe967e8f77fdc406f433e",
+      "coldMs": 1050.298,
+      "saveMs": 5.207,
+      "putMs": 33.266,
+      "getMs": 58.349,
+      "restoreMs": 5.596,
+      "responseMs": 652.947,
+      "restoreAndReplyMs": 716.892,
+      "saveRestoreAndReplyMs": 755.365,
+      "competingReadPairMs": 61.202
+    },
+    {
+      "rows": 110,
+      "cold": {
+        "answer": "42",
+        "finish": "stop",
+        "prompt": 1197,
+        "completion": 2,
+        "cached": 0
+      },
+      "restored": {
+        "answer": "42",
+        "finish": "stop",
+        "prompt": 1197,
+        "completion": 2,
+        "cached": 681
+      },
+      "afterRestart": false,
+      "stageBytes": 28446152,
+      "payloadSha256": "c1184f7e0ba2cc52c028c1308823d669d529b0cd2bc30a273349114f1b743bd5",
+      "coldMs": 1696.566,
+      "saveMs": 5.87,
+      "putMs": 32.51,
+      "getMs": 64.478,
+      "restoreMs": 4.359,
+      "responseMs": 702.347,
+      "restoreAndReplyMs": 771.184,
+      "saveRestoreAndReplyMs": 809.564,
+      "competingReadPairMs": 66.385
+    },
+    {
+      "rows": 110,
+      "cold": {
+        "answer": "73",
+        "finish": "stop",
+        "prompt": 1197,
+        "completion": 2,
+        "cached": 0
+      },
+      "restored": {
+        "answer": "73",
+        "finish": "stop",
+        "prompt": 1197,
+        "completion": 2,
+        "cached": 681
+      },
+      "afterRestart": false,
+      "stageBytes": 28446152,
+      "payloadSha256": "74eb840787b01a76f1ce0c726153b8213f3bb7efa8c2ff7201fad206e8475459",
+      "coldMs": 1622.601,
+      "saveMs": 5.895,
+      "putMs": 34.339,
+      "getMs": 69.19,
+      "restoreMs": 4.304,
+      "responseMs": 691.897,
+      "restoreAndReplyMs": 765.391,
+      "saveRestoreAndReplyMs": 805.625,
+      "competingReadPairMs": 71.383
+    },
+    {
+      "rows": 110,
+      "cold": {
+        "answer": "91",
+        "finish": "stop",
+        "prompt": 1234,
+        "completion": 2,
+        "cached": 0
+      },
+      "restored": {
+        "answer": "91",
+        "finish": "stop",
+        "prompt": 1234,
+        "completion": 2,
+        "cached": 718
+      },
+      "afterRestart": false,
+      "stageBytes": 28901400,
+      "payloadSha256": "bd762ee425a4137a5528feca51205432895186cd8caa165fdc6cec58b13b2aa4",
+      "coldMs": 1732.923,
+      "saveMs": 5.74,
+      "putMs": 31.691,
+      "getMs": 70.92,
+      "restoreMs": 4.262,
+      "responseMs": 709.945,
+      "restoreAndReplyMs": 785.127,
+      "saveRestoreAndReplyMs": 822.558,
+      "competingReadPairMs": 73.493
+    },
+    {
+      "rows": 160,
+      "cold": {
+        "answer": "42",
+        "finish": "stop",
+        "prompt": 1697,
+        "completion": 2,
+        "cached": 0
+      },
+      "restored": {
+        "answer": "42",
+        "finish": "stop",
+        "prompt": 1697,
+        "completion": 2,
+        "cached": 1181
+      },
+      "afterRestart": false,
+      "stageBytes": 34598152,
+      "payloadSha256": "33d2f49914c264e61841dc9cdb55dc706108fcf571ceb5a92cdcd71c2c055965",
+      "coldMs": 2400.38,
+      "saveMs": 12.439,
+      "putMs": 41.485,
+      "getMs": 139.034,
+      "restoreMs": 4.571,
+      "responseMs": 692.328,
+      "restoreAndReplyMs": 835.933,
+      "saveRestoreAndReplyMs": 889.857,
+      "competingReadPairMs": 141.233
+    },
+    {
+      "rows": 160,
+      "cold": {
+        "answer": "73",
+        "finish": "stop",
+        "prompt": 1697,
+        "completion": 2,
+        "cached": 0
+      },
+      "restored": {
+        "answer": "73",
+        "finish": "stop",
+        "prompt": 1697,
+        "completion": 2,
+        "cached": 1181
+      },
+      "afterRestart": false,
+      "stageBytes": 34598152,
+      "payloadSha256": "b40c52cf0e9c2c9c91640e1b4f59a04a50c80db720043b162ea10ba2a45c531a",
+      "coldMs": 2358.604,
+      "saveMs": 7.058,
+      "putMs": 43.157,
+      "getMs": 80.489,
+      "restoreMs": 5.625,
+      "responseMs": 847.712,
+      "restoreAndReplyMs": 933.826,
+      "saveRestoreAndReplyMs": 984.041,
+      "competingReadPairMs": 82.728
+    },
+    {
+      "rows": 160,
+      "cold": {
+        "answer": "91",
+        "finish": "stop",
+        "prompt": 1751,
+        "completion": 2,
+        "cached": 0
+      },
+      "restored": {
+        "answer": "91",
+        "finish": "stop",
+        "prompt": 1751,
+        "completion": 2,
+        "cached": 1235
+      },
+      "afterRestart": false,
+      "stageBytes": 35262568,
+      "payloadSha256": "3588d9bd32b294d486652076fc5c2ba635abd052b23a5555ff826e1ca4b80c67",
+      "coldMs": 2555.896,
+      "saveMs": 17.73,
+      "putMs": 48.448,
+      "getMs": 68.392,
+      "restoreMs": 4.755,
+      "responseMs": 727.881,
+      "restoreAndReplyMs": 801.028,
+      "saveRestoreAndReplyMs": 867.206,
+      "competingReadPairMs": 70.679
+    }
+  ],
+  "storageMode": "shared-macos-f-nocache",
+  "storeQuotaBytes": 536870912,
+  "exportLimit": {
+    "bytes": 8388608,
+    "writtenBytes": 8388608,
+    "httpStatus": 500,
+    "serverRecovered": true
+  },
+  "templateSha256": "4e295a038af980438912483abe76a81c36b2451c87ccc1e62051529a6a0fb7f5",
+  "bursts": [
+    {
+      "rows": 70,
+      "restored": false,
+      "samples": [
+        {
+          "domain": "inventory handoff",
+          "scenario": "replay",
+          "restored": false,
+          "promptTokens": 797,
+          "cachedTokens": 0,
+          "queueMs": 0.114,
+          "serviceMs": 1044.14,
+          "totalMs": 1044.254
+        },
+        {
+          "domain": "event planning",
+          "scenario": "follow-up",
+          "restored": false,
+          "promptTokens": 830,
+          "cachedTokens": 0,
+          "queueMs": 1044.284,
+          "serviceMs": 1091.025,
+          "totalMs": 2135.309
+        },
+        {
+          "domain": "support handoff",
+          "scenario": "miss",
+          "restored": false,
+          "promptTokens": 854,
+          "cachedTokens": 0,
+          "queueMs": 2135.325,
+          "serviceMs": 1134.885,
+          "totalMs": 3270.21
+        }
+      ]
+    },
+    {
+      "rows": 70,
+      "restored": true,
+      "samples": [
+        {
+          "domain": "inventory handoff",
+          "scenario": "replay",
+          "restored": true,
+          "promptTokens": 797,
+          "cachedTokens": 281,
+          "queueMs": 0.062,
+          "serviceMs": 713.42,
+          "totalMs": 713.482
+        },
+        {
+          "domain": "event planning",
+          "scenario": "follow-up",
+          "restored": true,
+          "promptTokens": 830,
+          "cachedTokens": 281,
+          "queueMs": 713.525,
+          "serviceMs": 791.875,
+          "totalMs": 1505.4
+        },
+        {
+          "domain": "support handoff",
+          "scenario": "miss",
+          "restored": false,
+          "promptTokens": 854,
+          "cachedTokens": 0,
+          "queueMs": 1505.438,
+          "serviceMs": 1159.116,
+          "totalMs": 2664.554
+        }
+      ]
+    },
+    {
+      "rows": 70,
+      "restored": true,
+      "samples": [
+        {
+          "domain": "event planning",
+          "scenario": "follow-up",
+          "restored": true,
+          "promptTokens": 830,
+          "cachedTokens": 281,
+          "queueMs": 0.06,
+          "serviceMs": 793.997,
+          "totalMs": 794.057
+        },
+        {
+          "domain": "support handoff",
+          "scenario": "miss",
+          "restored": false,
+          "promptTokens": 854,
+          "cachedTokens": 0,
+          "queueMs": 794.096,
+          "serviceMs": 1177.669,
+          "totalMs": 1971.765
+        },
+        {
+          "domain": "inventory handoff",
+          "scenario": "replay",
+          "restored": true,
+          "promptTokens": 797,
+          "cachedTokens": 281,
+          "queueMs": 1971.807,
+          "serviceMs": 735.442,
+          "totalMs": 2707.25
+        }
+      ]
+    },
+    {
+      "rows": 70,
+      "restored": false,
+      "samples": [
+        {
+          "domain": "event planning",
+          "scenario": "follow-up",
+          "restored": false,
+          "promptTokens": 830,
+          "cachedTokens": 0,
+          "queueMs": 0.056,
+          "serviceMs": 1162.43,
+          "totalMs": 1162.486
+        },
+        {
+          "domain": "support handoff",
+          "scenario": "miss",
+          "restored": false,
+          "promptTokens": 854,
+          "cachedTokens": 0,
+          "queueMs": 1162.501,
+          "serviceMs": 1201.22,
+          "totalMs": 2363.721
+        },
+        {
+          "domain": "inventory handoff",
+          "scenario": "replay",
+          "restored": false,
+          "promptTokens": 797,
+          "cachedTokens": 0,
+          "queueMs": 2363.753,
+          "serviceMs": 1174.922,
+          "totalMs": 3538.675
+        }
+      ]
+    },
+    {
+      "rows": 110,
+      "restored": false,
+      "samples": [
+        {
+          "domain": "inventory handoff",
+          "scenario": "replay",
+          "restored": false,
+          "promptTokens": 1197,
+          "cachedTokens": 0,
+          "queueMs": 0.107,
+          "serviceMs": 1648.579,
+          "totalMs": 1648.686
+        },
+        {
+          "domain": "event planning",
+          "scenario": "follow-up",
+          "restored": false,
+          "promptTokens": 1230,
+          "cachedTokens": 0,
+          "queueMs": 1648.713,
+          "serviceMs": 1703.784,
+          "totalMs": 3352.497
+        },
+        {
+          "domain": "support handoff",
+          "scenario": "miss",
+          "restored": false,
+          "promptTokens": 1267,
+          "cachedTokens": 0,
+          "queueMs": 3352.512,
+          "serviceMs": 1758.154,
+          "totalMs": 5110.666
+        }
+      ]
+    },
+    {
+      "rows": 110,
+      "restored": true,
+      "samples": [
+        {
+          "domain": "inventory handoff",
+          "scenario": "replay",
+          "restored": true,
+          "promptTokens": 1197,
+          "cachedTokens": 681,
+          "queueMs": 0.047,
+          "serviceMs": 781.91,
+          "totalMs": 781.957
+        },
+        {
+          "domain": "event planning",
+          "scenario": "follow-up",
+          "restored": true,
+          "promptTokens": 1230,
+          "cachedTokens": 681,
+          "queueMs": 782.005,
+          "serviceMs": 856.935,
+          "totalMs": 1638.94
+        },
+        {
+          "domain": "support handoff",
+          "scenario": "miss",
+          "restored": false,
+          "promptTokens": 1267,
+          "cachedTokens": 0,
+          "queueMs": 1638.981,
+          "serviceMs": 1778.36,
+          "totalMs": 3417.341
+        }
+      ]
+    },
+    {
+      "rows": 110,
+      "restored": true,
+      "samples": [
+        {
+          "domain": "event planning",
+          "scenario": "follow-up",
+          "restored": true,
+          "promptTokens": 1230,
+          "cachedTokens": 681,
+          "queueMs": 0.094,
+          "serviceMs": 900.418,
+          "totalMs": 900.512
+        },
+        {
+          "domain": "support handoff",
+          "scenario": "miss",
+          "restored": false,
+          "promptTokens": 1267,
+          "cachedTokens": 0,
+          "queueMs": 900.579,
+          "serviceMs": 1843.781,
+          "totalMs": 2744.36
+        },
+        {
+          "domain": "inventory handoff",
+          "scenario": "replay",
+          "restored": true,
+          "promptTokens": 1197,
+          "cachedTokens": 681,
+          "queueMs": 2744.443,
+          "serviceMs": 845.499,
+          "totalMs": 3589.942
+        }
+      ]
+    },
+    {
+      "rows": 110,
+      "restored": false,
+      "samples": [
+        {
+          "domain": "event planning",
+          "scenario": "follow-up",
+          "restored": false,
+          "promptTokens": 1230,
+          "cachedTokens": 0,
+          "queueMs": 0.172,
+          "serviceMs": 1923.269,
+          "totalMs": 1923.441
+        },
+        {
+          "domain": "support handoff",
+          "scenario": "miss",
+          "restored": false,
+          "promptTokens": 1267,
+          "cachedTokens": 0,
+          "queueMs": 1923.497,
+          "serviceMs": 1845.343,
+          "totalMs": 3768.84
+        },
+        {
+          "domain": "inventory handoff",
+          "scenario": "replay",
+          "restored": false,
+          "promptTokens": 1197,
+          "cachedTokens": 0,
+          "queueMs": 3768.871,
+          "serviceMs": 1784.592,
+          "totalMs": 5553.463
+        }
+      ]
+    },
+    {
+      "rows": 160,
+      "restored": false,
+      "samples": [
+        {
+          "domain": "inventory handoff",
+          "scenario": "replay",
+          "restored": false,
+          "promptTokens": 1697,
+          "cachedTokens": 0,
+          "queueMs": 0.117,
+          "serviceMs": 2663.583,
+          "totalMs": 2663.7
+        },
+        {
+          "domain": "event planning",
+          "scenario": "follow-up",
+          "restored": false,
+          "promptTokens": 1730,
+          "cachedTokens": 0,
+          "queueMs": 2663.725,
+          "serviceMs": 2532.321,
+          "totalMs": 5196.046
+        },
+        {
+          "domain": "support handoff",
+          "scenario": "miss",
+          "restored": false,
+          "promptTokens": 1784,
+          "cachedTokens": 0,
+          "queueMs": 5196.063,
+          "serviceMs": 2820.078,
+          "totalMs": 8016.141
+        }
+      ]
+    },
+    {
+      "rows": 160,
+      "restored": true,
+      "samples": [
+        {
+          "domain": "inventory handoff",
+          "scenario": "replay",
+          "restored": true,
+          "promptTokens": 1697,
+          "cachedTokens": 1181,
+          "queueMs": 0.093,
+          "serviceMs": 788.751,
+          "totalMs": 788.844
+        },
+        {
+          "domain": "event planning",
+          "scenario": "follow-up",
+          "restored": true,
+          "promptTokens": 1730,
+          "cachedTokens": 1181,
+          "queueMs": 788.88,
+          "serviceMs": 898.505,
+          "totalMs": 1687.385
+        },
+        {
+          "domain": "support handoff",
+          "scenario": "miss",
+          "restored": false,
+          "promptTokens": 1784,
+          "cachedTokens": 0,
+          "queueMs": 1687.427,
+          "serviceMs": 2920.638,
+          "totalMs": 4608.065
+        }
+      ]
+    },
+    {
+      "rows": 160,
+      "restored": true,
+      "samples": [
+        {
+          "domain": "event planning",
+          "scenario": "follow-up",
+          "restored": true,
+          "promptTokens": 1730,
+          "cachedTokens": 1181,
+          "queueMs": 0.059,
+          "serviceMs": 921.25,
+          "totalMs": 921.309
+        },
+        {
+          "domain": "support handoff",
+          "scenario": "miss",
+          "restored": false,
+          "promptTokens": 1784,
+          "cachedTokens": 0,
+          "queueMs": 921.351,
+          "serviceMs": 2883.101,
+          "totalMs": 3804.452
+        },
+        {
+          "domain": "inventory handoff",
+          "scenario": "replay",
+          "restored": true,
+          "promptTokens": 1697,
+          "cachedTokens": 1181,
+          "queueMs": 3804.501,
+          "serviceMs": 878.384,
+          "totalMs": 4682.886
+        }
+      ]
+    },
+    {
+      "rows": 160,
+      "restored": false,
+      "samples": [
+        {
+          "domain": "event planning",
+          "scenario": "follow-up",
+          "restored": false,
+          "promptTokens": 1730,
+          "cachedTokens": 0,
+          "queueMs": 0.053,
+          "serviceMs": 2688.161,
+          "totalMs": 2688.214
+        },
+        {
+          "domain": "support handoff",
+          "scenario": "miss",
+          "restored": false,
+          "promptTokens": 1784,
+          "cachedTokens": 0,
+          "queueMs": 2688.231,
+          "serviceMs": 2932.627,
+          "totalMs": 5620.857
+        },
+        {
+          "domain": "inventory handoff",
+          "scenario": "replay",
+          "restored": false,
+          "promptTokens": 1697,
+          "cachedTokens": 0,
+          "queueMs": 5620.895,
+          "serviceMs": 2572.257,
+          "totalMs": 8193.153
+        }
+      ]
+    }
+  ],
+  "quotaRefused": true,
+  "wrongIdentityRefused": true
+}

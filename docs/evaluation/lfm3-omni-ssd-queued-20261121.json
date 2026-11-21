@@ -1,0 +1,652 @@
+{
+  "identity": {
+    "runtimeSha256": "37858e5c943f41a247a3257a8bb8411ce0b29b4756e0b0430f12dbeac4c7c8d3",
+    "modelSha256": "9f8d30e9d4fd7a9349d586e077988229b3ca0a0e4ad730897563d1eccc9893e2",
+    "projectorSha256": "720ff4fc09df0e026c4ec641d0c698bf27b5bcd50561944c88eda5e3dffe1839",
+    "platform": "macos-aarch64",
+    "hardware": "Mac16,13\n34359738368\nApple M4",
+    "ffmpegSha256": "1d35c048f613d22cea937dba0e9806156bca032bc0c3a47995be77472cd1027c",
+    "ffprobeSha256": "5c013cf8429c6e3d647b2a83888eba3d286303120567aa612ee75947c319a995",
+    "osVersion": "27.2.1",
+    "context": 4096,
+    "parallel": 1,
+    "reasoning": false,
+    "admissionVersion": 1
+  },
+  "cases": [
+    {
+      "rows": 70,
+      "cold": {
+        "answer": "42",
+        "finish": "stop",
+        "prompt": 797,
+        "completion": 2,
+        "cached": 0
+      },
+      "restored": {
+        "answer": "42",
+        "finish": "stop",
+        "prompt": 797,
+        "completion": 2,
+        "cached": 281
+      },
+      "afterRestart": true,
+      "stageBytes": 23524552,
+      "payloadSha256": "da26267d299d3bf97ba765cbe68114d5f2a564ca53bd0a25a09cea8dd6c3c194",
+      "coldMs": 1016.118,
+      "saveMs": 16.963,
+      "putMs": 31.754,
+      "getMs": 44.564,
+      "restoreMs": 7.032,
+      "responseMs": 636.137,
+      "restoreAndReplyMs": 687.733,
+      "saveRestoreAndReplyMs": 736.45,
+      "competingReadPairMs": null
+    },
+    {
+      "rows": 70,
+      "cold": {
+        "answer": "73",
+        "finish": "stop",
+        "prompt": 797,
+        "completion": 2,
+        "cached": 0
+      },
+      "restored": {
+        "answer": "73",
+        "finish": "stop",
+        "prompt": 797,
+        "completion": 2,
+        "cached": 281
+      },
+      "afterRestart": false,
+      "stageBytes": 23524552,
+      "payloadSha256": "2e6917258a03dea571b5b29bbf1f3965a8643c3b72ec3686bb22b2730c25b93f",
+      "coldMs": 986.918,
+      "saveMs": 13.344,
+      "putMs": 43.797,
+      "getMs": 55.132,
+      "restoreMs": 3.715,
+      "responseMs": 620.176,
+      "restoreAndReplyMs": 679.023,
+      "saveRestoreAndReplyMs": 736.164,
+      "competingReadPairMs": 57.859
+    },
+    {
+      "rows": 70,
+      "cold": {
+        "answer": "91",
+        "finish": "stop",
+        "prompt": 821,
+        "completion": 2,
+        "cached": 0
+      },
+      "restored": {
+        "answer": "91",
+        "finish": "stop",
+        "prompt": 821,
+        "completion": 2,
+        "cached": 305
+      },
+      "afterRestart": false,
+      "stageBytes": 23819848,
+      "payloadSha256": "f2e2429d2145a9522341e32e0b20b85c83d89850ac4fe967e8f77fdc406f433e",
+      "coldMs": 1011.653,
+      "saveMs": 5.136,
+      "putMs": 29.62,
+      "getMs": 58.342,
+      "restoreMs": 3.799,
+      "responseMs": 622.939,
+      "restoreAndReplyMs": 685.08,
+      "saveRestoreAndReplyMs": 719.836,
+      "competingReadPairMs": 63.204
+    },
+    {
+      "rows": 110,
+      "cold": {
+        "answer": "42",
+        "finish": "stop",
+        "prompt": 1197,
+        "completion": 2,
+        "cached": 0
+      },
+      "restored": {
+        "answer": "42",
+        "finish": "stop",
+        "prompt": 1197,
+        "completion": 2,
+        "cached": 681
+      },
+      "afterRestart": false,
+      "stageBytes": 28446152,
+      "payloadSha256": "c1184f7e0ba2cc52c028c1308823d669d529b0cd2bc30a273349114f1b743bd5",
+      "coldMs": 1465.88,
+      "saveMs": 5.531,
+      "putMs": 41.063,
+      "getMs": 51.247,
+      "restoreMs": 5.008,
+      "responseMs": 663.27,
+      "restoreAndReplyMs": 719.525,
+      "saveRestoreAndReplyMs": 766.119,
+      "competingReadPairMs": 53.203
+    },
+    {
+      "rows": 110,
+      "cold": {
+        "answer": "73",
+        "finish": "stop",
+        "prompt": 1197,
+        "completion": 2,
+        "cached": 0
+      },
+      "restored": {
+        "answer": "73",
+        "finish": "stop",
+        "prompt": 1197,
+        "completion": 2,
+        "cached": 681
+      },
+      "afterRestart": false,
+      "stageBytes": 28446152,
+      "payloadSha256": "74eb840787b01a76f1ce0c726153b8213f3bb7efa8c2ff7201fad206e8475459",
+      "coldMs": 1483.208,
+      "saveMs": 18.555,
+      "putMs": 38.411,
+      "getMs": 68.621,
+      "restoreMs": 4.402,
+      "responseMs": 649.892,
+      "restoreAndReplyMs": 722.915,
+      "saveRestoreAndReplyMs": 779.881,
+      "competingReadPairMs": 70.783
+    },
+    {
+      "rows": 110,
+      "cold": {
+        "answer": "91",
+        "finish": "stop",
+        "prompt": 1234,
+        "completion": 2,
+        "cached": 0
+      },
+      "restored": {
+        "answer": "91",
+        "finish": "stop",
+        "prompt": 1234,
+        "completion": 2,
+        "cached": 718
+      },
+      "afterRestart": false,
+      "stageBytes": 28901400,
+      "payloadSha256": "bd762ee425a4137a5528feca51205432895186cd8caa165fdc6cec58b13b2aa4",
+      "coldMs": 1502.656,
+      "saveMs": 6.398,
+      "putMs": 36.427,
+      "getMs": 62.05,
+      "restoreMs": 4.186,
+      "responseMs": 656.067,
+      "restoreAndReplyMs": 722.303,
+      "saveRestoreAndReplyMs": 765.128,
+      "competingReadPairMs": 66.733
+    },
+    {
+      "rows": 160,
+      "cold": {
+        "answer": "42",
+        "finish": "stop",
+        "prompt": 1697,
+        "completion": 2,
+        "cached": 0
+      },
+      "restored": {
+        "answer": "42",
+        "finish": "stop",
+        "prompt": 1697,
+        "completion": 2,
+        "cached": 1181
+      },
+      "afterRestart": false,
+      "stageBytes": 34598152,
+      "payloadSha256": "33d2f49914c264e61841dc9cdb55dc706108fcf571ceb5a92cdcd71c2c055965",
+      "coldMs": 2123.866,
+      "saveMs": 9.435,
+      "putMs": 44.528,
+      "getMs": 59.676,
+      "restoreMs": 4.674,
+      "responseMs": 680.832,
+      "restoreAndReplyMs": 745.182,
+      "saveRestoreAndReplyMs": 799.145,
+      "competingReadPairMs": 61.785
+    },
+    {
+      "rows": 160,
+      "cold": {
+        "answer": "73",
+        "finish": "stop",
+        "prompt": 1697,
+        "completion": 2,
+        "cached": 0
+      },
+      "restored": {
+        "answer": "73",
+        "finish": "stop",
+        "prompt": 1697,
+        "completion": 2,
+        "cached": 1181
+      },
+      "afterRestart": false,
+      "stageBytes": 34598152,
+      "payloadSha256": "b40c52cf0e9c2c9c91640e1b4f59a04a50c80db720043b162ea10ba2a45c531a",
+      "coldMs": 2110.577,
+      "saveMs": 7.179,
+      "putMs": 42.725,
+      "getMs": 77.536,
+      "restoreMs": 4.86,
+      "responseMs": 673.448,
+      "restoreAndReplyMs": 755.844,
+      "saveRestoreAndReplyMs": 805.748,
+      "competingReadPairMs": 79.836
+    },
+    {
+      "rows": 160,
+      "cold": {
+        "answer": "91",
+        "finish": "stop",
+        "prompt": 1751,
+        "completion": 2,
+        "cached": 0
+      },
+      "restored": {
+        "answer": "91",
+        "finish": "stop",
+        "prompt": 1751,
+        "completion": 2,
+        "cached": 1235
+      },
+      "afterRestart": false,
+      "stageBytes": 35262568,
+      "payloadSha256": "3588d9bd32b294d486652076fc5c2ba635abd052b23a5555ff826e1ca4b80c67",
+      "coldMs": 2208.99,
+      "saveMs": 7.174,
+      "putMs": 41.005,
+      "getMs": 73.289,
+      "restoreMs": 4.749,
+      "responseMs": 680.024,
+      "restoreAndReplyMs": 758.062,
+      "saveRestoreAndReplyMs": 806.241,
+      "competingReadPairMs": 75.639
+    }
+  ],
+  "storageMode": "shared-macos-f-nocache",
+  "storeQuotaBytes": 536870912,
+  "exportLimit": {
+    "bytes": 8388608,
+    "writtenBytes": 8388608,
+    "httpStatus": 500,
+    "serverRecovered": true
+  },
+  "templateSha256": "4e295a038af980438912483abe76a81c36b2451c87ccc1e62051529a6a0fb7f5",
+  "bursts": [
+    {
+      "rows": 70,
+      "restored": false,
+      "samples": [
+        {
+          "domain": "inventory handoff",
+          "promptTokens": 797,
+          "cachedTokens": 0,
+          "queueMs": 0.136,
+          "serviceMs": 985.04,
+          "totalMs": 985.175
+        },
+        {
+          "domain": "event planning",
+          "promptTokens": 797,
+          "cachedTokens": 0,
+          "queueMs": 985.205,
+          "serviceMs": 991.127,
+          "totalMs": 1976.332
+        },
+        {
+          "domain": "support handoff",
+          "promptTokens": 821,
+          "cachedTokens": 0,
+          "queueMs": 1976.353,
+          "serviceMs": 1027.752,
+          "totalMs": 3004.105
+        }
+      ]
+    },
+    {
+      "rows": 70,
+      "restored": true,
+      "samples": [
+        {
+          "domain": "inventory handoff",
+          "promptTokens": 797,
+          "cachedTokens": 281,
+          "queueMs": 0.063,
+          "serviceMs": 671.851,
+          "totalMs": 671.914
+        },
+        {
+          "domain": "event planning",
+          "promptTokens": 797,
+          "cachedTokens": 281,
+          "queueMs": 671.953,
+          "serviceMs": 671.869,
+          "totalMs": 1343.822
+        },
+        {
+          "domain": "support handoff",
+          "promptTokens": 821,
+          "cachedTokens": 305,
+          "queueMs": 1343.855,
+          "serviceMs": 673.247,
+          "totalMs": 2017.103
+        }
+      ]
+    },
+    {
+      "rows": 70,
+      "restored": true,
+      "samples": [
+        {
+          "domain": "event planning",
+          "promptTokens": 797,
+          "cachedTokens": 281,
+          "queueMs": 0.054,
+          "serviceMs": 672.933,
+          "totalMs": 672.987
+        },
+        {
+          "domain": "support handoff",
+          "promptTokens": 821,
+          "cachedTokens": 305,
+          "queueMs": 673.021,
+          "serviceMs": 674.047,
+          "totalMs": 1347.069
+        },
+        {
+          "domain": "inventory handoff",
+          "promptTokens": 797,
+          "cachedTokens": 281,
+          "queueMs": 1347.113,
+          "serviceMs": 693.245,
+          "totalMs": 2040.358
+        }
+      ]
+    },
+    {
+      "rows": 70,
+      "restored": false,
+      "samples": [
+        {
+          "domain": "event planning",
+          "promptTokens": 797,
+          "cachedTokens": 0,
+          "queueMs": 0.058,
+          "serviceMs": 1002.602,
+          "totalMs": 1002.66
+        },
+        {
+          "domain": "support handoff",
+          "promptTokens": 821,
+          "cachedTokens": 0,
+          "queueMs": 1002.677,
+          "serviceMs": 1038.03,
+          "totalMs": 2040.708
+        },
+        {
+          "domain": "inventory handoff",
+          "promptTokens": 797,
+          "cachedTokens": 0,
+          "queueMs": 2040.723,
+          "serviceMs": 1005.537,
+          "totalMs": 3046.26
+        }
+      ]
+    },
+    {
+      "rows": 110,
+      "restored": false,
+      "samples": [
+        {
+          "domain": "inventory handoff",
+          "promptTokens": 1197,
+          "cachedTokens": 0,
+          "queueMs": 0.105,
+          "serviceMs": 1470.853,
+          "totalMs": 1470.958
+        },
+        {
+          "domain": "event planning",
+          "promptTokens": 1197,
+          "cachedTokens": 0,
+          "queueMs": 1470.98,
+          "serviceMs": 1476.969,
+          "totalMs": 2947.949
+        },
+        {
+          "domain": "support handoff",
+          "promptTokens": 1234,
+          "cachedTokens": 0,
+          "queueMs": 2947.965,
+          "serviceMs": 1528.321,
+          "totalMs": 4476.286
+        }
+      ]
+    },
+    {
+      "rows": 110,
+      "restored": true,
+      "samples": [
+        {
+          "domain": "inventory handoff",
+          "promptTokens": 1197,
+          "cachedTokens": 681,
+          "queueMs": 0.056,
+          "serviceMs": 701.876,
+          "totalMs": 701.931
+        },
+        {
+          "domain": "event planning",
+          "promptTokens": 1197,
+          "cachedTokens": 681,
+          "queueMs": 701.972,
+          "serviceMs": 699.74,
+          "totalMs": 1401.712
+        },
+        {
+          "domain": "support handoff",
+          "promptTokens": 1234,
+          "cachedTokens": 718,
+          "queueMs": 1401.755,
+          "serviceMs": 705.498,
+          "totalMs": 2107.252
+        }
+      ]
+    },
+    {
+      "rows": 110,
+      "restored": true,
+      "samples": [
+        {
+          "domain": "event planning",
+          "promptTokens": 1197,
+          "cachedTokens": 681,
+          "queueMs": 0.055,
+          "serviceMs": 698.647,
+          "totalMs": 698.703
+        },
+        {
+          "domain": "support handoff",
+          "promptTokens": 1234,
+          "cachedTokens": 718,
+          "queueMs": 698.736,
+          "serviceMs": 702.53,
+          "totalMs": 1401.266
+        },
+        {
+          "domain": "inventory handoff",
+          "promptTokens": 1197,
+          "cachedTokens": 681,
+          "queueMs": 1401.303,
+          "serviceMs": 700.732,
+          "totalMs": 2102.035
+        }
+      ]
+    },
+    {
+      "rows": 110,
+      "restored": false,
+      "samples": [
+        {
+          "domain": "event planning",
+          "promptTokens": 1197,
+          "cachedTokens": 0,
+          "queueMs": 0.057,
+          "serviceMs": 1506.955,
+          "totalMs": 1507.012
+        },
+        {
+          "domain": "support handoff",
+          "promptTokens": 1234,
+          "cachedTokens": 0,
+          "queueMs": 1507.029,
+          "serviceMs": 1551.016,
+          "totalMs": 3058.045
+        },
+        {
+          "domain": "inventory handoff",
+          "promptTokens": 1197,
+          "cachedTokens": 0,
+          "queueMs": 3058.061,
+          "serviceMs": 1519.102,
+          "totalMs": 4577.162
+        }
+      ]
+    },
+    {
+      "rows": 160,
+      "restored": false,
+      "samples": [
+        {
+          "domain": "inventory handoff",
+          "promptTokens": 1697,
+          "cachedTokens": 0,
+          "queueMs": 0.105,
+          "serviceMs": 2146.827,
+          "totalMs": 2146.931
+        },
+        {
+          "domain": "event planning",
+          "promptTokens": 1697,
+          "cachedTokens": 0,
+          "queueMs": 2146.956,
+          "serviceMs": 2153.148,
+          "totalMs": 4300.103
+        },
+        {
+          "domain": "support handoff",
+          "promptTokens": 1751,
+          "cachedTokens": 0,
+          "queueMs": 4300.12,
+          "serviceMs": 2227.574,
+          "totalMs": 6527.693
+        }
+      ]
+    },
+    {
+      "rows": 160,
+      "restored": true,
+      "samples": [
+        {
+          "domain": "inventory handoff",
+          "promptTokens": 1697,
+          "cachedTokens": 1181,
+          "queueMs": 0.057,
+          "serviceMs": 741.084,
+          "totalMs": 741.14
+        },
+        {
+          "domain": "event planning",
+          "promptTokens": 1697,
+          "cachedTokens": 1181,
+          "queueMs": 741.18,
+          "serviceMs": 742.573,
+          "totalMs": 1483.752
+        },
+        {
+          "domain": "support handoff",
+          "promptTokens": 1751,
+          "cachedTokens": 1235,
+          "queueMs": 1483.791,
+          "serviceMs": 741.501,
+          "totalMs": 2225.292
+        }
+      ]
+    },
+    {
+      "rows": 160,
+      "restored": true,
+      "samples": [
+        {
+          "domain": "event planning",
+          "promptTokens": 1697,
+          "cachedTokens": 1181,
+          "queueMs": 0.056,
+          "serviceMs": 745.824,
+          "totalMs": 745.881
+        },
+        {
+          "domain": "support handoff",
+          "promptTokens": 1751,
+          "cachedTokens": 1235,
+          "queueMs": 745.919,
+          "serviceMs": 742.134,
+          "totalMs": 1488.053
+        },
+        {
+          "domain": "inventory handoff",
+          "promptTokens": 1697,
+          "cachedTokens": 1181,
+          "queueMs": 1488.089,
+          "serviceMs": 736.307,
+          "totalMs": 2224.397
+        }
+      ]
+    },
+    {
+      "rows": 160,
+      "restored": false,
+      "samples": [
+        {
+          "domain": "event planning",
+          "promptTokens": 1697,
+          "cachedTokens": 0,
+          "queueMs": 0.053,
+          "serviceMs": 2210.301,
+          "totalMs": 2210.354
+        },
+        {
+          "domain": "support handoff",
+          "promptTokens": 1751,
+          "cachedTokens": 0,
+          "queueMs": 2210.371,
+          "serviceMs": 2279.549,
+          "totalMs": 4489.921
+        },
+        {
+          "domain": "inventory handoff",
+          "promptTokens": 1697,
+          "cachedTokens": 0,
+          "queueMs": 4489.937,
+          "serviceMs": 2192.436,
+          "totalMs": 6682.372
+        }
+      ]
+    }
+  ],
+  "quotaRefused": true,
+  "wrongIdentityRefused": true
+}

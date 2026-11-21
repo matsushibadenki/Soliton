@@ -325,7 +325,7 @@ async fn focus_workspace_tab(
 }
 #[tauri::command]
 async fn select_path(app: tauri::AppHandle, kind: String) -> Result<Option<String>, String> {
-    if !["root", "config", "python", "models", "evidence"].contains(&kind.as_str()) {
+    if !["root", "config", "python", "models", "evidence", "omni-media"].contains(&kind.as_str()) {
         return Err("Unknown selection type".into());
     }
     tauri::async_runtime::spawn_blocking(move || {
@@ -335,6 +335,10 @@ async fn select_path(app: tauri::AppHandle, kind: String) -> Result<Option<Strin
         } else if kind == "evidence" {
             dialog
                 .add_filter("Qualification evidence", &["json"])
+                .blocking_pick_file()
+        } else if kind == "omni-media" {
+            dialog
+                .add_filter("Media", &["png", "jpg", "jpeg", "wav", "mp4"])
                 .blocking_pick_file()
         } else if kind == "config" {
             dialog

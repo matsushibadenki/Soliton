@@ -1,0 +1,363 @@
+{
+  "identity": {
+    "runtimeSha256": "37858e5c943f41a247a3257a8bb8411ce0b29b4756e0b0430f12dbeac4c7c8d3",
+    "modelSha256": "9f8d30e9d4fd7a9349d586e077988229b3ca0a0e4ad730897563d1eccc9893e2",
+    "projectorSha256": "720ff4fc09df0e026c4ec641d0c698bf27b5bcd50561944c88eda5e3dffe1839",
+    "platform": "macos-aarch64",
+    "hardware": "Mac16,13\n34359738368\nApple M4",
+    "ffmpegSha256": "1d35c048f613d22cea937dba0e9806156bca032bc0c3a47995be77472cd1027c",
+    "ffprobeSha256": "5c013cf8429c6e3d647b2a83888eba3d286303120567aa612ee75947c319a995",
+    "osVersion": "27.2.1",
+    "context": 4096,
+    "parallel": 1,
+    "reasoning": false,
+    "admissionVersion": 1
+  },
+  "cases": [
+    {
+      "rows": 50,
+      "cold": {
+        "answer": "42",
+        "finish": "stop",
+        "prompt": 378,
+        "completion": 2,
+        "cached": 0
+      },
+      "restored": {
+        "answer": "42",
+        "finish": "stop",
+        "prompt": 378,
+        "completion": 2,
+        "cached": 1
+      },
+      "afterRestart": true,
+      "stageBytes": 11841152,
+      "payloadSha256": "025e83c5e713b7099990d7d97b0ded1207e931015d639082994d6972a5cd995d",
+      "coldMs": 438.851,
+      "saveMs": 4.456,
+      "putMs": 103.156,
+      "getMs": 114.112,
+      "restoreMs": 2.164,
+      "responseMs": 438.076,
+      "restoreAndReplyMs": 554.352,
+      "saveRestoreAndReplyMs": 661.964
+    },
+    {
+      "rows": 50,
+      "cold": {
+        "answer": "73",
+        "finish": "stop",
+        "prompt": 378,
+        "completion": 2,
+        "cached": 0
+      },
+      "restored": {
+        "answer": "73",
+        "finish": "stop",
+        "prompt": 378,
+        "completion": 2,
+        "cached": 1
+      },
+      "afterRestart": false,
+      "stageBytes": 11841152,
+      "payloadSha256": "70b1147a2dd348e5486343cbd2beae0daa427862035c80cd9413aa59037f21d8",
+      "coldMs": 440.779,
+      "saveMs": 8.701,
+      "putMs": 113.659,
+      "getMs": 125.713,
+      "restoreMs": 1.821,
+      "responseMs": 435.84,
+      "restoreAndReplyMs": 563.374,
+      "saveRestoreAndReplyMs": 685.734
+    },
+    {
+      "rows": 50,
+      "cold": {
+        "answer": "91",
+        "finish": "stop",
+        "prompt": 378,
+        "completion": 2,
+        "cached": 0
+      },
+      "restored": {
+        "answer": "91",
+        "finish": "stop",
+        "prompt": 378,
+        "completion": 2,
+        "cached": 1
+      },
+      "afterRestart": false,
+      "stageBytes": 11841152,
+      "payloadSha256": "80d42a08be21f19ec5bf7ac21c9fbd87e0aa9419354f53ec8118421a7ca15fc1",
+      "coldMs": 439.046,
+      "saveMs": 3.753,
+      "putMs": 110.117,
+      "getMs": 103.102,
+      "restoreMs": 1.956,
+      "responseMs": 443.021,
+      "restoreAndReplyMs": 548.079,
+      "saveRestoreAndReplyMs": 661.949
+    },
+    {
+      "rows": 105,
+      "cold": {
+        "answer": "42",
+        "finish": "stop",
+        "prompt": 763,
+        "completion": 2,
+        "cached": 0
+      },
+      "restored": {
+        "answer": "42",
+        "finish": "stop",
+        "prompt": 763,
+        "completion": 2,
+        "cached": 247
+      },
+      "afterRestart": false,
+      "stageBytes": 19749936,
+      "payloadSha256": "ba3d8d5d6ea8ecaafcacd157c4ef16a2d498fa12ffa2c406998b02f367cae366",
+      "coldMs": 845.568,
+      "saveMs": 4.073,
+      "putMs": 166.371,
+      "getMs": 169.577,
+      "restoreMs": 2.949,
+      "responseMs": 582.745,
+      "restoreAndReplyMs": 755.271,
+      "saveRestoreAndReplyMs": 925.715
+    },
+    {
+      "rows": 105,
+      "cold": {
+        "answer": "73",
+        "finish": "stop",
+        "prompt": 763,
+        "completion": 2,
+        "cached": 0
+      },
+      "restored": {
+        "answer": "73",
+        "finish": "stop",
+        "prompt": 763,
+        "completion": 2,
+        "cached": 247
+      },
+      "afterRestart": false,
+      "stageBytes": 19749936,
+      "payloadSha256": "8456b6ce96037095e3748172206dfa78fb8f751e1283821129a5be44b622b112",
+      "coldMs": 849.306,
+      "saveMs": 4.551,
+      "putMs": 170.76,
+      "getMs": 165.894,
+      "restoreMs": 2.805,
+      "responseMs": 578.756,
+      "restoreAndReplyMs": 747.455,
+      "saveRestoreAndReplyMs": 922.766
+    },
+    {
+      "rows": 105,
+      "cold": {
+        "answer": "91",
+        "finish": "stop",
+        "prompt": 763,
+        "completion": 2,
+        "cached": 0
+      },
+      "restored": {
+        "answer": "91",
+        "finish": "stop",
+        "prompt": 763,
+        "completion": 2,
+        "cached": 247
+      },
+      "afterRestart": false,
+      "stageBytes": 19749936,
+      "payloadSha256": "0a3b4fb0c367b837654865a84bf97ae3a198025da457bafea78b443010fa1838",
+      "coldMs": 856.041,
+      "saveMs": 4.503,
+      "putMs": 173.296,
+      "getMs": 164.458,
+      "restoreMs": 2.781,
+      "responseMs": 575.155,
+      "restoreAndReplyMs": 742.394,
+      "saveRestoreAndReplyMs": 920.193
+    },
+    {
+      "rows": 180,
+      "cold": {
+        "answer": "42",
+        "finish": "stop",
+        "prompt": 1288,
+        "completion": 2,
+        "cached": 0
+      },
+      "restored": {
+        "answer": "42",
+        "finish": "stop",
+        "prompt": 1288,
+        "completion": 2,
+        "cached": 772
+      },
+      "afterRestart": false,
+      "stageBytes": 26301804,
+      "payloadSha256": "a2c50440c6155e7cc46ce027c64edf3d7c5f1afa1196ef1867b181fbc05f2e35",
+      "coldMs": 1446.626,
+      "saveMs": 10.625,
+      "putMs": 227.438,
+      "getMs": 218.688,
+      "restoreMs": 3.424,
+      "responseMs": 583.892,
+      "restoreAndReplyMs": 806.004,
+      "saveRestoreAndReplyMs": 1044.067
+    },
+    {
+      "rows": 180,
+      "cold": {
+        "answer": "73",
+        "finish": "stop",
+        "prompt": 1288,
+        "completion": 2,
+        "cached": 0
+      },
+      "restored": {
+        "answer": "73",
+        "finish": "stop",
+        "prompt": 1288,
+        "completion": 2,
+        "cached": 772
+      },
+      "afterRestart": false,
+      "stageBytes": 26301804,
+      "payloadSha256": "9d4c1c9dbb70908368e5c3e794abcb2b9fce134b370e9aa37985f42e0de1b1f9",
+      "coldMs": 1439.771,
+      "saveMs": 5.991,
+      "putMs": 224.034,
+      "getMs": 218.284,
+      "restoreMs": 4.463,
+      "responseMs": 598.672,
+      "restoreAndReplyMs": 821.419,
+      "saveRestoreAndReplyMs": 1051.444
+    },
+    {
+      "rows": 180,
+      "cold": {
+        "answer": "91",
+        "finish": "stop",
+        "prompt": 1288,
+        "completion": 2,
+        "cached": 0
+      },
+      "restored": {
+        "answer": "91",
+        "finish": "stop",
+        "prompt": 1288,
+        "completion": 2,
+        "cached": 772
+      },
+      "afterRestart": false,
+      "stageBytes": 26301804,
+      "payloadSha256": "6848b4120e3539559ac6e2be1883ce07234db5077a8bf9b3dfb1291ca71ae418",
+      "coldMs": 1444.159,
+      "saveMs": 5.2,
+      "putMs": 221.319,
+      "getMs": 215.217,
+      "restoreMs": 3.528,
+      "responseMs": 587.441,
+      "restoreAndReplyMs": 806.186,
+      "saveRestoreAndReplyMs": 1032.705
+    },
+    {
+      "rows": 300,
+      "cold": {
+        "answer": "42",
+        "finish": "stop",
+        "prompt": 2128,
+        "completion": 2,
+        "cached": 0
+      },
+      "restored": {
+        "answer": "42",
+        "finish": "stop",
+        "prompt": 2128,
+        "completion": 2,
+        "cached": 1612
+      },
+      "afterRestart": false,
+      "stageBytes": 36637164,
+      "payloadSha256": "865086eb7252075a8a00f2a2b70e96b366cc49130238173ade4359830a1ad0df",
+      "coldMs": 2488.586,
+      "saveMs": 6.979,
+      "putMs": 301.57,
+      "getMs": 296.595,
+      "restoreMs": 4.504,
+      "responseMs": 602.114,
+      "restoreAndReplyMs": 903.213,
+      "saveRestoreAndReplyMs": 1211.762
+    },
+    {
+      "rows": 300,
+      "cold": {
+        "answer": "73",
+        "finish": "stop",
+        "prompt": 2128,
+        "completion": 2,
+        "cached": 0
+      },
+      "restored": {
+        "answer": "73",
+        "finish": "stop",
+        "prompt": 2128,
+        "completion": 2,
+        "cached": 1612
+      },
+      "afterRestart": false,
+      "stageBytes": 36637164,
+      "payloadSha256": "55f952c394b84e89b9390e9b90b7520104173b6a105630ac47cdb65ead227eb2",
+      "coldMs": 2371.323,
+      "saveMs": 12.134,
+      "putMs": 319.666,
+      "getMs": 299.588,
+      "restoreMs": 4.422,
+      "responseMs": 604.652,
+      "restoreAndReplyMs": 908.662,
+      "saveRestoreAndReplyMs": 1240.462
+    },
+    {
+      "rows": 300,
+      "cold": {
+        "answer": "91",
+        "finish": "stop",
+        "prompt": 2128,
+        "completion": 2,
+        "cached": 0
+      },
+      "restored": {
+        "answer": "91",
+        "finish": "stop",
+        "prompt": 2128,
+        "completion": 2,
+        "cached": 1612
+      },
+      "afterRestart": false,
+      "stageBytes": 36637164,
+      "payloadSha256": "fb3609c251d68d011465b31c25c5122008bb6892c539c8dad7788d72377e0726",
+      "coldMs": 2378.266,
+      "saveMs": 7.038,
+      "putMs": 299.608,
+      "getMs": 294.097,
+      "restoreMs": 4.371,
+      "responseMs": 603.266,
+      "restoreAndReplyMs": 901.734,
+      "saveRestoreAndReplyMs": 1208.38
+    }
+  ],
+  "exportLimit": {
+    "bytes": 8388608,
+    "writtenBytes": 8388608,
+    "httpStatus": 500,
+    "serverRecovered": true
+  },
+  "templateSha256": "4e295a038af980438912483abe76a81c36b2451c87ccc1e62051529a6a0fb7f5",
+  "quotaRefused": true,
+  "wrongIdentityRefused": true
+}

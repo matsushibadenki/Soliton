@@ -205,6 +205,9 @@ impl Settings {
             "-c",
             &self.context.to_string(),
             "--no-webui",
+            // llama.cpp forwards allocation records at trace verbosity.
+            "--verbosity",
+            "4",
             "--reasoning",
             "off",
             "--temp",

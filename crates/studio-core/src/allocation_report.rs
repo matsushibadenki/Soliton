@@ -1,4 +1,4 @@
-//! Scalar allocation reports from one owned Gemma stderr stream. Not RSS/peak usage.
+//! Scalar allocation reports from an owned native engine stderr stream.
 use crate::{engine::Engine, Settings};
 use serde::Serialize;
 use sha2::{Digest, Sha256};
@@ -10,6 +10,8 @@ pub(crate) struct Collector {
     kv: Vec<u64>,
     compute: BTreeMap<String, u64>,
     output: BTreeMap<String, u64>,
+    recurrent: BTreeMap<String, u64>,
+    projector_max: Option<u64>,
     invalid: bool,
 }
 #[derive(Clone, Debug, Serialize)]
@@ -20,6 +22,8 @@ pub struct Report {
     pub kv_bytes: Option<u64>,
     pub compute_bytes: Option<u64>,
     pub output_bytes: Option<u64>,
+    pub recurrent_bytes: Option<u64>,
+    pub projector_max_buffer_bytes: Option<u64>,
     pub workspace_bytes: Option<u64>,
 }
 fn mib(value: &str) -> Option<u64> {
@@ -66,12 +70,17 @@ impl Collector {
             "compute"
         } else if prefix == "llama_context" && rest.contains("output buffer size =") {
             "output"
+        } else if prefix == "llama_memory_recurrent" && rest.contains(" RS buffer size =") {
+            "recurrent"
+        } else if prefix == "reserve_compute_meta" && rest.contains(" compute buffer size =") {
+            "projector"
         } else {
             return;
         };
         let Some((device, value)) = rest.trim().split_once(match category {
             "kv" => " KV buffer size =",
-            "compute" => " compute buffer size =",
+            "compute" | "projector" => " compute buffer size =",
+            "recurrent" => " RS buffer size =",
             _ => "output buffer size =",
         }) else {
             return;
@@ -94,7 +103,13 @@ impl Collector {
             self.invalid = true;
             return;
         };
-        if category == "kv" {
+        if category == "projector" {
+            // The log omits graph identity, so only one reported allocation can be compared.
+            self.projector_max = Some(
+                self.projector_max
+                    .map_or(value, |previous| previous.max(value)),
+            );
+        } else if category == "kv" {
             // SWA and full-attention caches legitimately report the same device twice.
             if self.kv.len() >= 16 {
                 self.invalid = true;
@@ -102,10 +117,10 @@ impl Collector {
             }
             self.kv.push(value);
         } else {
-            let map = if category == "compute" {
-                &mut self.compute
-            } else {
-                &mut self.output
+            let map = match category {
+                "compute" => &mut self.compute,
+                "recurrent" => &mut self.recurrent,
+                _ => &mut self.output,
             };
             if !map.contains_key(device) && map.len() >= 16 {
                 self.invalid = true;
@@ -131,6 +146,14 @@ impl Collector {
             kv_bytes: kv,
             compute_bytes: compute,
             output_bytes: output,
+            recurrent_bytes: (!self.invalid)
+                .then(|| sum(self.recurrent.values().copied()))
+                .flatten(),
+            projector_max_buffer_bytes: if self.invalid {
+                None
+            } else {
+                self.projector_max
+            },
             workspace_bytes: compute.zip(output).and_then(|(c, o)| c.checked_add(o)),
         }
     }
@@ -139,48 +162,76 @@ fn digest(bytes: &[u8]) -> Vec<u8> {
     Sha256::digest(bytes).to_vec()
 }
 #[derive(Clone)]
+enum Binding {
+    Strata {
+        root: String,
+        config: String,
+        hash: Vec<u8>,
+    },
+    Omni(crate::omni_runtime::Settings),
+}
+
+#[derive(Clone)]
 pub(crate) struct Session {
     pub collector: Arc<Mutex<Collector>>,
     id: String,
     pid: u32,
-    root: String,
-    config: String,
-    hash: Vec<u8>,
+    binding: Binding,
 }
 impl Session {
     pub fn new(settings: &Settings, bytes: &[u8], pid: u32) -> Self {
+        Self::bound(
+            pid,
+            Binding::Strata {
+                root: settings.strata_root.clone(),
+                config: settings.config.clone(),
+                hash: digest(bytes),
+            },
+        )
+    }
+    pub fn omni(settings: &crate::omni_runtime::Settings, pid: u32) -> Self {
+        Self::bound(pid, Binding::Omni(settings.clone()))
+    }
+    fn bound(pid: u32, binding: Binding) -> Self {
         Self {
             collector: Arc::new(Mutex::new(Collector::default())),
             id: uuid::Uuid::new_v4().to_string(),
             pid,
-            root: settings.strata_root.clone(),
-            config: settings.config.clone(),
-            hash: digest(bytes),
+            binding,
         }
     }
     pub fn same_report(&self, report: &Report) -> bool {
         self.id == report.session && self.pid == report.pid
     }
     pub async fn snapshot(&self, settings: &Settings) -> Option<Report> {
-        if settings.mock
-            || settings.engine != Engine::Strata
-            || settings.strata_root != self.root
-            || settings.config != self.config
-        {
-            return None;
-        }
-        // Bind the display to the actual launched config, including in-place edits.
-        let mut bytes = Vec::new();
-        if !std::fs::metadata(&self.config).ok()?.is_file() {
-            return None;
-        }
-        let f = std::fs::File::open(&self.config).ok()?;
-        if !f.metadata().ok()?.is_file() {
-            return None;
-        }
-        f.take(1024 * 1024 + 1).read_to_end(&mut bytes).ok()?;
-        if bytes.len() > 1024 * 1024 || digest(&bytes) != self.hash {
-            return None;
+        match &self.binding {
+            Binding::Strata { root, config, hash } => {
+                if settings.mock
+                    || settings.engine != Engine::Strata
+                    || &settings.strata_root != root
+                    || &settings.config != config
+                {
+                    return None;
+                }
+                // Bind the display to the actual launched config, including in-place edits.
+                if !std::fs::metadata(config).ok()?.is_file() {
+                    return None;
+                }
+                let file = std::fs::File::open(config).ok()?;
+                if !file.metadata().ok()?.is_file() {
+                    return None;
+                }
+                let mut bytes = Vec::new();
+                file.take(1024 * 1024 + 1).read_to_end(&mut bytes).ok()?;
+                if bytes.len() > 1024 * 1024 || &digest(&bytes) != hash {
+                    return None;
+                }
+            }
+            Binding::Omni(config) => {
+                if settings.engine != Engine::Lfm3Omni || &settings.omni != config {
+                    return None;
+                }
+            }
         }
         let report = self
             .collector
@@ -189,7 +240,9 @@ impl Session {
             .report(self.id.clone(), self.pid);
         (report.kv_bytes.is_some()
             || report.compute_bytes.is_some()
-            || report.output_bytes.is_some())
+            || report.output_bytes.is_some()
+            || report.recurrent_bytes.is_some()
+            || report.projector_max_buffer_bytes.is_some())
         .then_some(report)
     }
 }
@@ -197,6 +250,50 @@ impl Session {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[tokio::test]
+    async fn omni_report_only_matches_its_launch_configuration() {
+        let mut settings = Settings {
+            engine: Engine::Lfm3Omni,
+            ..Settings::default()
+        };
+        settings.omni.context = 4096;
+        let session = Session::omni(&settings.omni, 123);
+        assert!(session.snapshot(&settings).await.is_none());
+
+        session
+            .collector
+            .lock()
+            .await
+            .observe("llama_kv_cache: Metal KV buffer size = 16.00 MiB");
+        let report = session.snapshot(&settings).await.unwrap();
+        assert_eq!(report.kv_bytes, Some(16 * 1024 * 1024));
+        assert!(session.same_report(&report));
+        assert!(!Session::omni(&settings.omni, 123).same_report(&report));
+
+        settings.omni.context = 2048;
+        assert!(session.snapshot(&settings).await.is_none());
+        settings.omni.context = 4096;
+        settings.engine = Engine::Strata;
+        assert!(session.snapshot(&settings).await.is_none());
+    }
+    #[test]
+    fn recurrent_and_projector_reports_do_not_inflate_core_workspace() {
+        let mut collector = Collector::default();
+        for line in [
+            "llama_memory_recurrent: MTL0 RS buffer size = 1.00 MiB",
+            "reserve_compute_meta: MTL0 compute buffer size = 8.00 MiB",
+            "reserve_compute_meta: CPU compute buffer size = 2.00 MiB",
+            "reserve_compute_meta: MTL0 compute buffer size = 4.00 MiB",
+            "sched_reserve: MTL0 compute buffer size = 16.00 MiB",
+            "llama_context: CPU output buffer size = 1.00 MiB",
+        ] {
+            collector.observe(line);
+        }
+        let report = collector.report("test".into(), 1);
+        assert_eq!(report.recurrent_bytes, Some(1048576));
+        assert_eq!(report.projector_max_buffer_bytes, Some(8 * 1048576));
+        assert_eq!(report.workspace_bytes, Some(17 * 1048576));
+    }
     #[test]
     fn swa_and_backends_sum_but_compute_replacements_do_not_accumulate() {
         let mut c = Collector::default();

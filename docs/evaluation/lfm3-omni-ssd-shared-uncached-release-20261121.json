@@ -1,0 +1,377 @@
+{
+  "identity": {
+    "runtimeSha256": "37858e5c943f41a247a3257a8bb8411ce0b29b4756e0b0430f12dbeac4c7c8d3",
+    "modelSha256": "9f8d30e9d4fd7a9349d586e077988229b3ca0a0e4ad730897563d1eccc9893e2",
+    "projectorSha256": "720ff4fc09df0e026c4ec641d0c698bf27b5bcd50561944c88eda5e3dffe1839",
+    "platform": "macos-aarch64",
+    "hardware": "Mac16,13\n34359738368\nApple M4",
+    "ffmpegSha256": "1d35c048f613d22cea937dba0e9806156bca032bc0c3a47995be77472cd1027c",
+    "ffprobeSha256": "5c013cf8429c6e3d647b2a83888eba3d286303120567aa612ee75947c319a995",
+    "osVersion": "27.2.1",
+    "context": 4096,
+    "parallel": 1,
+    "reasoning": false,
+    "admissionVersion": 1
+  },
+  "cases": [
+    {
+      "rows": 160,
+      "cold": {
+        "answer": "42",
+        "finish": "stop",
+        "prompt": 1224,
+        "completion": 2,
+        "cached": 0
+      },
+      "restored": {
+        "answer": "42",
+        "finish": "stop",
+        "prompt": 1224,
+        "completion": 2,
+        "cached": 708
+      },
+      "afterRestart": true,
+      "stageBytes": 28778360,
+      "payloadSha256": "873d4cdad0f54b03256e756a4b8f84fe3a1e60677ce52b56d9028305f1e22dc4",
+      "coldMs": 1406.286,
+      "saveMs": 11.384,
+      "putMs": 56.817,
+      "getMs": 46.183,
+      "restoreMs": 5.274,
+      "responseMs": 627.352,
+      "restoreAndReplyMs": 678.809,
+      "saveRestoreAndReplyMs": 747.01,
+      "competingReadPairMs": null
+    },
+    {
+      "rows": 160,
+      "cold": {
+        "answer": "73",
+        "finish": "stop",
+        "prompt": 1224,
+        "completion": 2,
+        "cached": 0
+      },
+      "restored": {
+        "answer": "73",
+        "finish": "stop",
+        "prompt": 1224,
+        "completion": 2,
+        "cached": 708
+      },
+      "afterRestart": false,
+      "stageBytes": 28778360,
+      "payloadSha256": "ea30b43e2a29a4482da6317f723826397861c5f11db06efb2450c2586ba980e7",
+      "coldMs": 1412.467,
+      "saveMs": 11.585,
+      "putMs": 41.626,
+      "getMs": 68.56,
+      "restoreMs": 4.676,
+      "responseMs": 628.321,
+      "restoreAndReplyMs": 701.557,
+      "saveRestoreAndReplyMs": 754.768,
+      "competingReadPairMs": 72.548
+    },
+    {
+      "rows": 160,
+      "cold": {
+        "answer": "91",
+        "finish": "stop",
+        "prompt": 1224,
+        "completion": 2,
+        "cached": 0
+      },
+      "restored": {
+        "answer": "91",
+        "finish": "stop",
+        "prompt": 1224,
+        "completion": 2,
+        "cached": 708
+      },
+      "afterRestart": false,
+      "stageBytes": 28778360,
+      "payloadSha256": "7b4894d4f7f78ec0cfd843c38792adc1b1998527095858e14de37f08dc3f086e",
+      "coldMs": 1422.87,
+      "saveMs": 6.089,
+      "putMs": 37.76,
+      "getMs": 67.693,
+      "restoreMs": 4.62,
+      "responseMs": 640.457,
+      "restoreAndReplyMs": 712.77,
+      "saveRestoreAndReplyMs": 756.619,
+      "competingReadPairMs": 71.51
+    },
+    {
+      "rows": 169,
+      "cold": {
+        "answer": "42",
+        "finish": "stop",
+        "prompt": 1287,
+        "completion": 2,
+        "cached": 0
+      },
+      "restored": {
+        "answer": "42",
+        "finish": "stop",
+        "prompt": 1287,
+        "completion": 2,
+        "cached": 771
+      },
+      "afterRestart": false,
+      "stageBytes": 29553512,
+      "payloadSha256": "2f8bef33c7db18bfdb7bdae461b5cdeb21e77465f6c526fbf07e393550e16d9e",
+      "coldMs": 1502.533,
+      "saveMs": 6.095,
+      "putMs": 54.508,
+      "getMs": 69.21,
+      "restoreMs": 4.771,
+      "responseMs": 642.936,
+      "restoreAndReplyMs": 716.917,
+      "saveRestoreAndReplyMs": 777.52,
+      "competingReadPairMs": 72.667
+    },
+    {
+      "rows": 169,
+      "cold": {
+        "answer": "73",
+        "finish": "stop",
+        "prompt": 1287,
+        "completion": 2,
+        "cached": 0
+      },
+      "restored": {
+        "answer": "73",
+        "finish": "stop",
+        "prompt": 1287,
+        "completion": 2,
+        "cached": 771
+      },
+      "afterRestart": false,
+      "stageBytes": 29553512,
+      "payloadSha256": "4a6c2c0abb91c9aa5d04b6689b7018ac068e9cfdb36583d248250cc883da64c0",
+      "coldMs": 1508.847,
+      "saveMs": 10.524,
+      "putMs": 57.121,
+      "getMs": 68.65,
+      "restoreMs": 4.765,
+      "responseMs": 647.696,
+      "restoreAndReplyMs": 721.111,
+      "saveRestoreAndReplyMs": 788.756,
+      "competingReadPairMs": 72.26
+    },
+    {
+      "rows": 169,
+      "cold": {
+        "answer": "91",
+        "finish": "stop",
+        "prompt": 1287,
+        "completion": 2,
+        "cached": 0
+      },
+      "restored": {
+        "answer": "91",
+        "finish": "stop",
+        "prompt": 1287,
+        "completion": 2,
+        "cached": 771
+      },
+      "afterRestart": false,
+      "stageBytes": 29553512,
+      "payloadSha256": "7077d19a514c9ca140919eea7674f8c71b97072b1bb942e31efbe1733d7e3c5c",
+      "coldMs": 1515.397,
+      "saveMs": 6.459,
+      "putMs": 43.883,
+      "getMs": 72.363,
+      "restoreMs": 4.735,
+      "responseMs": 650.525,
+      "restoreAndReplyMs": 727.623,
+      "saveRestoreAndReplyMs": 777.965,
+      "competingReadPairMs": 74.433
+    },
+    {
+      "rows": 170,
+      "cold": {
+        "answer": "42",
+        "finish": "stop",
+        "prompt": 1294,
+        "completion": 2,
+        "cached": 0
+      },
+      "restored": {
+        "answer": "42",
+        "finish": "stop",
+        "prompt": 1294,
+        "completion": 2,
+        "cached": 778
+      },
+      "afterRestart": false,
+      "stageBytes": 29639640,
+      "payloadSha256": "2b1c829917099637c126495c1ed5d97a73f9921bb90e4a821c722e18b0c1d66a",
+      "coldMs": 1548.733,
+      "saveMs": 27.825,
+      "putMs": 56.756,
+      "getMs": 74.996,
+      "restoreMs": 4.784,
+      "responseMs": 645.332,
+      "restoreAndReplyMs": 725.112,
+      "saveRestoreAndReplyMs": 809.693,
+      "competingReadPairMs": 77.534
+    },
+    {
+      "rows": 170,
+      "cold": {
+        "answer": "73",
+        "finish": "stop",
+        "prompt": 1294,
+        "completion": 2,
+        "cached": 0
+      },
+      "restored": {
+        "answer": "73",
+        "finish": "stop",
+        "prompt": 1294,
+        "completion": 2,
+        "cached": 778
+      },
+      "afterRestart": false,
+      "stageBytes": 29639640,
+      "payloadSha256": "d7094f345f3c229169c7f63380076fee36fe5370c9e7a315825b5211c3b81c83",
+      "coldMs": 1550.308,
+      "saveMs": 16.619,
+      "putMs": 51.57,
+      "getMs": 80.935,
+      "restoreMs": 4.454,
+      "responseMs": 653.673,
+      "restoreAndReplyMs": 739.062,
+      "saveRestoreAndReplyMs": 807.251,
+      "competingReadPairMs": 84.746
+    },
+    {
+      "rows": 170,
+      "cold": {
+        "answer": "91",
+        "finish": "stop",
+        "prompt": 1294,
+        "completion": 2,
+        "cached": 0
+      },
+      "restored": {
+        "answer": "91",
+        "finish": "stop",
+        "prompt": 1294,
+        "completion": 2,
+        "cached": 778
+      },
+      "afterRestart": false,
+      "stageBytes": 29639640,
+      "payloadSha256": "7155c3a0e27096f1f2096b48f62accd1339d7b02f467a5e9922311946c45edce",
+      "coldMs": 1555.318,
+      "saveMs": 7.691,
+      "putMs": 63.713,
+      "getMs": 58.477,
+      "restoreMs": 4.259,
+      "responseMs": 638.67,
+      "restoreAndReplyMs": 701.406,
+      "saveRestoreAndReplyMs": 772.81,
+      "competingReadPairMs": 60.61
+    },
+    {
+      "rows": 180,
+      "cold": {
+        "answer": "42",
+        "finish": "stop",
+        "prompt": 1364,
+        "completion": 2,
+        "cached": 0
+      },
+      "restored": {
+        "answer": "42",
+        "finish": "stop",
+        "prompt": 1364,
+        "completion": 2,
+        "cached": 848
+      },
+      "afterRestart": false,
+      "stageBytes": 30500920,
+      "payloadSha256": "ea3b02157f6e4ab6f1d88c693448652429f8c64cea22f6443be3d3ff1bd44c1d",
+      "coldMs": 1627.12,
+      "saveMs": 5.959,
+      "putMs": 41.22,
+      "getMs": 72.072,
+      "restoreMs": 4.794,
+      "responseMs": 647.498,
+      "restoreAndReplyMs": 724.364,
+      "saveRestoreAndReplyMs": 771.543,
+      "competingReadPairMs": 75.845
+    },
+    {
+      "rows": 180,
+      "cold": {
+        "answer": "73",
+        "finish": "stop",
+        "prompt": 1364,
+        "completion": 2,
+        "cached": 0
+      },
+      "restored": {
+        "answer": "73",
+        "finish": "stop",
+        "prompt": 1364,
+        "completion": 2,
+        "cached": 848
+      },
+      "afterRestart": false,
+      "stageBytes": 30500920,
+      "payloadSha256": "8e1ed533819561152c8263c08ef9c9255653c8ece9e891cb9e3516e3770f67af",
+      "coldMs": 1627.974,
+      "saveMs": 30.694,
+      "putMs": 61.675,
+      "getMs": 76.08,
+      "restoreMs": 4.781,
+      "responseMs": 646.863,
+      "restoreAndReplyMs": 727.724,
+      "saveRestoreAndReplyMs": 820.093,
+      "competingReadPairMs": 78.278
+    },
+    {
+      "rows": 180,
+      "cold": {
+        "answer": "91",
+        "finish": "stop",
+        "prompt": 1364,
+        "completion": 2,
+        "cached": 0
+      },
+      "restored": {
+        "answer": "91",
+        "finish": "stop",
+        "prompt": 1364,
+        "completion": 2,
+        "cached": 848
+      },
+      "afterRestart": false,
+      "stageBytes": 30500920,
+      "payloadSha256": "36cc609a60ab2c9d60d4d66dfb589f210f8165f749ae54522117f4cb5eee6c8b",
+      "coldMs": 1627.935,
+      "saveMs": 6.359,
+      "putMs": 53.72,
+      "getMs": 73.804,
+      "restoreMs": 4.846,
+      "responseMs": 660.375,
+      "restoreAndReplyMs": 739.025,
+      "saveRestoreAndReplyMs": 799.104,
+      "competingReadPairMs": 75.972
+    }
+  ],
+  "storageMode": "shared-macos-f-nocache",
+  "storeQuotaBytes": 536870912,
+  "exportLimit": {
+    "bytes": 8388608,
+    "writtenBytes": 8388608,
+    "httpStatus": 500,
+    "serverRecovered": true
+  },
+  "templateSha256": "4e295a038af980438912483abe76a81c36b2451c87ccc1e62051529a6a0fb7f5",
+  "quotaRefused": true,
+  "wrongIdentityRefused": true
+}

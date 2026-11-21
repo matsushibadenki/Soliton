@@ -3195,3 +3195,29 @@ body > .dock-menu-items {
   font-size: 12px;
   overflow-wrap: anywhere;
 }
+
+.media-draft {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0 12px;
+  min-width: 0;
+}
+
+.media-chip {
+  display: inline-block;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding: 4px 8px;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  font-size: 12px;
+}
+
+.engine-guide { min-width: 0; display: grid; gap: .45rem; padding: .65rem; }
+.engine-guide-fields { display: flex; flex-wrap: wrap; gap: .6rem; }
+.engine-guide-fields label { display: grid; gap: .2rem; min-width: 0; }
+.engine-guide-row { display: flex; flex-wrap: wrap; align-items: baseline; gap: .2rem .7rem; }
+.engine-guide-row small { flex-basis: 100%; overflow-wrap: anywhere; }

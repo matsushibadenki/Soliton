@@ -1,0 +1,252 @@
+{
+  "model": "LFM3-Omni-2B-Q4_K_M",
+  "context": 4096,
+  "clips": {
+    "blue.mp4": "4a53eda12ac1b004c80c756a5a2997feef1190f870dbd20f2fefead125a2221f",
+    "green.mp4": "bc341942b57329fb404edd2a9881b4e5b1368e0a3aea22a3e0c984e99b88ed97",
+    "original-red.mp4": "e8b58f2994d4e4dfeed4a4ca15d0caf01be45e780bb4ac66f957992056925213",
+    "red.mp4": "aae5c3c2d13eb39b1c062308e6c3a03e50d6c14a34105a7dd4e7bf3464047a9e"
+  },
+  "speechCheck": {
+    "recognizer": "whisper.cpp v1.7.6 / multilingual Whisper base",
+    "modelSha256": "60ed5bc3dd14eea856493d334349b405782ddcaf0028d4b5df4088345fba2efe",
+    "mode": "local recognition with expected language pinned, not human listening",
+    "contentScoring": "The requested words must be recognizable, allowing script, punctuation, and numeral variants. The target-only score also excludes an audible preamble."
+  },
+  "cases": [
+    {
+      "language": "zh",
+      "kind": "video",
+      "clip": "original-red",
+      "variant": "baseline",
+      "text": "Red",
+      "inputTokens": 108,
+      "passed": false
+    },
+    {
+      "language": "zh",
+      "kind": "video",
+      "clip": "original-red",
+      "variant": "language",
+      "text": "红",
+      "inputTokens": 118,
+      "passed": true
+    },
+    {
+      "language": "zh",
+      "kind": "video",
+      "clip": "original-red",
+      "variant": "choices",
+      "text": "红",
+      "inputTokens": 116,
+      "passed": true
+    },
+    {
+      "language": "zh",
+      "kind": "video",
+      "clip": "red",
+      "variant": "baseline",
+      "text": "红",
+      "inputTokens": 83,
+      "passed": true
+    },
+    {
+      "language": "zh",
+      "kind": "video",
+      "clip": "red",
+      "variant": "language",
+      "text": "红",
+      "inputTokens": 93,
+      "passed": true
+    },
+    {
+      "language": "zh",
+      "kind": "video",
+      "clip": "red",
+      "variant": "choices",
+      "text": "红",
+      "inputTokens": 91,
+      "passed": true
+    },
+    {
+      "language": "zh",
+      "kind": "video",
+      "clip": "green",
+      "variant": "baseline",
+      "text": "绿色",
+      "inputTokens": 83,
+      "passed": true
+    },
+    {
+      "language": "zh",
+      "kind": "video",
+      "clip": "green",
+      "variant": "language",
+      "text": "绿色",
+      "inputTokens": 93,
+      "passed": true
+    },
+    {
+      "language": "zh",
+      "kind": "video",
+      "clip": "green",
+      "variant": "choices",
+      "text": "绿",
+      "inputTokens": 91,
+      "passed": true
+    },
+    {
+      "language": "zh",
+      "kind": "video",
+      "clip": "blue",
+      "variant": "baseline",
+      "text": "蓝色",
+      "inputTokens": 83,
+      "passed": true
+    },
+    {
+      "language": "zh",
+      "kind": "video",
+      "clip": "blue",
+      "variant": "language",
+      "text": "蓝色",
+      "inputTokens": 93,
+      "passed": true
+    },
+    {
+      "language": "zh",
+      "kind": "video",
+      "clip": "blue",
+      "variant": "choices",
+      "text": "蓝",
+      "inputTokens": 91,
+      "passed": true
+    },
+    {
+      "language": "en",
+      "kind": "speech",
+      "text": "Hello!",
+      "audioBytes": 76800,
+      "sampleRate": 24000,
+      "expected": "Hello!",
+      "filename": "en-1.wav",
+      "passed": true,
+      "whisperTranscription": "Hello?",
+      "controlTranscription": "Hello.",
+      "targetContentRecognized": true,
+      "targetOnlyRecognized": true
+    },
+    {
+      "language": "en",
+      "kind": "speech",
+      "text": "The meeting starts at nine.",
+      "audioBytes": 111360,
+      "sampleRate": 24000,
+      "expected": "The meeting starts at nine.",
+      "filename": "en-2.wav",
+      "passed": true,
+      "whisperTranscription": "The meeting starts at 9.",
+      "controlTranscription": "The meeting starts at 9.",
+      "targetContentRecognized": true,
+      "targetOnlyRecognized": true
+    },
+    {
+      "language": "en",
+      "kind": "speech",
+      "text": "Sure, here you go: Please close the blue door.",
+      "audioBytes": 195840,
+      "sampleRate": 24000,
+      "expected": "Please close the blue door.",
+      "filename": "en-3.wav",
+      "passed": false,
+      "whisperTranscription": "Sure, here you go. Please close the blue door.",
+      "controlTranscription": "Please close the blue door.",
+      "targetContentRecognized": true,
+      "targetOnlyRecognized": false
+    },
+    {
+      "language": "ja",
+      "kind": "speech",
+      "text": "こんにちは。",
+      "audioBytes": 107520,
+      "sampleRate": 24000,
+      "expected": "こんにちは。",
+      "filename": "ja-1.wav",
+      "passed": true,
+      "whisperTranscription": "コンシアシャー",
+      "controlTranscription": "こんにちわ",
+      "targetContentRecognized": false,
+      "targetOnlyRecognized": false
+    },
+    {
+      "language": "ja",
+      "kind": "speech",
+      "text": "会議は9時に始まります。",
+      "audioBytes": 46080,
+      "sampleRate": 24000,
+      "expected": "会議は九時に始まります。",
+      "filename": "ja-2.wav",
+      "passed": false,
+      "whisperTranscription": "ガリゴ。",
+      "controlTranscription": "会議は「くじに始まります」",
+      "targetContentRecognized": false,
+      "targetOnlyRecognized": false
+    },
+    {
+      "language": "ja",
+      "kind": "speech",
+      "text": "青いドアを閉めてください。",
+      "audioBytes": 80640,
+      "sampleRate": 24000,
+      "expected": "青いドアを閉めてください。",
+      "filename": "ja-3.wav",
+      "passed": true,
+      "whisperTranscription": "ご視聴をお散らめてください",
+      "controlTranscription": "アオイドアを閉めてください",
+      "targetContentRecognized": false,
+      "targetOnlyRecognized": false
+    },
+    {
+      "language": "zh",
+      "kind": "speech",
+      "text": "你好。",
+      "audioBytes": 84480,
+      "sampleRate": 24000,
+      "expected": "你好。",
+      "filename": "zh-1.wav",
+      "passed": true,
+      "whisperTranscription": "你好",
+      "controlTranscription": "你好",
+      "targetContentRecognized": true,
+      "targetOnlyRecognized": true
+    },
+    {
+      "language": "zh",
+      "kind": "speech",
+      "text": "会议九点开始。",
+      "audioBytes": 115200,
+      "sampleRate": 24000,
+      "expected": "会议九点开始。",
+      "filename": "zh-2.wav",
+      "passed": true,
+      "whisperTranscription": "何意用单开始?",
+      "controlTranscription": "會議9點開始",
+      "targetContentRecognized": false,
+      "targetOnlyRecognized": false
+    },
+    {
+      "language": "zh",
+      "kind": "speech",
+      "text": "请关上蓝色的门。",
+      "audioBytes": 184320,
+      "sampleRate": 24000,
+      "expected": "请关上蓝色的门。",
+      "filename": "zh-3.wav",
+      "passed": true,
+      "whisperTranscription": "聽寬傷, 辣子的哆哆。",
+      "controlTranscription": "請關上藍色的門",
+      "targetContentRecognized": false,
+      "targetOnlyRecognized": false
+    }
+  ]
+}
