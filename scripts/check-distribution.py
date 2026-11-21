@@ -92,7 +92,7 @@ def sha(path):
 
 def check(app, smoke=False):
     report = {'schemaVersion':1, 'scope':'local distribution preflight; not another-Mac verification',
-              'otherMacGui':'pending', 'signingAndNotarization':'Developer ID and notarization deferred; ad hoc integrity signature', 'errors':[], 'nativeFiles':[]}
+              'otherMacGui':'pending', 'signingAndNotarization':'notary status is outside this runtime check', 'errors':[], 'nativeFiles':[]}
     config = json.loads((ROOT/'src-tauri/tauri.conf.json').read_text())
     minimum = config['bundle']['macOS']['minimumSystemVersion']
     report['minimumMacOS'] = minimum
@@ -113,6 +113,7 @@ def check(app, smoke=False):
             report['errors'].append('app bundle integrity verification failed')
         with (app/'Contents/Info.plist').open('rb') as handle:
             plist = plistlib.load(handle)
+        report['appVersion'] = plist.get('CFBundleShortVersionString')
         if plist.get('LSMinimumSystemVersion') != minimum:
             report['errors'].append('Info.plist minimum macOS does not match build configuration')
         roots = [('app',app)]
@@ -133,10 +134,13 @@ def check(app, smoke=False):
         for binary in [main,work/'python/bin/python3',strata/'build-metal/strata',strata/'build-metal/strata-gemma-server']:
             if not os.access(binary,os.X_OK):
                 report['errors'].append('required runtime is not executable: '+binary.name)
+        report['engines'] = {}
         for marker, engine in [('.bundled-metal.json','build-metal/strata'),
                                ('.bundled-gemma3.json','build-metal/strata-gemma-server')]:
             meta = json.loads((strata/marker).read_text())
-            if sha(strata/engine) != meta['sha256']:
+            measured = sha(strata/engine)
+            report['engines'][engine] = {'sha256':measured, 'matchesBuildMetadata':measured == meta['sha256']}
+            if measured != meta['sha256']:
                 report['errors'].append('engine checksum mismatch: '+engine)
         for required in ['serve/server.py','metal/setup_mac.py','build-metal/metal/kernels',
                          'build-metal/metal/engine-msl','build-metal/metal/ggml-common.h',

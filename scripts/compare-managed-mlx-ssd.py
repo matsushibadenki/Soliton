@@ -71,10 +71,12 @@ class Footprint:
             if self.lib.proc_pid_rusage(pid, 2, ctypes.byref(info)) != 0:
                 if pid in self.tree():
                     raise OSError(ctypes.get_errno(), "proc_pid_rusage")
-                continue
+                return  # A short-lived store process exited during this sample.
             total += info[9]
         if total <= 0 or len(pids) < 2:
             raise RuntimeError("Missing live inference process")
+        if pids != self.tree():
+            return
         self.peak = max(total, self.peak)
         self.samples += 1
 
@@ -96,6 +98,8 @@ class Footprint:
         self.thread.join()
         if self.error:
             raise self.error
+        if self.samples == 0:
+            raise RuntimeError("No complete physical-footprint samples")
 
 
 def worker_limits(root):
@@ -113,6 +117,10 @@ def worker_limits(root):
             ) as response:
                 return json.load(response)
     raise RuntimeError("Managed MLX telemetry worker not found")
+
+
+class Busy(Exception):
+    """Admission refused before streaming began, so a new QA conversation can retry."""
 
 
 class Gateway:
@@ -147,7 +155,7 @@ class Gateway:
             time.sleep(0.1)
         raise TimeoutError("Engine readiness")
 
-    def inference(self, messages, interrupt=False, route=ROUTE):
+    def inference(self, messages, interrupt=False, route=ROUTE, since=None):
         body = {
             "model": "default_model",
             "messages": messages,
@@ -166,7 +174,13 @@ class Gateway:
                 connection.request("POST", route, json.dumps(body), self.headers)
                 with connection.getresponse() as response:
                     if response.status != 200:
-                        raise RuntimeError(str((response.status, response.read(512))))
+                        detail = response.read(512).decode()
+                        if (
+                            response.status in (409, 429, 503)
+                            and "busy" in detail.lower()
+                        ):
+                            raise Busy(response.status, detail)
+                        raise RuntimeError(str((response.status, detail)))
                     for line in response:
                         if not line.startswith(b"data:"):
                             continue
@@ -196,6 +210,14 @@ class Gateway:
             "firstMs": round(1000 * (first - start), 2),
             "completionMs": round(1000 * (end - start), 2),
             "peakPhysicalBytes": memory.peak,
+            **(
+                {
+                    "startToFirstMs": round((first - since) * 1000, 2),
+                    "startToCompletedMs": round((end - since) * 1000, 2),
+                }
+                if since is not None
+                else {}
+            ),
             "memorySamples": memory.samples,
             "finish": reason,
         }
@@ -304,6 +326,10 @@ def run(args):
         "starts": starts,
     }
 
+    if args.restart_only:
+        restart_to_answer(args, report, settings, nonce)
+        return
+
     def save():
         args.output.write_text(json.dumps(report, indent=2) + "\n")
 
@@ -346,9 +372,33 @@ def run(args):
                     previous = {
                         p.name: p.stat().st_mtime_ns for p in store.glob("*.cache")
                     }
-                    guard.wait_quiet(limit=20, timeout=60)
+                    if name != "afterCancel":
+                        guard.wait_quiet(limit=20, timeout=60)
                     mark = guard.mark()
-                    row = api.inference(query, route=route)
+                    retries = []
+                    first_attempt = time.monotonic()
+                    while True:
+                        attempt = time.monotonic()
+                        try:
+                            row = api.inference(query, route=route)
+                            break
+                        except Busy as err:
+                            if name != "afterCancel" or attempt - first_attempt > 15:
+                                raise
+                            retries.append(
+                                {
+                                    "status": err.args[0],
+                                    "atMs": round((attempt - first_attempt) * 1000, 1),
+                                }
+                            )
+                            time.sleep(0.1)
+                            api.action("newConversation")
+                    if name == "afterCancel":
+                        row["busyBeforeRecovery"] = retries
+                        for metric in ("firstMs", "completionMs"):
+                            row[metric] = round(
+                                row[metric] + (attempt - first_attempt) * 1000, 2
+                            )
                     cpu = guard.interval(mark, guard.mark())
                     after = counters()
                     delta = {
@@ -474,6 +524,7 @@ def run(args):
                     ("user", next_query[0]["content"]),
                     ("assistant", rows[-1]["answer"]),
                 ]
+                cancellations[-1]["busyBeforeRecovery"] = rows[-1]["busyBeforeRecovery"]
                 cancellations[-1]["nextConversationAnswer"] = rows[-1]["answer"]
                 cancellations[-1]["newHistoryOnly"] = True
                 guard.set_owned((os.getpid(),))
@@ -483,6 +534,7 @@ def run(args):
                 flush=True,
             )
 
+        mismatches = []
         for pair in range(len(report["order"]) // 2):
             for name in [
                 "cold",
@@ -505,7 +557,16 @@ def run(args):
                     ]
                     for arm in ("off", "on")
                 ]
-                assert groups[0] and groups[0] == groups[1], (pair, name, groups)
+                assert len(groups[0]) == len(groups[1]) > 0
+                if groups[0] != groups[1]:
+                    mismatches.append(
+                        {
+                            "pair": pair,
+                            "scenario": name,
+                            "off": groups[0],
+                            "on": groups[1],
+                        }
+                    )
         summary = {}
         for name in [
             "cold",
@@ -550,7 +611,8 @@ def run(args):
         report.update(
             result="passed",
             summary=summary,
-            parity=True,
+            parity=not mismatches,
+            parityDifferences=mismatches,
             pressureQualification={
                 k: cert["gates"][k]
                 for k in (
@@ -566,11 +628,91 @@ def run(args):
         save()
 
 
+def restart_to_answer(args, report, settings, nonce):
+    """Time from the ordinary Start command to content and completion, without polling diagnostics in between."""
+    rows = []
+    guard = HostLoadGuard()
+    try:
+        for index, arm in enumerate(report["order"]):
+            pair = index // 2
+            query = messages(f"{nonce}-restart-{pair}", "42")
+            with (
+                tempfile.TemporaryDirectory() as temp,
+                gateway(args.server, settings[arm], Path(temp)) as api,
+            ):
+                api.start()
+                seed = api.inference(query)
+                assert seed["answer"].strip() == "42"
+                api.action("stop")
+                guard.wait_quiet(limit=20, timeout=60)
+                cpu = guard.snapshot()["busyPercent"]
+                begin = time.monotonic()
+                ready = api.start()
+                # No budget/metrics HTTP probes or sleeps between readiness and the request.
+                row = api.inference(query, since=begin)
+                assert (
+                    row["answer"] == seed["answer"]
+                    and row["usage"]["prompt_tokens"] == seed["usage"]["prompt_tokens"]
+                )
+                assert (
+                    row["usage"]["completion_tokens"]
+                    == seed["usage"]["completion_tokens"]
+                )
+                used = row["usage"]["prompt_tokens_details"]["cached_tokens"]
+                assert used == (row["usage"]["prompt_tokens"] - 1 if arm == "on" else 0)
+                if arm == "on":
+                    counters = api.api("/studio/prefix-cache")
+                    assert counters["hits"] == 1 and counters["writes"] == 0
+                rows.append(
+                    {
+                        "arm": arm,
+                        "pair": pair,
+                        "readyMs": ready,
+                        "firstMs": row["firstMs"],
+                        "completionMs": row["completionMs"],
+                        "startToFirstMs": row["startToFirstMs"],
+                        "startToCompletedMs": row["startToCompletedMs"],
+                        "usage": row["usage"],
+                        "answer": row["answer"],
+                        "quietBeforePercent": cpu,
+                    }
+                )
+                api.action("stop")
+            print(
+                "Completed restart-to-answer",
+                index + 1,
+                "/",
+                len(report["order"]),
+                flush=True,
+            )
+        for pair in range(len(rows) // 2):
+            x, y = [r for r in rows if r["pair"] == pair]
+            assert x["answer"] == y["answer"] and all(
+                x["usage"][k] == y["usage"][k]
+                for k in ("prompt_tokens", "completion_tokens")
+            )
+        report.update(result="passed", parity=True)
+    finally:
+        guard.stop()
+        report.update(
+            scope="From the Start command to the replayed answer through the authenticated gateway. Prior seed and stop excluded. OS file caches retained.",
+            rows=rows,
+        )
+        for key in ("starts", "cancellations"):
+            report.pop(key, None)
+        args.output.write_text(json.dumps(report, indent=2) + "\n")
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     for field in ("mlx-state", "ssd-state", "server", "output"):
         parser.add_argument("--" + field, type=Path, required=True)
     parser.add_argument("--cycles", type=int, choices=range(1, 6), default=2)
+    parser.add_argument(
+        "--restart-only",
+        action="store_true",
+        help="Measure Start to first content and completion after reseeding the same history",
+    )
     args = parser.parse_args()
     if args.output.exists():
         parser.error("Choose a new report path and dedicated qualified QA state files")

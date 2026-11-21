@@ -1,3 +1,13 @@
+# Dependency update · 2026-11-21
+
+- 🟢 [Done] Strata v0.2.15 (`c77572806996349b49995e4f98d41b5294d36a21`), rebuilt Metal source 0.1.61; Tauri Rust 2.12.7 / JS API 2.12.5 / CLI 2.12.6; Lucide 1.77.0; rusqlite 0.43.0; desktop base64 0.23.1 and compatible Cargo updates.
+- 🟢 [Done] 178 Rust tests, upstream contract, 43 upstream Mac setup tests, seven distribution checker tests, three-language engine switching, workspace/docking fixtures and LaTeX checks passed. Existing Q2_0 returned an exact authenticated response and shut down cleanly.
+- 🟢 [Done] Apple Silicon desktop build, signature integrity and relocated Python smoke passed. Distribution preflight checked 66 native files without errors. [Evidence](evaluation/dependency-distribution-20261121.json).
+- 🟠 [Next] Strata v0.2.17 requires a coordinated `terminal/` + `engine/` layout migration. The current pin is the validated intermediate v0.2.15 release.
+- ⭕️ [Pending] Full model re-preparation, another-Mac install and native pointer dragging remain unverified. [Versions, evidence and limits](DEPENDENCY_UPDATE_20261121.md).
+- 日本語：Strataは0.2.15まで段階更新し、Metal再ビルドと既存Q2_0の実推論を確認しました。0.2.17の配置移行とモデル再準備全体は未完了です。
+- 简体中文：已分阶段更新至Strata 0.2.15，Metal重新构建和已有Q2_0真实推理通过。0.2.17目录迁移及完整模型准备尚未完成。
+
 # Dependency update · 2026-11-16
 
 - 🟢 [Done] Strata v0.2.14.1 (`3af562d541ec76c8da63d568248a919c8a54906b`), Metal source 0.1.60.1. Source and distribution pins match. The bundle now uses upstream vendored ggml/GGUF; its real quant header is installed under the existing compatibility filename.

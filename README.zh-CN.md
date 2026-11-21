@@ -1,5 +1,7 @@
 # Soliton
 
+依赖更新（2026-11-21）：已验证Strata 0.2.15与Tauri 2.12.7。下一步适配Strata 0.2.17目录迁移。[版本与验证范围](docs/DEPENDENCY_UPDATE_20261121.md)。
+
 0.1.11 新增了在 Apple Silicon 上通过资格验证的 LFM3-Omni-2B 实时 API，并改进了知识实验室编辑界面与偏好设置。参见[实时配置步骤](docs/LFM3_OMNI.md#qualified-realtime-setup)和[更新记录](CHANGELOG.md)。
 
 [English](README.md) · [日本語](README.ja.md)
@@ -113,6 +115,8 @@ Apple Silicon上会根据物理内存自动设置上下文与提示词缓冲区�
 ```sh
 npm run desktop:build -- --bundles app --no-sign
 ```
+
+`npm run desktop:dmg` 会生成 DMG、校验文件和 `.dmg.runtime.json`。报告记录内置 Strata 的修订版本、引擎和归档的 SHA-256、兼容性检查和重新解包后的 Python 测试结果。检查失败时会停止创建 DMG。
 
 Release构建面向Apple Silicon。发布签名与公证需要Apple开发者凭据。
 

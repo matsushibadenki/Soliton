@@ -25,6 +25,8 @@ trap cleanup EXIT
 name="Soliton_${version}_aarch64.dmg"
 mkdir -p "$work/staging" "$work/mount" "$bundle/dmg"
 ditto "$app" "$work/staging/Soliton.app"
+npm run check:distribution -- --app "$work/staging/Soliton.app" \
+    --smoke --output "$work/$name.runtime.json"
 ln -s /Applications "$work/staging/Applications"
 hdiutil create -quiet -volname Soliton -srcfolder "$work/staging" -format UDZO "$work/$name"
 hdiutil verify "$work/$name"
@@ -35,5 +37,5 @@ codesign --verify --deep --strict "$work/mount/Soliton.app"
 hdiutil detach "$work/mount" -quiet
 mounted=0
 (cd "$work" && shasum -a 256 "$name" > "$name.sha256")
-mv -f "$work/$name" "$work/$name.sha256" "$bundle/dmg/"
-printf '%s\n' "$bundle/dmg/$name" "$bundle/dmg/$name.sha256"
+mv -f "$work/$name" "$work/$name.sha256" "$work/$name.runtime.json" "$bundle/dmg/"
+printf '%s\n' "$bundle/dmg/$name" "$bundle/dmg/$name.sha256" "$bundle/dmg/$name.runtime.json"

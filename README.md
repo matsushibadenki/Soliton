@@ -1,5 +1,7 @@
 # Soliton
 
+Dependency update (2026-11-21): validated Strata 0.2.15 and Tauri 2.12.7; Strata 0.2.17 layout migration is next. [Versions and verification](docs/DEPENDENCY_UPDATE_20261121.md).
+
 Version 0.1.11 adds the qualified LFM3-Omni-2B Realtime API on Apple Silicon and improves the Knowledge Lab editor and Preferences. See the [Realtime setup](docs/LFM3_OMNI.md#qualified-realtime-setup) and [changelog](CHANGELOG.md).
 
 [日本語](README.ja.md) · [简体中文](README.zh-CN.md)
@@ -155,6 +157,8 @@ git submodule update --init --recursive
 npm ci
 npm run desktop:dmg
 ```
+
+The DMG build also writes a matching `.dmg.runtime.json` beside the checksum. It records the bundled Strata revision, native engine and archive SHA-256 hashes, compatibility checks, and the relocated Python smoke test. The build stops before creating the disk image if these checks fail. MLX and Omni use separately configured runtimes.
 
 The command builds the app and its bundled runtimes, checks the distribution, and writes the DMG and SHA-256 checksum to `target/aarch64-apple-darwin/release/bundle/dmg/`. Open the DMG, drag Soliton into Applications, then launch it. Soliton provisions the bundled Python and Strata runtime in its application data folder on first launch. Select or download a model from the app when prompted.
 

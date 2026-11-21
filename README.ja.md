@@ -1,5 +1,7 @@
 # Soliton
 
+依存更新（2026-11-21）：Strata 0.2.15とTauri 2.12.7を検証済みです。Strata 0.2.17の配置移行は次の工程です。[バージョンと検証範囲](docs/DEPENDENCY_UPDATE_20261121.md)。
+
 0.1.11では、Apple Siliconで資格確認済みのLFM3-Omni-2B Realtime APIを追加し、知識ラボの編集画面と環境設定を改善しました。[Realtimeの適用手順](docs/LFM3_OMNI.md#qualified-realtime-setup)と[変更履歴](CHANGELOG.md)を参照してください。
 
 [English](README.md) · [简体中文](README.zh-CN.md)
@@ -117,6 +119,8 @@ Apple Siliconでは、メモリ容量に応じてコンテキストとプロン�
 ```sh
 npm run desktop:build -- --bundles app --no-sign
 ```
+
+`npm run desktop:dmg` は、DMGとチェックサムに加えて `.dmg.runtime.json` を出力します。Strataのリビジョン、エンジンとアーカイブのSHA-256、互換性検査、展開先を変えたPythonの動作確認結果を記録します。検査に失敗するとDMGの作成を中止します。
 
 Apple Silicon向けReleaseビルドです。配布時の署名・公証にはAppleの配布用資格情報が必要です。
 

@@ -1,0 +1,3205 @@
+{
+  "date": "2026-11-21",
+  "host": {
+    "model": "Mac16,13",
+    "soc": "Apple M4",
+    "ramGiB": 32
+  },
+  "method": {
+    "order": "ABBA twice per experiment; paired prompts, sequential clients, no simultaneous measured engines",
+    "percentiles": "median and nearest-rank p95; request-level timing excludes engine start except in startToAnswer",
+    "memory": "Sum of Darwin physical footprints for a sampled stable gateway/descendant process tree at 25 ms intervals",
+    "writes": "Committed prefix payload and staged serialization bytes; changed store file sizes include headers. SSD wear and system-wide writes were not instrumented. Cancelled generation writes are reported separately.",
+    "limitations": "Product launchers differ in LRU entry count, prefill policy and gateway/tokenizer processes despite identical weights, Python runtime and memory budgets. One off follow-up exceeded 50% background CPU. End-to-end start probes check pre-start CPU only."
+  },
+  "qualification": {
+    "off": {
+      "seconds": 1800.175,
+      "successfulRequests": 5176,
+      "failures": 0,
+      "cleanStop": true
+    },
+    "on": {
+      "seconds": 1800.219546458,
+      "successfulRequestsIncludingGates": 2548,
+      "failures": 0,
+      "rssGrowthBytes": 0,
+      "gates": {
+        "authentication": true,
+        "request_rejection": true,
+        "cold": true,
+        "restart_hit": true,
+        "corruption_fallback": true,
+        "duplicate_write_suppression": true,
+        "live_entry_repair": true,
+        "disconnect_recovery": true,
+        "quota_fallback": true,
+        "protected_quota_preservation": true,
+        "quota_retry": true,
+        "context_boundary": true,
+        "automatic_eviction": true,
+        "eviction_restart_recompute": true
+      },
+      "pressure": {
+        "requests": 22,
+        "saved_writes": 22,
+        "storage_errors": 0,
+        "removed_entries": 23
+      }
+    }
+  },
+  "requests": {
+    "result": "passed",
+    "route": "/v1/chat/completions",
+    "fixtureNamespace": "0828e48e",
+    "order": [
+      "off",
+      "on",
+      "on",
+      "off",
+      "off",
+      "on",
+      "on",
+      "off"
+    ],
+    "profile": {
+      "schema": 2,
+      "engine": "mlxPrefix",
+      "context": 512,
+      "maximum_output_tokens": 128,
+      "concurrency": 1,
+      "temperature": 0,
+      "seed": 0,
+      "memory_cache_bytes": 67108864,
+      "allocator_cache_bytes": 268435456
+    },
+    "ssdQuotaMiB": 256,
+    "model": "gemma-2-2b-it-4bit",
+    "modelAndTokenizerDigest": {
+      "model": "3e8d02db8dc0df26d4e45291ae3a11ba9538671fc5337b22a8176f611a24b800",
+      "tokenizer": "8b76bdce87555efdf146fd0369a233715742b2fa7203b5a0fd882ee1b62a9f27"
+    },
+    "scope": "Two managed execution paths, same weights and MLX installation. Cold means no matching application prefix; OS page cache retained. Memory is sampled process-tree physical footprint. Writes are logical cache payload and changed file lengths, not device I/O.",
+    "mlxLm": "0.32.0",
+    "evidenceSha256": {
+      "on": "5732bf4d7505b3db35d256eab6530bb3d303966aa6707affcd31196035082c90",
+      "off": "ebc33fce95d46e509a2fe121c6b13a506bdff2f1b0ec82db7e9637189c8c94e7"
+    },
+    "rows": [
+      {
+        "answer": "42 \n",
+        "usage": {
+          "prompt_tokens": 212,
+          "completion_tokens": 5,
+          "total_tokens": 217,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "firstMs": 592.62,
+        "completionMs": 665.21,
+        "peakPhysicalBytes": 2485424544,
+        "memorySamples": 24,
+        "finish": "stop",
+        "changedStoreFileBytes": 0,
+        "removedEntries": 0,
+        "arm": "off",
+        "pair": 0,
+        "scenario": "cold",
+        "route": "/v1/chat/completions",
+        "disk": {},
+        "backgroundCpu": {
+          "averageBusyPercent": 21.51571631892886,
+          "peakBusyPercent": 26.93929603523654,
+          "sustainedHighSeconds": 0
+        },
+        "cpuBeforePercent": 18.84719405982077,
+        "availableBytesBefore": 8415150080
+      },
+      {
+        "answer": "42 \n",
+        "usage": {
+          "prompt_tokens": 212,
+          "completion_tokens": 5,
+          "total_tokens": 217,
+          "prompt_tokens_details": {
+            "cached_tokens": 211
+          }
+        },
+        "firstMs": 57.11,
+        "completionMs": 133.77,
+        "peakPhysicalBytes": 2201964960,
+        "memorySamples": 5,
+        "finish": "stop",
+        "changedStoreFileBytes": 0,
+        "removedEntries": 0,
+        "arm": "off",
+        "pair": 0,
+        "scenario": "warm",
+        "route": "/v1/chat/completions",
+        "disk": {},
+        "backgroundCpu": {
+          "averageBusyPercent": 20.179629379604023,
+          "peakBusyPercent": 20.179629379604023,
+          "sustainedHighSeconds": 0
+        },
+        "cpuBeforePercent": 14.358578914273178,
+        "availableBytesBefore": 7885520896
+      },
+      {
+        "answer": "42 \n",
+        "usage": {
+          "prompt_tokens": 212,
+          "completion_tokens": 5,
+          "total_tokens": 217,
+          "prompt_tokens_details": {
+            "cached_tokens": 211
+          }
+        },
+        "firstMs": 42.75,
+        "completionMs": 115.25,
+        "peakPhysicalBytes": 2202014112,
+        "memorySamples": 5,
+        "finish": "stop",
+        "changedStoreFileBytes": 0,
+        "removedEntries": 0,
+        "arm": "off",
+        "pair": 0,
+        "scenario": "warm",
+        "route": "/v1/chat/completions",
+        "disk": {},
+        "backgroundCpu": {
+          "averageBusyPercent": 22.96570297735657,
+          "peakBusyPercent": 40.92518633841296,
+          "sustainedHighSeconds": 0
+        },
+        "cpuBeforePercent": 18.614089664592335,
+        "availableBytesBefore": 7856340992
+      },
+      {
+        "answer": "42 \n",
+        "usage": {
+          "prompt_tokens": 212,
+          "completion_tokens": 5,
+          "total_tokens": 217,
+          "prompt_tokens_details": {
+            "cached_tokens": 211
+          }
+        },
+        "firstMs": 66.13,
+        "completionMs": 142.13,
+        "peakPhysicalBytes": 2202014112,
+        "memorySamples": 6,
+        "finish": "stop",
+        "changedStoreFileBytes": 0,
+        "removedEntries": 0,
+        "arm": "off",
+        "pair": 0,
+        "scenario": "warm",
+        "route": "/v1/chat/completions",
+        "disk": {},
+        "backgroundCpu": {
+          "averageBusyPercent": 17.38126186569096,
+          "peakBusyPercent": 18.374301545056944,
+          "sustainedHighSeconds": 0
+        },
+        "cpuBeforePercent": 18.374301545056944,
+        "availableBytesBefore": 8089190400
+      },
+      {
+        "answer": "42 \n",
+        "usage": {
+          "prompt_tokens": 212,
+          "completion_tokens": 5,
+          "total_tokens": 217,
+          "prompt_tokens_details": {
+            "cached_tokens": 211
+          }
+        },
+        "firstMs": 46.75,
+        "completionMs": 122.29,
+        "peakPhysicalBytes": 2202014112,
+        "memorySamples": 5,
+        "finish": "stop",
+        "changedStoreFileBytes": 0,
+        "removedEntries": 0,
+        "arm": "off",
+        "pair": 0,
+        "scenario": "warm",
+        "route": "/v1/chat/completions",
+        "disk": {},
+        "backgroundCpu": {
+          "averageBusyPercent": 20.67276238970505,
+          "peakBusyPercent": 20.67276238970505,
+          "sustainedHighSeconds": 0
+        },
+        "cpuBeforePercent": 18.374301545056944,
+        "availableBytesBefore": 8113569792
+      },
+      {
+        "answer": "73 \n",
+        "usage": {
+          "prompt_tokens": 242,
+          "completion_tokens": 5,
+          "total_tokens": 247,
+          "prompt_tokens_details": {
+            "cached_tokens": 214
+          }
+        },
+        "firstMs": 98.0,
+        "completionMs": 173.29,
+        "peakPhysicalBytes": 2313441696,
+        "memorySamples": 7,
+        "finish": "stop",
+        "changedStoreFileBytes": 0,
+        "removedEntries": 0,
+        "arm": "off",
+        "pair": 0,
+        "scenario": "followUp",
+        "route": "/v1/chat/completions",
+        "disk": {},
+        "backgroundCpu": {
+          "averageBusyPercent": 29.629097775062892,
+          "peakBusyPercent": 29.629097775062892,
+          "sustainedHighSeconds": 0
+        },
+        "cpuBeforePercent": 17.59265683836581,
+        "availableBytesBefore": 8105066496
+      },
+      {
+        "answer": "42 \n",
+        "usage": {
+          "prompt_tokens": 212,
+          "completion_tokens": 5,
+          "total_tokens": 217,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "firstMs": 640.56,
+        "completionMs": 713.15,
+        "peakPhysicalBytes": 2464387416,
+        "memorySamples": 25,
+        "finish": "stop",
+        "changedStoreFileBytes": 0,
+        "removedEntries": 0,
+        "arm": "off",
+        "pair": 0,
+        "scenario": "restart",
+        "route": "/v1/chat/completions",
+        "disk": {},
+        "backgroundCpu": {
+          "averageBusyPercent": 24.990577267471803,
+          "peakBusyPercent": 25.005163709518136,
+          "sustainedHighSeconds": 0
+        },
+        "cpuBeforePercent": 16.753071237746646,
+        "availableBytesBefore": 7944470528
+      },
+      {
+        "answer": "73 \n",
+        "usage": {
+          "prompt_tokens": 214,
+          "completion_tokens": 5,
+          "total_tokens": 219,
+          "prompt_tokens_details": {
+            "cached_tokens": 16
+          }
+        },
+        "firstMs": 467.61,
+        "completionMs": 546.56,
+        "peakPhysicalBytes": 2471858568,
+        "memorySamples": 19,
+        "finish": "stop",
+        "changedStoreFileBytes": 0,
+        "removedEntries": 0,
+        "arm": "off",
+        "pair": 0,
+        "scenario": "changed",
+        "route": "/v1/chat/completions",
+        "disk": {},
+        "backgroundCpu": {
+          "averageBusyPercent": 44.47550760199325,
+          "peakBusyPercent": 53.71850560524574,
+          "sustainedHighSeconds": 0
+        },
+        "cpuBeforePercent": 17.946318730032132,
+        "availableBytesBefore": 7913701376
+      },
+      {
+        "answer": "91 \n",
+        "usage": {
+          "prompt_tokens": 214,
+          "completion_tokens": 5,
+          "total_tokens": 219,
+          "prompt_tokens_details": {
+            "cached_tokens": 17
+          }
+        },
+        "firstMs": 505.92,
+        "completionMs": 599.67,
+        "peakPhysicalBytes": 2503070088,
+        "memorySamples": 18,
+        "finish": "stop",
+        "busyBeforeRecovery": [
+          {
+            "status": 503,
+            "atMs": 0.0
+          }
+        ],
+        "changedStoreFileBytes": 0,
+        "removedEntries": 0,
+        "arm": "off",
+        "pair": 0,
+        "scenario": "afterCancel",
+        "route": "/studio/chat",
+        "disk": {},
+        "backgroundCpu": {
+          "averageBusyPercent": 21.44915519706263,
+          "peakBusyPercent": 53.71850560524574,
+          "sustainedHighSeconds": 0
+        },
+        "cpuBeforePercent": 53.71850560524574,
+        "availableBytesBefore": 8248508416
+      },
+      {
+        "answer": "42 \n",
+        "usage": {
+          "prompt_tokens": 212,
+          "completion_tokens": 5,
+          "total_tokens": 217,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "firstMs": 584.69,
+        "completionMs": 661.7,
+        "peakPhysicalBytes": 2266762192,
+        "memorySamples": 23,
+        "finish": "stop",
+        "changedStoreFileBytes": 27274416,
+        "removedEntries": 2,
+        "arm": "on",
+        "pair": 0,
+        "scenario": "cold",
+        "route": "/v1/chat/completions",
+        "disk": {
+          "hits": 0,
+          "misses": 1,
+          "writes": 1,
+          "serializedBytes": 27270312,
+          "committedBytes": 27270312,
+          "errors": 0
+        },
+        "backgroundCpu": {
+          "averageBusyPercent": 20.110126800784172,
+          "peakBusyPercent": 20.834052183943292,
+          "sustainedHighSeconds": 0
+        },
+        "cpuBeforePercent": 19.702813713245057,
+        "availableBytesBefore": 9004269568
+      },
+      {
+        "answer": "42 \n",
+        "usage": {
+          "prompt_tokens": 212,
+          "completion_tokens": 5,
+          "total_tokens": 217,
+          "prompt_tokens_details": {
+            "cached_tokens": 211
+          }
+        },
+        "firstMs": 103.33,
+        "completionMs": 182.88,
+        "peakPhysicalBytes": 1983433704,
+        "memorySamples": 7,
+        "finish": "stop",
+        "changedStoreFileBytes": 0,
+        "removedEntries": 0,
+        "arm": "on",
+        "pair": 0,
+        "scenario": "warm",
+        "route": "/v1/chat/completions",
+        "disk": {
+          "hits": 0,
+          "misses": 0,
+          "writes": 0,
+          "serializedBytes": 0,
+          "committedBytes": 0,
+          "errors": 0
+        },
+        "backgroundCpu": {
+          "averageBusyPercent": 19.734440664804357,
+          "peakBusyPercent": 19.734440664804357,
+          "sustainedHighSeconds": 0
+        },
+        "cpuBeforePercent": 18.53755908371888,
+        "availableBytesBefore": 8412315648
+      },
+      {
+        "answer": "42 \n",
+        "usage": {
+          "prompt_tokens": 212,
+          "completion_tokens": 5,
+          "total_tokens": 217,
+          "prompt_tokens_details": {
+            "cached_tokens": 211
+          }
+        },
+        "firstMs": 45.0,
+        "completionMs": 123.83,
+        "peakPhysicalBytes": 1983515624,
+        "memorySamples": 5,
+        "finish": "stop",
+        "changedStoreFileBytes": 0,
+        "removedEntries": 0,
+        "arm": "on",
+        "pair": 0,
+        "scenario": "warm",
+        "route": "/v1/chat/completions",
+        "disk": {
+          "hits": 0,
+          "misses": 0,
+          "writes": 0,
+          "serializedBytes": 0,
+          "committedBytes": 0,
+          "errors": 0
+        },
+        "backgroundCpu": {
+          "averageBusyPercent": 21.692457929399815,
+          "peakBusyPercent": 21.692457929399815,
+          "sustainedHighSeconds": 0
+        },
+        "cpuBeforePercent": 18.53755908371888,
+        "availableBytesBefore": 8468545536
+      },
+      {
+        "answer": "42 \n",
+        "usage": {
+          "prompt_tokens": 212,
+          "completion_tokens": 5,
+          "total_tokens": 217,
+          "prompt_tokens_details": {
+            "cached_tokens": 211
+          }
+        },
+        "firstMs": 109.12,
+        "completionMs": 182.84,
+        "peakPhysicalBytes": 1983515624,
+        "memorySamples": 7,
+        "finish": "stop",
+        "changedStoreFileBytes": 0,
+        "removedEntries": 0,
+        "arm": "on",
+        "pair": 0,
+        "scenario": "warm",
+        "route": "/v1/chat/completions",
+        "disk": {
+          "hits": 0,
+          "misses": 0,
+          "writes": 0,
+          "serializedBytes": 0,
+          "committedBytes": 0,
+          "errors": 0
+        },
+        "backgroundCpu": {
+          "averageBusyPercent": 20.21394882344569,
+          "peakBusyPercent": 20.717779721618673,
+          "sustainedHighSeconds": 0
+        },
+        "cpuBeforePercent": 18.679421810082474,
+        "availableBytesBefore": 8400142336
+      },
+      {
+        "answer": "42 \n",
+        "usage": {
+          "prompt_tokens": 212,
+          "completion_tokens": 5,
+          "total_tokens": 217,
+          "prompt_tokens_details": {
+            "cached_tokens": 211
+          }
+        },
+        "firstMs": 49.3,
+        "completionMs": 128.88,
+        "peakPhysicalBytes": 1983532008,
+        "memorySamples": 5,
+        "finish": "stop",
+        "changedStoreFileBytes": 0,
+        "removedEntries": 0,
+        "arm": "on",
+        "pair": 0,
+        "scenario": "warm",
+        "route": "/v1/chat/completions",
+        "disk": {
+          "hits": 0,
+          "misses": 0,
+          "writes": 0,
+          "serializedBytes": 0,
+          "committedBytes": 0,
+          "errors": 0
+        },
+        "backgroundCpu": {
+          "averageBusyPercent": 27.278696683824023,
+          "peakBusyPercent": 27.355526986329792,
+          "sustainedHighSeconds": 0
+        },
+        "cpuBeforePercent": 15.353848741118426,
+        "availableBytesBefore": 8439496704
+      },
+      {
+        "answer": "73 \n",
+        "usage": {
+          "prompt_tokens": 242,
+          "completion_tokens": 5,
+          "total_tokens": 247,
+          "prompt_tokens_details": {
+            "cached_tokens": 214
+          }
+        },
+        "firstMs": 228.44,
+        "completionMs": 302.31,
+        "peakPhysicalBytes": 2098105824,
+        "memorySamples": 11,
+        "finish": "stop",
+        "changedStoreFileBytes": 27274416,
+        "removedEntries": 0,
+        "arm": "on",
+        "pair": 0,
+        "scenario": "followUp",
+        "route": "/v1/chat/completions",
+        "disk": {
+          "hits": 0,
+          "misses": 0,
+          "writes": 1,
+          "serializedBytes": 27270312,
+          "committedBytes": 27270312,
+          "errors": 0
+        },
+        "backgroundCpu": {
+          "averageBusyPercent": 15.706220748600005,
+          "peakBusyPercent": 20.735288457423678,
+          "sustainedHighSeconds": 0
+        },
+        "cpuBeforePercent": 15.946479881771687,
+        "availableBytesBefore": 8284635136
+      },
+      {
+        "answer": "42 \n",
+        "usage": {
+          "prompt_tokens": 212,
+          "completion_tokens": 5,
+          "total_tokens": 217,
+          "prompt_tokens_details": {
+            "cached_tokens": 211
+          }
+        },
+        "firstMs": 141.24,
+        "completionMs": 214.67,
+        "peakPhysicalBytes": 1962707800,
+        "memorySamples": 8,
+        "finish": "stop",
+        "changedStoreFileBytes": 0,
+        "removedEntries": 0,
+        "arm": "on",
+        "pair": 0,
+        "scenario": "restart",
+        "route": "/v1/chat/completions",
+        "disk": {
+          "hits": 1,
+          "misses": 0,
+          "writes": 0,
+          "serializedBytes": 0,
+          "committedBytes": 0,
+          "errors": 0
+        },
+        "backgroundCpu": {
+          "averageBusyPercent": 23.42870756016465,
+          "peakBusyPercent": 24.70710507065903,
+          "sustainedHighSeconds": 0
+        },
+        "cpuBeforePercent": 18.96899726902322,
+        "availableBytesBefore": 9170796544
+      },
+      {
+        "answer": "73 \n",
+        "usage": {
+          "prompt_tokens": 214,
+          "completion_tokens": 5,
+          "total_tokens": 219,
+          "prompt_tokens_details": {
+            "cached_tokens": 16
+          }
+        },
+        "firstMs": 472.74,
+        "completionMs": 553.93,
+        "peakPhysicalBytes": 2283604824,
+        "memorySamples": 20,
+        "finish": "stop",
+        "changedStoreFileBytes": 27274416,
+        "removedEntries": 0,
+        "arm": "on",
+        "pair": 0,
+        "scenario": "changed",
+        "route": "/v1/chat/completions",
+        "disk": {
+          "hits": 0,
+          "misses": 0,
+          "writes": 1,
+          "serializedBytes": 27270312,
+          "committedBytes": 27270312,
+          "errors": 0
+        },
+        "backgroundCpu": {
+          "averageBusyPercent": 28.80364591010383,
+          "peakBusyPercent": 29.756229433162904,
+          "sustainedHighSeconds": 0
+        },
+        "cpuBeforePercent": 17.537637933056054,
+        "availableBytesBefore": 8930410496
+      },
+      {
+        "answer": "91 \n",
+        "usage": {
+          "prompt_tokens": 214,
+          "completion_tokens": 5,
+          "total_tokens": 219,
+          "prompt_tokens_details": {
+            "cached_tokens": 4
+          }
+        },
+        "firstMs": 467.88,
+        "completionMs": 542.31,
+        "peakPhysicalBytes": 2306362392,
+        "memorySamples": 20,
+        "finish": "stop",
+        "busyBeforeRecovery": [],
+        "changedStoreFileBytes": 27274416,
+        "removedEntries": 2,
+        "arm": "on",
+        "pair": 0,
+        "scenario": "afterCancel",
+        "route": "/studio/chat",
+        "disk": {
+          "hits": 0,
+          "misses": 0,
+          "writes": 1,
+          "serializedBytes": 27270312,
+          "committedBytes": 27270312,
+          "errors": 0
+        },
+        "backgroundCpu": {
+          "averageBusyPercent": 43.35630193282442,
+          "peakBusyPercent": 43.35630193282442,
+          "sustainedHighSeconds": 0
+        },
+        "cpuBeforePercent": 38.88244934600723,
+        "availableBytesBefore": 8885272576
+      },
+      {
+        "answer": "42 \n",
+        "usage": {
+          "prompt_tokens": 212,
+          "completion_tokens": 5,
+          "total_tokens": 217,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "firstMs": 577.24,
+        "completionMs": 657.55,
+        "peakPhysicalBytes": 2266876928,
+        "memorySamples": 23,
+        "finish": "stop",
+        "changedStoreFileBytes": 27274416,
+        "removedEntries": 0,
+        "arm": "on",
+        "pair": 1,
+        "scenario": "cold",
+        "route": "/v1/chat/completions",
+        "disk": {
+          "hits": 0,
+          "misses": 1,
+          "writes": 1,
+          "serializedBytes": 27270312,
+          "committedBytes": 27270312,
+          "errors": 0
+        },
+        "backgroundCpu": {
+          "averageBusyPercent": 21.312611566527483,
+          "peakBusyPercent": 22.283032800207373,
+          "sustainedHighSeconds": 0
+        },
+        "cpuBeforePercent": 18.241048060851888,
+        "availableBytesBefore": 9709273088
+      },
+      {
+        "answer": "42 \n",
+        "usage": {
+          "prompt_tokens": 212,
+          "completion_tokens": 5,
+          "total_tokens": 217,
+          "prompt_tokens_details": {
+            "cached_tokens": 211
+          }
+        },
+        "firstMs": 43.9,
+        "completionMs": 119.41,
+        "peakPhysicalBytes": 1983335424,
+        "memorySamples": 5,
+        "finish": "stop",
+        "changedStoreFileBytes": 0,
+        "removedEntries": 0,
+        "arm": "on",
+        "pair": 1,
+        "scenario": "warm",
+        "route": "/v1/chat/completions",
+        "disk": {
+          "hits": 0,
+          "misses": 0,
+          "writes": 0,
+          "serializedBytes": 0,
+          "committedBytes": 0,
+          "errors": 0
+        },
+        "backgroundCpu": {
+          "averageBusyPercent": 21.333980051306057,
+          "peakBusyPercent": 21.333980051306057,
+          "sustainedHighSeconds": 0
+        },
+        "cpuBeforePercent": 18.865616710091704,
+        "availableBytesBefore": 9130098688
+      },
+      {
+        "answer": "42 \n",
+        "usage": {
+          "prompt_tokens": 212,
+          "completion_tokens": 5,
+          "total_tokens": 217,
+          "prompt_tokens_details": {
+            "cached_tokens": 211
+          }
+        },
+        "firstMs": 65.31,
+        "completionMs": 142.39,
+        "peakPhysicalBytes": 1983400960,
+        "memorySamples": 5,
+        "finish": "stop",
+        "changedStoreFileBytes": 0,
+        "removedEntries": 0,
+        "arm": "on",
+        "pair": 1,
+        "scenario": "warm",
+        "route": "/v1/chat/completions",
+        "disk": {
+          "hits": 0,
+          "misses": 0,
+          "writes": 0,
+          "serializedBytes": 0,
+          "committedBytes": 0,
+          "errors": 0
+        },
+        "backgroundCpu": {
+          "averageBusyPercent": 19.20158001998767,
+          "peakBusyPercent": 19.20158001998767,
+          "sustainedHighSeconds": 0
+        },
+        "cpuBeforePercent": 17.91704578957288,
+        "availableBytesBefore": 9020538880
+      },
+      {
+        "answer": "42 \n",
+        "usage": {
+          "prompt_tokens": 212,
+          "completion_tokens": 5,
+          "total_tokens": 217,
+          "prompt_tokens_details": {
+            "cached_tokens": 211
+          }
+        },
+        "firstMs": 132.05,
+        "completionMs": 212.82,
+        "peakPhysicalBytes": 1983581184,
+        "memorySamples": 8,
+        "finish": "stop",
+        "changedStoreFileBytes": 0,
+        "removedEntries": 0,
+        "arm": "on",
+        "pair": 1,
+        "scenario": "warm",
+        "route": "/v1/chat/completions",
+        "disk": {
+          "hits": 0,
+          "misses": 0,
+          "writes": 0,
+          "serializedBytes": 0,
+          "committedBytes": 0,
+          "errors": 0
+        },
+        "backgroundCpu": {
+          "averageBusyPercent": 26.993294070793056,
+          "peakBusyPercent": 26.993294070793056,
+          "sustainedHighSeconds": 0
+        },
+        "cpuBeforePercent": 18.821733856417563,
+        "availableBytesBefore": 8871657472
+      },
+      {
+        "answer": "42 \n",
+        "usage": {
+          "prompt_tokens": 212,
+          "completion_tokens": 5,
+          "total_tokens": 217,
+          "prompt_tokens_details": {
+            "cached_tokens": 211
+          }
+        },
+        "firstMs": 127.74,
+        "completionMs": 201.28,
+        "peakPhysicalBytes": 1983613952,
+        "memorySamples": 8,
+        "finish": "stop",
+        "changedStoreFileBytes": 0,
+        "removedEntries": 0,
+        "arm": "on",
+        "pair": 1,
+        "scenario": "warm",
+        "route": "/v1/chat/completions",
+        "disk": {
+          "hits": 0,
+          "misses": 0,
+          "writes": 0,
+          "serializedBytes": 0,
+          "committedBytes": 0,
+          "errors": 0
+        },
+        "backgroundCpu": {
+          "averageBusyPercent": 12.802440733572565,
+          "peakBusyPercent": 18.772655842168827,
+          "sustainedHighSeconds": 0
+        },
+        "cpuBeforePercent": 18.772655842168827,
+        "availableBytesBefore": 8664940544
+      },
+      {
+        "answer": "73 \n",
+        "usage": {
+          "prompt_tokens": 242,
+          "completion_tokens": 5,
+          "total_tokens": 247,
+          "prompt_tokens_details": {
+            "cached_tokens": 214
+          }
+        },
+        "firstMs": 154.94,
+        "completionMs": 235.04,
+        "peakPhysicalBytes": 2097057272,
+        "memorySamples": 9,
+        "finish": "stop",
+        "changedStoreFileBytes": 27274416,
+        "removedEntries": 0,
+        "arm": "on",
+        "pair": 1,
+        "scenario": "followUp",
+        "route": "/v1/chat/completions",
+        "disk": {
+          "hits": 0,
+          "misses": 0,
+          "writes": 1,
+          "serializedBytes": 27270312,
+          "committedBytes": 27270312,
+          "errors": 0
+        },
+        "backgroundCpu": {
+          "averageBusyPercent": 22.88215584130595,
+          "peakBusyPercent": 22.88215584130595,
+          "sustainedHighSeconds": 0
+        },
+        "cpuBeforePercent": 14.259999652680568,
+        "availableBytesBefore": 8837791744
+      },
+      {
+        "answer": "42 \n",
+        "usage": {
+          "prompt_tokens": 212,
+          "completion_tokens": 5,
+          "total_tokens": 217,
+          "prompt_tokens_details": {
+            "cached_tokens": 211
+          }
+        },
+        "firstMs": 174.73,
+        "completionMs": 248.68,
+        "peakPhysicalBytes": 1958218512,
+        "memorySamples": 9,
+        "finish": "stop",
+        "changedStoreFileBytes": 0,
+        "removedEntries": 0,
+        "arm": "on",
+        "pair": 1,
+        "scenario": "restart",
+        "route": "/v1/chat/completions",
+        "disk": {
+          "hits": 1,
+          "misses": 0,
+          "writes": 0,
+          "serializedBytes": 0,
+          "committedBytes": 0,
+          "errors": 0
+        },
+        "backgroundCpu": {
+          "averageBusyPercent": 21.627503980248854,
+          "peakBusyPercent": 21.627503980248854,
+          "sustainedHighSeconds": 0
+        },
+        "cpuBeforePercent": 16.875316221626512,
+        "availableBytesBefore": 9482616832
+      },
+      {
+        "answer": "73 \n",
+        "usage": {
+          "prompt_tokens": 214,
+          "completion_tokens": 5,
+          "total_tokens": 219,
+          "prompt_tokens_details": {
+            "cached_tokens": 16
+          }
+        },
+        "firstMs": 475.27,
+        "completionMs": 556.04,
+        "peakPhysicalBytes": 2279181072,
+        "memorySamples": 20,
+        "finish": "stop",
+        "changedStoreFileBytes": 27274416,
+        "removedEntries": 3,
+        "arm": "on",
+        "pair": 1,
+        "scenario": "changed",
+        "route": "/v1/chat/completions",
+        "disk": {
+          "hits": 0,
+          "misses": 0,
+          "writes": 1,
+          "serializedBytes": 27270312,
+          "committedBytes": 27270312,
+          "errors": 0
+        },
+        "backgroundCpu": {
+          "averageBusyPercent": 27.098224344993213,
+          "peakBusyPercent": 27.098224344993213,
+          "sustainedHighSeconds": 0
+        },
+        "cpuBeforePercent": 17.21288565233093,
+        "availableBytesBefore": 8922071040
+      },
+      {
+        "answer": "91 \n",
+        "usage": {
+          "prompt_tokens": 214,
+          "completion_tokens": 5,
+          "total_tokens": 219,
+          "prompt_tokens_details": {
+            "cached_tokens": 4
+          }
+        },
+        "firstMs": 463.9,
+        "completionMs": 543.19,
+        "peakPhysicalBytes": 2302151680,
+        "memorySamples": 19,
+        "finish": "stop",
+        "busyBeforeRecovery": [],
+        "changedStoreFileBytes": 27274416,
+        "removedEntries": 0,
+        "arm": "on",
+        "pair": 1,
+        "scenario": "afterCancel",
+        "route": "/studio/chat",
+        "disk": {
+          "hits": 0,
+          "misses": 0,
+          "writes": 1,
+          "serializedBytes": 27270312,
+          "committedBytes": 27270312,
+          "errors": 0
+        },
+        "backgroundCpu": {
+          "averageBusyPercent": 25.090152965836687,
+          "peakBusyPercent": 40.8545508422379,
+          "sustainedHighSeconds": 0
+        },
+        "cpuBeforePercent": 40.8545508422379,
+        "availableBytesBefore": 8999174144
+      },
+      {
+        "answer": "42 \n",
+        "usage": {
+          "prompt_tokens": 212,
+          "completion_tokens": 5,
+          "total_tokens": 217,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "firstMs": 646.68,
+        "completionMs": 727.74,
+        "peakPhysicalBytes": 2484703648,
+        "memorySamples": 26,
+        "finish": "stop",
+        "changedStoreFileBytes": 0,
+        "removedEntries": 0,
+        "arm": "off",
+        "pair": 1,
+        "scenario": "cold",
+        "route": "/v1/chat/completions",
+        "disk": {},
+        "backgroundCpu": {
+          "averageBusyPercent": 32.424955538129666,
+          "peakBusyPercent": 32.424955538129666,
+          "sustainedHighSeconds": 0
+        },
+        "cpuBeforePercent": 16.547977451309997,
+        "availableBytesBefore": 8488419328
+      },
+      {
+        "answer": "42 \n",
+        "usage": {
+          "prompt_tokens": 212,
+          "completion_tokens": 5,
+          "total_tokens": 217,
+          "prompt_tokens_details": {
+            "cached_tokens": 211
+          }
+        },
+        "firstMs": 130.2,
+        "completionMs": 210.48,
+        "peakPhysicalBytes": 2201358752,
+        "memorySamples": 8,
+        "finish": "stop",
+        "changedStoreFileBytes": 0,
+        "removedEntries": 0,
+        "arm": "off",
+        "pair": 1,
+        "scenario": "warm",
+        "route": "/v1/chat/completions",
+        "disk": {},
+        "backgroundCpu": {
+          "averageBusyPercent": 37.517250034727425,
+          "peakBusyPercent": 37.517250034727425,
+          "sustainedHighSeconds": 0
+        },
+        "cpuBeforePercent": 19.688569339771185,
+        "availableBytesBefore": 8392818688
+      },
+      {
+        "answer": "42 \n",
+        "usage": {
+          "prompt_tokens": 212,
+          "completion_tokens": 5,
+          "total_tokens": 217,
+          "prompt_tokens_details": {
+            "cached_tokens": 211
+          }
+        },
+        "firstMs": 127.35,
+        "completionMs": 201.41,
+        "peakPhysicalBytes": 2201375136,
+        "memorySamples": 8,
+        "finish": "stop",
+        "changedStoreFileBytes": 0,
+        "removedEntries": 0,
+        "arm": "off",
+        "pair": 1,
+        "scenario": "warm",
+        "route": "/v1/chat/completions",
+        "disk": {},
+        "backgroundCpu": {
+          "averageBusyPercent": 18.56889277039597,
+          "peakBusyPercent": 18.56889277039597,
+          "sustainedHighSeconds": 0
+        },
+        "cpuBeforePercent": 16.80131307917339,
+        "availableBytesBefore": 8157822976
+      },
+      {
+        "answer": "42 \n",
+        "usage": {
+          "prompt_tokens": 212,
+          "completion_tokens": 5,
+          "total_tokens": 217,
+          "prompt_tokens_details": {
+            "cached_tokens": 211
+          }
+        },
+        "firstMs": 46.03,
+        "completionMs": 120.31,
+        "peakPhysicalBytes": 2201375136,
+        "memorySamples": 5,
+        "finish": "stop",
+        "changedStoreFileBytes": 0,
+        "removedEntries": 0,
+        "arm": "off",
+        "pair": 1,
+        "scenario": "warm",
+        "route": "/v1/chat/completions",
+        "disk": {},
+        "backgroundCpu": {
+          "averageBusyPercent": 30.195265765269088,
+          "peakBusyPercent": 30.195265765269088,
+          "sustainedHighSeconds": 0
+        },
+        "cpuBeforePercent": 18.458701701671295,
+        "availableBytesBefore": 8626913280
+      },
+      {
+        "answer": "42 \n",
+        "usage": {
+          "prompt_tokens": 212,
+          "completion_tokens": 5,
+          "total_tokens": 217,
+          "prompt_tokens_details": {
+            "cached_tokens": 211
+          }
+        },
+        "firstMs": 43.07,
+        "completionMs": 117.23,
+        "peakPhysicalBytes": 2201375136,
+        "memorySamples": 4,
+        "finish": "stop",
+        "changedStoreFileBytes": 0,
+        "removedEntries": 0,
+        "arm": "off",
+        "pair": 1,
+        "scenario": "warm",
+        "route": "/v1/chat/completions",
+        "disk": {},
+        "backgroundCpu": {
+          "averageBusyPercent": 22.90609860151536,
+          "peakBusyPercent": 27.584335377315067,
+          "sustainedHighSeconds": 0
+        },
+        "cpuBeforePercent": 18.458701701671295,
+        "availableBytesBefore": 8623013888
+      },
+      {
+        "answer": "73 \n",
+        "usage": {
+          "prompt_tokens": 242,
+          "completion_tokens": 5,
+          "total_tokens": 247,
+          "prompt_tokens_details": {
+            "cached_tokens": 214
+          }
+        },
+        "firstMs": 133.81,
+        "completionMs": 210.77,
+        "peakPhysicalBytes": 2314359200,
+        "memorySamples": 8,
+        "finish": "stop",
+        "changedStoreFileBytes": 0,
+        "removedEntries": 0,
+        "arm": "off",
+        "pair": 1,
+        "scenario": "followUp",
+        "route": "/v1/chat/completions",
+        "disk": {},
+        "backgroundCpu": {
+          "averageBusyPercent": 22.812608511555986,
+          "peakBusyPercent": 22.812608511555986,
+          "sustainedHighSeconds": 0
+        },
+        "cpuBeforePercent": 16.381539905685493,
+        "availableBytesBefore": 8622964736
+      },
+      {
+        "answer": "42 \n",
+        "usage": {
+          "prompt_tokens": 212,
+          "completion_tokens": 5,
+          "total_tokens": 217,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "firstMs": 601.71,
+        "completionMs": 684.67,
+        "peakPhysicalBytes": 2493665720,
+        "memorySamples": 24,
+        "finish": "stop",
+        "changedStoreFileBytes": 0,
+        "removedEntries": 0,
+        "arm": "off",
+        "pair": 1,
+        "scenario": "restart",
+        "route": "/v1/chat/completions",
+        "disk": {},
+        "backgroundCpu": {
+          "averageBusyPercent": 21.16885255586511,
+          "peakBusyPercent": 29.908921152363316,
+          "sustainedHighSeconds": 0
+        },
+        "cpuBeforePercent": 18.399937255146455,
+        "availableBytesBefore": 8512225280
+      },
+      {
+        "answer": "73 \n",
+        "usage": {
+          "prompt_tokens": 214,
+          "completion_tokens": 5,
+          "total_tokens": 219,
+          "prompt_tokens_details": {
+            "cached_tokens": 16
+          }
+        },
+        "firstMs": 407.28,
+        "completionMs": 486.9,
+        "peakPhysicalBytes": 2499170744,
+        "memorySamples": 17,
+        "finish": "stop",
+        "changedStoreFileBytes": 0,
+        "removedEntries": 0,
+        "arm": "off",
+        "pair": 1,
+        "scenario": "changed",
+        "route": "/v1/chat/completions",
+        "disk": {},
+        "backgroundCpu": {
+          "averageBusyPercent": 29.31298773444271,
+          "peakBusyPercent": 30.33353834372611,
+          "sustainedHighSeconds": 0
+        },
+        "cpuBeforePercent": 18.01090228869691,
+        "availableBytesBefore": 8455536640
+      },
+      {
+        "answer": "91 \n",
+        "usage": {
+          "prompt_tokens": 214,
+          "completion_tokens": 5,
+          "total_tokens": 219,
+          "prompt_tokens_details": {
+            "cached_tokens": 17
+          }
+        },
+        "firstMs": 499.36,
+        "completionMs": 577.05,
+        "peakPhysicalBytes": 2531201464,
+        "memorySamples": 16,
+        "finish": "stop",
+        "busyBeforeRecovery": [
+          {
+            "status": 503,
+            "atMs": 0.0
+          }
+        ],
+        "changedStoreFileBytes": 0,
+        "removedEntries": 0,
+        "arm": "off",
+        "pair": 1,
+        "scenario": "afterCancel",
+        "route": "/studio/chat",
+        "disk": {},
+        "backgroundCpu": {
+          "averageBusyPercent": 20.246063369480108,
+          "peakBusyPercent": 29.57452072930941,
+          "sustainedHighSeconds": 0
+        },
+        "cpuBeforePercent": 29.57452072930941,
+        "availableBytesBefore": 8545632256
+      },
+      {
+        "answer": "42 \n",
+        "usage": {
+          "prompt_tokens": 212,
+          "completion_tokens": 5,
+          "total_tokens": 217,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "firstMs": 473.32,
+        "completionMs": 557.76,
+        "peakPhysicalBytes": 2486178232,
+        "memorySamples": 20,
+        "finish": "stop",
+        "changedStoreFileBytes": 0,
+        "removedEntries": 0,
+        "arm": "off",
+        "pair": 2,
+        "scenario": "cold",
+        "route": "/v1/chat/completions",
+        "disk": {},
+        "backgroundCpu": {
+          "averageBusyPercent": 21.340484692770872,
+          "peakBusyPercent": 24.17041294754245,
+          "sustainedHighSeconds": 0
+        },
+        "cpuBeforePercent": 17.052153332911494,
+        "availableBytesBefore": 8611561472
+      },
+      {
+        "answer": "42 \n",
+        "usage": {
+          "prompt_tokens": 212,
+          "completion_tokens": 5,
+          "total_tokens": 217,
+          "prompt_tokens_details": {
+            "cached_tokens": 211
+          }
+        },
+        "firstMs": 109.07,
+        "completionMs": 186.65,
+        "peakPhysicalBytes": 2202980792,
+        "memorySamples": 7,
+        "finish": "stop",
+        "changedStoreFileBytes": 0,
+        "removedEntries": 0,
+        "arm": "off",
+        "pair": 2,
+        "scenario": "warm",
+        "route": "/v1/chat/completions",
+        "disk": {},
+        "backgroundCpu": {
+          "averageBusyPercent": 20.25193763749055,
+          "peakBusyPercent": 27.657911383776064,
+          "sustainedHighSeconds": 0
+        },
+        "cpuBeforePercent": 19.07966238682046,
+        "availableBytesBefore": 8738717696
+      },
+      {
+        "answer": "42 \n",
+        "usage": {
+          "prompt_tokens": 212,
+          "completion_tokens": 5,
+          "total_tokens": 217,
+          "prompt_tokens_details": {
+            "cached_tokens": 211
+          }
+        },
+        "firstMs": 65.17,
+        "completionMs": 143.02,
+        "peakPhysicalBytes": 2203341240,
+        "memorySamples": 6,
+        "finish": "stop",
+        "changedStoreFileBytes": 0,
+        "removedEntries": 0,
+        "arm": "off",
+        "pair": 2,
+        "scenario": "warm",
+        "route": "/v1/chat/completions",
+        "disk": {},
+        "backgroundCpu": {
+          "averageBusyPercent": 24.96318259786741,
+          "peakBusyPercent": 24.96318259786741,
+          "sustainedHighSeconds": 0
+        },
+        "cpuBeforePercent": 18.071141879701493,
+        "availableBytesBefore": 8584937472
+      },
+      {
+        "answer": "42 \n",
+        "usage": {
+          "prompt_tokens": 212,
+          "completion_tokens": 5,
+          "total_tokens": 217,
+          "prompt_tokens_details": {
+            "cached_tokens": 211
+          }
+        },
+        "firstMs": 60.35,
+        "completionMs": 137.84,
+        "peakPhysicalBytes": 2203390392,
+        "memorySamples": 5,
+        "finish": "stop",
+        "changedStoreFileBytes": 0,
+        "removedEntries": 0,
+        "arm": "off",
+        "pair": 2,
+        "scenario": "warm",
+        "route": "/v1/chat/completions",
+        "disk": {},
+        "backgroundCpu": {
+          "averageBusyPercent": 29.517354989015903,
+          "peakBusyPercent": 29.517354989015903,
+          "sustainedHighSeconds": 0
+        },
+        "cpuBeforePercent": 18.071141879701493,
+        "availableBytesBefore": 8569290752
+      },
+      {
+        "answer": "42 \n",
+        "usage": {
+          "prompt_tokens": 212,
+          "completion_tokens": 5,
+          "total_tokens": 217,
+          "prompt_tokens_details": {
+            "cached_tokens": 211
+          }
+        },
+        "firstMs": 66.72,
+        "completionMs": 147.85,
+        "peakPhysicalBytes": 2203357624,
+        "memorySamples": 6,
+        "finish": "stop",
+        "changedStoreFileBytes": 0,
+        "removedEntries": 0,
+        "arm": "off",
+        "pair": 2,
+        "scenario": "warm",
+        "route": "/v1/chat/completions",
+        "disk": {},
+        "backgroundCpu": {
+          "averageBusyPercent": 19.413615799830055,
+          "peakBusyPercent": 19.413615799830055,
+          "sustainedHighSeconds": 0
+        },
+        "cpuBeforePercent": 17.094385017948913,
+        "availableBytesBefore": 8556953600
+      },
+      {
+        "answer": "73 \n",
+        "usage": {
+          "prompt_tokens": 242,
+          "completion_tokens": 5,
+          "total_tokens": 247,
+          "prompt_tokens_details": {
+            "cached_tokens": 214
+          }
+        },
+        "firstMs": 108.43,
+        "completionMs": 192.52,
+        "peakPhysicalBytes": 2314801592,
+        "memorySamples": 8,
+        "finish": "stop",
+        "changedStoreFileBytes": 0,
+        "removedEntries": 0,
+        "arm": "off",
+        "pair": 2,
+        "scenario": "followUp",
+        "route": "/v1/chat/completions",
+        "disk": {},
+        "backgroundCpu": {
+          "averageBusyPercent": 54.7813737339411,
+          "peakBusyPercent": 54.7813737339411,
+          "sustainedHighSeconds": 0
+        },
+        "cpuBeforePercent": 17.094385017948913,
+        "availableBytesBefore": 8585297920
+      },
+      {
+        "answer": "42 \n",
+        "usage": {
+          "prompt_tokens": 212,
+          "completion_tokens": 5,
+          "total_tokens": 217,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "firstMs": 397.02,
+        "completionMs": 472.72,
+        "peakPhysicalBytes": 2487308680,
+        "memorySamples": 17,
+        "finish": "stop",
+        "changedStoreFileBytes": 0,
+        "removedEntries": 0,
+        "arm": "off",
+        "pair": 2,
+        "scenario": "restart",
+        "route": "/v1/chat/completions",
+        "disk": {},
+        "backgroundCpu": {
+          "averageBusyPercent": 29.533804311182504,
+          "peakBusyPercent": 38.162556446628166,
+          "sustainedHighSeconds": 0
+        },
+        "cpuBeforePercent": 19.546927129589083,
+        "availableBytesBefore": 8909225984
+      },
+      {
+        "answer": "73 \n",
+        "usage": {
+          "prompt_tokens": 214,
+          "completion_tokens": 5,
+          "total_tokens": 219,
+          "prompt_tokens_details": {
+            "cached_tokens": 16
+          }
+        },
+        "firstMs": 409.14,
+        "completionMs": 492.37,
+        "peakPhysicalBytes": 2497057160,
+        "memorySamples": 17,
+        "finish": "stop",
+        "changedStoreFileBytes": 0,
+        "removedEntries": 0,
+        "arm": "off",
+        "pair": 2,
+        "scenario": "changed",
+        "route": "/v1/chat/completions",
+        "disk": {},
+        "backgroundCpu": {
+          "averageBusyPercent": 23.896265722965587,
+          "peakBusyPercent": 25.616939576487066,
+          "sustainedHighSeconds": 0
+        },
+        "cpuBeforePercent": 17.881347360702136,
+        "availableBytesBefore": 8722563072
+      },
+      {
+        "answer": "91 \n",
+        "usage": {
+          "prompt_tokens": 214,
+          "completion_tokens": 5,
+          "total_tokens": 219,
+          "prompt_tokens_details": {
+            "cached_tokens": 17
+          }
+        },
+        "firstMs": 496.92,
+        "completionMs": 576.29,
+        "peakPhysicalBytes": 2529104264,
+        "memorySamples": 17,
+        "finish": "stop",
+        "busyBeforeRecovery": [
+          {
+            "status": 503,
+            "atMs": 0.0
+          }
+        ],
+        "changedStoreFileBytes": 0,
+        "removedEntries": 0,
+        "arm": "off",
+        "pair": 2,
+        "scenario": "afterCancel",
+        "route": "/studio/chat",
+        "disk": {},
+        "backgroundCpu": {
+          "averageBusyPercent": 16.935507233150695,
+          "peakBusyPercent": 20.662177648385153,
+          "sustainedHighSeconds": 0
+        },
+        "cpuBeforePercent": 20.662177648385153,
+        "availableBytesBefore": 8527036416
+      },
+      {
+        "answer": "42 \n",
+        "usage": {
+          "prompt_tokens": 212,
+          "completion_tokens": 5,
+          "total_tokens": 217,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "firstMs": 562.22,
+        "completionMs": 661.09,
+        "peakPhysicalBytes": 2270956568,
+        "memorySamples": 23,
+        "finish": "stop",
+        "changedStoreFileBytes": 27274416,
+        "removedEntries": 0,
+        "arm": "on",
+        "pair": 2,
+        "scenario": "cold",
+        "route": "/v1/chat/completions",
+        "disk": {
+          "hits": 0,
+          "misses": 1,
+          "writes": 1,
+          "serializedBytes": 27270312,
+          "committedBytes": 27270312,
+          "errors": 0
+        },
+        "backgroundCpu": {
+          "averageBusyPercent": 34.66999237964993,
+          "peakBusyPercent": 34.66999237964993,
+          "sustainedHighSeconds": 0
+        },
+        "cpuBeforePercent": 18.19712131544842,
+        "availableBytesBefore": 9934733312
+      },
+      {
+        "answer": "42 \n",
+        "usage": {
+          "prompt_tokens": 212,
+          "completion_tokens": 5,
+          "total_tokens": 217,
+          "prompt_tokens_details": {
+            "cached_tokens": 211
+          }
+        },
+        "firstMs": 41.24,
+        "completionMs": 115.93,
+        "peakPhysicalBytes": 1987972120,
+        "memorySamples": 5,
+        "finish": "stop",
+        "changedStoreFileBytes": 0,
+        "removedEntries": 0,
+        "arm": "on",
+        "pair": 2,
+        "scenario": "warm",
+        "route": "/v1/chat/completions",
+        "disk": {
+          "hits": 0,
+          "misses": 0,
+          "writes": 0,
+          "serializedBytes": 0,
+          "committedBytes": 0,
+          "errors": 0
+        },
+        "backgroundCpu": {
+          "averageBusyPercent": 21.225201215766205,
+          "peakBusyPercent": 76.89887679809773,
+          "sustainedHighSeconds": 0
+        },
+        "cpuBeforePercent": 17.760193708772775,
+        "availableBytesBefore": 9303408640
+      },
+      {
+        "answer": "42 \n",
+        "usage": {
+          "prompt_tokens": 212,
+          "completion_tokens": 5,
+          "total_tokens": 217,
+          "prompt_tokens_details": {
+            "cached_tokens": 211
+          }
+        },
+        "firstMs": 93.34,
+        "completionMs": 176.99,
+        "peakPhysicalBytes": 1987972120,
+        "memorySamples": 7,
+        "finish": "stop",
+        "changedStoreFileBytes": 0,
+        "removedEntries": 0,
+        "arm": "on",
+        "pair": 2,
+        "scenario": "warm",
+        "route": "/v1/chat/completions",
+        "disk": {
+          "hits": 0,
+          "misses": 0,
+          "writes": 0,
+          "serializedBytes": 0,
+          "committedBytes": 0,
+          "errors": 0
+        },
+        "backgroundCpu": {
+          "averageBusyPercent": 42.81166640381993,
+          "peakBusyPercent": 42.81166640381993,
+          "sustainedHighSeconds": 0
+        },
+        "cpuBeforePercent": 19.79388204608807,
+        "availableBytesBefore": 9271394304
+      },
+      {
+        "answer": "42 \n",
+        "usage": {
+          "prompt_tokens": 212,
+          "completion_tokens": 5,
+          "total_tokens": 217,
+          "prompt_tokens_details": {
+            "cached_tokens": 211
+          }
+        },
+        "firstMs": 43.72,
+        "completionMs": 117.08,
+        "peakPhysicalBytes": 1987972120,
+        "memorySamples": 5,
+        "finish": "stop",
+        "changedStoreFileBytes": 0,
+        "removedEntries": 0,
+        "arm": "on",
+        "pair": 2,
+        "scenario": "warm",
+        "route": "/v1/chat/completions",
+        "disk": {
+          "hits": 0,
+          "misses": 0,
+          "writes": 0,
+          "serializedBytes": 0,
+          "committedBytes": 0,
+          "errors": 0
+        },
+        "backgroundCpu": {
+          "averageBusyPercent": 19.69871108238459,
+          "peakBusyPercent": 38.39112674909133,
+          "sustainedHighSeconds": 0
+        },
+        "cpuBeforePercent": 19.79388204608807,
+        "availableBytesBefore": 9215868928
+      },
+      {
+        "answer": "42 \n",
+        "usage": {
+          "prompt_tokens": 212,
+          "completion_tokens": 5,
+          "total_tokens": 217,
+          "prompt_tokens_details": {
+            "cached_tokens": 211
+          }
+        },
+        "firstMs": 53.68,
+        "completionMs": 128.52,
+        "peakPhysicalBytes": 1987972120,
+        "memorySamples": 5,
+        "finish": "stop",
+        "changedStoreFileBytes": 0,
+        "removedEntries": 0,
+        "arm": "on",
+        "pair": 2,
+        "scenario": "warm",
+        "route": "/v1/chat/completions",
+        "disk": {
+          "hits": 0,
+          "misses": 0,
+          "writes": 0,
+          "serializedBytes": 0,
+          "committedBytes": 0,
+          "errors": 0
+        },
+        "backgroundCpu": {
+          "averageBusyPercent": 13.036894054687195,
+          "peakBusyPercent": 19.69528630032102,
+          "sustainedHighSeconds": 0
+        },
+        "cpuBeforePercent": 19.69528630032102,
+        "availableBytesBefore": 9258516480
+      },
+      {
+        "answer": "73 \n",
+        "usage": {
+          "prompt_tokens": 242,
+          "completion_tokens": 5,
+          "total_tokens": 247,
+          "prompt_tokens_details": {
+            "cached_tokens": 214
+          }
+        },
+        "firstMs": 158.22,
+        "completionMs": 234.37,
+        "peakPhysicalBytes": 2101267984,
+        "memorySamples": 8,
+        "finish": "stop",
+        "changedStoreFileBytes": 27274416,
+        "removedEntries": 3,
+        "arm": "on",
+        "pair": 2,
+        "scenario": "followUp",
+        "route": "/v1/chat/completions",
+        "disk": {
+          "hits": 0,
+          "misses": 0,
+          "writes": 1,
+          "serializedBytes": 27270312,
+          "committedBytes": 27270312,
+          "errors": 0
+        },
+        "backgroundCpu": {
+          "averageBusyPercent": 16.865529624983367,
+          "peakBusyPercent": 19.69528630032102,
+          "sustainedHighSeconds": 0
+        },
+        "cpuBeforePercent": 19.69528630032102,
+        "availableBytesBefore": 9183412224
+      },
+      {
+        "answer": "42 \n",
+        "usage": {
+          "prompt_tokens": 212,
+          "completion_tokens": 5,
+          "total_tokens": 217,
+          "prompt_tokens_details": {
+            "cached_tokens": 211
+          }
+        },
+        "firstMs": 162.82,
+        "completionMs": 236.44,
+        "peakPhysicalBytes": 1962560344,
+        "memorySamples": 9,
+        "finish": "stop",
+        "changedStoreFileBytes": 0,
+        "removedEntries": 0,
+        "arm": "on",
+        "pair": 2,
+        "scenario": "restart",
+        "route": "/v1/chat/completions",
+        "disk": {
+          "hits": 1,
+          "misses": 0,
+          "writes": 0,
+          "serializedBytes": 0,
+          "committedBytes": 0,
+          "errors": 0
+        },
+        "backgroundCpu": {
+          "averageBusyPercent": 16.22210037721392,
+          "peakBusyPercent": 17.69716281713441,
+          "sustainedHighSeconds": 0
+        },
+        "cpuBeforePercent": 17.69716281713441,
+        "availableBytesBefore": 9890463744
+      },
+      {
+        "answer": "73 \n",
+        "usage": {
+          "prompt_tokens": 214,
+          "completion_tokens": 5,
+          "total_tokens": 219,
+          "prompt_tokens_details": {
+            "cached_tokens": 16
+          }
+        },
+        "firstMs": 440.72,
+        "completionMs": 514.56,
+        "peakPhysicalBytes": 2283473752,
+        "memorySamples": 18,
+        "finish": "stop",
+        "changedStoreFileBytes": 27274416,
+        "removedEntries": 0,
+        "arm": "on",
+        "pair": 2,
+        "scenario": "changed",
+        "route": "/v1/chat/completions",
+        "disk": {
+          "hits": 0,
+          "misses": 0,
+          "writes": 1,
+          "serializedBytes": 27270312,
+          "committedBytes": 27270312,
+          "errors": 0
+        },
+        "backgroundCpu": {
+          "averageBusyPercent": 15.762901420060343,
+          "peakBusyPercent": 17.807105271879287,
+          "sustainedHighSeconds": 0
+        },
+        "cpuBeforePercent": 17.4510748275891,
+        "availableBytesBefore": 9418063872
+      },
+      {
+        "answer": "91 \n",
+        "usage": {
+          "prompt_tokens": 214,
+          "completion_tokens": 5,
+          "total_tokens": 219,
+          "prompt_tokens_details": {
+            "cached_tokens": 4
+          }
+        },
+        "firstMs": 446.62,
+        "completionMs": 523.44,
+        "peakPhysicalBytes": 2308426776,
+        "memorySamples": 19,
+        "finish": "stop",
+        "busyBeforeRecovery": [],
+        "changedStoreFileBytes": 27274416,
+        "removedEntries": 0,
+        "arm": "on",
+        "pair": 2,
+        "scenario": "afterCancel",
+        "route": "/studio/chat",
+        "disk": {
+          "hits": 0,
+          "misses": 0,
+          "writes": 1,
+          "serializedBytes": 27270312,
+          "committedBytes": 27270312,
+          "errors": 0
+        },
+        "backgroundCpu": {
+          "averageBusyPercent": 19.674018182182948,
+          "peakBusyPercent": 19.674018182182948,
+          "sustainedHighSeconds": 0
+        },
+        "cpuBeforePercent": 17.807105271879287,
+        "availableBytesBefore": 9372483584
+      },
+      {
+        "answer": "42 \n",
+        "usage": {
+          "prompt_tokens": 212,
+          "completion_tokens": 5,
+          "total_tokens": 217,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "firstMs": 537.65,
+        "completionMs": 611.87,
+        "peakPhysicalBytes": 2268154856,
+        "memorySamples": 22,
+        "finish": "stop",
+        "changedStoreFileBytes": 27274416,
+        "removedEntries": 3,
+        "arm": "on",
+        "pair": 3,
+        "scenario": "cold",
+        "route": "/v1/chat/completions",
+        "disk": {
+          "hits": 0,
+          "misses": 1,
+          "writes": 1,
+          "serializedBytes": 27270312,
+          "committedBytes": 27270312,
+          "errors": 0
+        },
+        "backgroundCpu": {
+          "averageBusyPercent": 24.730327722432307,
+          "peakBusyPercent": 24.730327722432307,
+          "sustainedHighSeconds": 0
+        },
+        "cpuBeforePercent": 17.35957830154676,
+        "availableBytesBefore": 9667461120
+      },
+      {
+        "answer": "42 \n",
+        "usage": {
+          "prompt_tokens": 212,
+          "completion_tokens": 5,
+          "total_tokens": 217,
+          "prompt_tokens_details": {
+            "cached_tokens": 211
+          }
+        },
+        "firstMs": 54.68,
+        "completionMs": 137.57,
+        "peakPhysicalBytes": 1984678912,
+        "memorySamples": 5,
+        "finish": "stop",
+        "changedStoreFileBytes": 0,
+        "removedEntries": 0,
+        "arm": "on",
+        "pair": 3,
+        "scenario": "warm",
+        "route": "/v1/chat/completions",
+        "disk": {
+          "hits": 0,
+          "misses": 0,
+          "writes": 0,
+          "serializedBytes": 0,
+          "committedBytes": 0,
+          "errors": 0
+        },
+        "backgroundCpu": {
+          "averageBusyPercent": 32.93472534196615,
+          "peakBusyPercent": 32.93472534196615,
+          "sustainedHighSeconds": 0
+        },
+        "cpuBeforePercent": 17.380116106932963,
+        "availableBytesBefore": 9305636864
+      },
+      {
+        "answer": "42 \n",
+        "usage": {
+          "prompt_tokens": 212,
+          "completion_tokens": 5,
+          "total_tokens": 217,
+          "prompt_tokens_details": {
+            "cached_tokens": 211
+          }
+        },
+        "firstMs": 45.34,
+        "completionMs": 173.71,
+        "peakPhysicalBytes": 1984695296,
+        "memorySamples": 6,
+        "finish": "stop",
+        "changedStoreFileBytes": 0,
+        "removedEntries": 0,
+        "arm": "on",
+        "pair": 3,
+        "scenario": "warm",
+        "route": "/v1/chat/completions",
+        "disk": {
+          "hits": 0,
+          "misses": 0,
+          "writes": 0,
+          "serializedBytes": 0,
+          "committedBytes": 0,
+          "errors": 0
+        },
+        "backgroundCpu": {
+          "averageBusyPercent": 35.74802490701277,
+          "peakBusyPercent": 36.009204848105334,
+          "sustainedHighSeconds": 0
+        },
+        "cpuBeforePercent": 17.380116106932963,
+        "availableBytesBefore": 9129312256
+      },
+      {
+        "answer": "42 \n",
+        "usage": {
+          "prompt_tokens": 212,
+          "completion_tokens": 5,
+          "total_tokens": 217,
+          "prompt_tokens_details": {
+            "cached_tokens": 211
+          }
+        },
+        "firstMs": 65.08,
+        "completionMs": 144.38,
+        "peakPhysicalBytes": 1984728064,
+        "memorySamples": 6,
+        "finish": "stop",
+        "changedStoreFileBytes": 0,
+        "removedEntries": 0,
+        "arm": "on",
+        "pair": 3,
+        "scenario": "warm",
+        "route": "/v1/chat/completions",
+        "disk": {
+          "hits": 0,
+          "misses": 0,
+          "writes": 0,
+          "serializedBytes": 0,
+          "committedBytes": 0,
+          "errors": 0
+        },
+        "backgroundCpu": {
+          "averageBusyPercent": 20.513401212352868,
+          "peakBusyPercent": 20.513401212352868,
+          "sustainedHighSeconds": 0
+        },
+        "cpuBeforePercent": 19.20843383203362,
+        "availableBytesBefore": 8812937216
+      },
+      {
+        "answer": "42 \n",
+        "usage": {
+          "prompt_tokens": 212,
+          "completion_tokens": 5,
+          "total_tokens": 217,
+          "prompt_tokens_details": {
+            "cached_tokens": 211
+          }
+        },
+        "firstMs": 42.89,
+        "completionMs": 119.25,
+        "peakPhysicalBytes": 1984760832,
+        "memorySamples": 5,
+        "finish": "stop",
+        "changedStoreFileBytes": 0,
+        "removedEntries": 0,
+        "arm": "on",
+        "pair": 3,
+        "scenario": "warm",
+        "route": "/v1/chat/completions",
+        "disk": {
+          "hits": 0,
+          "misses": 0,
+          "writes": 0,
+          "serializedBytes": 0,
+          "committedBytes": 0,
+          "errors": 0
+        },
+        "backgroundCpu": {
+          "averageBusyPercent": 20.87483934677921,
+          "peakBusyPercent": 20.87483934677921,
+          "sustainedHighSeconds": 0
+        },
+        "cpuBeforePercent": 19.20843383203362,
+        "availableBytesBefore": 8802254848
+      },
+      {
+        "answer": "73 \n",
+        "usage": {
+          "prompt_tokens": 242,
+          "completion_tokens": 5,
+          "total_tokens": 247,
+          "prompt_tokens_details": {
+            "cached_tokens": 214
+          }
+        },
+        "firstMs": 153.43,
+        "completionMs": 229.66,
+        "peakPhysicalBytes": 2098023928,
+        "memorySamples": 8,
+        "finish": "stop",
+        "changedStoreFileBytes": 27274416,
+        "removedEntries": 0,
+        "arm": "on",
+        "pair": 3,
+        "scenario": "followUp",
+        "route": "/v1/chat/completions",
+        "disk": {
+          "hits": 0,
+          "misses": 0,
+          "writes": 1,
+          "serializedBytes": 27270312,
+          "committedBytes": 27270312,
+          "errors": 0
+        },
+        "backgroundCpu": {
+          "averageBusyPercent": 23.359408792678078,
+          "peakBusyPercent": 23.359408792678078,
+          "sustainedHighSeconds": 0
+        },
+        "cpuBeforePercent": 19.06119458553053,
+        "availableBytesBefore": 8801730560
+      },
+      {
+        "answer": "42 \n",
+        "usage": {
+          "prompt_tokens": 212,
+          "completion_tokens": 5,
+          "total_tokens": 217,
+          "prompt_tokens_details": {
+            "cached_tokens": 211
+          }
+        },
+        "firstMs": 195.5,
+        "completionMs": 273.29,
+        "peakPhysicalBytes": 1960692568,
+        "memorySamples": 10,
+        "finish": "stop",
+        "changedStoreFileBytes": 0,
+        "removedEntries": 0,
+        "arm": "on",
+        "pair": 3,
+        "scenario": "restart",
+        "route": "/v1/chat/completions",
+        "disk": {
+          "hits": 1,
+          "misses": 0,
+          "writes": 0,
+          "serializedBytes": 0,
+          "committedBytes": 0,
+          "errors": 0
+        },
+        "backgroundCpu": {
+          "averageBusyPercent": 33.378975860109236,
+          "peakBusyPercent": 33.56715887753865,
+          "sustainedHighSeconds": 0
+        },
+        "cpuBeforePercent": 19.610289924464322,
+        "availableBytesBefore": 9423093760
+      },
+      {
+        "answer": "73 \n",
+        "usage": {
+          "prompt_tokens": 214,
+          "completion_tokens": 5,
+          "total_tokens": 219,
+          "prompt_tokens_details": {
+            "cached_tokens": 16
+          }
+        },
+        "firstMs": 491.82,
+        "completionMs": 570.78,
+        "peakPhysicalBytes": 2281589592,
+        "memorySamples": 21,
+        "finish": "stop",
+        "changedStoreFileBytes": 27274416,
+        "removedEntries": 0,
+        "arm": "on",
+        "pair": 3,
+        "scenario": "changed",
+        "route": "/v1/chat/completions",
+        "disk": {
+          "hits": 0,
+          "misses": 0,
+          "writes": 1,
+          "serializedBytes": 27270312,
+          "committedBytes": 27270312,
+          "errors": 0
+        },
+        "backgroundCpu": {
+          "averageBusyPercent": 28.69911171151834,
+          "peakBusyPercent": 28.69911171151834,
+          "sustainedHighSeconds": 0
+        },
+        "cpuBeforePercent": 18.90574923420984,
+        "availableBytesBefore": 8939372544
+      },
+      {
+        "answer": "91 \n",
+        "usage": {
+          "prompt_tokens": 214,
+          "completion_tokens": 5,
+          "total_tokens": 219,
+          "prompt_tokens_details": {
+            "cached_tokens": 4
+          }
+        },
+        "firstMs": 476.5,
+        "completionMs": 556.98,
+        "peakPhysicalBytes": 2304216088,
+        "memorySamples": 20,
+        "finish": "stop",
+        "busyBeforeRecovery": [],
+        "changedStoreFileBytes": 27274416,
+        "removedEntries": 0,
+        "arm": "on",
+        "pair": 3,
+        "scenario": "afterCancel",
+        "route": "/studio/chat",
+        "disk": {
+          "hits": 0,
+          "misses": 0,
+          "writes": 1,
+          "serializedBytes": 27270312,
+          "committedBytes": 27270312,
+          "errors": 0
+        },
+        "backgroundCpu": {
+          "averageBusyPercent": 31.49699002381778,
+          "peakBusyPercent": 41.15184773711217,
+          "sustainedHighSeconds": 0
+        },
+        "cpuBeforePercent": 28.90583869824177,
+        "availableBytesBefore": 9160163328
+      },
+      {
+        "answer": "42 \n",
+        "usage": {
+          "prompt_tokens": 212,
+          "completion_tokens": 5,
+          "total_tokens": 217,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "firstMs": 632.34,
+        "completionMs": 713.7,
+        "peakPhysicalBytes": 2489553264,
+        "memorySamples": 25,
+        "finish": "stop",
+        "changedStoreFileBytes": 0,
+        "removedEntries": 0,
+        "arm": "off",
+        "pair": 3,
+        "scenario": "cold",
+        "route": "/v1/chat/completions",
+        "disk": {},
+        "backgroundCpu": {
+          "averageBusyPercent": 22.61564612469178,
+          "peakBusyPercent": 29.252695723161565,
+          "sustainedHighSeconds": 0
+        },
+        "cpuBeforePercent": 19.35336344897154,
+        "availableBytesBefore": 8547729408
+      },
+      {
+        "answer": "42 \n",
+        "usage": {
+          "prompt_tokens": 212,
+          "completion_tokens": 5,
+          "total_tokens": 217,
+          "prompt_tokens_details": {
+            "cached_tokens": 211
+          }
+        },
+        "firstMs": 94.37,
+        "completionMs": 173.37,
+        "peakPhysicalBytes": 2201915760,
+        "memorySamples": 6,
+        "finish": "stop",
+        "changedStoreFileBytes": 0,
+        "removedEntries": 0,
+        "arm": "off",
+        "pair": 3,
+        "scenario": "warm",
+        "route": "/v1/chat/completions",
+        "disk": {},
+        "backgroundCpu": {
+          "averageBusyPercent": 30.1480740618964,
+          "peakBusyPercent": 30.1480740618964,
+          "sustainedHighSeconds": 0
+        },
+        "cpuBeforePercent": 18.264802235949357,
+        "availableBytesBefore": 8778268672
+      },
+      {
+        "answer": "42 \n",
+        "usage": {
+          "prompt_tokens": 212,
+          "completion_tokens": 5,
+          "total_tokens": 217,
+          "prompt_tokens_details": {
+            "cached_tokens": 211
+          }
+        },
+        "firstMs": 72.56,
+        "completionMs": 150.66,
+        "peakPhysicalBytes": 2202030448,
+        "memorySamples": 6,
+        "finish": "stop",
+        "changedStoreFileBytes": 0,
+        "removedEntries": 0,
+        "arm": "off",
+        "pair": 3,
+        "scenario": "warm",
+        "route": "/v1/chat/completions",
+        "disk": {},
+        "backgroundCpu": {
+          "averageBusyPercent": 19.418217270123503,
+          "peakBusyPercent": 19.736213035753842,
+          "sustainedHighSeconds": 0
+        },
+        "cpuBeforePercent": 19.736213035753842,
+        "availableBytesBefore": 8548581376
+      },
+      {
+        "answer": "42 \n",
+        "usage": {
+          "prompt_tokens": 212,
+          "completion_tokens": 5,
+          "total_tokens": 217,
+          "prompt_tokens_details": {
+            "cached_tokens": 211
+          }
+        },
+        "firstMs": 117.26,
+        "completionMs": 193.71,
+        "peakPhysicalBytes": 2201997680,
+        "memorySamples": 7,
+        "finish": "stop",
+        "changedStoreFileBytes": 0,
+        "removedEntries": 0,
+        "arm": "off",
+        "pair": 3,
+        "scenario": "warm",
+        "route": "/v1/chat/completions",
+        "disk": {},
+        "backgroundCpu": {
+          "averageBusyPercent": 27.029513069947196,
+          "peakBusyPercent": 27.029513069947196,
+          "sustainedHighSeconds": 0
+        },
+        "cpuBeforePercent": 17.505973061169836,
+        "availableBytesBefore": 8480391168
+      },
+      {
+        "answer": "42 \n",
+        "usage": {
+          "prompt_tokens": 212,
+          "completion_tokens": 5,
+          "total_tokens": 217,
+          "prompt_tokens_details": {
+            "cached_tokens": 211
+          }
+        },
+        "firstMs": 44.51,
+        "completionMs": 122.46,
+        "peakPhysicalBytes": 2203914896,
+        "memorySamples": 5,
+        "finish": "stop",
+        "changedStoreFileBytes": 0,
+        "removedEntries": 0,
+        "arm": "off",
+        "pair": 3,
+        "scenario": "warm",
+        "route": "/v1/chat/completions",
+        "disk": {},
+        "backgroundCpu": {
+          "averageBusyPercent": 27.9014818250687,
+          "peakBusyPercent": 27.9014818250687,
+          "sustainedHighSeconds": 0
+        },
+        "cpuBeforePercent": 17.505973061169836,
+        "availableBytesBefore": 8756314112
+      },
+      {
+        "answer": "73 \n",
+        "usage": {
+          "prompt_tokens": 242,
+          "completion_tokens": 5,
+          "total_tokens": 247,
+          "prompt_tokens_details": {
+            "cached_tokens": 214
+          }
+        },
+        "firstMs": 145.96,
+        "completionMs": 222.97,
+        "peakPhysicalBytes": 2314916208,
+        "memorySamples": 8,
+        "finish": "stop",
+        "changedStoreFileBytes": 0,
+        "removedEntries": 0,
+        "arm": "off",
+        "pair": 3,
+        "scenario": "followUp",
+        "route": "/v1/chat/completions",
+        "disk": {},
+        "backgroundCpu": {
+          "averageBusyPercent": 26.106713315939043,
+          "peakBusyPercent": 26.106713315939043,
+          "sustainedHighSeconds": 0
+        },
+        "cpuBeforePercent": 18.980353088644552,
+        "availableBytesBefore": 8758968320
+      },
+      {
+        "answer": "42 \n",
+        "usage": {
+          "prompt_tokens": 212,
+          "completion_tokens": 5,
+          "total_tokens": 217,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "firstMs": 472.37,
+        "completionMs": 555.1,
+        "peakPhysicalBytes": 2481951160,
+        "memorySamples": 20,
+        "finish": "stop",
+        "changedStoreFileBytes": 0,
+        "removedEntries": 0,
+        "arm": "off",
+        "pair": 3,
+        "scenario": "restart",
+        "route": "/v1/chat/completions",
+        "disk": {},
+        "backgroundCpu": {
+          "averageBusyPercent": 39.89384864139501,
+          "peakBusyPercent": 39.89384864139501,
+          "sustainedHighSeconds": 0
+        },
+        "cpuBeforePercent": 15.472394496035687,
+        "availableBytesBefore": 8608268288
+      },
+      {
+        "answer": "73 \n",
+        "usage": {
+          "prompt_tokens": 214,
+          "completion_tokens": 5,
+          "total_tokens": 219,
+          "prompt_tokens_details": {
+            "cached_tokens": 16
+          }
+        },
+        "firstMs": 473.83,
+        "completionMs": 547.75,
+        "peakPhysicalBytes": 2491699640,
+        "memorySamples": 20,
+        "finish": "stop",
+        "changedStoreFileBytes": 0,
+        "removedEntries": 0,
+        "arm": "off",
+        "pair": 3,
+        "scenario": "changed",
+        "route": "/v1/chat/completions",
+        "disk": {},
+        "backgroundCpu": {
+          "averageBusyPercent": 12.842057301346745,
+          "peakBusyPercent": 13.219188512310154,
+          "sustainedHighSeconds": 0
+        },
+        "cpuBeforePercent": 11.524702780032559,
+        "availableBytesBefore": 8617574400
+      },
+      {
+        "answer": "91 \n",
+        "usage": {
+          "prompt_tokens": 214,
+          "completion_tokens": 5,
+          "total_tokens": 219,
+          "prompt_tokens_details": {
+            "cached_tokens": 17
+          }
+        },
+        "firstMs": 522.64,
+        "completionMs": 598.06,
+        "peakPhysicalBytes": 2523943352,
+        "memorySamples": 17,
+        "finish": "stop",
+        "busyBeforeRecovery": [
+          {
+            "status": 503,
+            "atMs": 0.0
+          }
+        ],
+        "changedStoreFileBytes": 0,
+        "removedEntries": 0,
+        "arm": "off",
+        "pair": 3,
+        "scenario": "afterCancel",
+        "route": "/studio/chat",
+        "disk": {},
+        "backgroundCpu": {
+          "averageBusyPercent": 18.16409131255403,
+          "peakBusyPercent": 21.288337489085826,
+          "sustainedHighSeconds": 0
+        },
+        "cpuBeforePercent": 12.487257308658284,
+        "availableBytesBefore": 8507326464
+      }
+    ],
+    "cancellations": [
+      {
+        "disk": {},
+        "arm": "off",
+        "pair": 0,
+        "afterContent": "1",
+        "releaseObservedMs": 3.57,
+        "busyBeforeRecovery": [
+          {
+            "status": 503,
+            "atMs": 0.0
+          }
+        ],
+        "nextConversationAnswer": "91 \n",
+        "newHistoryOnly": true
+      },
+      {
+        "disk": {
+          "writes": 1,
+          "serializedBytes": 27270312,
+          "committedBytes": 27270312
+        },
+        "arm": "on",
+        "pair": 0,
+        "afterContent": "1",
+        "releaseObservedMs": 4.62,
+        "busyBeforeRecovery": [],
+        "nextConversationAnswer": "91 \n",
+        "newHistoryOnly": true
+      },
+      {
+        "disk": {
+          "writes": 1,
+          "serializedBytes": 27270312,
+          "committedBytes": 27270312
+        },
+        "arm": "on",
+        "pair": 1,
+        "afterContent": "1",
+        "releaseObservedMs": 5.36,
+        "busyBeforeRecovery": [],
+        "nextConversationAnswer": "91 \n",
+        "newHistoryOnly": true
+      },
+      {
+        "disk": {},
+        "arm": "off",
+        "pair": 1,
+        "afterContent": "1",
+        "releaseObservedMs": 11.05,
+        "busyBeforeRecovery": [
+          {
+            "status": 503,
+            "atMs": 0.0
+          }
+        ],
+        "nextConversationAnswer": "91 \n",
+        "newHistoryOnly": true
+      },
+      {
+        "disk": {},
+        "arm": "off",
+        "pair": 2,
+        "afterContent": "1",
+        "releaseObservedMs": 3.44,
+        "busyBeforeRecovery": [
+          {
+            "status": 503,
+            "atMs": 0.0
+          }
+        ],
+        "nextConversationAnswer": "91 \n",
+        "newHistoryOnly": true
+      },
+      {
+        "disk": {
+          "writes": 1,
+          "serializedBytes": 27270312,
+          "committedBytes": 27270312
+        },
+        "arm": "on",
+        "pair": 2,
+        "afterContent": "1",
+        "releaseObservedMs": 4.94,
+        "busyBeforeRecovery": [],
+        "nextConversationAnswer": "91 \n",
+        "newHistoryOnly": true
+      },
+      {
+        "disk": {
+          "writes": 1,
+          "serializedBytes": 27270312,
+          "committedBytes": 27270312
+        },
+        "arm": "on",
+        "pair": 3,
+        "afterContent": "1",
+        "releaseObservedMs": 4.84,
+        "busyBeforeRecovery": [],
+        "nextConversationAnswer": "91 \n",
+        "newHistoryOnly": true
+      },
+      {
+        "disk": {},
+        "arm": "off",
+        "pair": 3,
+        "afterContent": "1",
+        "releaseObservedMs": 5.1,
+        "busyBeforeRecovery": [
+          {
+            "status": 503,
+            "atMs": 0.0
+          }
+        ],
+        "nextConversationAnswer": "91 \n",
+        "newHistoryOnly": true
+      }
+    ],
+    "starts": [
+      {
+        "pair": 0,
+        "arm": "off",
+        "ms": 5771.25
+      },
+      {
+        "pair": 0,
+        "arm": "off",
+        "ms": 3185.84
+      },
+      {
+        "pair": 0,
+        "arm": "on",
+        "ms": 5724.25
+      },
+      {
+        "pair": 0,
+        "arm": "on",
+        "ms": 4311.38
+      },
+      {
+        "pair": 1,
+        "arm": "on",
+        "ms": 5101.64
+      },
+      {
+        "pair": 1,
+        "arm": "on",
+        "ms": 4640.8
+      },
+      {
+        "pair": 1,
+        "arm": "off",
+        "ms": 7694.06
+      },
+      {
+        "pair": 1,
+        "arm": "off",
+        "ms": 3208.88
+      },
+      {
+        "pair": 2,
+        "arm": "off",
+        "ms": 3175.86
+      },
+      {
+        "pair": 2,
+        "arm": "off",
+        "ms": 2980.89
+      },
+      {
+        "pair": 2,
+        "arm": "on",
+        "ms": 4217.56
+      },
+      {
+        "pair": 2,
+        "arm": "on",
+        "ms": 4216.85
+      },
+      {
+        "pair": 3,
+        "arm": "on",
+        "ms": 4274.64
+      },
+      {
+        "pair": 3,
+        "arm": "on",
+        "ms": 4473.89
+      },
+      {
+        "pair": 3,
+        "arm": "off",
+        "ms": 4334.85
+      },
+      {
+        "pair": 3,
+        "arm": "off",
+        "ms": 4001.74
+      }
+    ],
+    "summary": {
+      "cold": {
+        "off": {
+          "n": 4,
+          "peakMiB": 2374.2,
+          "firstMs": {
+            "p50": 612.48,
+            "p95": 646.68
+          },
+          "completionMs": {
+            "p50": 689.46,
+            "p95": 727.74
+          },
+          "logicalPayloadBytes": 0,
+          "serializedBytes": 0,
+          "highCpuWindows": 0
+        },
+        "on": {
+          "n": 4,
+          "peakMiB": 2165.8,
+          "firstMs": {
+            "p50": 569.73,
+            "p95": 584.69
+          },
+          "completionMs": {
+            "p50": 659.32,
+            "p95": 661.7
+          },
+          "logicalPayloadBytes": 109081248,
+          "serializedBytes": 109081248,
+          "highCpuWindows": 0
+        }
+      },
+      "warm": {
+        "off": {
+          "n": 16,
+          "peakMiB": 2101.8,
+          "firstMs": {
+            "p50": 65.65,
+            "p95": 130.2
+          },
+          "completionMs": {
+            "p50": 142.57,
+            "p95": 210.48
+          },
+          "logicalPayloadBytes": 0,
+          "serializedBytes": 0,
+          "highCpuWindows": 0
+        },
+        "on": {
+          "n": 16,
+          "peakMiB": 1895.9,
+          "firstMs": {
+            "p50": 54.18,
+            "p95": 132.05
+          },
+          "completionMs": {
+            "p50": 139.98,
+            "p95": 212.82
+          },
+          "logicalPayloadBytes": 0,
+          "serializedBytes": 0,
+          "highCpuWindows": 0
+        }
+      },
+      "followUp": {
+        "off": {
+          "n": 4,
+          "peakMiB": 2207.7,
+          "firstMs": {
+            "p50": 121.12,
+            "p95": 145.96
+          },
+          "completionMs": {
+            "p50": 201.65,
+            "p95": 222.97
+          },
+          "logicalPayloadBytes": 0,
+          "serializedBytes": 0,
+          "highCpuWindows": 1
+        },
+        "on": {
+          "n": 4,
+          "peakMiB": 2003.9,
+          "firstMs": {
+            "p50": 156.58,
+            "p95": 228.44
+          },
+          "completionMs": {
+            "p50": 234.7,
+            "p95": 302.31
+          },
+          "logicalPayloadBytes": 109081248,
+          "serializedBytes": 109081248,
+          "highCpuWindows": 0
+        }
+      },
+      "restart": {
+        "off": {
+          "n": 4,
+          "peakMiB": 2378.1,
+          "firstMs": {
+            "p50": 537.04,
+            "p95": 640.56
+          },
+          "completionMs": {
+            "p50": 619.88,
+            "p95": 713.15
+          },
+          "logicalPayloadBytes": 0,
+          "serializedBytes": 0,
+          "highCpuWindows": 0
+        },
+        "on": {
+          "n": 4,
+          "peakMiB": 1871.8,
+          "firstMs": {
+            "p50": 168.77,
+            "p95": 195.5
+          },
+          "completionMs": {
+            "p50": 242.56,
+            "p95": 273.29
+          },
+          "logicalPayloadBytes": 0,
+          "serializedBytes": 0,
+          "highCpuWindows": 0
+        }
+      },
+      "changed": {
+        "off": {
+          "n": 4,
+          "peakMiB": 2383.4,
+          "firstMs": {
+            "p50": 438.38,
+            "p95": 473.83
+          },
+          "completionMs": {
+            "p50": 519.46,
+            "p95": 547.75
+          },
+          "logicalPayloadBytes": 0,
+          "serializedBytes": 0,
+          "highCpuWindows": 0
+        },
+        "on": {
+          "n": 4,
+          "peakMiB": 2177.8,
+          "firstMs": {
+            "p50": 474.0,
+            "p95": 491.82
+          },
+          "completionMs": {
+            "p50": 554.98,
+            "p95": 570.78
+          },
+          "logicalPayloadBytes": 109081248,
+          "serializedBytes": 109081248,
+          "highCpuWindows": 0
+        }
+      },
+      "afterCancel": {
+        "off": {
+          "n": 4,
+          "peakMiB": 2413.9,
+          "firstMs": {
+            "p50": 502.64,
+            "p95": 522.64
+          },
+          "completionMs": {
+            "p50": 587.55,
+            "p95": 599.67
+          },
+          "logicalPayloadBytes": 0,
+          "serializedBytes": 0,
+          "highCpuWindows": 0
+        },
+        "on": {
+          "n": 4,
+          "peakMiB": 2201.5,
+          "firstMs": {
+            "p50": 465.89,
+            "p95": 476.5
+          },
+          "completionMs": {
+            "p50": 542.75,
+            "p95": 556.98
+          },
+          "logicalPayloadBytes": 109081248,
+          "serializedBytes": 109081248,
+          "highCpuWindows": 0
+        }
+      },
+      "all": {
+        "off": {
+          "n": 36,
+          "peakMiB": 2413.9,
+          "firstMs": {
+            "p50": 132.0,
+            "p95": 640.56
+          },
+          "completionMs": {
+            "p50": 210.62,
+            "p95": 713.7
+          },
+          "logicalPayloadBytes": 0,
+          "serializedBytes": 0,
+          "highCpuWindows": 1
+        },
+        "on": {
+          "n": 36,
+          "peakMiB": 2201.5,
+          "firstMs": {
+            "p50": 154.19,
+            "p95": 577.24
+          },
+          "completionMs": {
+            "p50": 232.01,
+            "p95": 661.09
+          },
+          "logicalPayloadBytes": 436324992,
+          "serializedBytes": 436324992,
+          "highCpuWindows": 0
+        }
+      }
+    },
+    "parity": true,
+    "parityDifferences": [],
+    "pressureQualification": {
+      "automatic_eviction": true,
+      "eviction_restart_recompute": true,
+      "corruption_fallback": true,
+      "quota_fallback": true
+    }
+  },
+  "startToAnswer": {
+    "result": "passed",
+    "route": "/v1/chat/completions",
+    "fixtureNamespace": "d16cbe70",
+    "order": [
+      "off",
+      "on",
+      "on",
+      "off",
+      "off",
+      "on",
+      "on",
+      "off"
+    ],
+    "profile": {
+      "schema": 2,
+      "engine": "mlxPrefix",
+      "context": 512,
+      "maximum_output_tokens": 128,
+      "concurrency": 1,
+      "temperature": 0,
+      "seed": 0,
+      "memory_cache_bytes": 67108864,
+      "allocator_cache_bytes": 268435456
+    },
+    "ssdQuotaMiB": 256,
+    "model": "gemma-2-2b-it-4bit",
+    "modelAndTokenizerDigest": {
+      "model": "3e8d02db8dc0df26d4e45291ae3a11ba9538671fc5337b22a8176f611a24b800",
+      "tokenizer": "8b76bdce87555efdf146fd0369a233715742b2fa7203b5a0fd882ee1b62a9f27"
+    },
+    "scope": "From the Start command to the replayed answer through the authenticated gateway. Prior seed and stop excluded. OS file caches retained.",
+    "mlxLm": "0.32.0",
+    "evidenceSha256": {
+      "on": "5732bf4d7505b3db35d256eab6530bb3d303966aa6707affcd31196035082c90",
+      "off": "ebc33fce95d46e509a2fe121c6b13a506bdff2f1b0ec82db7e9637189c8c94e7"
+    },
+    "rows": [
+      {
+        "arm": "off",
+        "pair": 0,
+        "readyMs": 3077.48,
+        "firstMs": 1086.69,
+        "completionMs": 1171.82,
+        "startToFirstMs": 4164.62,
+        "startToCompletedMs": 4249.76,
+        "usage": {
+          "prompt_tokens": 211,
+          "completion_tokens": 5,
+          "total_tokens": 216,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "answer": "42 \n",
+        "quietBeforePercent": 16.63886398203051
+      },
+      {
+        "arm": "on",
+        "pair": 0,
+        "readyMs": 4059.44,
+        "firstMs": 122.04,
+        "completionMs": 192.45,
+        "startToFirstMs": 4181.77,
+        "startToCompletedMs": 4252.18,
+        "usage": {
+          "prompt_tokens": 211,
+          "completion_tokens": 5,
+          "total_tokens": 216,
+          "prompt_tokens_details": {
+            "cached_tokens": 210
+          }
+        },
+        "answer": "42 \n",
+        "quietBeforePercent": 19.734980876982725
+      },
+      {
+        "arm": "on",
+        "pair": 1,
+        "readyMs": 4171.59,
+        "firstMs": 122.81,
+        "completionMs": 193.94,
+        "startToFirstMs": 4294.67,
+        "startToCompletedMs": 4365.8,
+        "usage": {
+          "prompt_tokens": 211,
+          "completion_tokens": 5,
+          "total_tokens": 216,
+          "prompt_tokens_details": {
+            "cached_tokens": 210
+          }
+        },
+        "answer": "42 \n",
+        "quietBeforePercent": 13.319313785621812
+      },
+      {
+        "arm": "off",
+        "pair": 1,
+        "readyMs": 2981.47,
+        "firstMs": 1053.37,
+        "completionMs": 1123.97,
+        "startToFirstMs": 4035.13,
+        "startToCompletedMs": 4105.72,
+        "usage": {
+          "prompt_tokens": 211,
+          "completion_tokens": 5,
+          "total_tokens": 216,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "answer": "42 \n",
+        "quietBeforePercent": 12.896618641351123
+      },
+      {
+        "arm": "off",
+        "pair": 2,
+        "readyMs": 3305.68,
+        "firstMs": 1110.73,
+        "completionMs": 1188.48,
+        "startToFirstMs": 4416.7,
+        "startToCompletedMs": 4494.46,
+        "usage": {
+          "prompt_tokens": 211,
+          "completion_tokens": 5,
+          "total_tokens": 216,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "answer": "42 \n",
+        "quietBeforePercent": 16.784735324278266
+      },
+      {
+        "arm": "on",
+        "pair": 2,
+        "readyMs": 4239.0,
+        "firstMs": 144.32,
+        "completionMs": 265.29,
+        "startToFirstMs": 4383.64,
+        "startToCompletedMs": 4504.61,
+        "usage": {
+          "prompt_tokens": 211,
+          "completion_tokens": 5,
+          "total_tokens": 216,
+          "prompt_tokens_details": {
+            "cached_tokens": 210
+          }
+        },
+        "answer": "42 \n",
+        "quietBeforePercent": 19.129808944652144
+      },
+      {
+        "arm": "on",
+        "pair": 3,
+        "readyMs": 4260.37,
+        "firstMs": 168.15,
+        "completionMs": 257.36,
+        "startToFirstMs": 4428.73,
+        "startToCompletedMs": 4517.94,
+        "usage": {
+          "prompt_tokens": 211,
+          "completion_tokens": 5,
+          "total_tokens": 216,
+          "prompt_tokens_details": {
+            "cached_tokens": 210
+          }
+        },
+        "answer": "42 \n",
+        "quietBeforePercent": 16.588840897821957
+      },
+      {
+        "arm": "off",
+        "pair": 3,
+        "readyMs": 3332.37,
+        "firstMs": 1263.58,
+        "completionMs": 1347.72,
+        "startToFirstMs": 4596.84,
+        "startToCompletedMs": 4680.98,
+        "usage": {
+          "prompt_tokens": 211,
+          "completion_tokens": 5,
+          "total_tokens": 216,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "answer": "42 \n",
+        "quietBeforePercent": 19.12179463746709
+      }
+    ],
+    "parity": true,
+    "summary": {
+      "off": {
+        "readyMs": {
+          "p50": 3191.58,
+          "p95": 3332.37
+        },
+        "firstMs": {
+          "p50": 1098.71,
+          "p95": 1263.58
+        },
+        "completionMs": {
+          "p50": 1180.15,
+          "p95": 1347.72
+        },
+        "startToFirstMs": {
+          "p50": 4290.66,
+          "p95": 4596.84
+        },
+        "startToCompletedMs": {
+          "p50": 4372.11,
+          "p95": 4680.98
+        }
+      },
+      "on": {
+        "readyMs": {
+          "p50": 4205.3,
+          "p95": 4260.37
+        },
+        "firstMs": {
+          "p50": 133.56,
+          "p95": 168.15
+        },
+        "completionMs": {
+          "p50": 225.65,
+          "p95": 265.29
+        },
+        "startToFirstMs": {
+          "p50": 4339.16,
+          "p95": 4428.73
+        },
+        "startToCompletedMs": {
+          "p50": 4435.2,
+          "p95": 4517.94
+        }
+      }
+    }
+  },
+  "decision": "Retain the dedicated opt-in 512-token MLX SSD profile. Defer integration into the 4096-token MLX text settings."
+}

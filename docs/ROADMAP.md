@@ -2,6 +2,8 @@
 
 Release policy: at a completed, validated milestone, increment the patch version by0.0.1, synchronize app/package/Cargo versions, commit/push the reviewed change set, and publish a matching GitHub source release. Do not schedule automatic releases for unfinished work; signed native installers require their own distribution verification.
 
+- 🟢 [Done] DMG packaging validates the staged engine bundle and emits a versioned runtime report beside the checksum. The local 0.1.12 package passed 66 native-file checks, relocated Python imports, image checksum verification and mounted app signature verification.
+
 ## Engine roles and consolidation — 2026-11-21
 
 Use one Rust gateway and one resident inference engine. Offer a suitable execution profile when a user chooses a model and task. Show the proposed engine, required setup and evidence before an explicit switch. Keep manual selection available for reproducible experiments. This is the priority for engine organization; the measurements below still guide work within each backend.
@@ -23,12 +25,31 @@ Use one Rust gateway and one resident inference engine. Offer a suitable executi
 
 简体中文：模型列表和偏好设置共用同一份配置表，可按模型和用途查看执行引擎、准备步骤和已验证上限。Strata和MLX均通过文本回复测试，Omni对两轮录音输入均返回了24 kHz WAV音频。
 
-- 🟠 [Next] Decide whether MLX SSD can move under the MLX text profile. Compare persistence on/off on the same model, weights, context, sampling and memory budget through the authenticated gateway. Include cold starts, warm turns, restart hits, misses, cancellation and quota pressure. Record answer and token parity, first output, completion p50/p95, peak physical memory and bytes written. Promote only for workloads with repeatable net benefit and a qualified recovery path. Retain the standalone worker if the broader profile cannot meet its restart contract.
+### Gemma 2 SSD integration decision — 2026-11-21
+
+- 🟢 [Done] **Keep MLX SSD as a separate opt-in profile for restart reuse.** On an Apple M4 with 32 GiB, both managed engines used the same Gemma 2 2B IT 4-bit files, MLX-LM 0.32.0 installation, 512-token context, 64 MiB retained KV and 256 MiB allocator cache. The test used one client, greedy decoding, seed zero and identical paired histories. The SSD profile used the eviction-enabled store and a 256 MiB disk quota. Both ordinary launch paths accepted fresh 30-minute evidence. MLX passed 5,176 soak requests. SSD passed 2,548 requests including its gates and warmup. Both recorded zero failures. [Measurements and qualification summaries](evaluation/managed-mlx-ssd-comparison-20261121.json)
+- 🟢 [Done] Two ABBA cycles through authenticated chat produced 36 completed responses per engine. All 36 pairs matched exact answer text, prompt and completion token counts, and finish reason. The table gives **milliseconds, p50 / p95** from the request to first content and completion. Cold means the first request for a new prefix after engine readiness. The OS file cache was retained. Each arm has 16 warm repeats and four observations per other scenario, so p95 for those scenarios is the observed maximum.
+
+| Workload | First content, SSD off | First content, SSD on | Completion, SSD off | Completion, SSD on |
+| --- | ---: | ---: | ---: | ---: |
+| Cold prefix | 612 / 647 | 570 / 585 | 689 / 728 | 659 / 662 |
+| Warm repeat | 66 / 130 | 54 / 132 | 143 / 210 | 140 / 213 |
+| Appended follow-up | 121 / 146 | 157 / 228 | 202 / 223 | 235 / 302 |
+| Same history after restart, engine ready | 537 / 641 | 169 / 196 | 620 / 713 | 243 / 273 |
+| Changed prompt | 438 / 474 | 474 / 492 | 519 / 548 | 555 / 571 |
+| New conversation after cancel, including busy retries | 503 / 523 | 466 / 477 | 588 / 600 | 543 / 557 |
+| All 36 completed requests per arm | 132 / 641 | 154 / 577 | 211 / 714 | 232 / 661 |
+
+- 🟢 [Done] SSD restored **211 of 212 prompt tokens on all four restarts**. MLX without persistence recomputed all 212. A separate eight-launch test timed the ordinary Start command through completion, with no intervening diagnostic requests. Median start-to-first-content was **4.291 s off / 4.339 s on**. Start-to-completion p50 / p95 was **4.372 / 4.681 s off** and **4.435 / 4.518 s on**. The ready-engine gain did not yield a repeatable reduction from Start. These are product-path measurements. The adapters also differ in LRU entry count, prefill policy and supporting processes. One SSD-off follow-up exceeded the 50% background CPU criterion. Other timed requests stayed within the in-request CPU criteria.
+- 🟢 [Done] Across completed requests, sampled peak gateway-tree physical footprint was **2,414 MiB off / 2,202 MiB on**. SSD committed **416.1 MiB** of prefix payload in 16 writes, with another 416.1 MiB serialized to staging. Repeats and restart hits made zero new writes. SSD-off made zero prefix-store writes. The four cancelled SSD generations committed another **104.0 MiB** before disconnection. These figures exclude system-wide writes and device write amplification. The qualification's 22 pressure requests saved all 22 prefixes, evicted 23 prior entries and passed retained-hit, evicted-miss and corrupt-state recovery.
+- 🟢 [Done] After disconnecting the desktop chat stream at its first content chunk, both engines recorded cancellation in all four trials per arm. A new conversation returned only its own code `91` and contained only its own two messages. SSD-off returned one pre-output HTTP 503 busy on each of the four immediate follow-ups. Each succeeded on the benchmark's first retry. SSD-on accepted all four without retry. The app's normal retry policy and saved settings were unchanged. [Reproducible benchmark](../scripts/compare-managed-mlx-ssd.py)
+- 🟠 [Next] Align cancellation completion in the managed MLX text path with backend availability. Reuse the immediate two-conversation probe and verify that a new request succeeds on its first attempt while the previous partial conversation remains intact.
+- 🔴 [Later] Reconsider a common persistence setting when the main MLX-LM 0.32.2 / 4,096-token adapter can save and restore its own exact-prefix state, enforce quota and recover from corruption and cancellation. Compare warm follow-ups and Start-to-answer time at that context before migrating settings or engine IDs.
 - 🔴 [Later] Add Gemma 4 GGUF as a model-specific llama.cpp/Metal profile after its memory and tokenizer checks. Treat P-H3-Image as an image-generation job with its own loader, progress and cancellation. Keep Knowledge Lab training and OpenAI-assisted planning in their existing workflows.
 
-日本語：配布版のテキストはStrata、検証済みの高度なテキスト推論はvLLM-Apple、音声・メディアはLFM3-Omniを担当とします。MLX SSDは再起動後の再利用を要する用途で継続し、同条件の比較を経てMLX設定への統合を判断します。
+日本語：MLX SSDは再起動後の復元を重視する用途向けに独立したオプションとして維持します。512トークンでは再起動後の応答完了が中央値620 msから243 msに短縮しましたが、起動操作から回答完了までは4.372秒と4.435秒でした。通常の会話追記と書込み量も考慮し、4,096トークンのMLX設定への統合は見送ります。次は通常MLXでキャンセル直後の要求が一時的に拒否される挙動を改善します。
 
-简体中文：发行版文本推理由Strata负责，经过验证的高级文本配置使用vLLM-Apple，语音与媒体使用LFM3-Omni。MLX SSD继续支持跨进程重启复用，待同条件测试通过后再决定是否并入MLX文本配置。
+简体中文：MLX SSD继续作为适合重启后复用的独立选项。在512个令牌的配置下，引擎就绪后重放同一历史的完成时间中位数从620毫秒降至243毫秒。从点击启动到收到完整回答，两者分别为4.372秒和4.435秒。综合追加对话的延迟和写入量，暂缓并入4,096个令牌的MLX设置。下一步将改善普通MLX在取消后短暂拒绝新请求的问题。
 
 ## Dependency maintenance — 2026-11-08
 
@@ -645,3 +666,12 @@ See [design and validation scope](INFERENCE.md#kapitsaから取り入れた計�
 
 - 🟢 [Done] On 2026-11-17, the Apple Silicon Soliton 0.1.11 DMG passed SHA-256 and app signature verification. The app was copied from the mounted image to an isolated Applications folder and launched with an empty data directory and a system-only PATH. First launch provisioned bundled Python 3.12.16 and Strata. The installed app’s local API selected an existing Gemma 3 1B IT SafeTensors model, completed preparation in the new data directory, and returned `4` for `What is 2 + 2?` through the bundled Metal engine (20 input tokens, 3 output tokens). Model download and a separate Mac were outside this run.
 - ⭕️ [Pending] First launch and model download on a separate Apple Silicon Mac with a publicly notarized build.
+
+## Dependency update · 2026-11-21
+
+- 🟢 [Done] Validated the Strata 0.2.15 intermediate update, Tauri 2.12.7, Lucide 1.77.0, rusqlite 0.43.0 and compatible Cargo updates. [Verification and preserved-feature coverage](DEPENDENCY_UPDATE_20261121.md).
+- 🟠 [Next] Migrate Strata 0.2.17 runtime, preparation and packaging to its split terminal/engine layout as one verified unit.
+- ⭕️ [Pending] Full model re-preparation and another-Mac/native-pointer validation.
+- 🔴 [Later] Repeat installed-version migration qualification against the split layout.
+- 日本語：既存機能の回帰検証とQ2_0実推論を通過。0.2.17の配置移行は次の工程です。
+- 简体中文：现有功能回归验证和Q2_0真实推理通过，下一步适配0.2.17目录迁移。

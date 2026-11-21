@@ -1,0 +1,45 @@
+{
+  "revision": "c77572806996349b49995e4f98d41b5294d36a21",
+  "model": "Q2_0",
+  "maxContext": 512,
+  "memoryReserveGb": 7,
+  "unauthorizedStatus": 401,
+  "response": {
+    "id": "chatcmpl-6463ce89e537450c95bd2b9b",
+    "object": "chat.completion",
+    "created": 1795261577,
+    "model": "qwen3.8-flash-next-q2_0",
+    "choices": [
+      {
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": "SOLITON121"
+        },
+        "finish_reason": "stop"
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 25,
+      "completion_tokens": 8,
+      "total_tokens": 33,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "timings": {
+      "cache_n": 0,
+      "prompt_n": 25,
+      "prompt_ms": 5653.5,
+      "prompt_per_token_ms": 226.14,
+      "prompt_per_second": 4.4,
+      "predicted_n": 8,
+      "predicted_ms": 2401.6,
+      "predicted_per_token_ms": 300.2,
+      "predicted_per_second": 3.3,
+      "draft_n": 0,
+      "draft_n_accepted": 0
+    }
+  },
+  "exitCode": 0
+}
