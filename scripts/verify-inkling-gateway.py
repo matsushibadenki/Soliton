@@ -320,6 +320,21 @@ with tempfile.TemporaryDirectory() as tmp:
         reserve = 4096 - count
         assert 16 < reserve < 200, (count, reserve)
         req(route, body(prompt, reserve + 1), 422)
+        preview = "/studio/chat/budget"
+        draft = {
+            "conversationId": snapshot()["document"]["conversations"]["activeId"],
+            "content": prompt,
+            "max_tokens": reserve,
+        }
+        before = snapshot()["document"]["messages"]
+        assert req(preview, draft) == {
+            "inputTokens": count,
+            "outputTokens": reserve,
+            "context": 4096,
+            "fits": True,
+        }
+        assert req(preview, {**draft, "max_tokens": reserve + 1})["fits"] is False
+        assert snapshot()["document"]["messages"] == before
         print("boundary", count, reserve, flush=True)
         b = req(route, body(prompt, reserve))
         assert b["usage"]["prompt_tokens"] == count, b["usage"]

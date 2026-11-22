@@ -3221,3 +3221,59 @@ body > .dock-menu-items {
 .engine-guide-fields label { display: grid; gap: .2rem; min-width: 0; }
 .engine-guide-row { display: flex; flex-wrap: wrap; align-items: baseline; gap: .2rem .7rem; }
 .engine-guide-row small { flex-basis: 100%; overflow-wrap: anywhere; }
+
+.prompt-files {
+  flex-wrap: wrap;
+}
+
+.prompt-file {
+  display: inline-flex;
+  align-items: center;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.composer textarea {
+  min-width: 0;
+}
+
+.prompt-folder {
+  margin: 0 12px;
+  min-width: 0;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 8px;
+}
+
+.prompt-folder-list {
+  max-height: 150px;
+  overflow: auto;
+}
+
+.prompt-folder-list label,
+.prompt-folder-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.prompt-folder-list label span {
+  overflow-wrap: anywhere;
+}
+
+.prompt-folder-actions {
+  margin-top: 6px;
+  justify-content: flex-end;
+}
+
+.chat-budget {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 0 12px;
+}
+
+.chat-budget output {
+  font-size: 12px;
+}

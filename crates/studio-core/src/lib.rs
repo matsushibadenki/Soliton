@@ -1,4 +1,3 @@
-mod omni_ssd;
 mod allocation_report;
 mod backend_budget;
 mod capabilities;
@@ -19,6 +18,7 @@ pub mod model_plan;
 pub mod omni;
 pub mod omni_realtime;
 pub mod omni_runtime;
+mod omni_ssd;
 mod owned_process;
 pub mod prefix_engine;
 mod prefix_staging;
@@ -671,7 +671,8 @@ impl Studio {
             #[cfg(target_os = "macos")]
             let cache = std::env::var_os("SOLITON_OMNI_SSD_DIR")
                 .map(|root| omni_ssd::Cache::configure(&mut cmd, std::path::Path::new(&root), &key))
-                .transpose()?.map(Arc::new);
+                .transpose()?
+                .map(Arc::new);
             #[cfg(not(target_os = "macos"))]
             let cache = None;
             cmd.kill_on_drop(true)
@@ -848,7 +849,10 @@ impl Studio {
                 let mut cmd = Command::new(executable);
                 if is_inkling {
                     for (name, _) in std::env::vars_os() {
-                        if ["LLAMA_", "DYLD_", "GGML_"].iter().any(|prefix| name.to_string_lossy().starts_with(prefix)) {
+                        if ["LLAMA_", "DYLD_", "GGML_"]
+                            .iter()
+                            .any(|prefix| name.to_string_lossy().starts_with(prefix))
+                        {
                             cmd.env_remove(name);
                         }
                     }
@@ -1551,9 +1555,12 @@ async fn action(State(s): State<Arc<Studio>>, h: HeaderMap, Json(v): Json<Value>
             let path = v["path"].as_str().unwrap_or("");
             return match s.inspect_local(path).await {
                 Ok(mut info) => {
-                    info["capabilityModel"] = json!(capabilities::library_model(std::path::Path::new(path), &info));
+                    info["capabilityModel"] = json!(capabilities::library_model(
+                        std::path::Path::new(path),
+                        &info
+                    ));
                     Json(info).into_response()
-                },
+                }
                 Err(e) => error(StatusCode::BAD_REQUEST, e),
             };
         }
@@ -2020,7 +2027,7 @@ async fn proxy(State(s): State<Arc<Studio>>, req: Request) -> Response {
     }
     if path.split('?').next() == Some("/v1/chat/completions") {
         let Ok(mut value) = serde_json::from_slice::<Value>(&body) else {
-            return trace.reject(error(StatusCode::BAD_REQUEST, "Invalid inference JSON"))
+            return trace.reject(error(StatusCode::BAD_REQUEST, "Invalid inference JSON"));
         };
         if let Some(raw) = value
             .as_object_mut()
@@ -2420,6 +2427,72 @@ impl Drop for InferenceGuard {
     }
 }
 // The conversation and in-flight generation live here, rather than in a WebView.
+fn plain_chat_messages(messages: &[Message]) -> Value {
+    json!(messages
+        .iter()
+        .map(|m| json!({"role":m.role,"content":m.content}))
+        .collect::<Vec<_>>())
+}
+
+async fn chat_budget(
+    State(studio): State<Arc<Studio>>,
+    headers: HeaderMap,
+    Json(input): Json<Value>,
+) -> Response {
+    if !authorized(&headers, &studio) {
+        return error(StatusCode::UNAUTHORIZED, "Studio token required");
+    }
+    // Finish a tokenizer exchange even if the preview client disconnects.
+    tokio::spawn(async move {
+        let _lifecycle = studio.lifecycle.lock().await;
+        let settings = studio.settings.read().await.clone();
+        let (port, key, inkling) = {
+            let mut process = studio.process.lock().await;
+            if !process.child.as_mut().is_some_and(|child| matches!(child.try_wait(), Ok(None))) {
+                return error(StatusCode::SERVICE_UNAVAILABLE, "Engine is offline");
+            }
+            let inkling = process.memory.as_ref().is_some_and(|m| m["engine"] == inkling::BACKEND);
+            (process.port, process.key.clone(), inkling)
+        };
+        let mlx = settings.engine == engine::Engine::VllmApple
+            && settings.vllm.backend == "mlx_lm" && !settings.vllm.evidence.is_empty();
+        if !mlx && !inkling {
+            return error(StatusCode::UNPROCESSABLE_ENTITY, "Exact text counting is unavailable for this engine");
+        }
+        let Some(content) = input["content"].as_str().filter(|s| !s.trim().is_empty() && s.len() <= 1_000_000) else {
+            return error(StatusCode::BAD_REQUEST, "A plain-text draft is required");
+        };
+        let Some(output) = input["max_tokens"].as_u64().filter(|n| *n > 0 && *n <= u64::from(u32::MAX)) else {
+            return error(StatusCode::BAD_REQUEST, "Positive output budget required");
+        };
+        let mut messages = {
+            let doc = studio.document.read().await;
+            if doc.generating || studio.active_requests.load(Ordering::SeqCst) != 0
+                || input["conversationId"].as_str() != Some(doc.conversations.active_id.as_str()) {
+                return error(StatusCode::CONFLICT, "Conversation changed or generating");
+            }
+            if doc.messages.iter().any(|m| !m.attachments.is_empty()) {
+                return error(StatusCode::UNPROCESSABLE_ENTITY, "Text counting requires a conversation without media");
+            }
+            doc.messages.iter().filter(|m| m.role != "assistant" || !m.content.is_empty()).cloned().collect::<Vec<_>>()
+        };
+        messages.push(Message { role: "user".into(), content: content.into(), ..Message::default() });
+        let mut body = json!({"messages":plain_chat_messages(&messages),"max_tokens":output,"stream":true});
+        let (count, context) = if inkling {
+            match inkling::count_chat(&studio.client, port, &key, &mut body).await {
+                Ok((count, _)) => (count, inkling::CONTEXT),
+                Err((status, reason)) => return error(status, reason),
+            }
+        } else {
+            match studio.token_counter.lock().await.count_chat(&settings, &body).await {
+                Ok(count) => (count, u64::from(settings.vllm.context)),
+                Err(rejection) => return rejection.response(),
+            }
+        };
+        Json(json!({"inputTokens":count,"outputTokens":output,"context":context,"fits":count + output <= context})).into_response()
+    }).await.unwrap_or_else(|e| error(StatusCode::INTERNAL_SERVER_ERROR, e))
+}
+
 async fn chat(State(s): State<Arc<Studio>>, h: HeaderMap, Json(mut body): Json<Value>) -> Response {
     let received = std::time::Instant::now();
     if !authorized(&h, &s) {
@@ -2549,10 +2622,7 @@ async fn chat(State(s): State<Arc<Studio>>, h: HeaderMap, Json(mut body): Json<V
                     "Conversation contains Omni media; use Omni or a new conversation",
                 );
             }
-            body["messages"] = json!(pending
-                .iter()
-                .map(|m| json!({"role":m.role,"content":m.content}))
-                .collect::<Vec<_>>());
+            body["messages"] = plain_chat_messages(&pending);
             if is_inkling {
                 if s.active_requests.load(Ordering::SeqCst) != 0 {
                     return error(StatusCode::CONFLICT, "Inkling inference is busy");
@@ -2909,7 +2979,10 @@ async fn dispatch_chat(
         tokio_stream::wrappers::ReceiverStream::new(rx),
     ));
     if report_cache {
-        r.headers_mut().insert("x-soliton-omni-ssd", axum::http::HeaderValue::from_static(cache_status));
+        r.headers_mut().insert(
+            "x-soliton-omni-ssd",
+            axum::http::HeaderValue::from_static(cache_status),
+        );
     }
     r.headers_mut()
         .insert("content-type", "text/event-stream".parse().unwrap());
@@ -3149,6 +3222,7 @@ pub fn router(s: Arc<Studio>) -> Router {
         .route("/studio/models", get(catalog::scan_handler))
         .route("/studio/omni/capabilities", get(omni_capabilities))
         .route("/studio/omni/assets/import", post(omni_import))
+        .route("/studio/chat/budget", post(chat_budget))
         .route("/studio/omni/count", post(omni_count))
         .route("/studio/action", post(action))
         .route("/studio/chat", post(chat))
@@ -3215,7 +3289,9 @@ mod tests {
         ));
         let logs = std::sync::Arc::new(tokio::sync::Mutex::new(Default::default()));
         let stream: &[u8] = b"metadata \xff\nllama_kv_cache: Metal KV buffer size = 16.00 MiB\n";
-        super::pump_allocations(stream, logs, collector.clone()).await.unwrap();
+        super::pump_allocations(stream, logs, collector.clone())
+            .await
+            .unwrap();
         let report = collector.lock().await.report("test".into(), 1);
         assert_eq!(report.kv_bytes, Some(16 * 1024 * 1024));
     }

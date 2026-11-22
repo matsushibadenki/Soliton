@@ -1,6 +1,9 @@
 import { preferences, closePreferences, language } from "./ui-helpers.mjs";
 import { chromium } from "@playwright/test";
 import assert from "node:assert/strict";
+import { mkdtemp, rm, writeFile } from "node:fs/promises";
+import { basename, join } from "node:path";
+import { tmpdir } from "node:os";
 const browser = await chromium.launch({
   headless: true,
   executablePath: process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE,
@@ -11,6 +14,7 @@ page.on("pageerror", (e) => errors.push(e.message));
 page.on("console", (message) => {
   if (message.type() === "error") errors.push(message.text());
 });
+const folder = await mkdtemp(join(tmpdir(), "soliton-prompt-folder-"));
 try {
   await page.goto(process.env.SOLITON_TEST_URL || "http://127.0.0.1:5180");
   await language(page, "English");
@@ -39,9 +43,67 @@ try {
   );
   await closePreferences(page);
   await page
-    .getByRole("textbox", { name: "Type a message…" })
-    .fill("Hello Strata");
-  await page.getByRole("button", { name: "Send", exact: true }).click();
+    .locator('.composer input[type="file"]:not([webkitdirectory])')
+    .setInputFiles([
+      {
+        name: "keep.md",
+        mimeType: "text/markdown",
+        buffer: Buffer.from("Handoff code 7429"),
+      },
+      {
+        name: "remove.txt",
+        mimeType: "text/plain",
+        buffer: Buffer.from("This must stay local"),
+      },
+    ]);
+  await page.getByRole("button", { name: "Remove file · remove.txt" }).click();
+  await writeFile(join(folder, "chosen.txt"), "Folder reference 8316");
+  await writeFile(join(folder, "excluded.txt"), "Never include this text");
+  await page.locator(".composer input[webkitdirectory]").setInputFiles(folder);
+  const listing = page.getByRole("region", { name: "Choose folder" });
+  const chosen = listing.getByRole("checkbox", { name: /chosen\.txt$/ });
+  assert.equal(await chosen.isChecked(), false);
+  await chosen.check();
+  await listing.getByRole("button", { name: "Attach selected (1)" }).click();
+  await listing.waitFor({ state: "hidden" });
+  const prompt = page.getByRole("textbox", { name: "Type a message…" });
+  await prompt.fill("Hello Strata");
+  const budgetButton = page.getByRole("button", { name: "Check token budget" });
+  assert.equal(await budgetButton.count(), 0);
+  // Simulate an exact-count-capable engine for the UI portion of the smoke.
+  await page.route("**/studio/state", async (route) => {
+    const response = await route.fetch();
+    const state = await response.json();
+    state.backend = "Inkling Metal (experimental)";
+    await route.fulfill({ response, json: state });
+  });
+  let previewPayload;
+  await page.route("**/studio/chat/budget", async (route) => {
+    previewPayload = route.request().postDataJSON();
+    await route.fulfill({
+      json: {
+        inputTokens: 4000,
+        outputTokens: 128,
+        context: 4096,
+        fits: false,
+      },
+    });
+  });
+  await budgetButton.click();
+  await page.getByText("Over limit", { exact: false }).waitFor();
+  assert.match(previewPayload.content, /Handoff code 7429/);
+  assert.match(previewPayload.content, /Folder reference 8316/);
+  assert.doesNotMatch(previewPayload.content, /Never include this text/);
+  await prompt.fill("Changed draft");
+  await page
+    .getByText("Over limit", { exact: false })
+    .waitFor({ state: "hidden" });
+  await page.unroute("**/studio/state");
+  await page.unroute("**/studio/chat/budget");
+  await prompt.fill("Hello Strata");
+  await prompt.press("Enter");
+  assert.equal(await prompt.inputValue(), "Hello Strata\n");
+  await prompt.press("Shift+Enter");
   await page.waitForFunction(
     () =>
       document.querySelector(".message.assistant p")?.textContent.length > 5,
@@ -71,6 +133,10 @@ try {
     },
   ).then((r) => r.json());
   assert.equal(shared.document.messages.length, 2);
+  assert.equal(
+    shared.document.messages[0].content,
+    `Hello Strata\n\n--- "keep.md" ---\nHandoff code 7429\n\n--- "${basename(folder)}/chosen.txt" ---\nFolder reference 8316`,
+  );
   assert.equal(
     shared.document.messages[1].content,
     "Hello from the mock engine.",
@@ -206,4 +272,5 @@ try {
   );
 } finally {
   await browser.close();
+  await rm(folder, { recursive: true, force: true });
 }

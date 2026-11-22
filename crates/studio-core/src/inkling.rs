@@ -106,6 +106,22 @@ pub(crate) async fn admit(
     key: &str,
     body: &mut Value,
 ) -> Result<(), (StatusCode, String)> {
+    let (count, output) = count_chat(client, port, key, body).await?;
+    if count + output > CONTEXT {
+        return Err((
+            StatusCode::UNPROCESSABLE_ENTITY,
+            format!("Inkling prompt ({count}) plus output ({output}) exceeds {CONTEXT} tokens"),
+        ));
+    }
+    Ok(())
+}
+
+pub(crate) async fn count_chat(
+    client: &reqwest::Client,
+    port: u16,
+    key: &str,
+    body: &mut Value,
+) -> Result<(u64, u64), (StatusCode, String)> {
     let bad = || {
         (
             StatusCode::UNPROCESSABLE_ENTITY,
@@ -181,11 +197,5 @@ pub(crate) async fn admit(
         .filter(|ids| !ids.is_empty() && ids.iter().all(|id| id.as_u64().is_some()))
         .ok_or_else(unavailable)?
         .len() as u64;
-    if count + output > CONTEXT {
-        return Err((
-            StatusCode::UNPROCESSABLE_ENTITY,
-            format!("Inkling prompt ({count}) plus output ({output}) exceeds {CONTEXT} tokens"),
-        ));
-    }
-    Ok(())
+    Ok((count, output))
 }

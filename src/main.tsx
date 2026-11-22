@@ -140,6 +140,20 @@ function presetSettings(engine: Settings["engine"], source: Partial<Settings>) {
 }
 type MediaKind = "image" | "audio" | "video";
 type Attachment = { id: string; kind: MediaKind };
+type PromptFile = { name: string; content: string };
+const promptFileLimit = 64 * 1024;
+const promptFileCount = 8;
+const promptFileWords = {
+  en: { add: "Attach text files", remove: "Remove file", invalid: "Select up to eight UTF-8 TXT, Markdown, CSV, or JSON files totaling 64 KiB.", folder: "Choose folder", include: "Attach selected", close: "Close folder", empty: "No supported text files in this folder.", tooMany: "Choose a folder with at most 500 supported text files." },
+  ja: { add: "テキストファイルを添付", remove: "ファイルを削除", invalid: "UTF-8のTXT、Markdown、CSV、JSONを合計64 KiB以内、8件まで選択してください。", folder: "フォルダを選択", include: "選んだファイルを添付", close: "フォルダ一覧を閉じる", empty: "対応するテキストファイルがありません。", tooMany: "対応ファイルが500件以下のフォルダを選択してください。" },
+  zh: { add: "添加文本文件", remove: "移除文件", invalid: "请选择最多八个 UTF-8 TXT、Markdown、CSV 或 JSON 文件，总大小不超过 64 KiB。", folder: "选择文件夹", include: "添加所选文件", close: "关闭文件夹列表", empty: "此文件夹没有受支持的文本文件。", tooMany: "请选择包含不超过 500 个受支持文本文件的文件夹。" },
+};
+type ChatBudget = { inputTokens: number; outputTokens: number; context: number; fits: boolean };
+const chatBudgetWords = {
+  en: { check: "Check token budget", pending: "Counting tokens…", input: "Input", output: "Reserved output", context: "Context", over: "Over limit" },
+  ja: { check: "トークン数を確認", pending: "トークンを計数中…", input: "入力", output: "出力予約", context: "上限", over: "上限超過" },
+  zh: { check: "检查令牌预算", pending: "正在计算令牌…", input: "输入", output: "预留输出", context: "上下文上限", over: "超出上限" },
+};
 type Message = { role: string; content: string; inference?: Inference; attachments?: Attachment[] };
 const mediaKinds: Partial<Record<string, MediaKind>> = {
   png: "image", jpg: "image", jpeg: "image", wav: "audio", mp4: "video",
@@ -150,6 +164,7 @@ const mediaWords = {
   zh: { attach: "添加媒体附件", remove: "移除附件", unsupported: "请选择 PNG、JPEG、WAV 或 MP4 文件。", image: "图片", audio: "音频", video: "视频" },
 };
 type Snapshot = {
+  engineSession?: string;
   engineCapabilities?: Profile[];
   modelPlan?: ModelPlanState;
   vllmInspection?: VllmInspection | null;
@@ -247,6 +262,14 @@ function App() {
   const [pending, setPending] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [prompt, setPrompt] = useState("");
+  const [budgetPreview, setBudgetPreview] = useState<{ key: string; budget: ChatBudget } | null>(null);
+  const [checkingBudget, setCheckingBudget] = useState(false);
+  const [promptFiles, setPromptFiles] = useState<PromptFile[]>([]);
+  const [readingPromptFiles, setReadingPromptFiles] = useState(false);
+  const [folderFiles, setFolderFiles] = useState<File[]>([]);
+  const [folderSelection, setFolderSelection] = useState<Set<string>>(new Set());
+  const promptFolderPicker = useRef<HTMLInputElement>(null);
+  const promptFilePicker = useRef<HTMLInputElement>(null);
   const [mediaDraft, setMediaDraft] = useState<{ path: string; name: string; kind: MediaKind } | null>(null);
   const [busy, setBusy] = useState(false);
   const [copied, setCopied] = useState("");
@@ -568,11 +591,94 @@ function App() {
     }
   }
 
+  function closePromptFolder() {
+    setFolderFiles([]);
+    setFolderSelection(new Set());
+  }
+
+  function selectPromptFolder(files: FileList | null) {
+    if (!files?.length) return;
+    closePromptFolder();
+    const candidates = Array.from(files).filter(file => /\.(txt|md|markdown|csv|json)$/i.test(file.name));
+    if (!candidates.length || candidates.length > 500) {
+      setError(candidates.length ? promptFileWords[language].tooMany : promptFileWords[language].empty);
+      return;
+    }
+    setError("");
+    setFolderFiles(candidates.sort((a, b) => a.webkitRelativePath.localeCompare(b.webkitRelativePath)));
+  }
+
+  async function selectPromptFiles(files: File[]) {
+    if (!files.length) return;
+    const epoch = conversationEpoch.current;
+    const invalid = promptFileWords[language].invalid;
+    const encoder = new TextEncoder();
+    const existingBytes = promptFiles.reduce((total, file) => total + encoder.encode(file.content).length, 0);
+    if (files.length + promptFiles.length > promptFileCount ||
+        files.reduce((total, file) => total + file.size, existingBytes) > promptFileLimit ||
+        files.some(file => !/\.(txt|md|markdown|csv|json)$/i.test(file.name))) {
+      setError(invalid);
+      return;
+    }
+    setReadingPromptFiles(true);
+    try {
+      const selected = await Promise.all(files.map(async file => {
+        const content = new TextDecoder("utf-8", { fatal: true }).decode(await file.arrayBuffer());
+        if (!content.trim() || content.includes("\0")) throw new Error(invalid);
+        return { name: file.webkitRelativePath || file.name, content };
+      }));
+      if (epoch === conversationEpoch.current && !busyRef.current) {
+        setError("");
+        setPromptFiles(current => [...current, ...selected]);
+        return true;
+      }
+    } catch {
+      if (epoch === conversationEpoch.current) setError(invalid);
+    } finally {
+      setReadingPromptFiles(false);
+    }
+  }
+
+  const draftText = [prompt.trim(), ...promptFiles.map(file =>
+      `--- ${JSON.stringify(file.name)} ---\n${file.content}`
+    )].filter(Boolean).join("\n\n");
+  const budgetConversation = snapshot?.document.conversations?.activeId;
+  const canCheckBudget = snapshot?.status === "ready" && !mediaDraft &&
+    !messages.some(message => message.attachments?.length) &&
+    (snapshot.backend === "Inkling Metal (experimental)" ||
+      (snapshot.settings.engine === "vllmApple" && snapshot.settings.vllm.backend === "mlx_lm" &&
+        Boolean(snapshot.settings.vllm.evidence)));
+  const budgetKey = canCheckBudget ? JSON.stringify([
+    budgetConversation, snapshot.engineSession, settings.maxTokens, draftText,
+    messages.map(message => [message.role, message.content]),
+  ]) : "";
+  const shownBudget = budgetPreview?.key === budgetKey ? budgetPreview.budget : null;
+  const budgetWords = chatBudgetWords[language];
+
+  async function checkDraftBudget() {
+    if (!canCheckBudget || !budgetConversation || !draftText || busyRef.current || checkingBudget) return;
+    const epoch = conversationEpoch.current;
+    setCheckingBudget(true);
+    setBudgetPreview(null);
+    setError("");
+    try {
+      const budget: ChatBudget = await request("/studio/chat/budget", {
+        conversationId: budgetConversation, content: draftText, max_tokens: settings.maxTokens,
+      }).then(response => response.json());
+      if (epoch === conversationEpoch.current) setBudgetPreview({ key: budgetKey, budget });
+    } catch (error) {
+      if (epoch === conversationEpoch.current) setError((error as Error).message);
+    } finally {
+      setCheckingBudget(false);
+    }
+  }
+
   async function send() {
     if (
-      (!prompt.trim() && !mediaDraft) ||
+      (!prompt.trim() && !mediaDraft && !promptFiles.length) ||
       (mediaDraft && snapshot?.settings.engine !== "lfm3Omni") ||
       busyRef.current ||
+      readingPromptFiles ||
       busy ||
       snapshot?.document.generating ||
       snapshot?.status !== "ready"
@@ -580,7 +686,7 @@ function App() {
       return;
     setError("");
     followOutput.current = true;
-    const text = prompt.trim();
+    const text = draftText;
     busyRef.current = true;
     setBusy(true);
     const c = new AbortController();
@@ -602,6 +708,8 @@ function App() {
       const next = [...messages, message];
       setPrompt(current => current === prompt ? "" : current);
       setMediaDraft(null);
+      setPromptFiles([]);
+      closePromptFolder();
       setMessages([...next, { role: "assistant", content: "" }]);
       await streamChat(
         {
@@ -1447,6 +1555,64 @@ function App() {
               aria-label={mediaWords[language].remove} onClick={() => setMediaDraft(null)}><X size={14} /></button>
           </div>
         )}
+        {promptFiles.length > 0 && (
+          <div className="media-draft prompt-files">
+            {promptFiles.map((file, index) => (
+              <span className="prompt-file" key={index}>
+                <span className="media-chip" title={file.name}>{file.name}</span>
+                <button type="button" className="icon-button" disabled={busy}
+                  aria-label={`${promptFileWords[language].remove} · ${file.name}`}
+                  onClick={() => setPromptFiles(current => current.filter((_, position) => position !== index))}>
+                  <X size={14} />
+                </button>
+              </span>
+            ))}
+          </div>
+        )}
+        {folderFiles.length > 0 && (
+          <section className="prompt-folder" aria-label={promptFileWords[language].folder}>
+            <div className="prompt-folder-list">
+              {folderFiles.map(file => {
+                const path = file.webkitRelativePath;
+                return <label key={path}>
+                  <input type="checkbox" checked={folderSelection.has(path)}
+                    disabled={busy || readingPromptFiles}
+                    onChange={event => {
+                      const checked = event.currentTarget.checked;
+                      setFolderSelection(current => {
+                        const next = new Set(current);
+                        if (checked) next.add(path);
+                        else next.delete(path);
+                        return next;
+                      });
+                    }} />
+                  <span title={path}>{path}</span>
+                </label>;
+              })}
+            </div>
+            <div className="prompt-folder-actions">
+              <button type="button" disabled={busy || readingPromptFiles || !folderSelection.size}
+                onClick={async () => {
+                  if (await selectPromptFiles(folderFiles.filter(file => folderSelection.has(file.webkitRelativePath)))) {
+                    closePromptFolder();
+                  }
+                }}>{promptFileWords[language].include} ({folderSelection.size})</button>
+              <button type="button" className="icon-button" disabled={readingPromptFiles}
+                aria-label={promptFileWords[language].close} onClick={closePromptFolder}><X size={14} /></button>
+            </div>
+          </section>
+        )}
+        {canCheckBudget && draftText && (
+          <div className="chat-budget">
+            <button type="button"
+              disabled={busy || checkingBudget || readingPromptFiles || snapshot?.document.generating}
+              onClick={() => void checkDraftBudget()}>{checkingBudget ? budgetWords.pending : budgetWords.check}</button>
+            {shownBudget && <output>
+              {budgetWords.input} {shownBudget.inputTokens.toLocaleString()} · {budgetWords.output} {shownBudget.outputTokens.toLocaleString()} · {budgetWords.context} {shownBudget.context.toLocaleString()}
+              {!shownBudget.fits && <strong> · {budgetWords.over}</strong>}
+            </output>}
+          </div>
+        )}
         <form
           className="composer"
           onSubmit={(e) => {
@@ -1454,6 +1620,28 @@ function App() {
             send();
           }}
         >
+          <input ref={promptFilePicker} type="file" hidden multiple
+            accept=".txt,.md,.markdown,.csv,.json"
+            onChange={event => {
+              const files = Array.from(event.currentTarget.files ?? []);
+              event.currentTarget.value = "";
+              void selectPromptFiles(files);
+            }} />
+          <button type="button" disabled={busy || readingPromptFiles || snapshot?.document.generating}
+            aria-label={promptFileWords[language].add} title={promptFileWords[language].add}
+            onClick={() => promptFilePicker.current?.click()}>
+            <FileText size={16} />
+          </button>
+          <input ref={promptFolderPicker} type="file" hidden {...{ webkitdirectory: "" }}
+            onChange={event => {
+              selectPromptFolder(event.currentTarget.files);
+              event.currentTarget.value = "";
+            }} />
+          <button type="button" disabled={busy || readingPromptFiles || snapshot?.document.generating}
+            aria-label={promptFileWords[language].folder} title={promptFileWords[language].folder}
+            onClick={() => promptFolderPicker.current?.click()}>
+            <FolderOpen size={16} />
+          </button>
           {desktop && status === "ready" && snapshot?.settings.engine === "lfm3Omni" && (
             <button type="button" disabled={busy || snapshot.document.generating}
               aria-label={mediaWords[language].attach} title={mediaWords[language].attach}
@@ -1494,9 +1682,10 @@ function App() {
               title={t.send}
               disabled={
                 status !== "ready" ||
+                readingPromptFiles ||
                 snapshot?.document.generating ||
                 (mediaDraft && snapshot?.settings.engine !== "lfm3Omni") ||
-                (!prompt.trim() && !mediaDraft)
+                (!prompt.trim() && !mediaDraft && !promptFiles.length)
               }
             >
               <Send />
@@ -1619,6 +1808,8 @@ function App() {
       ) {
         setPrompt("");
         setMediaDraft(null);
+        setPromptFiles([]);
+        closePromptFolder();
       }
       setWorkspaceTab("chat");
     } finally {

@@ -275,6 +275,16 @@ impl Counter {
         }
         let output = request_budget(body)?;
         within_limit(0, output, settings.vllm.context)?;
+        let count = self.count_chat(settings, body).await?;
+        within_limit(count, output, settings.vllm.context)
+    }
+
+    pub(crate) async fn count_chat(
+        &mut self,
+        settings: &Settings,
+        body: &Value,
+    ) -> Result<u64, Rejection> {
+        request_budget(body)?;
         if self.invalidated {
             return Err(unavailable());
         }
@@ -300,7 +310,7 @@ impl Counter {
         };
         self.worker = Some(worker);
         self.invalidated = false;
-        within_limit(count, output, settings.vllm.context)
+        Ok(count)
     }
 }
 #[cfg(test)]

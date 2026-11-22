@@ -4,6 +4,18 @@ Release policy: at a completed, validated milestone, increment the patch version
 
 - 🟢 [Done] DMG packaging validates the staged engine bundle and emits a versioned runtime report beside the checksum. The local 0.1.12 package passed 66 native-file checks, relocated Python imports, image checksum verification and mounted app signature verification.
 
+## Prompt attachments
+
+- 🟢 [Done] Select up to eight UTF-8 TXT, Markdown, CSV or JSON files from the chat composer, with a combined 64 KiB selection limit. Each file can be removed before sending. Selected names and contents travel as part of the user message through the existing text chat and conversation history paths. The active engine applies its existing context admission rules to the combined message. The browser smoke test verified that a removed file does not reach the authenticated gateway, Return inserts a newline, Shift+Return sends, and controls fit at six viewport widths. [Browser smoke test](../scripts/smoke.mjs)
+- 🟢 [Done] The composer can list supported text files in a selected folder and its subfolders. All files start unselected. Only checked files are read and attached, subject to the existing eight-file and 64 KiB limits. The folder list accepts up to 500 supported files. The browser smoke test checked one file and verified that the authenticated gateway received only the selected folder entry alongside the existing direct attachment. [Browser smoke test](../scripts/smoke.mjs)
+- 🟢 [Done] The composer can check the exact text token budget for qualified MLX LM and the Inkling text adapter. The authenticated preview combines the active Rust-owned history with the same draft and text attachments used by Send. It displays input, reserved output, context and overflow in English, Japanese and Simplified Chinese. Editing the draft or changing conversations invalidates the display. Inkling matched 3,991 actual input tokens with a 105-token reservation at 4,096 and reported overflow at 106. Qualified Gemma 2 / MLX at 512 reported 30 input tokens with a text attachment, matching generation usage, and counted 50 on the next turn with history. The preview preserved history and rejected a stale conversation ID and missing authentication. Playwright verified that selected attachments reach the preview and that editing clears its previous result. [Inkling QA](../scripts/verify-inkling-gateway.py) · [Browser smoke](../scripts/smoke.mjs)
+- 🟠 [Next] Extend the preview to the MLX SSD counter and Omni media, including media token accounting for local drafts.
+- 🔴 [Later] Add text extraction for PDFs and verify image inputs on additional qualified multimodal engines.
+
+日本語：プロンプト欄から複数のテキスト資料を添付でき、不要な資料は送信前に外せます。フォルダからも必要な資料だけ選べます。資格確認済みのMLX LMとInklingでは、送信前に履歴・添付を含めた正確なトークン数を確認できます。
+
+简体中文：聊天输入区支持添加多个文本文件，可在发送前逐项移除。也可打开文件夹并逐项勾选。经过验证的 MLX LM 和 Inkling 可以在发送前查看包含历史与附件的精确令牌预算。
+
 ## Engine roles and consolidation — 2026-11-21
 
 Use one Rust gateway and one resident inference engine. Offer a suitable execution profile when a user chooses a model and task. Show the proposed engine, required setup and evidence before an explicit switch. Keep manual selection available for reproducible experiments. This is the priority for engine organization; the measurements below still guide work within each backend.
