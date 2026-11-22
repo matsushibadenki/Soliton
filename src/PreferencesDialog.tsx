@@ -1,7 +1,7 @@
 import { useEffect, useRef, type PointerEvent, type ReactNode } from "react";
-import { Cpu, Link, Settings, X } from "lucide-react";
+import { Activity, Cpu, Link, Settings, X } from "lucide-react";
 import { words, type Language } from "./i18n";
-export type PreferenceTab = "general" | "engine" | "api";
+export type PreferenceTab = "general" | "status" | "engine" | "api";
 
 export function Modal({
   title,
@@ -111,8 +111,8 @@ export function PreferencesDialog({
   children: ReactNode;
 }) {
   const t = words[language];
-  const tabs = ["general", "engine", "api"] as const;
-  const icons = { general: <Settings />, engine: <Cpu />, api: <Link /> };
+  const tabs = ["general", "status", "engine", "api"] as const;
+  const icons = { general: <Settings />, status: <Activity />, engine: <Cpu />, api: <Link /> };
   const content = (
     <>
       <div
@@ -136,15 +136,15 @@ export function PreferencesDialog({
                   e.key === "Home"
                     ? 0
                     : e.key === "End"
-                      ? 2
-                      : (index + (e.key === "ArrowRight" ? 1 : 2)) % 3;
+                      ? tabs.length - 1
+                      : (index + (e.key === "ArrowRight" ? 1 : -1) + tabs.length) % tabs.length;
                 onTab(tabs[next]);
                 document.getElementById("preference-" + tabs[next])?.focus();
               }
             }}
           >
             {icons[id]}
-            {t[id]}
+            {id === "engine" ? t.engineSettings : t[id]}
           </button>
         ))}
       </div>

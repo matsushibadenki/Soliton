@@ -52,7 +52,7 @@ export function RequestMetrics({
     m.status === "running"
       ? t.inferenceRunning
       : m.status === "completed"
-        ? t.inferenceCompleted
+        ? (m.finishReason === "length" ? t.inferenceOutputLimit : t.inferenceCompleted)
         : m.status === "cancelled"
           ? t.inferenceCancelled
           : t.inferenceError;

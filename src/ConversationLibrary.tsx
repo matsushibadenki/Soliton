@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Check, MessageSquare, Plus, Search, Trash2, X } from "lucide-react";
-import { Modal } from "./PreferencesDialog";
 import { words, type Language } from "./i18n";
 export type ConversationIndex = {
   activeId: string;
@@ -15,12 +14,14 @@ export function ConversationLibrary({
   library,
   language,
   disabled,
+  open,
   onAction,
   onClose,
 }: {
   library?: ConversationIndex;
   language: Language;
   disabled: boolean;
+  open: boolean;
   onAction: (action: string, id?: string) => Promise<void>;
   onClose: () => void;
 }) {
@@ -35,7 +36,6 @@ export function ConversationLibrary({
     try {
       await onAction(action, id);
       setRemoving("");
-      if (action !== "deleteConversation") onClose();
     } catch (e) {
       setError((e as Error).message);
     } finally {
@@ -47,17 +47,25 @@ export function ConversationLibrary({
       c.title.toLocaleLowerCase().includes(query.toLocaleLowerCase()),
     ) ?? [];
   return (
-    <Modal
-      title={t.conversationLibrary}
-      language={language}
-      className="conversation-library-dialog"
-      onClose={onClose}
+    <aside
+      id="conversation-sidebar"
+      className="conversation-sidebar"
+      aria-label={t.conversationLibrary}
+      hidden={!open}
+      onKeyDown={(event) => {
+        if (event.key === "Escape") {
+          event.stopPropagation();
+          onClose();
+        }
+      }}
     >
+      <header className="conversation-sidebar-header">
+        <h3>{t.conversationLibrary}</h3>
+      </header>
       <div className="conversation-library-tools">
         <label>
           <Search size={15} />
           <input
-            autoFocus
             type="search"
             aria-label={t.searchConversations}
             placeholder={t.searchConversations}
@@ -93,6 +101,7 @@ export function ConversationLibrary({
                 type="button"
                 className="conversation-library-select"
                 disabled={disabled || saving}
+                aria-current={c.id === library?.activeId ? "true" : undefined}
                 onClick={() => perform("switchConversation", c.id)}
               >
                 <MessageSquare size={16} />
@@ -146,6 +155,6 @@ export function ConversationLibrary({
           <div className="empty">{t.noConversations}</div>
         )}
       </div>
-    </Modal>
+    </aside>
   );
 }

@@ -160,6 +160,17 @@ fn ready_config(settings: &Settings, path: &str) -> Option<preparation::ConfigIn
             .map(PathBuf::from)
             .map(|p| if p.is_absolute() { p } else { root.join(p) })
             .unwrap_or(root.clone());
+        if info.backend == crate::inkling::BACKEND {
+            if v["model"]
+                .as_str()
+                .and_then(|model| cwd.join(model).canonicalize().ok())
+                .as_ref()
+                == Some(&selected)
+            {
+                return Some(info);
+            }
+            continue;
+        }
         let Some(args) = v["args"].as_array() else {
             continue;
         };

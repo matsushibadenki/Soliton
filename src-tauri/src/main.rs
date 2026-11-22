@@ -35,6 +35,7 @@ async fn open_preferences(app: tauri::AppHandle, tab: String, title: String) -> 
     }
     let tab = match tab.as_str() {
         "engine" => "engine",
+        "status" => "status",
         "api" => "api",
         _ => "general",
     };

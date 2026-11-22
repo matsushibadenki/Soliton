@@ -7,6 +7,7 @@ use std::{io::Read, path::Path};
 
 pub(crate) const BACKEND: &str = "strata-inkling-metal";
 pub(crate) const CONTEXT: u64 = 4096;
+pub(crate) const MIN_MEMORY_BYTES: u64 = 32 * 1024 * 1024 * 1024;
 const MODEL_BYTES: u64 = 13_340_510_176;
 
 pub(crate) async fn verify(

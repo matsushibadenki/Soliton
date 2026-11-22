@@ -885,7 +885,7 @@ impl Studio {
                 let context = if is_inkling { inkling::CONTEXT } else { 2048 };
                 let mut artifact_verification_ms = None;
                 if is_inkling {
-                    if self.memory_bytes.unwrap_or(0) < 32 * 1024 * 1024 * 1024 {
+                    if self.memory_bytes.unwrap_or(0) < inkling::MIN_MEMORY_BYTES {
                         return Err("Inkling experimental profile requires at least 32 GiB".into());
                     }
                     let verification_started = std::time::Instant::now();
@@ -1413,13 +1413,15 @@ impl Studio {
                 }
             }
         }
-        let strata_config = (settings.engine == engine::Engine::Strata).then(|| {
-            preparation::inspect_config(
-                std::path::Path::new(&settings.config),
-                std::path::Path::new(&settings.strata_root),
-            )
-        });
-        json!({"engineCapabilities":capabilities::inventory(&settings),"engineSession":engine_session,"modelPlan":model_plan,"omniCounterFailed":self.omni_counter_failed.load(Ordering::SeqCst),"startup":startup,"vllmInspection":vllm_inspection,"dockingDiagnostics":*self.docking_diagnostics.lock().await,"requests":requests,"memoryUsage":memory_usage,"inklingVision":memory_tuning["active"]["inklingVision"]==true,"memoryTuning":memory_tuning,"preparation":self.preparation.lock().await.snapshot(),"status":status,"health":health,"settings":*self.settings.read().await,"document":document,"logs":*self.logs.lock().await,"architecture":std::env::consts::ARCH,"memoryBytes":self.memory_bytes,"selectedEngine":settings.engine,"strataModel":strata_config.as_ref().map(|config| &config.model),"backend":if settings.engine == engine::Engine::MlxPrefix {"MLX SSD"}else if settings.engine == engine::Engine::Lfm3Omni {"LFM3-Omni"}else if settings.engine == engine::Engine::VllmApple {"vLLM-Apple"} else if strata_config.as_ref().is_some_and(|config| config.backend == inkling::BACKEND) {"Inkling Metal (experimental)"}else if strata_config.is_some_and(|config| config.backend == "strata-gemma3-metal") {"Gemma 3 Metal"} else if cfg!(all(target_os="macos",target_arch="aarch64")){"Metal"}else{"Strata"},"endpoint":format!("http://127.0.0.1:{}/v1",self.port),"root":self.root})
+        let config = preparation::inspect_config(
+            std::path::Path::new(&settings.config),
+            std::path::Path::new(&settings.strata_root),
+        );
+        let strata_config = (settings.engine == engine::Engine::Strata).then_some(&config);
+        let inkling_running =
+            status == "ready" && memory_tuning["active"]["engine"] == inkling::BACKEND;
+        let profiles = capabilities::inventory(&settings, &config, self.memory_bytes, inkling_running);
+        json!({"engineCapabilities":profiles,"engineSession":engine_session,"modelPlan":model_plan,"omniCounterFailed":self.omni_counter_failed.load(Ordering::SeqCst),"startup":startup,"vllmInspection":vllm_inspection,"dockingDiagnostics":*self.docking_diagnostics.lock().await,"requests":requests,"memoryUsage":memory_usage,"inklingVision":memory_tuning["active"]["inklingVision"]==true,"memoryTuning":memory_tuning,"preparation":self.preparation.lock().await.snapshot(),"status":status,"health":health,"settings":*self.settings.read().await,"document":document,"logs":*self.logs.lock().await,"architecture":std::env::consts::ARCH,"memoryBytes":self.memory_bytes,"selectedEngine":settings.engine,"strataModel":strata_config.map(|config| &config.model),"backend":if settings.engine == engine::Engine::MlxPrefix {"MLX SSD"}else if settings.engine == engine::Engine::Lfm3Omni {"LFM3-Omni"}else if settings.engine == engine::Engine::VllmApple {"vLLM-Apple"} else if strata_config.is_some_and(|config| config.backend == inkling::BACKEND) {"Inkling Metal (experimental)"}else if strata_config.is_some_and(|config| config.backend == "strata-gemma3-metal") {"Gemma 3 Metal"} else if cfg!(all(target_os="macos",target_arch="aarch64")){"Metal"}else{"Strata"},"endpoint":format!("http://127.0.0.1:{}/v1",self.port),"root":self.root})
     }
 }
 fn pump<T: tokio::io::AsyncRead + Unpin + Send + 'static>(

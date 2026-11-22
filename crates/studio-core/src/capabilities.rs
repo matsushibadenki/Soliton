@@ -1,9 +1,16 @@
 //! Reviewed execution profiles for discovery. Launch-time qualification remains authoritative.
-use super::Settings;
+use super::{inkling, preparation::ConfigInfo, Settings};
 use serde_json::{json, Value};
 use std::{fs, io::Read, path::Path};
 
-pub(crate) fn inventory(s: &Settings) -> Value {
+const INKLING_MODEL: &str = "Inkling 2 Mini AD-IQ3_S";
+
+pub(crate) fn inventory(
+    s: &Settings,
+    config: &ConfigInfo,
+    memory_bytes: Option<u64>,
+    inkling_running: bool,
+) -> Value {
     let strata = crate::strata_terminal_root(Path::new(&s.strata_root))
         .join("serve/server.py")
         .is_file()
@@ -39,6 +46,28 @@ pub(crate) fn inventory(s: &Settings) -> Value {
         json!({ "model": model, "task": task, "engine": engine, "setup": setup, "context": context,
             "output": output, "runtime": runtime, "evidence": evidence, "version": version })
     };
+    let inkling_supported = cfg!(all(target_os = "macos", target_arch = "aarch64"))
+        && memory_bytes.is_some_and(|bytes| bytes >= inkling::MIN_MEMORY_BYTES);
+    let inkling_paths = inkling_supported
+        && config.backend == inkling::BACKEND
+        && config.valid
+        && config.engine_exists
+        && config.tokenizer_exists
+        && crate::strata_terminal_root(Path::new(&s.strata_root))
+            .join("serve/server.py")
+            .is_file();
+    let mut inkling_profile = profile(
+        INKLING_MODEL,
+        "text",
+        "Inkling Metal",
+        "inkling",
+        Some(inkling::CONTEXT as u32),
+        None,
+        inkling_paths,
+    );
+    inkling_profile["experimental"] = json!(true);
+    inkling_profile["running"] = json!(inkling_running);
+    inkling_profile["supported"] = json!(inkling_supported);
     json!([
         profile(
             "Gemma 3 1B IT",
@@ -103,6 +132,7 @@ pub(crate) fn inventory(s: &Settings) -> Value {
             None,
             omni
         ),
+        inkling_profile,
         profile(
             "Qwen3.8-Flash-Next",
             "text",
@@ -116,6 +146,9 @@ pub(crate) fn inventory(s: &Settings) -> Value {
 }
 
 pub(crate) fn library_model(path: &Path, inspection: &Value) -> Option<&'static str> {
+    if inspection["backend"] == inkling::BACKEND {
+        return Some(INKLING_MODEL);
+    }
     if inspection["model"] == "GEMMA3-1B" || inspection["backend"] == "strata-gemma3-metal" {
         return Some("Gemma 3 1B IT");
     }
@@ -157,5 +190,34 @@ pub(crate) fn library_model(path: &Path, inspection: &Value) -> Option<&'static 
         ("gemma2", 2304, 26) => Some("Gemma 2 2B"),
         ("gemma3_text", 1152, 26) => Some("Gemma 3 1B IT"),
         _ => None,
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn inkling_is_discoverable_before_configuration_and_matches_library() {
+        let settings = Settings::default();
+        let config = super::super::preparation::inspect_config(Path::new(""), Path::new(""));
+        let profiles = inventory(&settings, &config, None, false);
+        let profile = profiles
+            .as_array()
+            .unwrap()
+            .iter()
+            .find(|profile| profile["model"] == INKLING_MODEL)
+            .expect("Inkling profile must be discoverable");
+        assert_eq!(profile["context"], inkling::CONTEXT);
+        assert_eq!(profile["runtime"], false);
+        assert_eq!(profile["running"], false);
+        assert_eq!(profile["experimental"], true);
+        assert_eq!(
+            library_model(
+                Path::new("model.gguf"),
+                &json!({"backend": inkling::BACKEND})
+            ),
+            profile["model"].as_str()
+        );
     }
 }

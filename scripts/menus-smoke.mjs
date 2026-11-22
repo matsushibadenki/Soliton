@@ -45,13 +45,21 @@ try {
   await page
     .getByRole("tab", { name: "General", exact: true })
     .press("ArrowRight");
+  const statusTab = page.getByRole("tab", { name: "Status", exact: true });
+  assert.equal(await statusTab.getAttribute("aria-selected"), "true");
+  assert(await page.locator(".preferences-dialog .memory-usage").isVisible());
+  assert(await page.locator(".preferences-dialog .memory-history").isVisible());
+  assert.equal(await page.getByRole("combobox", { name: "Inference engine", exact: true }).count(), 0);
+  await statusTab.press("ArrowRight");
+  assert.equal(await page.locator(".preferences-dialog .memory-usage").count(), 0);
+  await page.locator(".preferences-dialog .engine-details > summary").click();
   assert(
     await page
       .getByRole("textbox", { name: "Python path", exact: true })
       .isVisible(),
   );
   await page
-    .getByRole("tab", { name: "Engine", exact: true })
+    .getByRole("tab", { name: "Engine settings", exact: true })
     .press("ArrowRight");
   assert(await page.locator(".preferences-dialog .api").isVisible());
   await closePreferences(page);
@@ -77,6 +85,12 @@ try {
   await page.locator(".log-lines").waitFor({ state: "visible" });
   await page.getByRole("tab", { name: "Logs", exact: true }).press("ArrowLeft");
   await composer.waitFor({ state: "visible" });
+  for (const width of [1440, 375]) {
+    await page.setViewportSize({ width, height: 960 });
+    const bounds = await page.locator(".workspace .panel.chat").boundingBox();
+    assert(bounds && Math.abs(bounds.x) <= 1 && Math.abs(bounds.x + bounds.width - width) <= 1);
+  }
+  await page.setViewportSize({ width: 1440, height: 960 });
   await page.screenshot({ path: "/tmp/strata-menu-main.png" });
   // Export uses an isolated fixture conversation and restores the Rust document.
   const conn = await page.evaluate(() =>
@@ -109,7 +123,34 @@ try {
     );
   try {
     assert.equal((await put(fixture)).status, 200);
-    await page.getByText("Export fixture", { exact: true }).waitFor();
+    const content = page.locator(".conversation");
+    await content.getByText("Export fixture", { exact: true }).waitFor();
+    const sidebar = page.getByRole("complementary", { name: "Conversations" });
+    const toggle = page.locator("button[aria-controls=conversation-sidebar]");
+    assert.equal(await toggle.count(), 1);
+    assert.equal(await toggle.evaluate((element) => element.nextElementSibling?.getAttribute("aria-label")), "Preferences…");
+    assert.equal(await sidebar.getByRole("button", { name: "Hide conversation history" }).count(), 0);
+    const sidebarBounds = await sidebar.boundingBox();
+    const contentBounds = await content.boundingBox();
+    assert(sidebarBounds.x + sidebarBounds.width <= contentBounds.x + 1);
+    await toggle.click();
+    await sidebar.waitFor({ state: "hidden" });
+    assert.equal(await toggle.getAttribute("aria-expanded"), "false");
+    await toggle.click();
+    await sidebar.waitFor({ state: "visible" });
+    await sidebar.getByRole("button", { name: "New conversation" }).click();
+    await content.getByText("Export fixture", { exact: true }).waitFor({ state: "hidden" });
+    const search = sidebar.getByRole("searchbox");
+    await search.fill("Export fixture");
+    await sidebar.getByRole("button", { name: /^Export fixture/ }).click();
+    await content.getByText("Export fixture", { exact: true }).waitFor();
+    await search.fill("");
+    await page.setViewportSize({ width: 375, height: 720 });
+    assert(await sidebar.isVisible() && await composer.isVisible());
+    await search.press("Escape");
+    await sidebar.waitFor({ state: "hidden" });
+    assert(await toggle.evaluate((element) => element === document.activeElement));
+    await page.setViewportSize({ width: 1440, height: 960 });
     await menu("File");
     const downloaded = page.waitForEvent("download");
     await page
@@ -121,6 +162,83 @@ try {
       JSON.parse(await readFile(await download.path(), "utf8")).messages,
       fixture,
     );
+    const longPrompt = "Wide user message ".repeat(90).trim();
+    assert.equal((await put([{ role: "user", content: longPrompt }])).status, 200);
+    const bubble = content.locator(".message.user");
+    await bubble.getByText(longPrompt, { exact: true }).waitFor();
+    for (const width of [1440, 375]) {
+      await page.setViewportSize({ width, height: 720 });
+      const geometry = await bubble.evaluate((element) => {
+        const parent = element.parentElement;
+        const layout = getComputedStyle(parent);
+        const left = Number.parseFloat(layout.paddingLeft);
+        const right = Number.parseFloat(layout.paddingRight);
+        return {
+          width: parent.clientWidth - left - right,
+          edge: parent.getBoundingClientRect().left + parent.clientLeft + parent.clientWidth - right,
+          background: getComputedStyle(element).backgroundColor,
+        };
+      });
+      const bounds = await bubble.boundingBox();
+      assert(Math.abs(bounds.width - geometry.width * 2 / 3) <= 1);
+      assert(Math.abs(bounds.x + bounds.width - geometry.edge) <= 1);
+      assert.notEqual(geometry.background, "rgba(0, 0, 0, 0)");
+    }
+    await page.setViewportSize({ width: 1440, height: 960 });
+    const markdown = [
+      "## Markdown fixture",
+      "",
+      "**Bold** and ~~old~~, with $x^2$ and \\(\\frac{1}{2}\\).",
+      "",
+      "| Item | Value |",
+      "| --- | ---: |",
+      "| Result | 42 |",
+      "",
+      "- [x] Verified",
+      "- [ ] Follow-up",
+      "",
+      "> A quotation",
+      "",
+      "\\[\\begin{aligned} a &= b \\\\ c &= d \\end{aligned}\\]",
+      "",
+      "$$\\sum_{i=1}^n i$$",
+      "",
+      "Prices: $5 and $7. A note.[^note]",
+      "",
+      "```bash",
+      "echo '\\(literal\\)'",
+      "```",
+      "",
+      "[unsafe](javascript:alert%281%29) <img src=x onerror=alert(1)>",
+      "",
+      "[^note]: Footnote content",
+    ].join("\n");
+    assert.equal((await put([{ role: "assistant", content: markdown }])).status, 200);
+    const rendered = content.locator(".chat-message-content");
+    await rendered.getByRole("heading", { name: "Markdown fixture" }).waitFor();
+    assert.equal(await rendered.locator("table tr").count(), 2);
+    assert.equal(await rendered.locator("strong").innerText(), "Bold");
+    assert.equal(await rendered.locator("del").innerText(), "old");
+    assert.equal(await rendered.locator("blockquote").innerText(), "A quotation");
+    assert.equal(await rendered.locator("input[type=checkbox]:checked").count(), 1);
+    assert.equal(await rendered.locator(".chat-math-inline math").count(), 2);
+    assert.equal(await rendered.locator(".chat-math-display math").count(), 2);
+    assert.match(await rendered.locator("pre code").innerText(), /literal/);
+    assert.match(await rendered.innerText(), /Prices: \$5 and \$7/);
+    assert.equal(await rendered.locator("a").filter({ hasText: "unsafe" }).getAttribute("href"), null);
+    assert.equal(await rendered.locator("img").count(), 0);
+    assert(await rendered.getByText("Footnote content", { exact: false }).isVisible());
+    await page.setViewportSize({ width: 375, height: 720 });
+    const overflow = await rendered.evaluate((element) => {
+      if (element.scrollWidth <= element.clientWidth + 1) return [];
+      const edge = element.getBoundingClientRect().right;
+      return Array.from(element.querySelectorAll("*"))
+        .filter((child) => child.getBoundingClientRect().right > edge + 1)
+        .slice(0, 12)
+        .map((child) => [child.tagName, child.getAttribute("class")]);
+    });
+    assert.deepEqual(overflow, []);
+    await page.setViewportSize({ width: 1440, height: 960 });
   } finally {
     await put(initial.document.messages);
   }

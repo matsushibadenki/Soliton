@@ -5,7 +5,10 @@ export type Profile = {
   model: string;
   task: "text" | "media" | "voice";
   engine: string;
-  setup: "strata" | "shards" | "mlx" | "ssd" | "media" | "voice";
+  setup: "strata" | "shards" | "mlx" | "ssd" | "media" | "voice" | "inkling";
+  experimental?: boolean;
+  running?: boolean;
+  supported?: boolean;
   context: number | null;
   output: number | null;
   runtime: boolean;
@@ -15,6 +18,10 @@ export type Profile = {
 
 const labels = {
   en: {
+    experimental: "Experimental",
+    running: "Running",
+    unsupported: "Requires Apple Silicon with 32 GiB or more",
+    inkling: "Select the reviewed GGUF and llama.cpp b12600 runtime in the Inkling configuration.",
     mediaTask: "Media to text",
     evidenceFound: "Qualification file present · checked on use",
     evidenceMissing: "Qualification file needed",
@@ -40,6 +47,10 @@ const labels = {
       "Configure the GGUF, projector, media and Realtime qualifications. Allow microphone access for recording.",
   },
   ja: {
+    experimental: "実験機能",
+    running: "実行中",
+    unsupported: "32 GiB以上のApple Siliconが必要",
+    inkling: "Inklingの設定で検証済みのGGUFとllama.cpp b12600を指定してください。",
     mediaTask: "画像・音声・動画へのテキスト回答",
     evidenceFound: "資格ファイルあり · 利用時に照合",
     evidenceMissing: "資格ファイルが必要",
@@ -64,6 +75,10 @@ const labels = {
       "GGUF、プロジェクター、メディアとRealtimeの資格情報を設定してください。録音にはマイク権限が必要です。",
   },
   zh: {
+    experimental: "实验功能",
+    running: "运行中",
+    unsupported: "需要至少 32 GiB 内存的 Apple Silicon",
+    inkling: "在 Inkling 配置中指定经过验证的 GGUF 和 llama.cpp b12600 运行时。",
     mediaTask: "图像、音频或视频转文本回复",
     evidenceFound: "已找到验证文件 · 使用时核验",
     evidenceMissing: "需要验证文件",
@@ -100,7 +115,11 @@ export function EngineGuide({
   const [choice, setChoice] = useState("");
   const [task, setTask] = useState<Profile["task"]>("text");
   const models = [...new Set(profiles.map((p) => p.model))];
-  const selected = model === undefined ? choice || models[0] : model;
+  const runningModel = profiles.find((p) => p.running)?.model;
+  const selected =
+    model === undefined
+      ? (models.includes(choice) ? choice : runningModel ?? models[0])
+      : model;
   const matches = profiles.filter(
     (p) => p.model === selected && p.task === task,
   );
@@ -138,8 +157,9 @@ export function EngineGuide({
           <b>
             {p.engine}
             {p.version && ` · ${p.version}`}
+            {p.experimental && ` · ${t.experimental}`}
           </b>
-          <span>{p.runtime ? t.ready : t.missing}</span>
+          <span>{p.running ? t.running : p.supported === false ? t.unsupported : p.runtime ? t.ready : t.missing}</span>
           <span>
             {t.ctx} · {p.context?.toLocaleString() ?? t.config}
             {p.output && ` · ${t.out} ≤ ${p.output}`}

@@ -7,9 +7,10 @@ import { getCurrentWindow } from "@tauri-apps/api/window";
 import { invoke } from "@tauri-apps/api/core";
 import { emit, listen } from "@tauri-apps/api/event";
 import {
+  Activity,
   Sun,
   Moon,
-  History,
+  PanelLeftOpen,
   Cpu,
   MessageSquare,
   Link,
@@ -236,9 +237,12 @@ const panelView = windowParams.get("panel");
 const preferencesWindow = panelView === "preferences";
 const initialTab = windowParams.get("tab");
 const initialPreferenceTab: PreferenceTab =
-  initialTab === "engine" || initialTab === "api" ? initialTab : "general";
+  initialTab === "engine" || initialTab === "api" || initialTab === "status" ? initialTab : "general";
 function App() {
-  const [conversationsOpen, setConversationsOpen] = useState(false);
+  const [conversationsOpen, setConversationsOpen] = useState(
+    () => window.matchMedia("(min-width: 820px)").matches,
+  );
+  const historyToggle = useRef<HTMLButtonElement>(null);
   const [modelsOpen, setModelsOpen] = useState(false);
   const [setupLocalView, setSetupLocalView] = useState(false);
   const [setupOpen, setSetupOpen] = useState(false);
@@ -316,6 +320,12 @@ function App() {
     : selectedGroup.id;
   const detached = snapshot?.document.detached || [];
   const groupDetached = detached.includes(currentGroup);
+  const chatVisibleHere = workspaceMode === "inference"
+    && (!panelView || workspaceWindow)
+    && groups.some((group) =>
+      group.active === "chat"
+      && (windowGroup ? hosts[group.id] === windowGroup : !detached.includes(group.id)),
+    );
   const structureDisabled =
     !online ||
     pending ||
@@ -414,6 +424,13 @@ function App() {
     const unlisten = listen("workspace-cancel-generation", () =>
       controller.current?.abort(),
     );
+    return () => {
+      void unlisten.then((stop) => stop());
+    };
+  }, []);
+  useEffect(() => {
+    if (!desktop) return;
+    const unlisten = listen("workspace-show-conversations", () => setConversationsOpen(true));
     return () => {
       void unlisten.then((stop) => stop());
     };
@@ -835,7 +852,7 @@ function App() {
       >
         <h2>
           {icon}
-          {t[id]}
+          {id === "engine" ? t.engineSettings : t[id]}
         </h2>
         <div className="tools">
           {extra}
@@ -849,6 +866,58 @@ function App() {
             )}
         </div>
       </header>
+    );
+  }
+  function engineStatus() {
+    const selected = snapshot?.settings ?? settings;
+    return (
+      <section className="panel engine-status">
+        <header className="panel-header">
+          <h2><Activity />{t.status}</h2>
+        </header>
+        <div className="panel-body engine-status-body">
+          <div className="value-row">
+            <span>{t.status}</span>
+            <span className={"status " + status}><i />{t[status]}</span>
+          </div>
+          <div className="value-row">
+            <span>{t.platform}</span>
+            <code>{snapshot?.architecture || "—"} / {snapshot?.backend || "—"}</code>
+          </div>
+          {preparing && <p className="test-label" role="status">{t.setupRunning}</p>}
+          {runningSettings?.engine === "strata" && runningSettings.mock &&
+            <p className="test-label">{t.testMode}</p>}
+          <div className="engine-memory-overview">
+            <MemoryUsage
+              usage={snapshot?.memoryUsage}
+              language={language}
+              selectedEngine={engineLabel(selected)}
+              selectedModel={modelName || configuredModel(selected)}
+            />
+            <MemoryHistory
+              history={snapshot?.memoryUsage?.history}
+              events={snapshot?.memoryUsage?.events}
+              language={language}
+            />
+          </div>
+          {snapshot?.modelPlan && (
+            <ModelPlan
+              value={snapshot.modelPlan}
+              language={language}
+              onRefresh={selected.engine === "vllmApple" ? async () => {
+                await run(async () => {
+                  try {
+                    await action("refreshBackendBudget");
+                  } catch {
+                    throw new Error(t.planRuntimeError);
+                  }
+                });
+              } : undefined}
+              refreshDisabled={!online || pending || status === "offline"}
+            />
+          )}
+        </div>
+      </section>
     );
   }
   function engine() {
@@ -947,22 +1016,6 @@ function App() {
           </>,
         )}
         <div className="panel-body engine-settings-body">
-          <div className="engine-memory-overview">
-            <MemoryUsage
-              usage={snapshot?.memoryUsage}
-              language={language}
-              selectedEngine={engineLabel(settings)}
-              selectedModel={configuredModel(settings) || (
-                settings.engine === runningSettings?.engine &&
-                !(settings.engine === "strata" && settings.mock) ? modelName : undefined
-              )}
-            />
-            <MemoryHistory
-              history={snapshot?.memoryUsage?.history}
-              events={snapshot?.memoryUsage?.events}
-              language={language}
-            />
-          </div>
           <label>
             {t.engineSelector}
             <span title={t.engineSwitchHelp}>
@@ -1026,11 +1079,6 @@ function App() {
                   {labels.save}
                 </button>
               </div>
-              {!dirty.current && snapshot?.modelPlan && (
-                <ModelPlan value={snapshot.modelPlan} language={language}
-                  onRefresh={settings.engine === "vllmApple" ? async()=>{await run(async()=>{try {await action("refreshBackendBudget");} catch {throw new Error(words[language].planRuntimeError);}});}:undefined}
-                  refreshDisabled={!online || pending || status === "offline"} />
-              )}
               {settings.engine === "mlxPrefix" ? (
                 <PrefixEngineSettings value={settings.prefixCache || defaultPrefixSettings} language={language}
                   locked={status !== "offline" || pending} running={status === "ready"}
@@ -1343,16 +1391,6 @@ function App() {
                   </label>
                 </>
               )}
-              <div className="value-row">
-                <span>{t.port}</span>
-                <code>8080</code>
-              </div>
-              <div className="value-row">
-                <span>{t.platform}</span>
-                <code>
-                  {snapshot?.architecture || "—"} / {snapshot?.backend || "—"}
-                </code>
-              </div>
               {settings.engine === "strata" && (
                 <label className="toggle">
                   <input
@@ -1372,24 +1410,6 @@ function App() {
               )}
             </div>
           </details>
-          <div className="divider" />
-          <div className="value-row">
-            <span>{t.status}</span>
-            <span className={"status " + status}>
-              <i />
-              {t[status]}
-            </span>
-          </div>
-          {preparing ? (
-            <p className="test-label" role="status">
-              {t.setupRunning}
-            </p>
-          ) : null}
-          {settings.engine === "strata" &&
-          settings.mock &&
-          status !== "offline" ? (
-            <p className="test-label">{t.testMode}</p>
-          ) : null}
         </div>
       </section>
     );
@@ -1511,18 +1531,25 @@ function App() {
   function chat() {
     return (
       <section className="panel chat">
+        <div className="chat-layout">
+        <ConversationLibrary
+          library={snapshot?.document.conversations}
+          language={language}
+          open={conversationsOpen}
+          disabled={busy || !!snapshot?.document.generating || pending || !online}
+          onAction={conversationAction}
+          onClose={() => {
+            setConversationsOpen(false);
+            historyToggle.current?.focus();
+          }}
+        />
+        <div className="chat-main">
         <header className="panel-header">
           <h2>
             <MessageSquare />
             {t.chat}
           </h2>
-          {button(
-            <History />,
-            t.conversationLibrary,
-            () => setConversationsOpen(true),
-            !online,
-          )}
-          {button(
+          {!conversationsOpen && button(
             <Plus />,
             t.newChat,
             newChat,
@@ -1541,7 +1568,7 @@ function App() {
           {messages.length ? (
             messages.map((m, i) => (
               <article className={"message " + m.role} key={i}>
-                <div>{m.role === "user" ? t.you : "Soliton"}</div>
+                <div className="message-author">{m.role === "user" ? t.you : "Soliton"}</div>
                 {m.role === "assistant" && (
                   <InferenceView value={m.inference} language={language} />
                 )}
@@ -1549,7 +1576,7 @@ function App() {
                   <span className="media-chip" key={asset.id}>{mediaWords[language][asset.kind]}</span>
                 ))}
                 {m.content ? (
-                  <ChatMath content={m.content} />
+                  <ChatMath content={m.content} language={language} />
                 ) : m.attachments?.length ? null : !m.inference || m.inference.metrics.status === "running" ? (
                   <p>…</p>
                 ) : null}
@@ -1716,6 +1743,8 @@ function App() {
             </button>
           )}
         </form>
+        </div>
+        </div>
       </section>
     );
   }
@@ -1875,7 +1904,14 @@ function App() {
         },
         {
           label: t.conversationLibrary,
-          action: () => setConversationsOpen(true),
+          action: () => {
+            setWorkspaceTab("chat");
+            setConversationsOpen(true);
+            if (desktop)
+              void emit("workspace-show-conversations").catch((error: unknown) =>
+                setError(String(error)),
+              );
+          },
           disabled: !online,
         },
         {
@@ -2001,7 +2037,23 @@ function App() {
       {!preferencesWindow && (<>
         <header className="app-header">
           <AppMenus menus={menus} onBeforeOpen={captureEditor} />
-          {button(<SettingsIcon />, t.preferences, () => openPreferences())}
+          <div className="header-actions">
+            {chatVisibleHere && (
+              <button
+                type="button"
+                ref={historyToggle}
+                className="icon-button"
+                title={conversationsOpen ? t.hideConversationHistory : t.showConversationHistory}
+                aria-label={conversationsOpen ? t.hideConversationHistory : t.showConversationHistory}
+                aria-expanded={conversationsOpen}
+                aria-controls="conversation-sidebar"
+                onClick={() => setConversationsOpen((open) => !open)}
+              >
+                {conversationsOpen ? <PanelLeftClose /> : <PanelLeftOpen />}
+              </button>
+            )}
+            {button(<SettingsIcon />, t.preferences, () => openPreferences())}
+          </div>
         </header>
         {!online ? (
           <div className="notice" role="status">
@@ -2218,6 +2270,8 @@ function App() {
                 ))}
               </nav>
             </section>
+          ) : preferenceTab === "status" ? (
+            engineStatus()
           ) : preferenceTab === "engine" ? (
             engine()
           ) : (
@@ -2254,17 +2308,6 @@ function App() {
             await persist();
           }}
           onClose={() => setModelsOpen(false)}
-        />
-      )}
-      {conversationsOpen && (
-        <ConversationLibrary
-          library={snapshot?.document.conversations}
-          language={language}
-          disabled={
-            busy || !!snapshot?.document.generating || pending || !online
-          }
-          onAction={conversationAction}
-          onClose={() => setConversationsOpen(false)}
         />
       )}
       {aboutOpen && (
