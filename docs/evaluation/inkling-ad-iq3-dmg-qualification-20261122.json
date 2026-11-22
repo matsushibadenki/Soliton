@@ -1,0 +1,752 @@
+{
+  "model": "AD-IQ3_S",
+  "runtime": "b12600",
+  "context": 4096,
+  "parallel": 1,
+  "host": "Apple M4 / 32 GiB",
+  "swapBefore": "total = 0.00M  used = 0.00M  free = 0.00M  (encrypted)",
+  "appToSessionSeconds": [
+    4.633,
+    8.459
+  ],
+  "engineStarts": [
+    {
+      "startToReadySeconds": 7.611,
+      "startup": {
+        "childSpawnMs": 0.319375,
+        "controlReadyObservedMs": null,
+        "counterPreparation": null,
+        "counterSpawnedMs": null,
+        "inferenceReadyObservedMs": null,
+        "launchPreparationMs": 6136.231584,
+        "modelLoadingObservedMs": null
+      }
+    },
+    {
+      "startToReadySeconds": 71.371,
+      "startup": {
+        "childSpawnMs": 2.7886249999999997,
+        "controlReadyObservedMs": null,
+        "counterPreparation": null,
+        "counterSpawnedMs": null,
+        "inferenceReadyObservedMs": null,
+        "launchPreparationMs": 62174.225249999996,
+        "modelLoadingObservedMs": null
+      }
+    }
+  ],
+  "anonymousStatus": 401,
+  "boundary": {
+    "promptTokens": 3991,
+    "outputReservation": 105,
+    "overStatus": 422,
+    "actualUsage": {
+      "completion_tokens": 40,
+      "prompt_tokens": 3991,
+      "total_tokens": 4031,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    }
+  },
+  "soak": {
+    "requestedSeconds": 1800,
+    "completed": [
+      {
+        "turn": 0,
+        "promptTokens": 3866,
+        "answer": "7300",
+        "seconds": 11.372
+      },
+      {
+        "turn": 1,
+        "promptTokens": 3866,
+        "answer": "7301",
+        "seconds": 18.844
+      },
+      {
+        "turn": 2,
+        "promptTokens": 3866,
+        "answer": "7302",
+        "seconds": 16.897
+      },
+      {
+        "turn": 3,
+        "promptTokens": 3866,
+        "answer": "7303",
+        "seconds": 19.93
+      },
+      {
+        "turn": 4,
+        "promptTokens": 3866,
+        "answer": "7304",
+        "seconds": 19.518
+      },
+      {
+        "turn": 5,
+        "promptTokens": 3866,
+        "answer": "7305",
+        "seconds": 8.85
+      },
+      {
+        "turn": 6,
+        "promptTokens": 3866,
+        "answer": "7306",
+        "seconds": 16.868
+      },
+      {
+        "turn": 7,
+        "promptTokens": 3866,
+        "answer": "7307",
+        "seconds": 18.943
+      },
+      {
+        "turn": 8,
+        "promptTokens": 3866,
+        "answer": "7308",
+        "seconds": 20.238
+      },
+      {
+        "turn": 9,
+        "promptTokens": 3866,
+        "answer": "7309",
+        "seconds": 14.993
+      },
+      {
+        "turn": 10,
+        "promptTokens": 3866,
+        "answer": "7310",
+        "seconds": 8.021
+      },
+      {
+        "turn": 11,
+        "promptTokens": 3866,
+        "answer": "7311",
+        "seconds": 16.121
+      },
+      {
+        "turn": 12,
+        "promptTokens": 3866,
+        "answer": "7312",
+        "seconds": 15.306
+      },
+      {
+        "turn": 13,
+        "promptTokens": 3866,
+        "answer": "7313",
+        "seconds": 14.242
+      },
+      {
+        "turn": 14,
+        "promptTokens": 3866,
+        "answer": "7314",
+        "seconds": 14.759
+      },
+      {
+        "turn": 15,
+        "promptTokens": 3866,
+        "answer": "7315",
+        "seconds": 6.581
+      },
+      {
+        "turn": 16,
+        "promptTokens": 3866,
+        "answer": "7316",
+        "seconds": 17.86
+      },
+      {
+        "turn": 17,
+        "promptTokens": 3866,
+        "answer": "7317",
+        "seconds": 15.214
+      },
+      {
+        "turn": 18,
+        "promptTokens": 3866,
+        "answer": "7318",
+        "seconds": 13.108
+      },
+      {
+        "turn": 19,
+        "promptTokens": 3866,
+        "answer": "7319",
+        "seconds": 15.662
+      },
+      {
+        "turn": 20,
+        "promptTokens": 3866,
+        "answer": "7320",
+        "seconds": 11.598
+      },
+      {
+        "turn": 21,
+        "promptTokens": 3866,
+        "answer": "7321",
+        "seconds": 16.567
+      },
+      {
+        "turn": 22,
+        "promptTokens": 3866,
+        "answer": "7322",
+        "seconds": 17.053
+      },
+      {
+        "turn": 23,
+        "promptTokens": 3866,
+        "answer": "7323",
+        "seconds": 15.717
+      },
+      {
+        "turn": 24,
+        "promptTokens": 3866,
+        "answer": "7324",
+        "seconds": 14.553
+      },
+      {
+        "turn": 25,
+        "promptTokens": 3866,
+        "answer": "7325",
+        "seconds": 7.897
+      },
+      {
+        "turn": 26,
+        "promptTokens": 3866,
+        "answer": "7326",
+        "seconds": 15.818
+      },
+      {
+        "turn": 27,
+        "promptTokens": 3866,
+        "answer": "7327",
+        "seconds": 16.721
+      },
+      {
+        "turn": 28,
+        "promptTokens": 3866,
+        "answer": "7328",
+        "seconds": 15.638
+      },
+      {
+        "turn": 29,
+        "promptTokens": 3866,
+        "answer": "7329",
+        "seconds": 17.708
+      },
+      {
+        "turn": 30,
+        "promptTokens": 3866,
+        "answer": "7330",
+        "seconds": 9.484
+      },
+      {
+        "turn": 31,
+        "promptTokens": 3866,
+        "answer": "7331",
+        "seconds": 15.742
+      },
+      {
+        "turn": 32,
+        "promptTokens": 3866,
+        "answer": "7332",
+        "seconds": 15.884
+      },
+      {
+        "turn": 33,
+        "promptTokens": 3866,
+        "answer": "7333",
+        "seconds": 17.236
+      },
+      {
+        "turn": 34,
+        "promptTokens": 3866,
+        "answer": "7334",
+        "seconds": 16.365
+      },
+      {
+        "turn": 35,
+        "promptTokens": 3866,
+        "answer": "7335",
+        "seconds": 10.498
+      },
+      {
+        "turn": 36,
+        "promptTokens": 3866,
+        "answer": "7336",
+        "seconds": 15.859
+      },
+      {
+        "turn": 37,
+        "promptTokens": 3866,
+        "answer": "7337",
+        "seconds": 14.125
+      },
+      {
+        "turn": 38,
+        "promptTokens": 3866,
+        "answer": "7338",
+        "seconds": 15.853
+      },
+      {
+        "turn": 39,
+        "promptTokens": 3866,
+        "answer": "7339",
+        "seconds": 13.059
+      },
+      {
+        "turn": 40,
+        "promptTokens": 3866,
+        "answer": "7340",
+        "seconds": 10.791
+      },
+      {
+        "turn": 41,
+        "promptTokens": 3866,
+        "answer": "7341",
+        "seconds": 13.699
+      },
+      {
+        "turn": 42,
+        "promptTokens": 3866,
+        "answer": "7342",
+        "seconds": 19.595
+      },
+      {
+        "turn": 43,
+        "promptTokens": 3866,
+        "answer": "7343",
+        "seconds": 19.037
+      },
+      {
+        "turn": 44,
+        "promptTokens": 3866,
+        "answer": "7344",
+        "seconds": 16.538
+      },
+      {
+        "turn": 45,
+        "promptTokens": 3866,
+        "answer": "7345",
+        "seconds": 9.976
+      },
+      {
+        "turn": 46,
+        "promptTokens": 3866,
+        "answer": "7346",
+        "seconds": 17.315
+      },
+      {
+        "turn": 47,
+        "promptTokens": 3866,
+        "answer": "7347",
+        "seconds": 14.75
+      },
+      {
+        "turn": 48,
+        "promptTokens": 3866,
+        "answer": "7348",
+        "seconds": 14.014
+      },
+      {
+        "turn": 49,
+        "promptTokens": 3866,
+        "answer": "7349",
+        "seconds": 14.796
+      },
+      {
+        "turn": 50,
+        "promptTokens": 3866,
+        "answer": "7350",
+        "seconds": 13.846
+      },
+      {
+        "turn": 51,
+        "promptTokens": 3866,
+        "answer": "7351",
+        "seconds": 17.265
+      },
+      {
+        "turn": 52,
+        "promptTokens": 3866,
+        "answer": "7352",
+        "seconds": 18.093
+      },
+      {
+        "turn": 53,
+        "promptTokens": 3866,
+        "answer": "7353",
+        "seconds": 20.308
+      },
+      {
+        "turn": 54,
+        "promptTokens": 3866,
+        "answer": "7354",
+        "seconds": 22.661
+      },
+      {
+        "turn": 55,
+        "promptTokens": 3866,
+        "answer": "7355",
+        "seconds": 13.758
+      },
+      {
+        "turn": 56,
+        "promptTokens": 3866,
+        "answer": "7356",
+        "seconds": 17.868
+      },
+      {
+        "turn": 57,
+        "promptTokens": 3866,
+        "answer": "7357",
+        "seconds": 19.278
+      },
+      {
+        "turn": 58,
+        "promptTokens": 3866,
+        "answer": "7358",
+        "seconds": 16.478
+      },
+      {
+        "turn": 59,
+        "promptTokens": 3866,
+        "answer": "7359",
+        "seconds": 19.602
+      },
+      {
+        "turn": 60,
+        "promptTokens": 3866,
+        "answer": "7360",
+        "seconds": 12.051
+      },
+      {
+        "turn": 61,
+        "promptTokens": 3866,
+        "answer": "7361",
+        "seconds": 19.161
+      },
+      {
+        "turn": 62,
+        "promptTokens": 3866,
+        "answer": "7362",
+        "seconds": 12.786
+      },
+      {
+        "turn": 63,
+        "promptTokens": 3866,
+        "answer": "7363",
+        "seconds": 13.767
+      },
+      {
+        "turn": 64,
+        "promptTokens": 3866,
+        "answer": "7364",
+        "seconds": 14.35
+      },
+      {
+        "turn": 65,
+        "promptTokens": 3866,
+        "answer": "7365",
+        "seconds": 9.253
+      },
+      {
+        "turn": 66,
+        "promptTokens": 3866,
+        "answer": "7366",
+        "seconds": 14.911
+      },
+      {
+        "turn": 67,
+        "promptTokens": 3866,
+        "answer": "7367",
+        "seconds": 15.391
+      },
+      {
+        "turn": 68,
+        "promptTokens": 3866,
+        "answer": "7368",
+        "seconds": 18.809
+      },
+      {
+        "turn": 69,
+        "promptTokens": 3866,
+        "answer": "7369",
+        "seconds": 16.601
+      },
+      {
+        "turn": 70,
+        "promptTokens": 3866,
+        "answer": "7370",
+        "seconds": 10.567
+      },
+      {
+        "turn": 71,
+        "promptTokens": 3866,
+        "answer": "7371",
+        "seconds": 20.102
+      },
+      {
+        "turn": 72,
+        "promptTokens": 3866,
+        "answer": "7372",
+        "seconds": 20.581
+      },
+      {
+        "turn": 73,
+        "promptTokens": 3866,
+        "answer": "7373",
+        "seconds": 15.704
+      },
+      {
+        "turn": 74,
+        "promptTokens": 3866,
+        "answer": "7374",
+        "seconds": 16.095
+      },
+      {
+        "turn": 75,
+        "promptTokens": 3866,
+        "answer": "7375",
+        "seconds": 10.959
+      },
+      {
+        "turn": 76,
+        "promptTokens": 3866,
+        "answer": "7376",
+        "seconds": 20.009
+      },
+      {
+        "turn": 77,
+        "promptTokens": 3866,
+        "answer": "7377",
+        "seconds": 20.924
+      },
+      {
+        "turn": 78,
+        "promptTokens": 3866,
+        "answer": "7378",
+        "seconds": 16.775
+      },
+      {
+        "turn": 79,
+        "promptTokens": 3866,
+        "answer": "7379",
+        "seconds": 21.22
+      },
+      {
+        "turn": 80,
+        "promptTokens": 3866,
+        "answer": "7380",
+        "seconds": 12.916
+      },
+      {
+        "turn": 81,
+        "promptTokens": 3866,
+        "answer": "7381",
+        "seconds": 16.516
+      },
+      {
+        "turn": 82,
+        "promptTokens": 3866,
+        "answer": "7382",
+        "seconds": 14.934
+      },
+      {
+        "turn": 83,
+        "promptTokens": 3866,
+        "answer": "7383",
+        "seconds": 14.075
+      },
+      {
+        "turn": 84,
+        "promptTokens": 3866,
+        "answer": "7384",
+        "seconds": 16.433
+      },
+      {
+        "turn": 85,
+        "promptTokens": 3866,
+        "answer": "7385",
+        "seconds": 13.921
+      },
+      {
+        "turn": 86,
+        "promptTokens": 3866,
+        "answer": "7386",
+        "seconds": 20.079
+      },
+      {
+        "turn": 87,
+        "promptTokens": 3866,
+        "answer": "7387",
+        "seconds": 20.234
+      },
+      {
+        "turn": 88,
+        "promptTokens": 3866,
+        "answer": "7388",
+        "seconds": 23.844
+      },
+      {
+        "turn": 89,
+        "promptTokens": 3866,
+        "answer": "7389",
+        "seconds": 23.862
+      },
+      {
+        "turn": 90,
+        "promptTokens": 3866,
+        "answer": "7390",
+        "seconds": 15.693
+      },
+      {
+        "turn": 91,
+        "promptTokens": 3866,
+        "answer": "7391",
+        "seconds": 20.283
+      },
+      {
+        "turn": 92,
+        "promptTokens": 3866,
+        "answer": "7392",
+        "seconds": 25.008
+      },
+      {
+        "turn": 93,
+        "promptTokens": 3866,
+        "answer": "7393",
+        "seconds": 35.199
+      },
+      {
+        "turn": 94,
+        "promptTokens": 3866,
+        "answer": "7394",
+        "seconds": 23.579
+      },
+      {
+        "turn": 95,
+        "promptTokens": 3866,
+        "answer": "7395",
+        "seconds": 30.49
+      },
+      {
+        "turn": 96,
+        "promptTokens": 3866,
+        "answer": "7396",
+        "seconds": 65.474
+      }
+    ],
+    "cancellations": [
+      {
+        "beforeTurn": 0,
+        "delta": "reasoning_content"
+      },
+      {
+        "beforeTurn": 5,
+        "delta": "reasoning_content"
+      },
+      {
+        "beforeTurn": 10,
+        "delta": "reasoning_content"
+      },
+      {
+        "beforeTurn": 15,
+        "delta": "reasoning_content"
+      },
+      {
+        "beforeTurn": 20,
+        "delta": "reasoning_content"
+      },
+      {
+        "beforeTurn": 25,
+        "delta": "reasoning_content"
+      },
+      {
+        "beforeTurn": 30,
+        "delta": "reasoning_content"
+      },
+      {
+        "beforeTurn": 35,
+        "delta": "reasoning_content"
+      },
+      {
+        "beforeTurn": 40,
+        "delta": "reasoning_content"
+      },
+      {
+        "beforeTurn": 45,
+        "delta": "reasoning_content"
+      },
+      {
+        "beforeTurn": 50,
+        "delta": "reasoning_content"
+      },
+      {
+        "beforeTurn": 55,
+        "delta": "reasoning_content"
+      },
+      {
+        "beforeTurn": 60,
+        "delta": "reasoning_content"
+      },
+      {
+        "beforeTurn": 65,
+        "delta": "reasoning_content"
+      },
+      {
+        "beforeTurn": 70,
+        "delta": "reasoning_content"
+      },
+      {
+        "beforeTurn": 75,
+        "delta": "reasoning_content"
+      },
+      {
+        "beforeTurn": 80,
+        "delta": "reasoning_content"
+      },
+      {
+        "beforeTurn": 85,
+        "delta": "reasoning_content"
+      },
+      {
+        "beforeTurn": 90,
+        "delta": "reasoning_content"
+      },
+      {
+        "beforeTurn": 95,
+        "delta": "reasoning_content"
+      }
+    ],
+    "passed": true,
+    "elapsedSeconds": 1824.014
+  },
+  "conversation": {
+    "cancelledOn": "reasoning_content",
+    "partialAnswer": "",
+    "nextAnswer": "7429",
+    "restartHistoryMatched": true,
+    "restartAnswer": "7429",
+    "newConversationAnswer": "8316"
+  },
+  "swapEnd": "total = 6144.00M  used = 4880.81M  free = 1263.19M  (encrypted)",
+  "swapObservationCount": 1812,
+  "maxSwapUsedMiB": 5770.75,
+  "samples": 7239,
+  "peakRssBytes": 14261370880,
+  "peakPhysicalBytes": 1462381896,
+  "package": {
+    "appVersion": "0.1.13",
+    "source": "local arm64 DMG, copied into isolated directory",
+    "runtimeLocation": "external fixed b12600 directory",
+    "dmgSha256": "b220d23794a610172ef7ba3d6d8223476b1e45df9cb65058b60e0d8f6887b9fa",
+    "runtimeManifestSha256": "849c17e4a252fe9c00ab0a73875fe1e1facd1eb08c530238abe5ba9ada282f48"
+  },
+  "decision": "Functional soak passed. Keep the opt-in profile on M4/32 GiB because of sustained-workload host swap and restart readiness time. Host swap is system-wide and sampling does not attribute it to a process.",
+  "runtimeRejections": {
+    "probe": "same build .app",
+    "unexpectedDylib": 400,
+    "missingAlias": 400,
+    "modifiedDylib": 400,
+    "aliasOutsideRuntimeDirectory": 400
+  }
+}
