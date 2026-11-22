@@ -1,7 +1,9 @@
 # Header/tensor-directory validation only: never read weight data or contact a network.
 import sys, json, struct
 from pathlib import Path
-sys.path.insert(0, str(Path(sys.argv[1]) / 'tools'))
+root = Path(sys.argv[1])
+terminal = root / 'terminal' if (root / 'terminal/serve/server.py').is_file() else root
+sys.path.insert(0, str(terminal / 'tools'))
 from gguf_reader import GGUFFile
 class Limited:
     def __init__(self, f): self.f, self.used = f, 0

@@ -22,7 +22,11 @@ cleanup() {
 }
 trap cleanup EXIT
 
-name="Soliton_${version}_aarch64.dmg"
+suffix=""
+if [[ "${SOLITON_STRATA_SPLIT_CANDIDATE:-0}" == 1 ]]; then
+    suffix="_strata-split-candidate"
+fi
+name="Soliton_${version}_aarch64${suffix}.dmg"
 mkdir -p "$work/staging" "$work/mount" "$bundle/dmg"
 ditto "$app" "$work/staging/Soliton.app"
 npm run check:distribution -- --app "$work/staging/Soliton.app" \

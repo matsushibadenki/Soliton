@@ -1,13 +1,27 @@
 """Build the pinned engine on the distribution Mac, never on the user's Mac."""
+import argparse
+import hashlib
 import importlib.util
 import json
+import os
 import pathlib
 import subprocess
 import sys
 import tarfile
 
 root = pathlib.Path(__file__).resolve().parent.parent
-revision = (root / 'src-tauri/strata-revision.txt').read_text().strip()
+parser = argparse.ArgumentParser(description=__doc__)
+parser.add_argument('--verify-split-candidate', action='store_true',
+                    help='Build Strata 0.2.17 without replacing packaged resources')
+args = parser.parse_args()
+split = args.verify_split_candidate or os.environ.get("SOLITON_STRATA_SPLIT_CANDIDATE") == "1"
+revision = (
+    '12d491da4a6904eb49aaa6f2f63ec4b1a17582e3'
+    if split
+    else (root / 'src-tauri/strata-revision.txt').read_text().strip()
+)
+requirements_path = 'terminal/requirements-build.txt' if split else 'requirements-build.txt'
+setup_path = 'engine/metal/setup_mac.py' if split else 'metal/setup_mac.py'
 if len(revision) != 40 or any(c not in '0123456789abcdef' for c in revision):
     raise RuntimeError('Invalid pinned Strata revision')
 
@@ -18,12 +32,12 @@ build_python = build_python_root / 'bin/python3'
 if pathlib.Path(sys.prefix).resolve() != build_python_root.resolve():
     if not build_python.is_file():
         subprocess.run([sys.executable, '-m', 'venv', str(build_python_root)], check=True)
-    subprocess.run([str(build_python), str(pathlib.Path(__file__).resolve())], check=True)
+    subprocess.run([str(build_python), str(pathlib.Path(__file__).resolve()), *sys.argv[1:]], check=True)
     raise SystemExit(0)
 
 from importlib.metadata import PackageNotFoundError, version
 requirements = subprocess.check_output(['git', '-C', str(root / 'Strata'), 'show',
-                                       f'{revision}:requirements-build.txt'], text=True)
+                                       f'{revision}:{requirements_path}'], text=True)
 pins = [line.strip() for line in requirements.splitlines() if line.strip() and not line.lstrip().startswith('#')]
 def build_tools_current():
     try:
@@ -40,22 +54,22 @@ stage = root / '.soliton-runtime' / 'metal-distribution'
 source = stage / revision
 if not source.exists():
     source.mkdir(parents=True)
-    archive = stage / 'source.tar'
+    archive = stage / f'{revision}.tar'
     subprocess.run(['git', '-C', str(root / 'Strata'), 'archive', '--format=tar', f'--output={archive}', revision], check=True)
     with tarfile.open(archive) as handle:
         handle.extractall(source, filter='data')
     archive.unlink()
 # Always restore the pinned build script before loading it. A previous distribution
 # copy has runtime-only overrides that must never bypass a distribution rebuild.
-setup = source / 'metal/setup_mac.py'
+setup = source / setup_path
 original_setup = subprocess.check_output(['git', '-C', str(root / 'Strata'), 'show',
-                                         f'{revision}:metal/setup_mac.py'], text=True)
+                                         f'{revision}:{setup_path}'], text=True)
 flag = '"-DCMAKE_BUILD_TYPE=Release",'
 if flag not in original_setup:
     raise RuntimeError('Pinned Metal setup CMake contract changed')
 setup.write_text(original_setup.replace(flag, flag + ' "-DCMAKE_OSX_DEPLOYMENT_TARGET=15.0",', 1))
 sys.path.insert(0, str(source))
-spec = importlib.util.spec_from_file_location('bundled_metal_setup', source / 'metal/setup_mac.py')
+spec = importlib.util.spec_from_file_location('bundled_metal_setup', setup)
 metal = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(metal)
 llama = None  # Build against the immutable, vendored Strata ggml source.
@@ -64,14 +78,22 @@ llama = None  # Build against the immutable, vendored Strata ggml source.
 metal.engine_current = lambda: False
 engine = metal.build_engine(llama, jobs=2)
 subprocess.run(['otool', '-L', str(engine)], check=True)
+if args.verify_split_candidate:
+    artifact = {
+        'revision': revision,
+        'engine': str(engine.relative_to(source)),
+        'sha256': hashlib.sha256(engine.read_bytes()).hexdigest(),
+        'deploymentTarget': '15.0',
+    }
+    (source / 'native-build-verification.json').write_text(json.dumps(artifact, indent=2) + '\n')
+    print(json.dumps(artifact))
+    raise SystemExit(0)
 (stage / 'artifact.json').write_text(json.dumps({'revision': revision, 'engine': str(engine), 'llama': str(llama)}, indent=2))
 print(f'Built engine for {revision}: {engine}')
 
 # Only the distribution copy is adapted. The upstream checkout is untouched.
-import hashlib
 marker = source / '.bundled-metal.json'
 marker.write_text(json.dumps({'revision': revision, 'sha256': hashlib.sha256(engine.read_bytes()).hexdigest()}))
-setup = source / 'metal/setup_mac.py'
 text = setup.read_text()
 adapter = '''
 # Soliton distribution: prebuilt engine, runtime libraries and converter are bundled.
@@ -87,6 +109,8 @@ def _soliton_dependencies(*args, **kwargs):
     import numpy, jinja2, regex, PIL, requests, yaml, psutil
 S.pip_install = _soliton_dependencies
 '''
+if split:
+    adapter = adapter.replace("(ROOT / '.bundled-metal.json')", "(ROOT.parent / '.bundled-metal.json')")
 if '# Soliton distribution:' not in text:
     setup.write_text(text.replace('if __name__ == "__main__":', adapter + '\nif __name__ == "__main__":'))
 gemma_spec = importlib.util.spec_from_file_location('bundled_gemma', root / 'scripts/build-bundled-gemma.py')
@@ -102,12 +126,16 @@ with tarfile.open(archive, 'w:gz') as handle:
         path = source / name
         if path.is_file():
             handle.add(path, arcname=name, recursive=False)
-    handle.add(engine, arcname='build-metal/strata')
-    handle.add(source / 'metal/kernels', arcname='build-metal/metal/kernels')
-    handle.add(source / 'metal/src/engine/msl', arcname='build-metal/metal/engine-msl')
-    handle.add(source / 'third_party/strata-ggml/strata-quant-common.h', arcname='build-metal/metal/ggml-common.h')
-    if (source / 'data').is_dir():
-        handle.add(source / 'data', arcname='build-metal/metal/data')
+    engine_source = source / 'engine' if split else source
+    metal_build = 'engine/build-metal' if split else 'build-metal'
+    quant_header = 'include/strata/quant/strata-quant-common.h' if split else 'third_party/strata-ggml/strata-quant-common.h'
+    data = source / ('terminal/data' if split else 'data')
+    handle.add(engine, arcname=f'{metal_build}/strata')
+    handle.add(engine_source / 'metal/kernels', arcname=f'{metal_build}/metal/kernels')
+    handle.add(engine_source / 'metal/src/engine/msl', arcname=f'{metal_build}/metal/engine-msl')
+    handle.add(engine_source / quant_header, arcname=f'{metal_build}/metal/ggml-common.h')
+    if data.is_dir():
+        handle.add(data, arcname=f'{metal_build}/metal/data')
     handle.add(marker, arcname='.bundled-metal.json')
     handle.add(gemma_engine, arcname='build-metal/strata-gemma-server')
     handle.add(gemma_manifest, arcname='.bundled-gemma3.json')

@@ -32,12 +32,16 @@ def configure(metal, stage, data):
     metal.stream_mtp = lambda *_args: False
     if hasattr(metal, '_fit'):
         metal._fit.stream_mtp = metal.stream_mtp
+    # The split setup fetches optional draft weights through a separate helper.
+    if hasattr(metal, 'fetch_drafter'):
+        metal.fetch_drafter = lambda *_args: None
 
 
 def main():
     root, stage, data = map(Path, sys.argv[1:4])
     sys.path.insert(0, str(root))
-    spec = importlib.util.spec_from_file_location('studio_metal_setup', root / 'metal/setup_mac.py')
+    setup = root / ('engine/metal/setup_mac.py' if (root / 'terminal/serve/server.py').is_file() else 'metal/setup_mac.py')
+    spec = importlib.util.spec_from_file_location('studio_metal_setup', setup)
     metal = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(metal)
     configure(metal, stage, data)

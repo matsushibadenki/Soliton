@@ -128,25 +128,30 @@ def check(app, smoke=False):
             roots.append((kind,destination))
         strata = work/'strata'
         expected = (ROOT/'src-tauri/strata-revision.txt').read_text().strip()
+        split = os.environ.get('SOLITON_STRATA_SPLIT_CANDIDATE') == '1'
+        if split:
+            expected = '12d491da4a6904eb49aaa6f2f63ec4b1a17582e3'
+        native = 'engine/' if split else ''
+        terminal = 'terminal/' if split else ''
         bundled = json.loads((strata/'.bundled-metal.json').read_text()).get('revision')
         report['strataRevision'] = bundled
         report['errors'] += revision_errors(expected, bundled)
-        for binary in [main,work/'python/bin/python3',strata/'build-metal/strata',strata/'build-metal/strata-gemma-server']:
+        for binary in [main,work/'python/bin/python3',strata/(native+'build-metal/strata'),strata/'build-metal/strata-gemma-server']:
             if not os.access(binary,os.X_OK):
                 report['errors'].append('required runtime is not executable: '+binary.name)
         report['engines'] = {}
-        for marker, engine in [('.bundled-metal.json','build-metal/strata'),
+        for marker, engine in [('.bundled-metal.json',native+'build-metal/strata'),
                                ('.bundled-gemma3.json','build-metal/strata-gemma-server')]:
             meta = json.loads((strata/marker).read_text())
             measured = sha(strata/engine)
             report['engines'][engine] = {'sha256':measured, 'matchesBuildMetadata':measured == meta['sha256']}
             if measured != meta['sha256']:
                 report['errors'].append('engine checksum mismatch: '+engine)
-        for required in ['serve/server.py','metal/setup_mac.py','build-metal/metal/kernels',
-                         'build-metal/metal/engine-msl','build-metal/metal/ggml-common.h',
+        for required in [terminal+'serve/server.py',native+'metal/setup_mac.py',native+'build-metal/metal/kernels',
+                         native+'build-metal/metal/engine-msl',native+'build-metal/metal/ggml-common.h',
                          'third_party/gemma3-gguf/gguf/__init__.py','third_party/gemma3-LICENSE',
-                         'third_party/strata-ggml/LICENSE', 'third_party/strata-gguf-py/LICENSE',
-                         'third_party/strata-gguf-py/gguf/__init__.py']:
+                         native+'third_party/strata-ggml/LICENSE', native+'third_party/strata-gguf-py/LICENSE',
+                         native+'third_party/strata-gguf-py/gguf/__init__.py']:
             if not (strata/required).exists():
                 report['errors'].append('missing bundled resource: '+required)
         for label, root in roots:

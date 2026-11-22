@@ -4,7 +4,9 @@ use serde_json::{json, Value};
 use std::{fs, io::Read, path::Path};
 
 pub(crate) fn inventory(s: &Settings) -> Value {
-    let strata = Path::new(&s.strata_root).join("serve/server.py").is_file()
+    let strata = crate::strata_terminal_root(Path::new(&s.strata_root))
+        .join("serve/server.py")
+        .is_file()
         && Path::new(&s.python).is_file();
     let mlx = s.vllm.backend == "mlx_lm" && s.vllm.validate_paths().is_ok();
     let omni = Path::new(&s.omni.runtime_dir)

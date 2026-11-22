@@ -652,34 +652,54 @@ fn install_runtime_files(
     let _ = std::fs::remove_dir_all(stage);
     result
 }
+fn managed_strata_root(app_data: &std::path::Path) -> PathBuf {
+    let split = option_env!("SOLITON_STRATA_SPLIT_CANDIDATE") == Some("1");
+    app_data.join(if split {
+        "Strata-metal-v2"
+    } else {
+        "Strata-metal-v1"
+    })
+}
+
+fn bundled_strata_paths(root: &std::path::Path) -> (&'static str, &'static str, &'static str) {
+    if studio_core::strata_terminal_root(root) != root {
+        (
+            "engine/build-metal/strata",
+            "engine/build-metal/metal/ggml-common.h",
+            "engine/build-metal/metal",
+        )
+    } else {
+        (
+            "build-metal/strata",
+            "build-metal/metal/ggml-common.h",
+            "build-metal/metal",
+        )
+    }
+}
+
 // Install the immutable bundled source into a writable per-user directory.  A
 // partially extracted tree is never treated as an installation.
 fn install_bundled_engine(
     archive: &std::path::Path,
     app_data: &std::path::Path,
 ) -> Result<PathBuf, String> {
-    let root = app_data.join("Strata-metal-v1");
-    if root.join("serve/server.py").is_file()
-        && root.join("metal/setup_mac.py").is_file()
-        && (!root.join(".bundled-metal.json").exists() || root.join("build-metal/strata").is_file())
+    let root = managed_strata_root(app_data);
+    let (binary, quant_header, resources) = bundled_strata_paths(&root);
+    if studio_core::strata_terminal_root(&root)
+        .join("serve/server.py")
+        .is_file()
+        && studio_core::strata_setup_path(&root).is_file()
+        && (!root.join(".bundled-metal.json").exists() || root.join(binary).is_file())
     {
         if root.join(".bundled-metal.json").exists()
             && !bundled_component_current(
                 archive,
                 &root,
                 ".bundled-metal.json",
-                &["build-metal/strata", "build-metal/metal/ggml-common.h"],
+                &[binary, quant_header],
             )
         {
-            install_runtime_files(
-                archive,
-                &root,
-                &[
-                    "build-metal/strata",
-                    "build-metal/metal",
-                    ".bundled-metal.json",
-                ],
-            )?;
+            install_runtime_files(archive, &root, &[binary, resources, ".bundled-metal.json"])?;
         }
         if root.join(".bundled-metal.json").exists() && !gemma_addon_current(archive, &root) {
             install_gemma_addon(archive, &root)?;
@@ -699,8 +719,12 @@ fn install_bundled_engine(
             .status()
             .map_err(|e| e.to_string())?;
         if !status.success()
-            || !staging.join("serve/server.py").is_file()
-            || !staging.join("metal/setup_mac.py").is_file()
+            || !studio_core::strata_terminal_root(&staging)
+                .join("serve/server.py")
+                .is_file()
+            || !studio_core::strata_setup_path(&staging).is_file()
+            || (option_env!("SOLITON_STRATA_SPLIT_CANDIDATE") == Some("1")
+                && !staging.join("engine/build-metal/strata").is_file())
         {
             return Err("Bundled Strata extraction failed".to_string());
         }
@@ -737,7 +761,7 @@ fn main() {
             } else if cfg!(debug_assertions) {
                 PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../Strata")
             } else {
-                app_data.join("Strata-metal-v1")
+                managed_strata_root(&app_data)
             };
             let legacy = app_data
                 .parent()

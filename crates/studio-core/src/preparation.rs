@@ -180,8 +180,10 @@ pub fn inspect_config(path: &Path, root: &Path) -> ConfigInfo {
     info
 }
 pub(crate) fn configs(root: &Path) -> Vec<ConfigInfo> {
-    let mut paths: Vec<_> = std::fs::read_dir(root)
+    let mut paths: Vec<_> = [root.to_path_buf(), root.join("engine")]
         .into_iter()
+        .filter(|dir| dir == root || crate::strata_terminal_root(root) != root)
+        .filter_map(|dir| std::fs::read_dir(dir).ok())
         .flatten()
         .flatten()
         .map(|f| f.path())
@@ -217,7 +219,12 @@ pub(crate) fn free_bytes(path: &Path) -> Option<u64> {
     }
 }
 fn config_for(root: &Path, model: &str) -> PathBuf {
-    root.join(format!(
+    let directory = if model != "GEMMA3-1B" && crate::strata_terminal_root(root) != root {
+        root.join("engine")
+    } else {
+        root.to_path_buf()
+    };
+    directory.join(format!(
         "strata-{}{}.json",
         if model.starts_with("UD-") {
             "unsloth-"
@@ -241,7 +248,7 @@ impl Studio {
         let download_free = free_bytes(&root);
         let local_free = free_bytes(&capacity_path(&root, true));
         let disk_plans:Vec<_> = MODELS.iter().map(|m|json!({"id":m.id,"download":disk_plan(m,&root,false,download_free),"local":disk_plan(m,&root,true,local_free)})).collect();
-        json!({"diskPlans":disk_plans,"rootExists":root.join("serve/server.py").is_file(),"setupAvailable":root.join("metal/setup_mac.py").is_file(),"supportedHost":cfg!(all(target_os="macos",target_arch="aarch64")),"metalProfile":crate::metal_policy::profile(self.memory_bytes),"python":python,"configs":configs(&root),"selected":if s.config.is_empty(){None}else{Some(inspect_config(&resolve(&root,&s.config),&root))},"models":MODELS.iter().filter(|m| m.id != "GEMMA3-1B").collect::<Vec<_>>(),"freeBytes":download_free,"recommended":if self.memory_bytes.unwrap_or(0)>=96*1024*1024*1024{"IQ3_S"}else{"Q2_0"}})
+        json!({"diskPlans":disk_plans,"rootExists":crate::strata_terminal_root(&root).join("serve/server.py").is_file(),"setupAvailable":crate::strata_setup_path(&root).is_file(),"supportedHost":cfg!(all(target_os="macos",target_arch="aarch64")),"metalProfile":crate::metal_policy::profile(self.memory_bytes),"python":python,"configs":configs(&root),"selected":if s.config.is_empty(){None}else{Some(inspect_config(&resolve(&root,&s.config),&root))},"models":MODELS.iter().filter(|m| m.id != "GEMMA3-1B").collect::<Vec<_>>(),"freeBytes":download_free,"recommended":if self.memory_bytes.unwrap_or(0)>=96*1024*1024*1024{"IQ3_S"}else{"Q2_0"}})
     }
     pub async fn prepare(self: &Arc<Self>, model: &str, confirmed: bool) -> Result<(), String> {
         self.prepare_with_capacity(model, confirmed, free_bytes)
@@ -302,7 +309,11 @@ impl Studio {
         let root = PathBuf::from(&s.strata_root)
             .canonicalize()
             .map_err(|e| e.to_string())?;
-        if !root.join("metal/setup_mac.py").is_file() || !root.join("serve/server.py").is_file() {
+        if !crate::strata_setup_path(&root).is_file()
+            || !crate::strata_terminal_root(&root)
+                .join("serve/server.py")
+                .is_file()
+        {
             return Err("Select a Strata source directory with Metal setup".into());
         }
         if model == "GEMMA3-1B" && local.is_none() {
@@ -331,7 +342,8 @@ if not py.is_file() or (root / '.bundled-metal.json').is_file():
     venv.EnvBuilder(with_pip=True, symlinks=(os.name != "nt"), system_site_packages=(root / '.bundled-metal.json').is_file()).create(env)
 prefix = subprocess.check_output([str(py), '-c', "import sys; print(sys.prefix if sys.prefix != sys.base_prefix else '')"], text=True).strip()
 assert prefix and Path(prefix).resolve() == env.resolve(), 'Strata .venv is not isolated'
-os.execv(str(py), [str(py), '-u', str(root / 'metal/setup_mac.py'), '--yes', '--setup', '--no-start', '--no-browser', '--vision', 'no', '--model', sys.argv[1], '--context', sys.argv[2], '--data-dir', str(root.parent / 'Strata-data')])
+setup = root / ('engine/metal/setup_mac.py' if (root / 'terminal/serve/server.py').is_file() else 'metal/setup_mac.py')
+os.execv(str(py), [str(py), '-u', str(setup), '--yes', '--setup', '--no-start', '--no-browser', '--vision', 'no', '--model', sys.argv[1], '--context', sys.argv[2], '--data-dir', str(root.parent / 'Strata-data')])
 "#;
         let mut local_args = Vec::new();
         let bootstrap = if let Some(input) = local {
@@ -559,6 +571,27 @@ mod tests {
         let p = std::env::temp_dir().join(format!("strata-prepare-{}", uuid::Uuid::new_v4()));
         std::fs::create_dir_all(&p).unwrap();
         p
+    }
+    #[test]
+    fn split_layout_keeps_terminal_engine_and_gemma_paths_distinct() {
+        let root = temp_root();
+        let terminal = root.join("terminal");
+        let engine = root.join("engine");
+        std::fs::create_dir_all(terminal.join("serve")).unwrap();
+        std::fs::create_dir_all(engine.join("metal")).unwrap();
+        std::fs::write(terminal.join("serve/server.py"), "").unwrap();
+        std::fs::write(engine.join("metal/setup_mac.py"), "").unwrap();
+        assert_eq!(crate::strata_terminal_root(&root), terminal);
+        assert_eq!(crate::strata_setup_path(&root), engine.join("metal/setup_mac.py"));
+        let qwen = config_for(&root, "Q2_0");
+        let gemma = config_for(&root, "GEMMA3-1B");
+        assert_eq!(qwen, engine.join("strata-q2_0.json"));
+        assert_eq!(gemma, root.join("strata-gemma3-1b.json"));
+        for path in [qwen, gemma] {
+            std::fs::write(path, r#"{"exe":"engine","args":[]}"#).unwrap();
+        }
+        assert_eq!(configs(&root).len(), 2);
+        std::fs::remove_dir_all(root).unwrap();
     }
     #[test]
     fn configuration_inspection_distinguishes_invalid_and_missing_assets() {

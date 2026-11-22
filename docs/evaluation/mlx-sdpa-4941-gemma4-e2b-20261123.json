@@ -1,0 +1,1951 @@
+{
+  "host": "Apple M4 / 32 GiB",
+  "model": "mlx-community/gemma-4-E2B-it-4bit",
+  "revision": "238767527555cb75a05732a84dff5d6ba0dd6809",
+  "modelRuns": [
+    {
+      "baseRevision": "58d91ee81a86dd9710123ec42e7ff91f6d1d21b1",
+      "patchCommit": "720859602efef9242b7105268976958957764c29",
+      "runs": [
+        {
+          "runtime": {
+            "coreSha256": "f847dd26bf7c556340dc5feeec631f40d8909c436f70b1df418291b4d5d96416",
+            "metalSha256": "c06a6476ee4e9c7940d02eb9cfd11dbdbdbfeb4d83521990c62ae44586e8b706",
+            "device": {
+              "resource_limit": 499000,
+              "max_buffer_length": 20100448256,
+              "architecture": "applegpu_g16g",
+              "memory_size": 34359738368,
+              "max_recommended_working_set_size": 26800603136,
+              "device_name": "Apple M4"
+            },
+            "os": "27.2.0",
+            "version": "0.32.5.dev20261123"
+          },
+          "rows": [
+            {
+              "inputTokens": 16338,
+              "promptSha256": "a2a108d81d0ab668dea1a2e712ec95663d88269ef95bccedde17eefcf59862d1",
+              "answer": "58316",
+              "expected": "58316",
+              "factPositionPercent": 15,
+              "correct": true,
+              "tokenIds": [
+                236810,
+                236828,
+                236800,
+                236770,
+                236825,
+                106,
+                106,
+                106,
+                106,
+                107,
+                1,
+                106,
+                107,
+                1,
+                106,
+                106,
+                107,
+                1,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106
+              ],
+              "text": "58316<turn|><turn|><turn|><turn|>\n<eos><turn|>\n<eos><turn|><turn|>\n<eos><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|>",
+              "timeToFirstTokenSeconds": 9.603136124999992,
+              "decodeTokensPerSecond": 27.887767030994365,
+              "completionSeconds": 10.714734624999892,
+              "peakMlxBytes": 3422721828,
+              "peakProcessRssBytes": 3804758016
+            }
+          ],
+          "routes": [
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "16340"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "16340"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "16340"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "16340"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "16340"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "16340"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "16340"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "16341"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "16341"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "16341"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "16341"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "16341"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "16341"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "16341"
+            ]
+          ],
+          "arm": "base",
+          "elapsedSeconds": 13.438108792000094
+        },
+        {
+          "runtime": {
+            "coreSha256": "f847dd26bf7c556340dc5feeec631f40d8909c436f70b1df418291b4d5d96416",
+            "metalSha256": "78d7512a2d9935dd889d8b01315360eb694415baa3beccac1bc2a9462ab39ed2",
+            "device": {
+              "resource_limit": 499000,
+              "max_buffer_length": 20100448256,
+              "architecture": "applegpu_g16g",
+              "memory_size": 34359738368,
+              "max_recommended_working_set_size": 26800603136,
+              "device_name": "Apple M4"
+            },
+            "os": "27.2.0",
+            "version": "0.32.5.dev20261123"
+          },
+          "rows": [
+            {
+              "inputTokens": 16338,
+              "promptSha256": "a2a108d81d0ab668dea1a2e712ec95663d88269ef95bccedde17eefcf59862d1",
+              "answer": "58316",
+              "expected": "58316",
+              "factPositionPercent": 15,
+              "correct": true,
+              "tokenIds": [
+                236810,
+                236828,
+                236800,
+                236770,
+                236825,
+                106,
+                106,
+                106,
+                106,
+                107,
+                1,
+                106,
+                107,
+                1,
+                106,
+                106,
+                107,
+                1,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106
+              ],
+              "text": "58316<turn|><turn|><turn|><turn|>\n<eos><turn|>\n<eos><turn|><turn|>\n<eos><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|>",
+              "timeToFirstTokenSeconds": 9.272764750000078,
+              "decodeTokensPerSecond": 45.769158083717215,
+              "completionSeconds": 9.950076750000107,
+              "peakMlxBytes": 3422721828,
+              "peakProcessRssBytes": 3804545024
+            }
+          ],
+          "routes": [
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "16340"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "16340"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "16340"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "16340"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "16340"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "16340"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "16340"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "16341"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "16341"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "16341"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "16341"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "16341"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "16341"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "16341"
+            ]
+          ],
+          "arm": "patched",
+          "elapsedSeconds": 12.522447874999898
+        },
+        {
+          "runtime": {
+            "coreSha256": "f847dd26bf7c556340dc5feeec631f40d8909c436f70b1df418291b4d5d96416",
+            "metalSha256": "78d7512a2d9935dd889d8b01315360eb694415baa3beccac1bc2a9462ab39ed2",
+            "device": {
+              "resource_limit": 499000,
+              "max_buffer_length": 20100448256,
+              "architecture": "applegpu_g16g",
+              "memory_size": 34359738368,
+              "max_recommended_working_set_size": 26800603136,
+              "device_name": "Apple M4"
+            },
+            "os": "27.2.0",
+            "version": "0.32.5.dev20261123"
+          },
+          "rows": [
+            {
+              "inputTokens": 16338,
+              "promptSha256": "543a1d29b82b7ccf0cac74d8a2d00bbe81fe825beca859e1e8868c5d57879f25",
+              "answer": "72940",
+              "expected": "72940",
+              "factPositionPercent": 75,
+              "correct": true,
+              "tokenIds": [
+                236832,
+                236778,
+                236819,
+                236812,
+                236771,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                107,
+                1,
+                106,
+                107,
+                1,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106
+              ],
+              "text": "72940<turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|>\n<eos><turn|>\n<eos><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|>",
+              "timeToFirstTokenSeconds": 9.292531541000017,
+              "decodeTokensPerSecond": 47.36591398847089,
+              "completionSeconds": 9.947010625000075,
+              "peakMlxBytes": 3422721828,
+              "peakProcessRssBytes": 3805429760
+            }
+          ],
+          "routes": [
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "16340"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "16340"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "16340"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "16340"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "16340"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "16340"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "16340"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "16341"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "16341"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "16341"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "16341"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "16341"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "16341"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "16341"
+            ]
+          ],
+          "arm": "patched",
+          "elapsedSeconds": 12.591985041000044
+        },
+        {
+          "runtime": {
+            "coreSha256": "f847dd26bf7c556340dc5feeec631f40d8909c436f70b1df418291b4d5d96416",
+            "metalSha256": "c06a6476ee4e9c7940d02eb9cfd11dbdbdbfeb4d83521990c62ae44586e8b706",
+            "device": {
+              "resource_limit": 499000,
+              "max_buffer_length": 20100448256,
+              "architecture": "applegpu_g16g",
+              "memory_size": 34359738368,
+              "max_recommended_working_set_size": 26800603136,
+              "device_name": "Apple M4"
+            },
+            "os": "27.2.0",
+            "version": "0.32.5.dev20261123"
+          },
+          "rows": [
+            {
+              "inputTokens": 16338,
+              "promptSha256": "543a1d29b82b7ccf0cac74d8a2d00bbe81fe825beca859e1e8868c5d57879f25",
+              "answer": "72940",
+              "expected": "72940",
+              "factPositionPercent": 75,
+              "correct": true,
+              "tokenIds": [
+                236832,
+                236778,
+                236819,
+                236812,
+                236771,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                107,
+                1,
+                106,
+                107,
+                1,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106
+              ],
+              "text": "72940<turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|>\n<eos><turn|>\n<eos><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|>",
+              "timeToFirstTokenSeconds": 9.52121000000011,
+              "decodeTokensPerSecond": 28.124423035400397,
+              "completionSeconds": 10.623454834000086,
+              "peakMlxBytes": 3422721828,
+              "peakProcessRssBytes": 3804561408
+            }
+          ],
+          "routes": [
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "16340"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "16340"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "16340"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "16340"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "16340"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "16340"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "16340"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "16341"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "16341"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "16341"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "16341"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "16341"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "16341"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "16341"
+            ]
+          ],
+          "arm": "base",
+          "elapsedSeconds": 13.123631292000027
+        }
+      ],
+      "summary": [
+        {
+          "tokenIdsMatch": true,
+          "base": {
+            "timeToFirstTokenSeconds": 9.562173062500051,
+            "decodeTokensPerSecond": 28.006095033197383,
+            "completionSeconds": 10.669094729499989,
+            "correct": 2,
+            "trials": 2,
+            "peakMlxBytes": 3422721828,
+            "peakProcessRssBytes": 3804758016
+          },
+          "patched": {
+            "timeToFirstTokenSeconds": 9.282648145500048,
+            "decodeTokensPerSecond": 46.567536036094054,
+            "completionSeconds": 9.948543687500091,
+            "correct": 2,
+            "trials": 2,
+            "peakMlxBytes": 3422721828,
+            "peakProcessRssBytes": 3805429760
+          }
+        }
+      ],
+      "sdpaD512MinKvLengthOverride": null,
+      "chatRecall": true,
+      "metricScope": "whole model",
+      "modelConfigSha256": "6397cb6eca41b911d1dcab74e17941351057bd759284052a2331918ff6f9246c",
+      "context": 16384,
+      "outputTokens": 32
+    },
+    {
+      "baseRevision": "58d91ee81a86dd9710123ec42e7ff91f6d1d21b1",
+      "patchCommit": "720859602efef9242b7105268976958957764c29",
+      "runs": [
+        {
+          "runtime": {
+            "coreSha256": "f847dd26bf7c556340dc5feeec631f40d8909c436f70b1df418291b4d5d96416",
+            "metalSha256": "c06a6476ee4e9c7940d02eb9cfd11dbdbdbfeb4d83521990c62ae44586e8b706",
+            "device": {
+              "resource_limit": 499000,
+              "max_buffer_length": 20100448256,
+              "architecture": "applegpu_g16g",
+              "memory_size": 34359738368,
+              "max_recommended_working_set_size": 26800603136,
+              "device_name": "Apple M4"
+            },
+            "os": "27.2.0",
+            "version": "0.32.5.dev20261123"
+          },
+          "rows": [
+            {
+              "inputTokens": 32726,
+              "promptSha256": "339260d670a21d50ca9851717265faa21c55e206d97988d66d2ec4aa25d6c216",
+              "answer": "58316",
+              "expected": "58316",
+              "factPositionPercent": 15,
+              "correct": true,
+              "tokenIds": [
+                236810,
+                236828,
+                236800,
+                236770,
+                236825,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                107,
+                1,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106
+              ],
+              "text": "58316<turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|>\n<eos><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|>",
+              "timeToFirstTokenSeconds": 22.412225583999998,
+              "decodeTokensPerSecond": 18.35954867031843,
+              "completionSeconds": 24.100720249999995,
+              "peakMlxBytes": 3749566230,
+              "peakProcessRssBytes": 3804905472
+            }
+          ],
+          "routes": [
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "32728"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "32728"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "32728"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "32728"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "32728"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "32728"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "32728"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "32729"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "32729"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "32729"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "32729"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "32729"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "32729"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "32729"
+            ]
+          ],
+          "arm": "base",
+          "elapsedSeconds": 26.974100624999892
+        },
+        {
+          "runtime": {
+            "coreSha256": "f847dd26bf7c556340dc5feeec631f40d8909c436f70b1df418291b4d5d96416",
+            "metalSha256": "78d7512a2d9935dd889d8b01315360eb694415baa3beccac1bc2a9462ab39ed2",
+            "device": {
+              "resource_limit": 499000,
+              "max_buffer_length": 20100448256,
+              "architecture": "applegpu_g16g",
+              "memory_size": 34359738368,
+              "max_recommended_working_set_size": 26800603136,
+              "device_name": "Apple M4"
+            },
+            "os": "27.2.0",
+            "version": "0.32.5.dev20261123"
+          },
+          "rows": [
+            {
+              "inputTokens": 32726,
+              "promptSha256": "339260d670a21d50ca9851717265faa21c55e206d97988d66d2ec4aa25d6c216",
+              "answer": "58316",
+              "expected": "58316",
+              "factPositionPercent": 15,
+              "correct": true,
+              "tokenIds": [
+                236810,
+                236828,
+                236800,
+                236770,
+                236825,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                107,
+                1,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106
+              ],
+              "text": "58316<turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|>\n<eos><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|>",
+              "timeToFirstTokenSeconds": 24.3886460409999,
+              "decodeTokensPerSecond": 31.86468676799111,
+              "completionSeconds": 25.3615098329999,
+              "peakMlxBytes": 3749566230,
+              "peakProcessRssBytes": 3804872704
+            }
+          ],
+          "routes": [
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "32728"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "32728"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "32728"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "32728"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "32728"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "32728"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "32728"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "32729"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "32729"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "32729"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "32729"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "32729"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "32729"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "32729"
+            ]
+          ],
+          "arm": "patched",
+          "elapsedSeconds": 28.316476875000035
+        },
+        {
+          "runtime": {
+            "coreSha256": "f847dd26bf7c556340dc5feeec631f40d8909c436f70b1df418291b4d5d96416",
+            "metalSha256": "78d7512a2d9935dd889d8b01315360eb694415baa3beccac1bc2a9462ab39ed2",
+            "device": {
+              "resource_limit": 499000,
+              "max_buffer_length": 20100448256,
+              "architecture": "applegpu_g16g",
+              "memory_size": 34359738368,
+              "max_recommended_working_set_size": 26800603136,
+              "device_name": "Apple M4"
+            },
+            "os": "27.2.0",
+            "version": "0.32.5.dev20261123"
+          },
+          "rows": [
+            {
+              "inputTokens": 32726,
+              "promptSha256": "952b2a56bf6a21e77c6fb9832abf40af390eecfc877dec7d5255ba8160441ec1",
+              "answer": "72940",
+              "expected": "72940",
+              "factPositionPercent": 75,
+              "correct": true,
+              "tokenIds": [
+                236832,
+                236778,
+                236819,
+                236812,
+                236771,
+                106,
+                106,
+                106,
+                106,
+                106,
+                107,
+                1,
+                106,
+                107,
+                1,
+                106,
+                106,
+                106,
+                107,
+                1,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106
+              ],
+              "text": "72940<turn|><turn|><turn|><turn|><turn|>\n<eos><turn|>\n<eos><turn|><turn|><turn|>\n<eos><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|>",
+              "timeToFirstTokenSeconds": 26.963848749999897,
+              "decodeTokensPerSecond": 29.50156158141769,
+              "completionSeconds": 28.014640583999835,
+              "peakMlxBytes": 3749566230,
+              "peakProcessRssBytes": 3806167040
+            }
+          ],
+          "routes": [
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "32728"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "32728"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "32728"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "32728"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "32728"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "32728"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "32728"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "32729"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "32729"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "32729"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "32729"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "32729"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "32729"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "32729"
+            ]
+          ],
+          "arm": "patched",
+          "elapsedSeconds": 31.158452041999908
+        },
+        {
+          "runtime": {
+            "coreSha256": "f847dd26bf7c556340dc5feeec631f40d8909c436f70b1df418291b4d5d96416",
+            "metalSha256": "c06a6476ee4e9c7940d02eb9cfd11dbdbdbfeb4d83521990c62ae44586e8b706",
+            "device": {
+              "resource_limit": 499000,
+              "max_buffer_length": 20100448256,
+              "architecture": "applegpu_g16g",
+              "memory_size": 34359738368,
+              "max_recommended_working_set_size": 26800603136,
+              "device_name": "Apple M4"
+            },
+            "os": "27.2.0",
+            "version": "0.32.5.dev20261123"
+          },
+          "rows": [
+            {
+              "inputTokens": 32726,
+              "promptSha256": "952b2a56bf6a21e77c6fb9832abf40af390eecfc877dec7d5255ba8160441ec1",
+              "answer": "72940",
+              "expected": "72940",
+              "factPositionPercent": 75,
+              "correct": true,
+              "tokenIds": [
+                236832,
+                236778,
+                236819,
+                236812,
+                236771,
+                106,
+                106,
+                106,
+                106,
+                106,
+                107,
+                1,
+                106,
+                107,
+                1,
+                106,
+                106,
+                106,
+                107,
+                1,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106
+              ],
+              "text": "72940<turn|><turn|><turn|><turn|><turn|>\n<eos><turn|>\n<eos><turn|><turn|><turn|>\n<eos><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|>",
+              "timeToFirstTokenSeconds": 26.797447333000036,
+              "decodeTokensPerSecond": 17.82785936579393,
+              "completionSeconds": 28.536298833000046,
+              "peakMlxBytes": 3749566230,
+              "peakProcessRssBytes": 3806920704
+            }
+          ],
+          "routes": [
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "32728"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "32728"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "32728"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "32728"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "32728"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "32728"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "32728"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "32729"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "32729"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "32729"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "32729"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "32729"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "32729"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "32729"
+            ]
+          ],
+          "arm": "base",
+          "elapsedSeconds": 31.799135291000084
+        }
+      ],
+      "summary": [
+        {
+          "tokenIdsMatch": true,
+          "base": {
+            "timeToFirstTokenSeconds": 24.604836458500017,
+            "decodeTokensPerSecond": 18.09370401805618,
+            "completionSeconds": 26.31850954150002,
+            "correct": 2,
+            "trials": 2,
+            "peakMlxBytes": 3749566230,
+            "peakProcessRssBytes": 3806920704
+          },
+          "patched": {
+            "timeToFirstTokenSeconds": 25.6762473954999,
+            "decodeTokensPerSecond": 30.6831241747044,
+            "completionSeconds": 26.688075208499868,
+            "correct": 2,
+            "trials": 2,
+            "peakMlxBytes": 3749566230,
+            "peakProcessRssBytes": 3806167040
+          }
+        }
+      ],
+      "sdpaD512MinKvLengthOverride": null,
+      "chatRecall": true,
+      "metricScope": "whole model",
+      "modelConfigSha256": "6397cb6eca41b911d1dcab74e17941351057bd759284052a2331918ff6f9246c",
+      "context": 32768,
+      "outputTokens": 32
+    },
+    {
+      "baseRevision": "58d91ee81a86dd9710123ec42e7ff91f6d1d21b1",
+      "patchCommit": "720859602efef9242b7105268976958957764c29",
+      "runs": [
+        {
+          "runtime": {
+            "coreSha256": "f847dd26bf7c556340dc5feeec631f40d8909c436f70b1df418291b4d5d96416",
+            "metalSha256": "c06a6476ee4e9c7940d02eb9cfd11dbdbdbfeb4d83521990c62ae44586e8b706",
+            "device": {
+              "resource_limit": 499000,
+              "max_buffer_length": 20100448256,
+              "architecture": "applegpu_g16g",
+              "memory_size": 34359738368,
+              "max_recommended_working_set_size": 26800603136,
+              "device_name": "Apple M4"
+            },
+            "os": "27.2.0",
+            "version": "0.32.5.dev20261123"
+          },
+          "rows": [
+            {
+              "inputTokens": 59960,
+              "promptSha256": "65c96eb2392b732a29b2ad14b931da86fd23149dc8c9492e93568407c5105d4e",
+              "answer": "58316",
+              "expected": "58316",
+              "factPositionPercent": 15,
+              "correct": true,
+              "tokenIds": [
+                236810,
+                236828,
+                236800,
+                236770,
+                236825,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                107,
+                1,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106
+              ],
+              "text": "58316<turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|>\n<eos><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|>",
+              "timeToFirstTokenSeconds": 66.24152808300005,
+              "decodeTokensPerSecond": 10.872745011142472,
+              "completionSeconds": 69.09269399999994,
+              "peakMlxBytes": 4452732694,
+              "peakProcessRssBytes": 3804643328
+            }
+          ],
+          "routes": [
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "59962"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "59962"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "59962"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "59962"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "59962"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "59962"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "59962"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "59963"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "59963"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "59963"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "59963"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "59963"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "59963"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "59963"
+            ]
+          ],
+          "arm": "base",
+          "elapsedSeconds": 72.68872433299998
+        },
+        {
+          "runtime": {
+            "coreSha256": "f847dd26bf7c556340dc5feeec631f40d8909c436f70b1df418291b4d5d96416",
+            "metalSha256": "78d7512a2d9935dd889d8b01315360eb694415baa3beccac1bc2a9462ab39ed2",
+            "device": {
+              "resource_limit": 499000,
+              "max_buffer_length": 20100448256,
+              "architecture": "applegpu_g16g",
+              "memory_size": 34359738368,
+              "max_recommended_working_set_size": 26800603136,
+              "device_name": "Apple M4"
+            },
+            "os": "27.2.0",
+            "version": "0.32.5.dev20261123"
+          },
+          "rows": [
+            {
+              "inputTokens": 59960,
+              "promptSha256": "65c96eb2392b732a29b2ad14b931da86fd23149dc8c9492e93568407c5105d4e",
+              "answer": "58316",
+              "expected": "58316",
+              "factPositionPercent": 15,
+              "correct": true,
+              "tokenIds": [
+                236810,
+                236828,
+                236800,
+                236770,
+                236825,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                107,
+                1,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106
+              ],
+              "text": "58316<turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|>\n<eos><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|>",
+              "timeToFirstTokenSeconds": 66.42132024999978,
+              "decodeTokensPerSecond": 19.852403260628567,
+              "completionSeconds": 67.98284404099991,
+              "peakMlxBytes": 4452732694,
+              "peakProcessRssBytes": 3804610560
+            }
+          ],
+          "routes": [
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "59962"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "59962"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "59962"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "59962"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "59962"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "59962"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "59962"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "59963"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "59963"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "59963"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "59963"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "59963"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "59963"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "59963"
+            ]
+          ],
+          "arm": "patched",
+          "elapsedSeconds": 71.82398462499987
+        },
+        {
+          "runtime": {
+            "coreSha256": "f847dd26bf7c556340dc5feeec631f40d8909c436f70b1df418291b4d5d96416",
+            "metalSha256": "78d7512a2d9935dd889d8b01315360eb694415baa3beccac1bc2a9462ab39ed2",
+            "device": {
+              "resource_limit": 499000,
+              "max_buffer_length": 20100448256,
+              "architecture": "applegpu_g16g",
+              "memory_size": 34359738368,
+              "max_recommended_working_set_size": 26800603136,
+              "device_name": "Apple M4"
+            },
+            "os": "27.2.0",
+            "version": "0.32.5.dev20261123"
+          },
+          "rows": [
+            {
+              "inputTokens": 59960,
+              "promptSha256": "3337e4518ec8b4a8e1778b64fb7756cd9b7d8b0cbaf0dbe5187fc1441d7f1978",
+              "answer": "72940",
+              "expected": "72940",
+              "factPositionPercent": 75,
+              "correct": true,
+              "tokenIds": [
+                236832,
+                236778,
+                236819,
+                236812,
+                236771,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                107,
+                1,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106
+              ],
+              "text": "72940<turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|>\n<eos><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|>",
+              "timeToFirstTokenSeconds": 69.08069787500017,
+              "decodeTokensPerSecond": 20.503999892188496,
+              "completionSeconds": 70.59259800000018,
+              "peakMlxBytes": 4452732694,
+              "peakProcessRssBytes": 3804381184
+            }
+          ],
+          "routes": [
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "59962"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "59962"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "59962"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "59962"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "59962"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "59962"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "59962"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "59963"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "59963"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "59963"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "59963"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "59963"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "59963"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "59963"
+            ]
+          ],
+          "arm": "patched",
+          "elapsedSeconds": 74.23680262499965
+        },
+        {
+          "runtime": {
+            "coreSha256": "f847dd26bf7c556340dc5feeec631f40d8909c436f70b1df418291b4d5d96416",
+            "metalSha256": "c06a6476ee4e9c7940d02eb9cfd11dbdbdbfeb4d83521990c62ae44586e8b706",
+            "device": {
+              "resource_limit": 499000,
+              "max_buffer_length": 20100448256,
+              "architecture": "applegpu_g16g",
+              "memory_size": 34359738368,
+              "max_recommended_working_set_size": 26800603136,
+              "device_name": "Apple M4"
+            },
+            "os": "27.2.0",
+            "version": "0.32.5.dev20261123"
+          },
+          "rows": [
+            {
+              "inputTokens": 59960,
+              "promptSha256": "3337e4518ec8b4a8e1778b64fb7756cd9b7d8b0cbaf0dbe5187fc1441d7f1978",
+              "answer": "72940",
+              "expected": "72940",
+              "factPositionPercent": 75,
+              "correct": true,
+              "tokenIds": [
+                236832,
+                236778,
+                236819,
+                236812,
+                236771,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                107,
+                1,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106,
+                106
+              ],
+              "text": "72940<turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|>\n<eos><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|><turn|>",
+              "timeToFirstTokenSeconds": 70.78280566600006,
+              "decodeTokensPerSecond": 9.822293326471488,
+              "completionSeconds": 73.93889141600039,
+              "peakMlxBytes": 4452732694,
+              "peakProcessRssBytes": 3805069312
+            }
+          ],
+          "routes": [
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "59962"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "59962"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "59962"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "59962"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "59962"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "59962"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "59962"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "59963"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "59963"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "59963"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "59963"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "59963"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "59963"
+            ],
+            [
+              "sdpa_vector_2pass_1_bfloat16_t_512_512",
+              "59963"
+            ]
+          ],
+          "arm": "base",
+          "elapsedSeconds": 77.57427795800004
+        }
+      ],
+      "summary": [
+        {
+          "tokenIdsMatch": true,
+          "base": {
+            "timeToFirstTokenSeconds": 68.51216687450005,
+            "decodeTokensPerSecond": 10.34751916880698,
+            "completionSeconds": 71.51579270800016,
+            "correct": 2,
+            "trials": 2,
+            "peakMlxBytes": 4452732694,
+            "peakProcessRssBytes": 3805069312
+          },
+          "patched": {
+            "timeToFirstTokenSeconds": 67.75100906249997,
+            "decodeTokensPerSecond": 20.178201576408533,
+            "completionSeconds": 69.28772102050004,
+            "correct": 2,
+            "trials": 2,
+            "peakMlxBytes": 4452732694,
+            "peakProcessRssBytes": 3804610560
+          }
+        }
+      ],
+      "sdpaD512MinKvLengthOverride": null,
+      "chatRecall": true,
+      "metricScope": "whole model",
+      "modelConfigSha256": "6397cb6eca41b911d1dcab74e17941351057bd759284052a2331918ff6f9246c",
+      "context": 60000,
+      "outputTokens": 32
+    }
+  ],
+  "gpuFirstPassRuns": [
+    {
+      "blocks": 64,
+      "device": "Apple M4",
+      "gpuCommandBufferMs": [
+        [
+          10.22899999998117,
+          10.028458333181334,
+          10.065250000025117,
+          10.259125000175118,
+          10.133083333130344,
+          10.0117499996486,
+          10.104833333116403,
+          10.011958333052462,
+          10.087625000323897,
+          10.036166666850477,
+          10.981499999616062,
+          10.7483750002757,
+          10.310624999874562,
+          11.106250000011642,
+          10.942124999928637,
+          10.180833333379269,
+          11.002541666584875,
+          10.512249999919732,
+          10.091791667036887,
+          10.78075000032186
+        ],
+        [
+          5.4091249999146385,
+          5.506541666818521,
+          5.565124999975524,
+          5.700124999748368,
+          5.557166666676494,
+          5.718500000057247,
+          5.6034166664176155,
+          5.461708333314164,
+          5.65737499982788,
+          5.3259999999681895,
+          5.779916667052021,
+          5.643875000259868,
+          5.632875000173954,
+          5.872458333215036,
+          5.464374999974098,
+          5.682250000063505,
+          5.73900000017602,
+          5.6253750003634195,
+          5.422374999852764,
+          5.439583333100018
+        ],
+        [
+          5.373208333367074,
+          5.38754166700528,
+          5.573249999997643,
+          5.758249999871623,
+          5.629708333344752,
+          5.826291666380712,
+          5.505583333160757,
+          5.495291666647972,
+          5.416458333456831,
+          5.549625000185188,
+          5.6923749998532,
+          5.2981250000812,
+          5.677125000147498,
+          5.248749999736901,
+          5.361374999665713,
+          5.425999999715714,
+          5.290999999942869,
+          5.57995833332825,
+          5.354541666292789,
+          5.523750000065775
+        ],
+        [
+          10.570208333319897,
+          10.00262500019744,
+          10.321374999875843,
+          10.455666666530306,
+          10.354750000260537,
+          10.14012499990713,
+          10.92379166630053,
+          10.143999999854714,
+          10.011500000018714,
+          10.825999999724445,
+          11.137708333535556,
+          10.205000000041764,
+          10.140208333723422,
+          10.967374999836466,
+          10.287333333508286,
+          10.110124999755499,
+          11.590750000323169,
+          10.302499999852444,
+          10.259416666485777,
+          11.39204166656782
+        ]
+      ],
+      "kernel": "sdpa_vector_2pass_1_bfloat16_t_512_512",
+      "kvLength": 16384,
+      "order": [
+        "base",
+        "patched",
+        "patched",
+        "base"
+      ],
+      "baseMedianMs": 10.273374999997031,
+      "patchedMedianMs": 5.553395833430841
+    },
+    {
+      "blocks": 64,
+      "device": "Apple M4",
+      "gpuCommandBufferMs": [
+        [
+          22.029583333278424,
+          20.55012499977238,
+          21.680041666513716,
+          20.321958333624934,
+          19.90041666658726,
+          20.02095833313433,
+          19.890374999704363,
+          20.181625000077474,
+          21.792624999761756,
+          20.412208333709714,
+          20.143499999903725,
+          20.260125000277185,
+          20.676375000221014,
+          21.278124999753345,
+          20.328291666373843,
+          23.46091666686334,
+          20.136458333581686,
+          20.334541666670702,
+          20.719458333132934,
+          21.539249999932508
+        ],
+        [
+          10.258041666475037,
+          10.343291666686127,
+          10.644875000252796,
+          11.133333333418705,
+          10.388333333139599,
+          10.71300000012343,
+          11.063791666401812,
+          10.477000000264525,
+          11.192833333097951,
+          11.239958333135291,
+          10.820166666690056,
+          10.540249999849038,
+          10.271416666910227,
+          10.590875000161759,
+          10.132375000011962,
+          10.561833333213144,
+          10.522999999921012,
+          10.987458333602262,
+          10.239416666536272,
+          10.730749999765976
+        ],
+        [
+          10.24425000014162,
+          10.428999999930966,
+          10.11279166687018,
+          10.558874999787804,
+          10.7753333331857,
+          10.481499999968946,
+          11.261916666626348,
+          12.131541666803969,
+          11.10379166675557,
+          11.789208333539136,
+          10.669624999991356,
+          10.22362499998053,
+          10.193041666298086,
+          12.297125000259257,
+          10.383291666585137,
+          11.553083333637915,
+          12.082166666914418,
+          11.326125000323373,
+          10.493750000023283,
+          11.362125000232481
+        ],
+        [
+          22.891916666594625,
+          21.19787499987069,
+          20.607250000011845,
+          20.081250000203,
+          20.681874999809224,
+          21.295791666943842,
+          22.08841666697481,
+          21.979874999942695,
+          22.85804166649541,
+          22.272041666383302,
+          22.236666666685778,
+          22.73349999995844,
+          22.782624999763357,
+          20.781999999599066,
+          20.43241666706308,
+          20.563041666719073,
+          21.852416666661156,
+          23.01383333360718,
+          23.111750000225584,
+          21.9147083334974
+        ]
+      ],
+      "kernel": "sdpa_vector_2pass_1_bfloat16_t_512_512",
+      "kvLength": 32768,
+      "order": [
+        "base",
+        "patched",
+        "patched",
+        "base"
+      ],
+      "baseMedianMs": 20.98993749973488,
+      "patchedMedianMs": 10.617875000207277
+    },
+    {
+      "blocks": 64,
+      "device": "Apple M4",
+      "gpuCommandBufferMs": [
+        [
+          39.979791666610254,
+          37.918083333352115,
+          38.65487499979281,
+          39.05112500024188,
+          38.19516666635536,
+          39.71400000000358,
+          38.07200000028388,
+          37.56699999985358,
+          37.68324999964534,
+          37.21725000013976,
+          38.352124999619264,
+          41.63887499998964,
+          44.016333333274815,
+          40.93662500008577,
+          41.38199999988501,
+          40.82179166653077,
+          39.83508333294594,
+          44.85183333326859,
+          42.6307499997165,
+          45.44525000028443
+        ],
+        [
+          26.30666666664183,
+          22.917125000276428,
+          23.744833333239512,
+          24.081666666461388,
+          25.093624999954045,
+          25.328416666980047,
+          24.041166666847857,
+          24.999791666687088,
+          25.756000000001222,
+          23.856750000049942,
+          24.47100000017599,
+          23.96654166659573,
+          22.93895833327042,
+          22.972416666561912,
+          23.543333333691407,
+          24.353041666472564,
+          25.124624999989464,
+          26.013749999947322,
+          23.893041666724457,
+          23.337624999840045
+        ],
+        [
+          23.280666666778416,
+          25.165500000184693,
+          26.744000000235246,
+          24.986375000025873,
+          23.84458333335715,
+          26.765625000280124,
+          25.892499999827123,
+          24.856541666849807,
+          24.208124999859137,
+          23.436958333604707,
+          24.816791666580684,
+          26.684374999604188,
+          21.693000000141183,
+          24.61129166658793,
+          25.437291666548845,
+          27.03475000043909,
+          25.576874999842403,
+          26.0149166665542,
+          25.434874999973545,
+          27.02779166702385
+        ],
+        [
+          50.184374999844295,
+          48.05187500005559,
+          46.16662499984159,
+          48.360499999944295,
+          49.585416667014215,
+          49.0007083335513,
+          50.42074999983015,
+          51.88691666626255,
+          51.05608333315104,
+          49.4736250002461,
+          51.532625000163534,
+          53.25787500032675,
+          55.73716666640394,
+          56.177624999691034,
+          49.905166666576406,
+          53.950999999869964,
+          55.52250000027925,
+          57.42424999971263,
+          50.63291666647274,
+          50.20775000002686
+        ]
+      ],
+      "kernel": "sdpa_vector_2pass_1_bfloat16_t_512_512",
+      "kvLength": 60000,
+      "order": [
+        "base",
+        "patched",
+        "patched",
+        "base"
+      ],
+      "baseMedianMs": 45.80593750006301,
+      "patchedMedianMs": 24.836666666715246
+    }
+  ],
+  "swapBeforeEachContextMiB": [
+    0,
+    0,
+    0
+  ],
+  "swapAfterMiB": 0,
+  "pressureBeforeEachContext": [
+    1,
+    1,
+    1
+  ],
+  "pressureAfter": 1,
+  "productionAdopted": false
+}

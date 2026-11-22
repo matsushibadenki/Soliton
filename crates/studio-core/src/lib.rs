@@ -23,6 +23,24 @@ mod owned_process;
 pub mod prefix_engine;
 mod prefix_staging;
 pub mod prefix_store;
+/// Resolve upstream Terminal independently of the engine tree.
+pub fn strata_terminal_root(root: &std::path::Path) -> PathBuf {
+    let terminal = root.join("terminal");
+    if terminal.join("serve/server.py").is_file() {
+        terminal
+    } else {
+        root.to_path_buf()
+    }
+}
+
+pub fn strata_setup_path(root: &std::path::Path) -> PathBuf {
+    if strata_terminal_root(root) != root {
+        root.join("engine/metal/setup_mac.py")
+    } else {
+        root.join("metal/setup_mac.py")
+    }
+}
+
 pub mod preparation;
 mod token_budget;
 pub mod vllm_inspect;
@@ -807,8 +825,9 @@ impl Studio {
             return Ok(());
         }
         let root = PathBuf::from(&s.strata_root);
-        if !root.join("serve/server.py").exists() {
-            return Err("Strata/serve/server.py not found; set STRATA_ROOT".into());
+        let terminal_root = strata_terminal_root(&root);
+        if !terminal_root.join("serve/server.py").is_file() {
+            return Err("Strata server entry point not found; set STRATA_ROOT".into());
         }
         if !s.mock {
             if s.config.is_empty() || !PathBuf::from(&s.config).is_file() {
@@ -999,7 +1018,7 @@ impl Studio {
         p.port = reserve.local_addr().map_err(|e| e.to_string())?.port();
         p.key = uuid::Uuid::new_v4().to_string();
         let mut cmd = Command::new(&s.python);
-        cmd.current_dir(&root)
+        cmd.current_dir(&terminal_root)
             .args([
                 "-u",
                 "-m",
@@ -1016,7 +1035,7 @@ impl Studio {
             .stdout(std::process::Stdio::piped())
             .stderr(std::process::Stdio::piped());
         if !s.mock {
-            cmd.args(["--config", &s.config]);
+            cmd.arg("--config").arg(root.join(&s.config));
         }
         #[cfg(unix)]
         cmd.process_group(0);
