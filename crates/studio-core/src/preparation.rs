@@ -157,7 +157,9 @@ pub fn inspect_config(path: &Path, root: &Path) -> ConfigInfo {
             info.engine_exists = v["exe"]
                 .as_str()
                 .is_some_and(|p| !p.is_empty() && resolve(&cwd, p).is_file());
-            info.tokenizer_exists = if v["backend"] == "strata-gemma3-metal" {
+            info.tokenizer_exists = if v["backend"] == "strata-gemma3-metal"
+                || v["backend"] == crate::inkling::BACKEND
+            {
                 v["model"]
                     .as_str()
                     .is_some_and(|p| resolve(&cwd, p).is_file())

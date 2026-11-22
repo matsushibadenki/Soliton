@@ -7,6 +7,7 @@ pub mod conversations;
 pub mod docking;
 pub mod engine;
 pub mod inference;
+mod inkling;
 pub mod knowledge;
 mod knowledge_planner;
 pub mod layout;
@@ -804,19 +805,54 @@ impl Studio {
         if !s.mock {
             let config_bytes = std::fs::read(&s.config).map_err(|e| e.to_string())?;
             let config: Value = serde_json::from_slice(&config_bytes).map_err(|e| e.to_string())?;
-            if config["backend"] == "strata-gemma3-metal" {
+            let is_inkling = config["backend"] == inkling::BACKEND;
+            if is_inkling || config["backend"] == "strata-gemma3-metal" {
+                let executable = config["exe"]
+                    .as_str()
+                    .ok_or("Missing GGUF runtime executable")?;
+                let inkling_model = config["model"].as_str().unwrap_or_default();
+                let context = if is_inkling { inkling::CONTEXT } else { 2048 };
+                if is_inkling {
+                    if self.memory_bytes.unwrap_or(0) < 32 * 1024 * 1024 * 1024 {
+                        return Err("Inkling experimental profile requires at least 32 GiB".into());
+                    }
+                    inkling::verify(executable, inkling_model).await?;
+                }
                 let reserve =
                     std::net::TcpListener::bind("127.0.0.1:0").map_err(|e| e.to_string())?;
                 let port = reserve.local_addr().map_err(|e| e.to_string())?.port();
                 let key = uuid::Uuid::new_v4().to_string();
-                let args: Vec<&str> = config["args"]
-                    .as_array()
-                    .ok_or("Missing Gemma arguments")?
-                    .iter()
-                    .map(|v| v.as_str().ok_or("Invalid Gemma argument"))
-                    .collect::<Result<_, _>>()?;
-                let mut cmd =
-                    Command::new(config["exe"].as_str().ok_or("Missing Gemma executable")?);
+                let args: Vec<&str> = if is_inkling {
+                    vec![
+                        "--model",
+                        inkling_model,
+                        "--ctx-size",
+                        "4096",
+                        "--parallel",
+                        "1",
+                        "--n-gpu-layers",
+                        "99",
+                        "--jinja",
+                        "--no-context-shift",
+                        "--alias",
+                        "inkling-2-mini",
+                    ]
+                } else {
+                    config["args"]
+                        .as_array()
+                        .ok_or("Missing Gemma arguments")?
+                        .iter()
+                        .map(|v| v.as_str().ok_or("Invalid Gemma argument"))
+                        .collect::<Result<_, _>>()?
+                };
+                let mut cmd = Command::new(executable);
+                if is_inkling {
+                    for (name, _) in std::env::vars_os() {
+                        if ["LLAMA_", "DYLD_", "GGML_"].iter().any(|prefix| name.to_string_lossy().starts_with(prefix)) {
+                            cmd.env_remove(name);
+                        }
+                    }
+                }
                 cmd.current_dir(&root)
                     .args(&args)
                     .args(["--host", "127.0.0.1", "--port", &port.to_string()])
@@ -847,7 +883,7 @@ impl Studio {
                 let spawn_started = std::time::Instant::now();
                 let mut child = cmd
                     .spawn()
-                    .map_err(|e| format!("Cannot launch bundled Gemma Metal backend: {e}"))?;
+                    .map_err(|e| format!("Cannot launch GGUF Metal backend: {e}"))?;
                 let spawn_completed = std::time::Instant::now();
                 let mut startup = Startup::new();
                 startup.record_launch(preparation_started, spawn_started, spawn_completed);
@@ -868,10 +904,13 @@ impl Studio {
                 p.key = key;
                 p.group = child.id();
                 p.child = Some(child);
-                p.memory = Some(json!({"engine":"strata-gemma3-metal","context":2048}));
+                p.memory = Some(json!({"engine":config["backend"],"context":context}));
                 push_log(
                     &self.logs,
-                    "[soliton] Starting bundled Strata Gemma 3 / llama.cpp Metal (text)".into(),
+                    format!(
+                        "[soliton] Starting {} / llama.cpp Metal (text)",
+                        config["backend"].as_str().unwrap_or_default()
+                    ),
                 )
                 .await;
                 return Ok(());
@@ -996,13 +1035,14 @@ impl Studio {
             return Err("Metal memory controls apply to Strata only".into());
         }
         let selected = self.settings.read().await.clone();
-        if preparation::inspect_config(
+        let info = preparation::inspect_config(
             std::path::Path::new(&selected.config),
             std::path::Path::new(&selected.strata_root),
-        )
-        .backend
-            == "strata-gemma3-metal"
-        {
+        );
+        if info.backend == inkling::BACKEND {
+            return Err("Inkling uses its fixed 4096-token context".into());
+        }
+        if info.backend == "strata-gemma3-metal" {
             return Err(
                 "Gemma 3 uses its prepared context (2048); Qwen memory controls do not apply"
                     .into(),
@@ -1286,7 +1326,7 @@ impl Studio {
                 std::path::Path::new(&settings.strata_root),
             )
         });
-        json!({"engineCapabilities":capabilities::inventory(&settings),"engineSession":engine_session,"modelPlan":model_plan,"omniCounterFailed":self.omni_counter_failed.load(Ordering::SeqCst),"startup":startup,"vllmInspection":vllm_inspection,"dockingDiagnostics":*self.docking_diagnostics.lock().await,"requests":requests,"memoryUsage":memory_usage,"memoryTuning":memory_tuning,"preparation":self.preparation.lock().await.snapshot(),"status":status,"health":health,"settings":*self.settings.read().await,"document":document,"logs":*self.logs.lock().await,"architecture":std::env::consts::ARCH,"memoryBytes":self.memory_bytes,"selectedEngine":settings.engine,"strataModel":strata_config.as_ref().map(|config| &config.model),"backend":if settings.engine == engine::Engine::MlxPrefix {"MLX SSD"}else if settings.engine == engine::Engine::Lfm3Omni {"LFM3-Omni"}else if settings.engine == engine::Engine::VllmApple {"vLLM-Apple"} else if strata_config.is_some_and(|config| config.backend == "strata-gemma3-metal") {"Gemma 3 Metal"} else if cfg!(all(target_os="macos",target_arch="aarch64")){"Metal"}else{"Strata"},"endpoint":format!("http://127.0.0.1:{}/v1",self.port),"root":self.root})
+        json!({"engineCapabilities":capabilities::inventory(&settings),"engineSession":engine_session,"modelPlan":model_plan,"omniCounterFailed":self.omni_counter_failed.load(Ordering::SeqCst),"startup":startup,"vllmInspection":vllm_inspection,"dockingDiagnostics":*self.docking_diagnostics.lock().await,"requests":requests,"memoryUsage":memory_usage,"memoryTuning":memory_tuning,"preparation":self.preparation.lock().await.snapshot(),"status":status,"health":health,"settings":*self.settings.read().await,"document":document,"logs":*self.logs.lock().await,"architecture":std::env::consts::ARCH,"memoryBytes":self.memory_bytes,"selectedEngine":settings.engine,"strataModel":strata_config.as_ref().map(|config| &config.model),"backend":if settings.engine == engine::Engine::MlxPrefix {"MLX SSD"}else if settings.engine == engine::Engine::Lfm3Omni {"LFM3-Omni"}else if settings.engine == engine::Engine::VllmApple {"vLLM-Apple"} else if strata_config.as_ref().is_some_and(|config| config.backend == inkling::BACKEND) {"Inkling Metal (experimental)"}else if strata_config.is_some_and(|config| config.backend == "strata-gemma3-metal") {"Gemma 3 Metal"} else if cfg!(all(target_os="macos",target_arch="aarch64")){"Metal"}else{"Strata"},"endpoint":format!("http://127.0.0.1:{}/v1",self.port),"root":self.root})
     }
 }
 fn pump<T: tokio::io::AsyncRead + Unpin + Send + 'static>(
@@ -1930,7 +1970,7 @@ async fn proxy(State(s): State<Arc<Studio>>, req: Request) -> Response {
         .unwrap()
         .lifecycle_wait_ms = Some(waiting.elapsed().as_secs_f64() * 1000.0);
     trace.tracker.info.metrics.engine = Some(s.settings.read().await.engine.label().into());
-    let (port, key, ack_constraint) = {
+    let (port, key, ack_constraint, is_inkling) = {
         let mut p = s.process.lock().await;
         if !p
             .child
@@ -1947,7 +1987,14 @@ async fn proxy(State(s): State<Arc<Studio>>, req: Request) -> Response {
             .as_mut()
             .unwrap()
             .engine_session = p.metrics_session.clone();
-        (p.port, p.key.clone(), p.qualified_ack_constraint)
+        (
+            p.port,
+            p.key.clone(),
+            p.qualified_ack_constraint,
+            p.memory
+                .as_ref()
+                .is_some_and(|m| m["engine"] == inkling::BACKEND),
+        )
     };
     let mut body = match axum::body::to_bytes(body, 16 * 1024 * 1024).await {
         Ok(b) => b,
@@ -2133,6 +2180,37 @@ async fn proxy(State(s): State<Arc<Studio>>, req: Request) -> Response {
         };
         if let Err(rejection) = s.token_counter.lock().await.check(&settings, &value).await {
             return trace.reject(rejection.response());
+        }
+    }
+    if is_inkling {
+        match (parts.method.as_str(), path) {
+            ("GET", "/v1/models" | "/status") => {}
+            ("POST", "/v1/chat/completions") => {
+                if s.active_requests.load(Ordering::SeqCst) != 0 {
+                    return trace.reject(error(StatusCode::CONFLICT, "Inkling inference is busy"));
+                }
+                let mut value: Value = match serde_json::from_slice(&body) {
+                    Ok(v) => v,
+                    Err(_) => {
+                        return trace
+                            .reject(error(StatusCode::BAD_REQUEST, "Invalid inference JSON"))
+                    }
+                };
+                if let Err((status, reason)) =
+                    inkling::admit(&s.client, port, &key, &mut value).await
+                {
+                    return trace.reject(error(status, reason));
+                }
+                body = serde_json::to_vec(&value)
+                    .expect("JSON value serializes")
+                    .into();
+            }
+            _ => {
+                return trace.reject(error(
+                    StatusCode::UNPROCESSABLE_ENTITY,
+                    "Inkling supports text chat and model discovery only",
+                ))
+            }
         }
     }
     let model = serde_json::from_slice::<Value>(&body)
@@ -2364,7 +2442,7 @@ async fn chat(State(s): State<Arc<Studio>>, h: HeaderMap, Json(mut body): Json<V
     let waiting = std::time::Instant::now();
     let lifecycle = s.lifecycle.lock().await;
     let lifecycle_wait_ms = waiting.elapsed().as_secs_f64() * 1000.0;
-    let (port, key, engine_session) = {
+    let (port, key, engine_session, is_inkling) = {
         let mut p = s.process.lock().await;
         if !p
             .child
@@ -2373,7 +2451,14 @@ async fn chat(State(s): State<Arc<Studio>>, h: HeaderMap, Json(mut body): Json<V
         {
             return error(StatusCode::SERVICE_UNAVAILABLE, "Engine is offline");
         }
-        (p.port, p.key.clone(), p.metrics_session.clone())
+        (
+            p.port,
+            p.key.clone(),
+            p.metrics_session.clone(),
+            p.memory
+                .as_ref()
+                .is_some_and(|m| m["engine"] == inkling::BACKEND),
+        )
     };
     let settings = s.settings.read().await;
     if settings.engine == engine::Engine::VllmApple {
@@ -2468,6 +2553,20 @@ async fn chat(State(s): State<Arc<Studio>>, h: HeaderMap, Json(mut body): Json<V
                 .iter()
                 .map(|m| json!({"role":m.role,"content":m.content}))
                 .collect::<Vec<_>>());
+            if is_inkling {
+                if s.active_requests.load(Ordering::SeqCst) != 0 {
+                    return error(StatusCode::CONFLICT, "Inkling inference is busy");
+                }
+                body.as_object_mut().unwrap().remove("conversationId");
+                body["model"] = json!("inkling-2-mini");
+                if let Err((status, reason)) =
+                    inkling::admit(&s.client, port, &key, &mut body).await
+                {
+                    tracker.reject();
+                    s.record_request(tracker.info.metrics.clone()).await;
+                    return error(status, reason);
+                }
+            }
             if is_prefix {
                 body.as_object_mut().unwrap().remove("conversationId");
                 if s.active_requests.load(Ordering::SeqCst) != 0 {

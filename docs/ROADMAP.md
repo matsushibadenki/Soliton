@@ -314,6 +314,16 @@ Within individual backends, this performance order supersedes older performance 
 
 See [Knowledge Lab](KNOWLEDGE_LAB.md) for scope and verification.
 
+### Interpretable weight-space programming (iWSP)
+
+- 🟠 [Next] Reproduce a narrow algorithmic task from Mehta et al. in Knowledge Lab research. Start with a small transformer with explicitly assigned weights for fixed-width decimal addition. Compare exact outputs against an integer-addition reference on a frozen holdout with carry chains, leading zeros and unseen operand pairs. Report each slice separately and record parameter count, CPU latency and peak memory. Keep the scoring data independent of the candidate and save the specification and artifact hashes. Rebuild the candidate in a separate session using only a short description and the task, then compare outputs case by case on the same holdout. The paper reports compact task-specific models and describes open limitations on deeper hierarchical representations. [Paper, sections 2, 3 and 6](https://arxiv.org/html/2611.18114v1)
+- 🔴 [Later] If the reference and rebuilt models both meet exact-match criteria on the declared input domain, prototype an opt-in Knowledge Lab evaluation artifact that records the description, weight-generation recipe, held-out results and failure cases. Use the existing Evaluation and History views. Evaluate natural-language routing and multilingual inputs separately before considering any inference integration. The experiment targets reproducible construction of small models. Production Gemma/Omni weight editing, general chat quality and runtime speedups require separate evidence.
+
+日本語：知識ラボの研究対象に採用します。まず固定桁の足し算で、明示的に重みを設定した小型モデルを作り、繰り上がりや未使用の入力で検証します。短い説明から独立に再構築したモデルでも同じ評価を通過した段階で、評価・履歴画面への実験成果物の組み込みを検討します。
+
+简体中文：将 iWSP 纳入知识实验室的研究计划。先为定长十进制加法构建显式赋权的小型模型，在含进位和未见输入的留出集上逐项核对。仅凭简短说明独立重建的模型也通过同一评估后，再评估将实验结果接入评估和历史视图。
+
+
 ## Existing work
 
 - 🟢 [Done] Soliton product/package/window branding and legacy desktop state migration; engine and workspace paths retain compatibility.
@@ -420,6 +430,20 @@ Target: [mradermacher/gemma-4-31B-it-ARA-heretic-GGUF](https://huggingface.co/mr
 
 简体中文：将gemma-4-31B-it-ARA-heretic-GGUF列入支持计划。Mac预检已完成。下一步接入专用适配器，在M4、32 GiB上先验证Q3_K_M文本推理，使用4,096上下文和并发1；mmproj图像输入另行验证。真实模型与完整30分钟认证尚未执行，不复用Gemma2/3配置或证据。
 
+## Inkling 2 Mini Uncensored GGUF — 2026-11-22
+
+- 🟢 [Done] Verified the pinned AtomicChat AD-IQ3_S checksum and launched on Apple M4 / 32 GiB with arm64 llama.cpp b12600, Metal offload 49/49, context 4,096 and one sequence. Four loopback text turns matched the expected replies, including recall of 7429 and replacement with 8316. Peak sampled RSS was 13.17 GiB and Darwin process physical footprint was 0.75 GiB. The mapped model buffers accounted for 12,711 MiB, and the Metal KV and compute buffers accounted for 368 and 579 MiB respectively. Host swap used remained 0 MiB across all 25 snapshots. The longest request used 81 prompt tokens. [Measurements](evaluation/inkling-ad-iq3-m4-20261122.json) · [Runtime](https://github.com/ggml-org/llama.cpp/releases/tag/b12600)
+- 🟢 [Done] Implemented the opt-in managed text adapter and tested it on M4 / 32 GiB. The authenticated shared API accepted 3,991 native prompt tokens with 105 reserved output tokens and returned 40 generated tokens. Increasing the reservation to 106 yielded HTTP 422. An unauthenticated request received 401. During the first managed engine session, peak llama-server RSS was 12.95 GiB and Darwin physical footprint was 1.33 GiB. All 71 in-session host swap samples and the before/after samples reported 0 MiB. The two memory counters describe different accounting and are reported independently. [Gateway measurements](evaluation/inkling-ad-iq3-gateway-20261122.json)
+- 🟢 [Done] A desktop-chat stream disconnected after the first reasoning delta. Rust recorded cancellation, and the following turn recalled 7429 in the same conversation. After restarting the full Soliton server and owned inference engine, the stored messages matched and the model again recalled 7429. A new conversation returned its own code 8316 with two messages in history.
+- 🟢 [Done] Pinned the arm64 b12600 executable and all 35 distributed dylib names, including versioned aliases, in a compiled SHA-256 manifest. Startup rejects missing, unexpected or mismatched libraries and targets that resolve outside the runtime directory. The executable and the GGUF must also match their reviewed digests. [Runtime manifest](../crates/studio-core/src/inkling-b12600.sha256)
+- 🟠 [Next] Keep the adapter opt-in pending product qualification. Bind the complete native library set to the reviewed runtime, validate its package on macOS, and run a sustained workload covering long histories, elapsed startup time including hashing, and repeated disconnect/recovery before making the profile available by default.
+
+The experimental adapter uses a Strata JSON configuration with `backend: "strata-inkling-metal"`, absolute `exe` and `model` paths, `args: []` and a `model_name`. Keep the arm64 b12600 release libraries beside the executable. The Rust launcher checks the executable, all distributed dylibs and GGUF digests, fixes the Metal context and sequence count, and applies the native chat template and tokenizer before reserving output. Shared API requests use `/v1/chat/completions`, plain text messages and an explicit `max_tokens`. The same checks apply when the desktop sends its Rust-owned conversation history. [Real-model QA script](../scripts/verify-inkling-gateway.py)
+
+日本語：M4・32 GiBで短い4ターンの応答、履歴の参照と更新、スワップ0 MiBを確認しました。認証付き共有APIでも4,096ちょうどの予約を受理し、1超過を拒否しました。キャンセル後と再起動後に履歴を参照できました。製品では実験設定に限り、同梱ライブラリの検査と長時間資格確認を次に行います。
+
+简体中文：M4 / 32 GiB 完成了四轮短文本对话，正确回忆并更新上下文，交换空间使用保持为 0 MiB。鉴权网关通过了 4096 令牌预约、超出一令牌拒绝、取消及重启恢复测试。配置继续保持实验性，等待运行时库校验及长时间验证。
+
 ## P-H3-Image — planned 2026-11-09
 
 Target: [realrebelai/P-H3-Image_GGUFs](https://huggingface.co/realrebelai/P-H3-Image_GGUFs), community quantizations of [PrunaAI/P-H3-Image-Comfy](https://huggingface.co/PrunaAI/P-H3-Image-Comfy). This is an image-generation/editing pipeline, separate from chat inference and Omni image understanding. The quantizer's card explicitly leaves end-to-end GGUF generation unverified; a readable GGUF or its `minimax` metadata is not executable-backend compatibility. Existing P0/P1 inference priorities above remain in force.
@@ -430,6 +454,12 @@ Target: [realrebelai/P-H3-Image_GGUFs](https://huggingface.co/realrebelai/P-H3-I
 - 🔴 [Later] After the runtime gate passes, add a compact image-generation panel with prompt, seed, resolution, steps, progress/cancel and output/history. Rust owns Document/jobs/assets and supervised worker lifecycle, admission, GPU exclusion/budgeting and cleanup. Keep tensors/full frames in the worker/native GPU side; WebView receives commands/state/opaque asset IDs and bounded previews. Use Rust/wgpu for heavy local rendering/image processing and support English/日本語/简体中文 controls and information tooltips.
 - 🔴 [Later] Start with text-to-image; then qualify image editing/reference-image inputs, prompt upsampling and model-only LoRA as distinct capabilities. Preserve originals and source/provenance metadata, and verify each mode against fixed prompts/seeds/resolutions before enabling it.
 - ⭕️ [Pending] Image-specific acceptance: reproducible decode/save/reopen and supported output dimensions, scoped EN/JA/ZH prompt/edit fixtures, quantization comparisons under matched inputs, cancellation/timeout/OOM recovery, owned process/GPU cleanup, restart/history preservation and refusal of wrong/expired runtime/model evidence. Complete a separate identity-bound30-minute image-job stability run before adoption; existing text/Omni qualifications do not approve this image generator. Other Macs/GPUs and broad image-quality claims remain unverified.
+
+- 🔴 [Later] Add MiniMax H3 video LoRA support after qualifying the base text-to-video and image-to-video pipeline on Apple Silicon. Verify adapter tensor keys, exact base revision, loader and quantization compatibility, and each artifact's distribution terms. Then add per-job adapter selection and strength, verify that zero strength matches the base output with fixed inputs and seed, and check that cancellation or a subsequent job cannot inherit the prior adapter. Treat Sentinel7/h3 as a collection requiring per-file identification. Test image-generation LoRA separately with the P-H3-Image loader. [Hearmeman H3 video LoRAs](https://huggingface.co/Hearmeman/minimax-h3-loras) · [Sentinel7 collection](https://huggingface.co/Sentinel7/h3)
+
+日本語：MiniMax H3の動画向けLoRAは、動画生成のベースモデルを資格確認した後に、ファイル別の互換性、適用強度、キャンセル後の状態分離を検証します。
+
+简体中文：先验证 MiniMax H3 视频基础模型，再逐文件检查 LoRA 兼容性、应用强度和取消后的任务隔离。
 
 日本語：P-H3-ImageのGGUF対応を計画に追加。まず専用ローダー・テキストエンコーダー・VAEとMac実行可否を確認し、画像生成を先行、画像編集・参照画像・LoRA等を段階的に検証します。GGUFの読取成功を生成対応と扱わず、実測メモリ・停止／復旧・画像ジョブ専用の30分資格確認を経て有効化します。既存のチャット経路・通常設定・証跡は維持します。
 

@@ -1,0 +1,109 @@
+{
+  "runtime": "b12600",
+  "context": 4096,
+  "parallel": 1,
+  "quant": "AD-IQ3_S",
+  "swapBefore": "total = 0.00M  used = 0.00M  free = 0.00M  (encrypted)",
+  "turns": [
+    {
+      "prompt": "Remember code 7429. Reply only READY.",
+      "answer": "READY",
+      "expected": "READY",
+      "exact": true,
+      "ms": 4234,
+      "usage": {
+        "completion_tokens": 55,
+        "prompt_tokens": 23,
+        "total_tokens": 78,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      }
+    },
+    {
+      "prompt": "What is the code? Reply with digits only.",
+      "answer": "7429",
+      "expected": "7429",
+      "exact": true,
+      "ms": 4706,
+      "usage": {
+        "completion_tokens": 63,
+        "prompt_tokens": 41,
+        "total_tokens": 104,
+        "prompt_tokens_details": {
+          "cached_tokens": 19
+        }
+      }
+    },
+    {
+      "prompt": "Replace the code with 8316. Reply only READY.",
+      "answer": "READY",
+      "expected": "READY",
+      "exact": true,
+      "ms": 7767,
+      "usage": {
+        "completion_tokens": 108,
+        "prompt_tokens": 62,
+        "total_tokens": 170,
+        "prompt_tokens_details": {
+          "cached_tokens": 37
+        }
+      }
+    },
+    {
+      "prompt": "What is the current code? Reply with digits only.",
+      "answer": "8316",
+      "expected": "8316",
+      "exact": true,
+      "ms": 6772,
+      "usage": {
+        "completion_tokens": 98,
+        "prompt_tokens": 81,
+        "total_tokens": 179,
+        "prompt_tokens_details": {
+          "cached_tokens": 58
+        }
+      }
+    }
+  ],
+  "swapSamples": [
+    "total = 0.00M  used = 0.00M  free = 0.00M  (encrypted)",
+    "total = 0.00M  used = 0.00M  free = 0.00M  (encrypted)",
+    "total = 0.00M  used = 0.00M  free = 0.00M  (encrypted)",
+    "total = 0.00M  used = 0.00M  free = 0.00M  (encrypted)",
+    "total = 0.00M  used = 0.00M  free = 0.00M  (encrypted)",
+    "total = 0.00M  used = 0.00M  free = 0.00M  (encrypted)",
+    "total = 0.00M  used = 0.00M  free = 0.00M  (encrypted)",
+    "total = 0.00M  used = 0.00M  free = 0.00M  (encrypted)",
+    "total = 0.00M  used = 0.00M  free = 0.00M  (encrypted)",
+    "total = 0.00M  used = 0.00M  free = 0.00M  (encrypted)",
+    "total = 0.00M  used = 0.00M  free = 0.00M  (encrypted)",
+    "total = 0.00M  used = 0.00M  free = 0.00M  (encrypted)",
+    "total = 0.00M  used = 0.00M  free = 0.00M  (encrypted)",
+    "total = 0.00M  used = 0.00M  free = 0.00M  (encrypted)",
+    "total = 0.00M  used = 0.00M  free = 0.00M  (encrypted)",
+    "total = 0.00M  used = 0.00M  free = 0.00M  (encrypted)",
+    "total = 0.00M  used = 0.00M  free = 0.00M  (encrypted)",
+    "total = 0.00M  used = 0.00M  free = 0.00M  (encrypted)",
+    "total = 0.00M  used = 0.00M  free = 0.00M  (encrypted)",
+    "total = 0.00M  used = 0.00M  free = 0.00M  (encrypted)",
+    "total = 0.00M  used = 0.00M  free = 0.00M  (encrypted)",
+    "total = 0.00M  used = 0.00M  free = 0.00M  (encrypted)",
+    "total = 0.00M  used = 0.00M  free = 0.00M  (encrypted)",
+    "total = 0.00M  used = 0.00M  free = 0.00M  (encrypted)",
+    "total = 0.00M  used = 0.00M  free = 0.00M  (encrypted)"
+  ],
+  "swapEnd": "total = 0.00M  used = 0.00M  free = 0.00M  (encrypted)",
+  "peakPhysicalBytes": 800762728,
+  "samples": 98,
+  "peakRssBytes": 14143832064,
+  "modelRevision": "40886ab636cabb4decf4998224f790b462ab048e",
+  "modelSha256": "23a8e6792481b6f1d0ebad51399e9ee2a2c2be8525b09ed1ae6737811159f892",
+  "host": "Apple M4 / 32 GiB",
+  "gpuLayers": "49/49",
+  "mappedModelMiB": 12711.08,
+  "metalKvMiB": 368,
+  "metalRecurrentMiB": 3.66,
+  "metalComputeMiB": 578.75,
+  "scope": "Direct loopback llama-server with short synthetic history; no Soliton integration."
+}
