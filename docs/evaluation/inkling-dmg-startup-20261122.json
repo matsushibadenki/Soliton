@@ -1,0 +1,88 @@
+{
+  "host": "Apple M4 / 32 GiB",
+  "profile": "Inkling AD-IQ3_S + F16 projector, b12600",
+  "baselineDmgSha256": "78ee5e5d81adb1beb15eabe9014a2ce869b99439238d3af0d837cbd4c9e36ffa",
+  "candidateDmgSha256": "de055b403ba8bdce536577acc4215053a99117c343422b3d83b81e0522283a0b",
+  "launches": [
+    {
+      "index": 1,
+      "variant": "baseline",
+      "startToReadyMs": 30794.18,
+      "startActionMs": 10412.61,
+      "actionToReadyObservedMs": 20381.56,
+      "startup": {
+        "childSpawnMs": 0.770291,
+        "controlReadyObservedMs": null,
+        "counterPreparation": null,
+        "counterSpawnedMs": null,
+        "inferenceReadyObservedMs": null,
+        "launchPreparationMs": 10408.948459,
+        "modelLoadingObservedMs": null
+      },
+      "swapBefore": "total = 2048.00M  used = 1208.25M  free = 839.75M  (encrypted)",
+      "swapAfter": "total = 2048.00M  used = 1603.94M  free = 444.06M  (encrypted)",
+      "smoke": "42"
+    },
+    {
+      "index": 2,
+      "variant": "candidate",
+      "startToReadyMs": 40719.04,
+      "startActionMs": 13610.81,
+      "actionToReadyObservedMs": 27108.23,
+      "startup": {
+        "artifactVerificationMs": 13606.017375000001,
+        "childSpawnMs": 0.8480840000000001,
+        "controlReadyObservedMs": null,
+        "counterPreparation": null,
+        "counterSpawnedMs": null,
+        "inferenceReadyObservedMs": null,
+        "launchPreparationMs": 13606.516791,
+        "modelLoadingObservedMs": null
+      },
+      "swapBefore": "total = 2048.00M  used = 1595.94M  free = 452.06M  (encrypted)",
+      "swapAfter": "total = 4096.00M  used = 3770.38M  free = 325.62M  (encrypted)",
+      "smoke": "42"
+    },
+    {
+      "index": 3,
+      "variant": "candidate",
+      "startToReadyMs": 48225.98,
+      "startActionMs": 16343.03,
+      "actionToReadyObservedMs": 31882.94,
+      "startup": {
+        "artifactVerificationMs": 16334.689291,
+        "childSpawnMs": 1.689541,
+        "controlReadyObservedMs": null,
+        "counterPreparation": null,
+        "counterSpawnedMs": null,
+        "inferenceReadyObservedMs": null,
+        "launchPreparationMs": 16335.362750000002,
+        "modelLoadingObservedMs": null
+      },
+      "swapBefore": "total = 5120.00M  used = 4138.62M  free = 981.38M  (encrypted)",
+      "swapAfter": "total = 7168.00M  used = 6548.31M  free = 619.69M  (encrypted)",
+      "smoke": "42"
+    },
+    {
+      "index": 4,
+      "variant": "baseline",
+      "startToReadyMs": 13767.12,
+      "startActionMs": 11430.38,
+      "actionToReadyObservedMs": 2336.74,
+      "startup": {
+        "childSpawnMs": 0.48054199999999997,
+        "controlReadyObservedMs": null,
+        "counterPreparation": null,
+        "counterSpawnedMs": null,
+        "inferenceReadyObservedMs": null,
+        "launchPreparationMs": 11426.515583,
+        "modelLoadingObservedMs": null
+      },
+      "swapBefore": "total = 8192.00M  used = 6685.50M  free = 1506.50M  (encrypted)",
+      "swapAfter": "total = 8192.00M  used = 6597.50M  free = 1594.50M  (encrypted)",
+      "smoke": "42"
+    }
+  ],
+  "measurementScope": "Engine Start through authenticated readiness with isolated app state. OS file caches were retained and system swap differed between starts.",
+  "speedupEstablished": false
+}

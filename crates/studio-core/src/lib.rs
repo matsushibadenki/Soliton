@@ -155,6 +155,7 @@ impl Default for Document {
 }
 struct Startup {
     launch_preparation_ms: Option<f64>,
+    artifact_verification_ms: Option<f64>,
     child_spawn_ms: Option<f64>,
     started: std::time::Instant,
     control_ms: Option<u64>,
@@ -166,6 +167,7 @@ impl Startup {
     fn new() -> Self {
         Self {
             launch_preparation_ms: None,
+            artifact_verification_ms: None,
             child_spawn_ms: None,
             started: std::time::Instant::now(),
             control_ms: None,
@@ -192,11 +194,25 @@ impl Startup {
         self.child_spawn_ms =
             Some(spawn_completed.duration_since(spawn_started).as_secs_f64() * 1000.0);
     }
+    fn observe_inkling_ready(&mut self) {
+        if self.artifact_verification_ms.is_some() && self.inference_ms.is_none() {
+            self.inference_ms = Some(self.started.elapsed().as_millis() as u64);
+        }
+    }
+
     fn snapshot(&self) -> Value {
+        let model_loading = if self.artifact_verification_ms.is_some() {
+            self.inference_ms
+        } else {
+            self.inference_ms
+                .zip(self.control_ms)
+                .map(|(ready, control)| ready.saturating_sub(control))
+        };
         json!({"launchPreparationMs":self.launch_preparation_ms,"childSpawnMs":self.child_spawn_ms,
+            "artifactVerificationMs":self.artifact_verification_ms,
             "controlReadyObservedMs":self.control_ms,"inferenceReadyObservedMs":self.inference_ms,
             "counterSpawnedMs":self.counter_ms,"counterPreparation":self.counter_preparation,
-            "modelLoadingObservedMs":self.inference_ms.zip(self.control_ms).map(|(ready,control)|ready.saturating_sub(control))})
+            "modelLoadingObservedMs":model_loading})
     }
 }
 struct Process {
@@ -524,18 +540,46 @@ impl Studio {
         body: &Value,
         context: u32,
     ) -> Result<u64, omni_runtime::AdmissionError> {
+        self.omni_token_count(port, key, body, Some(context)).await
+    }
+
+    async fn omni_token_count(
+        &self,
+        port: u16,
+        key: &str,
+        body: &Value,
+        context: Option<u32>,
+    ) -> Result<u64, omni_runtime::AdmissionError> {
         if self.omni_counter_failed.load(Ordering::SeqCst) {
             return Err(omni_runtime::AdmissionError::Counter(
                 "Omni processor counting failed; stop and restart the engine",
             ));
         }
-        let result = omni_runtime::check(&self.client, port, key, body, context).await;
+        let result = match context {
+            Some(context) => omni_runtime::check(&self.client, port, key, body, context).await,
+            None => omni_runtime::count_chat(&self.client, port, key, body).await,
+        };
         if matches!(result, Err(omni_runtime::AdmissionError::Counter(_))) {
             self.omni_counter_failed.store(true, Ordering::SeqCst);
         }
         result
     }
     async fn check_prefix(&self, port: u16, key: &str, body: &Value) -> Result<(), Response> {
+        match self.count_prefix(port, key, body).await? {
+            Some(_) => Ok(()),
+            None => Err(error(
+                StatusCode::UNPROCESSABLE_ENTITY,
+                "Prompt plus output exceeds the qualified 512-token context",
+            )),
+        }
+    }
+
+    async fn count_prefix(
+        &self,
+        port: u16,
+        key: &str,
+        body: &Value,
+    ) -> Result<Option<u64>, Response> {
         if let Err(message) = prefix_engine::validate_body(body) {
             return Err(error(StatusCode::UNPROCESSABLE_ENTITY, message));
         }
@@ -563,23 +607,21 @@ impl Studio {
             .await;
         if let Ok(response) = reply {
             if response.status() == StatusCode::UNPROCESSABLE_ENTITY {
-                return Err(error(
-                    StatusCode::UNPROCESSABLE_ENTITY,
-                    "Prompt plus output exceeds the qualified 512-token context",
-                ));
+                return Ok(None);
             }
             if response.status().is_success() {
                 if let Ok(value) = response.json::<Value>().await {
                     if value["identity"].as_str() == identity.as_deref()
                         && identity.is_some()
                         && value["context"] == 512
-                        && value["count"].as_u64().is_some_and(|n| {
+                    {
+                        if let Some(count) = value["count"].as_u64().filter(|&n| {
                             n >= 2
                                 && n.checked_add(body["max_tokens"].as_u64().unwrap_or(129))
                                     .is_some_and(|total| total <= 512)
-                        })
-                    {
-                        return Ok(());
+                        }) {
+                            return Ok(Some(count));
+                        }
                     }
                 }
             }
@@ -812,18 +854,31 @@ impl Studio {
                     .as_str()
                     .ok_or("Missing GGUF runtime executable")?;
                 let inkling_model = config["model"].as_str().unwrap_or_default();
+                let projector = if is_inkling && config.get("mmproj").is_some() {
+                    Some(
+                        config["mmproj"]
+                            .as_str()
+                            .ok_or("Invalid Inkling projector path")?,
+                    )
+                } else {
+                    None
+                };
                 let context = if is_inkling { inkling::CONTEXT } else { 2048 };
+                let mut artifact_verification_ms = None;
                 if is_inkling {
                     if self.memory_bytes.unwrap_or(0) < 32 * 1024 * 1024 * 1024 {
                         return Err("Inkling experimental profile requires at least 32 GiB".into());
                     }
-                    inkling::verify(executable, inkling_model).await?;
+                    let verification_started = std::time::Instant::now();
+                    inkling::verify(executable, inkling_model, projector).await?;
+                    artifact_verification_ms =
+                        Some(verification_started.elapsed().as_secs_f64() * 1000.0);
                 }
                 let reserve =
                     std::net::TcpListener::bind("127.0.0.1:0").map_err(|e| e.to_string())?;
                 let port = reserve.local_addr().map_err(|e| e.to_string())?.port();
                 let key = uuid::Uuid::new_v4().to_string();
-                let args: Vec<&str> = if is_inkling {
+                let mut args: Vec<&str> = if is_inkling {
                     vec![
                         "--model",
                         inkling_model,
@@ -846,6 +901,9 @@ impl Studio {
                         .map(|v| v.as_str().ok_or("Invalid Gemma argument"))
                         .collect::<Result<_, _>>()?
                 };
+                if let Some(path) = projector {
+                    args.extend(["--mmproj", path]);
+                }
                 let mut cmd = Command::new(executable);
                 if is_inkling {
                     for (name, _) in std::env::vars_os() {
@@ -891,6 +949,7 @@ impl Studio {
                 let spawn_completed = std::time::Instant::now();
                 let mut startup = Startup::new();
                 startup.record_launch(preparation_started, spawn_started, spawn_completed);
+                startup.artifact_verification_ms = artifact_verification_ms;
                 p.startup = Some(startup);
                 let report = allocation_report::Session::new(
                     &s,
@@ -908,7 +967,9 @@ impl Studio {
                 p.key = key;
                 p.group = child.id();
                 p.child = Some(child);
-                p.memory = Some(json!({"engine":config["backend"],"context":context}));
+                p.memory = Some(
+                    json!({"engine":config["backend"],"context":context,"inklingVision":projector.is_some()}),
+                );
                 push_log(
                     &self.logs,
                     format!(
@@ -1242,12 +1303,21 @@ impl Studio {
         self.observe_startup_health(&settings, upstream, &key, health.as_ref(), false)
             .await;
         let startup = if running {
-            self.process
-                .lock()
-                .await
-                .startup
-                .as_ref()
-                .map(Startup::snapshot)
+            let mut process = self.process.lock().await;
+            // A late health reply from a previous process cannot update the new launch.
+            if process.port == upstream && process.key == key {
+                process.startup.as_mut().map(|startup| {
+                    if health
+                        .as_ref()
+                        .is_some_and(|health| health["status"] == "ok")
+                    {
+                        startup.observe_inkling_ready();
+                    }
+                    startup.snapshot()
+                })
+            } else {
+                None
+            }
         } else {
             None
         };
@@ -1330,7 +1400,7 @@ impl Studio {
                 std::path::Path::new(&settings.strata_root),
             )
         });
-        json!({"engineCapabilities":capabilities::inventory(&settings),"engineSession":engine_session,"modelPlan":model_plan,"omniCounterFailed":self.omni_counter_failed.load(Ordering::SeqCst),"startup":startup,"vllmInspection":vllm_inspection,"dockingDiagnostics":*self.docking_diagnostics.lock().await,"requests":requests,"memoryUsage":memory_usage,"memoryTuning":memory_tuning,"preparation":self.preparation.lock().await.snapshot(),"status":status,"health":health,"settings":*self.settings.read().await,"document":document,"logs":*self.logs.lock().await,"architecture":std::env::consts::ARCH,"memoryBytes":self.memory_bytes,"selectedEngine":settings.engine,"strataModel":strata_config.as_ref().map(|config| &config.model),"backend":if settings.engine == engine::Engine::MlxPrefix {"MLX SSD"}else if settings.engine == engine::Engine::Lfm3Omni {"LFM3-Omni"}else if settings.engine == engine::Engine::VllmApple {"vLLM-Apple"} else if strata_config.as_ref().is_some_and(|config| config.backend == inkling::BACKEND) {"Inkling Metal (experimental)"}else if strata_config.is_some_and(|config| config.backend == "strata-gemma3-metal") {"Gemma 3 Metal"} else if cfg!(all(target_os="macos",target_arch="aarch64")){"Metal"}else{"Strata"},"endpoint":format!("http://127.0.0.1:{}/v1",self.port),"root":self.root})
+        json!({"engineCapabilities":capabilities::inventory(&settings),"engineSession":engine_session,"modelPlan":model_plan,"omniCounterFailed":self.omni_counter_failed.load(Ordering::SeqCst),"startup":startup,"vllmInspection":vllm_inspection,"dockingDiagnostics":*self.docking_diagnostics.lock().await,"requests":requests,"memoryUsage":memory_usage,"inklingVision":memory_tuning["active"]["inklingVision"]==true,"memoryTuning":memory_tuning,"preparation":self.preparation.lock().await.snapshot(),"status":status,"health":health,"settings":*self.settings.read().await,"document":document,"logs":*self.logs.lock().await,"architecture":std::env::consts::ARCH,"memoryBytes":self.memory_bytes,"selectedEngine":settings.engine,"strataModel":strata_config.as_ref().map(|config| &config.model),"backend":if settings.engine == engine::Engine::MlxPrefix {"MLX SSD"}else if settings.engine == engine::Engine::Lfm3Omni {"LFM3-Omni"}else if settings.engine == engine::Engine::VllmApple {"vLLM-Apple"} else if strata_config.as_ref().is_some_and(|config| config.backend == inkling::BACKEND) {"Inkling Metal (experimental)"}else if strata_config.is_some_and(|config| config.backend == "strata-gemma3-metal") {"Gemma 3 Metal"} else if cfg!(all(target_os="macos",target_arch="aarch64")){"Metal"}else{"Strata"},"endpoint":format!("http://127.0.0.1:{}/v1",self.port),"root":self.root})
     }
 }
 fn pump<T: tokio::io::AsyncRead + Unpin + Send + 'static>(
@@ -1977,7 +2047,7 @@ async fn proxy(State(s): State<Arc<Studio>>, req: Request) -> Response {
         .unwrap()
         .lifecycle_wait_ms = Some(waiting.elapsed().as_secs_f64() * 1000.0);
     trace.tracker.info.metrics.engine = Some(s.settings.read().await.engine.label().into());
-    let (port, key, ack_constraint, is_inkling) = {
+    let (port, key, ack_constraint, is_inkling, inkling_vision) = {
         let mut p = s.process.lock().await;
         if !p
             .child
@@ -2001,6 +2071,9 @@ async fn proxy(State(s): State<Arc<Studio>>, req: Request) -> Response {
             p.memory
                 .as_ref()
                 .is_some_and(|m| m["engine"] == inkling::BACKEND),
+            p.memory
+                .as_ref()
+                .is_some_and(|m| m["inklingVision"] == true),
         )
     };
     let mut body = match axum::body::to_bytes(body, 16 * 1024 * 1024).await {
@@ -2192,7 +2265,7 @@ async fn proxy(State(s): State<Arc<Studio>>, req: Request) -> Response {
     if is_inkling {
         match (parts.method.as_str(), path) {
             ("GET", "/v1/models" | "/status") => {}
-            ("POST", "/v1/chat/completions") => {
+            ("POST", "/v1/chat/completions" | "/v1/chat/completions/input_tokens") => {
                 if s.active_requests.load(Ordering::SeqCst) != 0 {
                     return trace.reject(error(StatusCode::CONFLICT, "Inkling inference is busy"));
                 }
@@ -2203,8 +2276,15 @@ async fn proxy(State(s): State<Arc<Studio>>, req: Request) -> Response {
                             .reject(error(StatusCode::BAD_REQUEST, "Invalid inference JSON"))
                     }
                 };
+                if path == "/v1/chat/completions/input_tokens" {
+                    return match inkling::count_chat(&s.client, port, &key, &mut value, inkling_vision).await {
+                        Ok((count, output)) => Json(json!({"inputTokens":count,"outputTokens":output,"context":inkling::CONTEXT,
+                            "fits":count.checked_add(output).is_some_and(|total| total <= inkling::CONTEXT)})).into_response(),
+                        Err((status, reason)) => trace.reject(error(status, reason)),
+                    };
+                }
                 if let Err((status, reason)) =
-                    inkling::admit(&s.client, port, &key, &mut value).await
+                    inkling::admit(&s.client, port, &key, &mut value, inkling_vision).await
                 {
                     return trace.reject(error(status, reason));
                 }
@@ -2446,20 +2526,30 @@ async fn chat_budget(
     tokio::spawn(async move {
         let _lifecycle = studio.lifecycle.lock().await;
         let settings = studio.settings.read().await.clone();
-        let (port, key, inkling) = {
+        let (port, key, inkling, inkling_vision) = {
             let mut process = studio.process.lock().await;
             if !process.child.as_mut().is_some_and(|child| matches!(child.try_wait(), Ok(None))) {
                 return error(StatusCode::SERVICE_UNAVAILABLE, "Engine is offline");
             }
             let inkling = process.memory.as_ref().is_some_and(|m| m["engine"] == inkling::BACKEND);
-            (process.port, process.key.clone(), inkling)
+            (process.port, process.key.clone(), inkling, process.memory.as_ref().is_some_and(|m| m["inklingVision"] == true))
         };
         let mlx = settings.engine == engine::Engine::VllmApple
             && settings.vllm.backend == "mlx_lm" && !settings.vllm.evidence.is_empty();
-        if !mlx && !inkling {
+        let prefix = settings.engine == engine::Engine::MlxPrefix;
+        let omni = settings.engine == engine::Engine::Lfm3Omni;
+        if !mlx && !inkling && !prefix && !omni {
             return error(StatusCode::UNPROCESSABLE_ENTITY, "Exact text counting is unavailable for this engine");
         }
-        let Some(content) = input["content"].as_str().filter(|s| !s.trim().is_empty() && s.len() <= 1_000_000) else {
+        let media = match input.get("media") {
+            None => None,
+            Some(value) if omni || inkling_vision => match serde_json::from_value::<OmniImport>(value.clone()) {
+                Ok(media) => Some(media),
+                Err(_) => return error(StatusCode::BAD_REQUEST, "Invalid Omni media draft"),
+            },
+            Some(_) => return error(StatusCode::UNPROCESSABLE_ENTITY, "Select Omni for media counting"),
+        };
+        let Some(content) = input["content"].as_str().filter(|s| (!s.trim().is_empty() || media.is_some()) && s.len() <= 1_000_000) else {
             return error(StatusCode::BAD_REQUEST, "A plain-text draft is required");
         };
         let Some(output) = input["max_tokens"].as_u64().filter(|n| *n > 0 && *n <= u64::from(u32::MAX)) else {
@@ -2471,15 +2561,70 @@ async fn chat_budget(
                 || input["conversationId"].as_str() != Some(doc.conversations.active_id.as_str()) {
                 return error(StatusCode::CONFLICT, "Conversation changed or generating");
             }
-            if doc.messages.iter().any(|m| !m.attachments.is_empty()) {
+            if !omni && !inkling_vision && doc.messages.iter().any(|m| !m.attachments.is_empty()) {
                 return error(StatusCode::UNPROCESSABLE_ENTITY, "Text counting requires a conversation without media");
             }
             doc.messages.iter().filter(|m| m.role != "assistant" || !m.content.is_empty()).cloned().collect::<Vec<_>>()
         };
         messages.push(Message { role: "user".into(), content: content.into(), ..Message::default() });
+        if omni || inkling_vision {
+            let asset = if let Some(media) = media {
+                let _assets = studio.omni_assets.lock().await;
+                let root = settings.omni.media_root.clone();
+                match tokio::task::spawn_blocking(move || {
+                    omni_runtime::PreviewAsset::import(&root, &media.path, media.kind)
+                }).await {
+                    Ok(Ok(asset)) => Some(asset),
+                    Ok(Err(reason)) => return error(StatusCode::UNPROCESSABLE_ENTITY, reason),
+                    Err(e) => return error(StatusCode::INTERNAL_SERVER_ERROR, e),
+                }
+            } else {
+                None
+            };
+            if let Some(asset) = &asset {
+                messages.last_mut().unwrap().attachments.push(asset.attachment.clone());
+            }
+            if inkling_vision {
+                let rendered = match inkling::messages(&messages, &settings.omni.media_root) {
+                    Ok(rendered) => rendered,
+                    Err(reason) => return error(StatusCode::UNPROCESSABLE_ENTITY, reason),
+                };
+                let mut body = json!({"model":"inkling-2-mini","messages":rendered,"max_tokens":output,"stream":true});
+                return match inkling::count_chat(&studio.client, port, &key, &mut body, true).await {
+                    Ok((count, output)) => Json(json!({"inputTokens":count,"outputTokens":output,"context":inkling::CONTEXT,
+                        "fits":count.checked_add(output).is_some_and(|total| total <= inkling::CONTEXT)})).into_response(),
+                    Err((status, reason)) => error(status, reason),
+                };
+            }
+            let rendered = match omni_runtime::messages(&messages, &settings.omni) {
+                Ok(rendered) => rendered,
+                Err(reason) => return error(StatusCode::UNPROCESSABLE_ENTITY, reason),
+            };
+            let body = json!({"model":omni::MODEL_ID,"messages":rendered,"max_tokens":output,
+                "temperature":0,"stream":true,"stream_options":{"include_usage":true}});
+            let context = u64::from(settings.omni.context);
+            return match studio.omni_token_count(port, &key, &body, None).await {
+                Ok(count) => Json(json!({"inputTokens":count,"outputTokens":output,"context":context,
+                    "fits":count.checked_add(output).is_some_and(|total| total <= context)})).into_response(),
+                Err(e) => error(e.status(), e),
+            };
+        }
+        if prefix {
+            // The qualified worker rejects over-budget tokenization requests without a count.
+            // Reserve its minimum output to obtain the count whenever the input can fit.
+            let output = output.clamp(1, 128);
+            let body = json!({"model":"default_model","messages":plain_chat_messages(&messages),
+                "max_tokens":1,"temperature":0,"seed":0,"stream":true,
+                "stream_options":{"include_usage":true}});
+            return match studio.count_prefix(port, &key, &body).await {
+                Ok(count) => Json(json!({"inputTokens":count,"outputTokens":output,"context":512,
+                    "fits":count.is_some_and(|n| n + output <= 512)})).into_response(),
+                Err(response) => response,
+            };
+        }
         let mut body = json!({"messages":plain_chat_messages(&messages),"max_tokens":output,"stream":true});
         let (count, context) = if inkling {
-            match inkling::count_chat(&studio.client, port, &key, &mut body).await {
+            match inkling::count_chat(&studio.client, port, &key, &mut body, false).await {
                 Ok((count, _)) => (count, inkling::CONTEXT),
                 Err((status, reason)) => return error(status, reason),
             }
@@ -2515,7 +2660,7 @@ async fn chat(State(s): State<Arc<Studio>>, h: HeaderMap, Json(mut body): Json<V
     let waiting = std::time::Instant::now();
     let lifecycle = s.lifecycle.lock().await;
     let lifecycle_wait_ms = waiting.elapsed().as_secs_f64() * 1000.0;
-    let (port, key, engine_session, is_inkling) = {
+    let (port, key, engine_session, is_inkling, inkling_vision) = {
         let mut p = s.process.lock().await;
         if !p
             .child
@@ -2531,6 +2676,9 @@ async fn chat(State(s): State<Arc<Studio>>, h: HeaderMap, Json(mut body): Json<V
             p.memory
                 .as_ref()
                 .is_some_and(|m| m["engine"] == inkling::BACKEND),
+            p.memory
+                .as_ref()
+                .is_some_and(|m| m["inklingVision"] == true),
         )
     };
     let settings = s.settings.read().await;
@@ -2563,13 +2711,15 @@ async fn chat(State(s): State<Arc<Studio>>, h: HeaderMap, Json(mut body): Json<V
         body["temperature"] = json!(0);
         body["stream_options"] = json!({"include_usage":true});
     }
-    if !is_omni && !user.attachments.is_empty() {
+    if !is_omni && !inkling_vision && !user.attachments.is_empty() {
         return error(
             StatusCode::UNPROCESSABLE_ENTITY,
             "Media requires the qualified Omni engine",
         );
     }
     let engine_label = settings.engine.label().to_string();
+    let is_managed_mlx =
+        settings.engine == engine::Engine::VllmApple && settings.vllm.backend == "mlx_lm";
     drop(settings);
     let mut tracker = inference::Tracker::new("chat", body["model"].as_str().unwrap_or(""));
     tracker.info.metrics.engine = Some(engine_label);
@@ -2616,21 +2766,29 @@ async fn chat(State(s): State<Arc<Studio>>, h: HeaderMap, Json(mut body): Json<V
                 return error(e.status(), e);
             }
         } else {
-            if pending.iter().any(|m| !m.attachments.is_empty()) {
+            if !inkling_vision && pending.iter().any(|m| !m.attachments.is_empty()) {
                 return error(
                     StatusCode::UNPROCESSABLE_ENTITY,
                     "Conversation contains Omni media; use Omni or a new conversation",
                 );
             }
-            body["messages"] = plain_chat_messages(&pending);
+            body["messages"] = if inkling_vision {
+                match inkling::messages(&pending, &omni_settings.media_root) {
+                    Ok(rendered) => rendered,
+                    Err(reason) => return error(StatusCode::UNPROCESSABLE_ENTITY, reason),
+                }
+            } else {
+                plain_chat_messages(&pending)
+            };
             if is_inkling {
                 if s.active_requests.load(Ordering::SeqCst) != 0 {
                     return error(StatusCode::CONFLICT, "Inkling inference is busy");
                 }
                 body.as_object_mut().unwrap().remove("conversationId");
                 body["model"] = json!("inkling-2-mini");
+                body["stream_options"] = json!({"include_usage":true});
                 if let Err((status, reason)) =
-                    inkling::admit(&s.client, port, &key, &mut body).await
+                    inkling::admit(&s.client, port, &key, &mut body, inkling_vision).await
                 {
                     tracker.reject();
                     s.record_request(tracker.info.metrics.clone()).await;
@@ -2680,9 +2838,18 @@ async fn chat(State(s): State<Arc<Studio>>, h: HeaderMap, Json(mut body): Json<V
     if is_omni {
         body["_ssdConversation"] = json!(conversation);
     }
-    let dispatch = dispatch_chat(s, inference, tracker, port, key, body, is_omni);
-    if is_omni {
-        // The native request and document cleanup outlive the HTTP handler.
+    let dispatch = dispatch_chat(
+        s,
+        inference,
+        tracker,
+        port,
+        key,
+        body,
+        is_omni,
+        is_managed_mlx,
+    );
+    if is_omni || is_managed_mlx {
+        // Native handoff and document cleanup outlive the HTTP handler.
         return tokio::spawn(dispatch)
             .await
             .unwrap_or_else(|e| error(StatusCode::INTERNAL_SERVER_ERROR, e));
@@ -2783,6 +2950,7 @@ async fn dispatch_chat(
     key: String,
     mut body: Value,
     is_omni: bool,
+    is_managed_mlx: bool,
 ) -> Response {
     let conversation = body
         .as_object_mut()
@@ -2831,13 +2999,48 @@ async fn dispatch_chat(
         }
     }
     tracker.dispatched();
-    let response = s
-        .client
-        .post(format!("http://127.0.0.1:{port}/v1/chat/completions"))
-        .bearer_auth(&key)
-        .json(&body)
-        .send()
-        .await;
+    let send = || {
+        s.client
+            .post(format!("http://127.0.0.1:{port}/v1/chat/completions"))
+            .bearer_auth(&key)
+            .json(&body)
+            .send()
+    };
+    let mut response = send().await;
+    let mut unavailable_body = None;
+    if is_managed_mlx {
+        // These responses are emitted before generation starts. Allow
+        // its previous request to release the slot without duplicating a started turn.
+        let deadline = tokio::time::Instant::now() + Duration::from_secs(1);
+        while let Ok(rejected) = response {
+            if rejected.status() != StatusCode::SERVICE_UNAVAILABLE {
+                response = Ok(rejected);
+                break;
+            }
+            let mut rejected = rejected;
+            let mut bytes = Vec::new();
+            while let Ok(Some(chunk)) = rejected.chunk().await {
+                bytes.extend_from_slice(&chunk);
+            }
+            let bytes = axum::body::Bytes::from(bytes);
+            let retry = serde_json::from_slice::<Value>(&bytes).is_ok_and(|body| {
+                matches!(
+                    body["error"]["code"].as_str(),
+                    Some("server_busy" | "engine_busy")
+                )
+            });
+            if !retry || tokio::time::Instant::now() >= deadline {
+                unavailable_body = Some(bytes);
+                response = Ok(rejected);
+                break;
+            }
+            tokio::time::sleep_until(
+                (tokio::time::Instant::now() + Duration::from_millis(25)).min(deadline),
+            )
+            .await;
+            response = send().await;
+        }
+    }
     if response.is_ok() {
         tracker.upstream_headers_received();
     }
@@ -2857,7 +3060,10 @@ async fn dispatch_chat(
             return match other {
                 Ok(r) => {
                     let status = r.status();
-                    let bytes = r.bytes().await.unwrap_or_default();
+                    let bytes = match unavailable_body {
+                        Some(bytes) => bytes,
+                        None => r.bytes().await.unwrap_or_default(),
+                    };
                     (status, bytes).into_response()
                 }
                 Err(e) => {
@@ -3328,6 +3534,55 @@ mod tests {
         check_cancelled_omni_chat(false, true).await;
     }
 
+    #[tokio::test]
+    async fn managed_mlx_retries_only_explicit_pre_generation_busy() {
+        let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+        let port = listener.local_addr().unwrap().port();
+        let attempts = Arc::new(AtomicUsize::new(0));
+        let native_attempts = attempts.clone();
+        let upstream = axum::Router::new().route(
+            "/v1/chat/completions",
+            axum::routing::post(move || {
+                let attempt = native_attempts.fetch_add(1, Ordering::SeqCst);
+                async move {
+                    let code = match attempt {
+                        0 => "server_busy",
+                        1 => "engine_busy",
+                        _ => "backend_unavailable",
+                    };
+                    (
+                        StatusCode::SERVICE_UNAVAILABLE,
+                        Json(json!({"error": {"code": code}})),
+                    )
+                }
+            }),
+        );
+        let server = tokio::spawn(async move { axum::serve(listener, upstream).await.unwrap() });
+        let studio = Arc::new(Studio::new(PathBuf::new(), 8080));
+        let inference = InferenceGuard::new(studio.clone()).await;
+        let mut tracker = inference::Tracker::new("chat", "test");
+        tracker.begin_gateway(std::time::Instant::now());
+        let reply = dispatch_chat(
+            studio,
+            inference,
+            tracker,
+            port,
+            "test".into(),
+            json!({}),
+            false,
+            true,
+        )
+        .await;
+        assert_eq!(attempts.load(Ordering::SeqCst), 3);
+        assert_eq!(reply.status(), StatusCode::SERVICE_UNAVAILABLE);
+        let bytes = axum::body::to_bytes(reply.into_body(), 1024).await.unwrap();
+        assert_eq!(
+            serde_json::from_slice::<Value>(&bytes).unwrap()["error"]["code"],
+            "backend_unavailable"
+        );
+        server.abort();
+    }
+
     async fn check_cancelled_omni_chat(break_stream: bool, late_content: bool) {
         let studio = Arc::new(Studio::new(PathBuf::new(), 8080));
         studio.document.write().await.generating = true;
@@ -3390,6 +3645,7 @@ mod tests {
             "test".into(),
             json!({}),
             true,
+            false,
         )
         .await;
         assert_eq!(reply.status(), StatusCode::OK);
@@ -3498,6 +3754,7 @@ mod tests {
             "test".into(),
             json!({}),
             true,
+            false,
         )
         .await;
         assert_eq!(response.status(), StatusCode::BAD_GATEWAY);

@@ -867,6 +867,24 @@ fn launch_spans_keep_readiness_origin_and_unknown_values() {
     assert_eq!(startup.started, origin);
 }
 
+#[test]
+fn inkling_loading_time_is_recorded_once_from_spawn() {
+    let mut startup = Startup::new();
+    startup.observe_inkling_ready();
+    assert!(startup.snapshot()["modelLoadingObservedMs"].is_null());
+    startup.artifact_verification_ms = Some(100.0);
+    assert!(startup.snapshot()["modelLoadingObservedMs"].is_null());
+    startup.started -= Duration::from_millis(50);
+    startup.observe_inkling_ready();
+    let ready = startup.inference_ms.unwrap();
+    assert!(ready >= 50);
+    startup.started -= Duration::from_millis(100);
+    startup.observe_inkling_ready();
+    assert_eq!(startup.snapshot()["modelLoadingObservedMs"], ready);
+    assert_eq!(startup.snapshot()["artifactVerificationMs"], 100.0);
+    assert!(startup.snapshot()["controlReadyObservedMs"].is_null());
+}
+
 #[cfg(unix)]
 #[tokio::test]
 async fn launch_spans_follow_real_launch_restart_failure_and_stop() {

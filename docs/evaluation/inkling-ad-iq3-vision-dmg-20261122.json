@@ -1,0 +1,289 @@
+{
+  "dmg": "Soliton_0.1.13_aarch64.dmg",
+  "sha256": "78ee5e5d81adb1beb15eabe9014a2ce869b99439238d3af0d837cbd4c9e36ffa",
+  "nativeComposer": {
+    "format": "PNG",
+    "width": 256,
+    "height": 256,
+    "previewInputTokens": 77,
+    "reservedOutputTokens": 128,
+    "context": 4096,
+    "answer": "red"
+  },
+  "conditions": {
+    "concurrency": 1,
+    "context": 4096,
+    "reservedOutputTokens": 128,
+    "memorySamplingSeconds": 0.25,
+    "swapSamplingSeconds": 1,
+    "latencyIncludes": "Preview, attachment import on first turn, and generation",
+    "memoryScope": "Automated desktop workload after engine startup; process RSS and physical footprint use different accounting; swap is host-wide"
+  },
+  "overBudgetPreview": {
+    "format": "PNG",
+    "width": 1536,
+    "height": 1024,
+    "turn": 3,
+    "inputTokens": 4647,
+    "reservedOutputTokens": 128,
+    "fits": false,
+    "sent": false
+  },
+  "runs": [
+    {
+      "scope": "Apple Silicon DMG app, authenticated desktop composer routes and isolated app state",
+      "host": "Apple M4 / 32 GiB",
+      "runtime": "b12600",
+      "model": "AD-IQ3_S",
+      "projector": "F16",
+      "initialSwapMiB": 5467.88,
+      "cases": [
+        {
+          "format": "PNG",
+          "width": 256,
+          "height": 256,
+          "fileBytes": 757,
+          "targetColor": "red",
+          "subject": "solid image",
+          "turns": [
+            {
+              "preview": 79,
+              "actual": 79,
+              "answer": "red",
+              "seconds": 3.82,
+              "correct": true
+            },
+            {
+              "preview": 102,
+              "actual": 102,
+              "answer": "red",
+              "seconds": 5.686,
+              "correct": true
+            },
+            {
+              "preview": 3679,
+              "actual": 3679,
+              "answer": "red",
+              "seconds": 38.309,
+              "correct": true
+            }
+          ]
+        },
+        {
+          "format": "JPEG",
+          "width": 256,
+          "height": 256,
+          "fileBytes": 1653,
+          "targetColor": "blue",
+          "subject": "solid image",
+          "turns": [
+            {
+              "preview": 79,
+              "actual": 79,
+              "answer": "Blue",
+              "seconds": 2.673,
+              "correct": true
+            },
+            {
+              "preview": 102,
+              "actual": 102,
+              "answer": "Blue",
+              "seconds": 6.1,
+              "correct": true
+            },
+            {
+              "preview": 3679,
+              "actual": 3679,
+              "answer": "Blue",
+              "seconds": 40.38,
+              "correct": true
+            }
+          ]
+        },
+        {
+          "format": "PNG",
+          "width": 768,
+          "height": 512,
+          "fileBytes": 2347,
+          "targetColor": "green",
+          "subject": "square",
+          "turns": [
+            {
+              "preview": 293,
+              "actual": 293,
+              "answer": "Green",
+              "seconds": 7.368,
+              "correct": true
+            },
+            {
+              "preview": 316,
+              "actual": 316,
+              "answer": "Green",
+              "seconds": 9.094,
+              "correct": true
+            },
+            {
+              "preview": 3893,
+              "actual": 3893,
+              "answer": "Green",
+              "seconds": 51.705,
+              "correct": true
+            }
+          ]
+        },
+        {
+          "format": "JPEG",
+          "width": 768,
+          "height": 512,
+          "fileBytes": 12657,
+          "targetColor": "red",
+          "subject": "circle",
+          "turns": [
+            {
+              "preview": 293,
+              "actual": 293,
+              "answer": "red",
+              "seconds": 7.948,
+              "correct": true
+            },
+            {
+              "preview": 316,
+              "actual": 316,
+              "answer": "red",
+              "seconds": 13.156,
+              "correct": true
+            },
+            {
+              "preview": 3893,
+              "actual": 3893,
+              "answer": "red",
+              "seconds": 55.212,
+              "correct": true
+            }
+          ]
+        },
+        {
+          "format": "PNG",
+          "width": 1536,
+          "height": 1024,
+          "fileBytes": 9903,
+          "targetColor": "blue",
+          "subject": "circle",
+          "turns": [
+            {
+              "preview": 1047,
+              "actual": 1047,
+              "answer": "blue",
+              "seconds": 21.155,
+              "correct": true
+            },
+            {
+              "preview": 1070,
+              "actual": 1070,
+              "answer": "blue",
+              "seconds": 25.742,
+              "correct": true
+            }
+          ]
+        }
+      ],
+      "appStartupSeconds": 3.855,
+      "engineStartupSeconds": 8.121,
+      "finalSwapMiB": 5235.0,
+      "peakSwapMiB": 5467.88,
+      "swapSamples": 283,
+      "peakEngineRssBytes": 15569076224,
+      "peakEnginePhysicalBytes": 5676759440,
+      "peakAppAndEnginePhysicalBytes": 5716803160,
+      "memorySamples": 1131
+    },
+    {
+      "scope": "Apple Silicon DMG app, authenticated desktop composer routes and isolated app state",
+      "host": "Apple M4 / 32 GiB",
+      "runtime": "b12600",
+      "model": "AD-IQ3_S",
+      "projector": "F16",
+      "initialSwapMiB": 5227.0,
+      "cases": [
+        {
+          "format": "PNG",
+          "width": 1536,
+          "height": 1024,
+          "fileBytes": 9903,
+          "targetColor": "blue",
+          "subject": "circle",
+          "turns": [
+            {
+              "preview": 1047,
+              "actual": 1047,
+              "answer": "blue",
+              "seconds": 17.381,
+              "correct": true
+            },
+            {
+              "preview": 1070,
+              "actual": 1070,
+              "answer": "blue",
+              "seconds": 20.802,
+              "correct": true
+            },
+            {
+              "preview": 3847,
+              "actual": 3847,
+              "answer": "blue",
+              "seconds": 39.768,
+              "correct": true
+            }
+          ]
+        },
+        {
+          "format": "JPEG",
+          "width": 1536,
+          "height": 1024,
+          "fileBytes": 28975,
+          "targetColor": "green",
+          "subject": "square",
+          "turns": [
+            {
+              "preview": 1047,
+              "actual": 1047,
+              "answer": "Green",
+              "seconds": 18.868,
+              "correct": true
+            },
+            {
+              "preview": 1070,
+              "actual": 1070,
+              "answer": "",
+              "seconds": 28.125,
+              "correct": false
+            },
+            {
+              "preview": 3842,
+              "actual": 3842,
+              "answer": "Green",
+              "seconds": 48.597,
+              "correct": true
+            }
+          ]
+        }
+      ],
+      "appStartupSeconds": 4.089,
+      "engineStartupSeconds": 7.616,
+      "finalSwapMiB": 5227.0,
+      "peakSwapMiB": 5227.0,
+      "swapSamples": 171,
+      "peakEngineRssBytes": 16986062848,
+      "peakEnginePhysicalBytes": 3997152384,
+      "peakAppAndEnginePhysicalBytes": 4028512536,
+      "memorySamples": 681
+    }
+  ],
+  "completedMatrix": {
+    "cases": 6,
+    "turns": 18,
+    "exactCountMatches": 18,
+    "correctColors": 17
+  },
+  "defaultEnabled": false
+}

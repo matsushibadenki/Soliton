@@ -333,6 +333,22 @@ pub async fn check(
     body: &Value,
     context: u32,
 ) -> Result<u64, AdmissionError> {
+    let count = count_chat(client, port, key, body).await?;
+    if count
+        .checked_add(body["max_tokens"].as_u64().unwrap_or_default())
+        .is_none_or(|n| n > u64::from(context))
+    {
+        return Err(AdmissionError::Request("Omni context exceeded"));
+    }
+    Ok(count)
+}
+
+pub(crate) async fn count_chat(
+    client: &reqwest::Client,
+    port: u16,
+    key: &str,
+    body: &Value,
+) -> Result<u64, AdmissionError> {
     if body.as_object().is_none_or(|o| {
         o.keys().any(|k| {
             !matches!(
@@ -360,7 +376,7 @@ pub async fn check(
         ));
     }
 
-    let out = body["max_tokens"]
+    body["max_tokens"]
         .as_u64()
         .filter(|n| *n > 0)
         .ok_or(AdmissionError::Request(
@@ -405,9 +421,6 @@ pub async fn check(
         .ok_or(AdmissionError::Counter(
             "Omni exact processor count missing",
         ))?;
-    if count.checked_add(out).is_none_or(|n| n > context as u64) {
-        return Err(AdmissionError::Request("Omni context exceeded"));
-    }
     Ok(count)
 }
 #[cfg(test)]
@@ -509,6 +522,26 @@ pub fn import_asset(
         return Err(e);
     }
     Ok(Attachment { id, kind })
+}
+
+/// A private processor input that is removed when preview counting completes.
+pub(crate) struct PreviewAsset {
+    pub attachment: Attachment,
+    path: PathBuf,
+}
+
+impl PreviewAsset {
+    pub fn import(root: &str, source: &str, kind: crate::omni::InputMode) -> Result<Self, String> {
+        let attachment = import_asset(root, source, kind)?;
+        let path = Path::new(root).join(&attachment.id);
+        Ok(Self { attachment, path })
+    }
+}
+
+impl Drop for PreviewAsset {
+    fn drop(&mut self) {
+        let _ = fs::remove_file(&self.path);
+    }
 }
 
 pub fn messages(messages: &[crate::Message], settings: &Settings) -> Result<Vec<Value>, String> {

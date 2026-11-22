@@ -20,9 +20,22 @@ parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument("--app", type=Path, help="Soliton.app copied from a mounted DMG")
 parser.add_argument("--soak-seconds", type=int, default=0)
 parser.add_argument("--output", type=Path)
+parser.add_argument("--startup-only", action="store_true", help="Measure a single start from a fresh app state")
+parser.add_argument("--vision", action="store_true", help="Load the pinned F16 projector for a startup-only run")
+parser.add_argument(
+    "--max-initial-swap-mib", type=float,
+    help="Require normal host memory pressure and at most this much swap before launch",
+)
 args = parser.parse_args()
 if args.soak_seconds < 0:
     parser.error("--soak-seconds must be nonnegative")
+if args.max_initial_swap_mib is not None and not 0 <= args.max_initial_swap_mib < float("inf"):
+    parser.error("--max-initial-swap-mib must be finite and nonnegative")
+
+if args.startup_only and (args.soak_seconds or not args.output or args.output.exists()):
+    parser.error("--startup-only requires a new --output path and no soak")
+if args.vision and not args.startup_only:
+    parser.error("--vision is supported for --startup-only")
 
 repo = Path.cwd()
 root = repo / ".soliton-runtime/inkling-ad-iq3"
@@ -33,14 +46,47 @@ report = {
     "context": 4096,
     "parallel": 1,
     "host": "Apple M4 / 32 GiB",
+    "mode": "vision" if args.vision else "text",
 }
 samples = []
 
 
-def swap():
-    return subprocess.check_output(
-        ["/usr/sbin/sysctl", "-n", "vm.swapusage"], text=True
+def host_memory_sample(started):
+    swap = subprocess.check_output(["/usr/sbin/sysctl", "-n", "vm.swapusage"], text=True).strip()
+    pressure = subprocess.check_output(
+        ["/usr/sbin/sysctl", "-n", "kern.memorystatus_vm_pressure_level"], text=True
     ).strip()
+    vm = subprocess.check_output(["/usr/bin/vm_stat"], text=True)
+    return {
+        "seconds": round(time.monotonic() - started, 3),
+        "swap": swap,
+        "swapUsedMiB": float(re.search(r"used = ([0-9.]+)M", swap)[1]),
+        "pressureLevel": int(pressure),
+        "swapInsPages": int(re.search(r"^Swapins:\s+(\d+)\.", vm, re.M)[1]),
+        "swapOutsPages": int(re.search(r"^Swapouts:\s+(\d+)\.", vm, re.M)[1]),
+    }
+
+
+def check_baseline(sample, phase):
+    limit = args.max_initial_swap_mib
+    if limit is None or (sample["swapUsedMiB"] <= limit and sample["pressureLevel"] == 1):
+        return
+    message = (
+        f"{phase} exceeds the requested limits: {sample['swapUsedMiB']} MiB swap, "
+        f"memory pressure level {sample['pressureLevel']}"
+    )
+    report.update(passed=False, blockedPhase=phase, blockedSample=sample)
+    if phase == "before app launch" and args.startup_only:
+        args.output.write_text(json.dumps(report, indent=2) + "\n")
+    parser.error(message)
+
+
+monitoring_started = time.monotonic()
+baseline = host_memory_sample(monitoring_started)
+check_baseline(baseline, "before app launch")
+host_samples = [baseline]
+report["swapBefore"] = host_samples[0]["swap"]
+monitoring_errors = []
 
 
 with tempfile.TemporaryDirectory() as tmp:
@@ -52,6 +98,8 @@ with tempfile.TemporaryDirectory() as tmp:
         "model": str(root / "model.gguf"),
         "args": [],
     }
+    if args.vision:
+        cfg["mmproj"] = str(root / "mmproj-f16.gguf")
     (tmp / "strata-inkling.json").write_text(json.dumps(cfg))
     state = tmp / "state.json"
     state.write_text(
@@ -77,7 +125,10 @@ with tempfile.TemporaryDirectory() as tmp:
         )
     )
     with socket.socket() as sock:
-        sock.bind(("127.0.0.1", 8080 if args.app else 0))
+        try:
+            sock.bind(("127.0.0.1", 8080 if args.app else 0))
+        except OSError as error:
+            parser.error(f"Cannot reserve the benchmark API port: {error}")
         port = sock.getsockname()[1]
     origin = f"http://127.0.0.1:{port}"
     headers = {"Origin": origin, "Content-Type": "application/json"}
@@ -155,11 +206,16 @@ with tempfile.TemporaryDirectory() as tmp:
     def start():
         begun = time.monotonic()
         act("start")
+        action_completed = time.monotonic()
         view = until(ready)
+        ready_observed = time.monotonic()
         assert view["backend"] == "Inkling Metal (experimental)"
+        assert view["inklingVision"] is args.vision
         report.setdefault("engineStarts", []).append(
             {
-                "startToReadySeconds": round(time.monotonic() - begun, 3),
+                "startToReadySeconds": round(ready_observed - begun, 3),
+                "startActionSeconds": round(action_completed - begun, 3),
+                "actionToReadyObservedSeconds": round(ready_observed - action_completed, 3),
                 "startup": view.get("startup"),
             }
         )
@@ -285,30 +341,43 @@ with tempfile.TemporaryDirectory() as tmp:
         results["elapsedSeconds"] = round(time.monotonic() - begun, 3)
         results["passed"] = True
 
-    report["swapBefore"] = swap()
     h = host()
     done = threading.Event()
+    pid = None
 
-    def monitor(pid):
+    def monitor():
         i = 0
         while not done.is_set():
-            data = (ctypes.c_uint64 * 20)()
-            if lib.proc_pid_rusage(pid, 2, ctypes.byref(data)) == 0:
-                samples.append((data[8], data[9]))
+            current_pid = pid
+            if current_pid is not None:
+                data = (ctypes.c_uint64 * 20)()
+                if lib.proc_pid_rusage(current_pid, 2, ctypes.byref(data)) == 0:
+                    samples.append((data[8], data[9]))
             if i % 4 == 0:
-                report.setdefault("swapSamples", []).append(swap())
+                try:
+                    host_samples.append(host_memory_sample(monitoring_started))
+                except (OSError, subprocess.CalledProcessError, TypeError, ValueError) as error:
+                    monitoring_errors.append(str(error))
+                    return
             i += 1
             done.wait(0.25)
 
     try:
+        engine_baseline = host_memory_sample(monitoring_started)
+        host_samples.append(engine_baseline)
+        report["engineBaseline"] = engine_baseline
+        check_baseline(engine_baseline, "before engine launch")
+        watcher = threading.Thread(target=monitor)
+        watcher.start()
         start()
+        if args.startup_only:
+            report["passed"] = True
+            raise SystemExit(0)
         pid = int(
             subprocess.check_output(
                 ["/usr/bin/pgrep", "-P", str(h.pid), "llama-server"]
             )
         )
-        watcher = threading.Thread(target=monitor, args=(pid,))
-        watcher.start()
         route = "/v1/chat/completions"
         token = headers.pop("x-studio-token")
         req(route, body("Reply OK"), 401)
@@ -386,17 +455,15 @@ with tempfile.TemporaryDirectory() as tmp:
         done.set()
         if "watcher" in locals():
             watcher.join()
-        report["swapEnd"] = swap()
-        swap_readings = [
-            report["swapBefore"],
-            *report.get("swapSamples", []),
-            report["swapEnd"],
-        ]
-        report["swapObservationCount"] = len(swap_readings)
-        report["maxSwapUsedMiB"] = max(
-            float(re.search(r"used = ([0-9.]+)M", row)[1]) for row in swap_readings
-        )
-        report.pop("swapSamples", None)
+        report["hostMemorySamplingErrors"] = monitoring_errors
+        try:
+            host_samples.append(host_memory_sample(monitoring_started))
+        except (OSError, subprocess.CalledProcessError, TypeError, ValueError) as error:
+            monitoring_errors.append(str(error))
+        report["hostMemorySamples"] = host_samples
+        report["swapEnd"] = host_samples[-1]["swap"] if not monitoring_errors else None
+        report["swapObservationCount"] = len(host_samples)
+        report["maxSwapUsedMiB"] = max(row["swapUsedMiB"] for row in host_samples)
         report["samples"] = len(samples)
         if samples:
             report.update(
@@ -407,3 +474,5 @@ with tempfile.TemporaryDirectory() as tmp:
         output.write_text(json.dumps(report, indent=2) + "\n")
         if h:
             stop(h)
+        if monitoring_errors:
+            raise RuntimeError(f"Host memory sampling incomplete: {monitoring_errors}")

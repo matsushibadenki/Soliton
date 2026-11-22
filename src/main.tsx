@@ -143,12 +143,15 @@ type Attachment = { id: string; kind: MediaKind };
 type PromptFile = { name: string; content: string };
 const promptFileLimit = 64 * 1024;
 const promptFileCount = 8;
+const promptPdfLimit = 16 * 1024 * 1024;
+const promptFileType = /\.(txt|md|markdown|csv|json|pdf)$/i;
+const isPromptPdf = (file: File) => /\.pdf$/i.test(file.name);
 const promptFileWords = {
-  en: { add: "Attach text files", remove: "Remove file", invalid: "Select up to eight UTF-8 TXT, Markdown, CSV, or JSON files totaling 64 KiB.", folder: "Choose folder", include: "Attach selected", close: "Close folder", empty: "No supported text files in this folder.", tooMany: "Choose a folder with at most 500 supported text files." },
-  ja: { add: "テキストファイルを添付", remove: "ファイルを削除", invalid: "UTF-8のTXT、Markdown、CSV、JSONを合計64 KiB以内、8件まで選択してください。", folder: "フォルダを選択", include: "選んだファイルを添付", close: "フォルダ一覧を閉じる", empty: "対応するテキストファイルがありません。", tooMany: "対応ファイルが500件以下のフォルダを選択してください。" },
-  zh: { add: "添加文本文件", remove: "移除文件", invalid: "请选择最多八个 UTF-8 TXT、Markdown、CSV 或 JSON 文件，总大小不超过 64 KiB。", folder: "选择文件夹", include: "添加所选文件", close: "关闭文件夹列表", empty: "此文件夹没有受支持的文本文件。", tooMany: "请选择包含不超过 500 个受支持文本文件的文件夹。" },
+  en: { add: "Attach files", remove: "Remove file", invalid: "Choose up to eight UTF-8 text files or selectable-text PDFs. Extracted text must total at most 64 KiB. Each PDF must fit within 16 MiB and 200 pages.", folder: "Choose folder", include: "Attach selected", close: "Close folder", empty: "No supported text files in this folder.", tooMany: "Choose a folder with at most 500 supported text files." },
+  ja: { add: "ファイルを添付", remove: "ファイルを削除", invalid: "UTF-8のテキストファイルまたはテキスト選択可能なPDFを8件まで選べます。本文は合計64 KiBまで、PDFは1件16 MiB・200ページまでです。", folder: "フォルダを選択", include: "選んだファイルを添付", close: "フォルダ一覧を閉じる", empty: "対応するテキストファイルがありません。", tooMany: "対応ファイルが500件以下のフォルダを選択してください。" },
+  zh: { add: "添加文件", remove: "移除文件", invalid: "请选择最多八个 UTF-8 文本文件或可选中文本的 PDF。正文总量不得超过 64 KiB，每个 PDF 不超过 16 MiB 和 200 页。", folder: "选择文件夹", include: "添加所选文件", close: "关闭文件夹列表", empty: "此文件夹没有受支持的文本文件。", tooMany: "请选择包含不超过 500 个受支持文本文件的文件夹。" },
 };
-type ChatBudget = { inputTokens: number; outputTokens: number; context: number; fits: boolean };
+type ChatBudget = { inputTokens: number | null; outputTokens: number; context: number; fits: boolean };
 const chatBudgetWords = {
   en: { check: "Check token budget", pending: "Counting tokens…", input: "Input", output: "Reserved output", context: "Context", over: "Over limit" },
   ja: { check: "トークン数を確認", pending: "トークンを計数中…", input: "入力", output: "出力予約", context: "上限", over: "上限超過" },
@@ -158,12 +161,18 @@ type Message = { role: string; content: string; inference?: Inference; attachmen
 const mediaKinds: Partial<Record<string, MediaKind>> = {
   png: "image", jpg: "image", jpeg: "image", wav: "audio", mp4: "video",
 };
+const imageInputWords = {
+  en: { attach: "Attach image", invalid: "Choose a PNG or JPEG image." },
+  ja: { attach: "画像を添付", invalid: "PNGまたはJPEG画像を選択してください。" },
+  zh: { attach: "添加图片", invalid: "请选择 PNG 或 JPEG 图片。" },
+};
 const mediaWords = {
   en: { attach: "Attach media", remove: "Remove attachment", unsupported: "Choose a PNG, JPEG, WAV, or MP4 file.", image: "Image", audio: "Audio", video: "Video" },
   ja: { attach: "メディアを添付", remove: "添付を削除", unsupported: "PNG、JPEG、WAV、MP4のファイルを選択してください。", image: "画像", audio: "音声", video: "動画" },
   zh: { attach: "添加媒体附件", remove: "移除附件", unsupported: "请选择 PNG、JPEG、WAV 或 MP4 文件。", image: "图片", audio: "音频", video: "视频" },
 };
 type Snapshot = {
+  inklingVision?: boolean;
   engineSession?: string;
   engineCapabilities?: Profile[];
   modelPlan?: ModelPlanState;
@@ -584,7 +593,11 @@ function App() {
       if (!path || epoch !== conversationEpoch.current || busyRef.current) return;
       const name = path.split(/[\\/]/).at(-1) || path;
       const kind = mediaKinds[name.split(".").at(-1)?.toLowerCase() || ""];
-      if (!kind) { setError(mediaWords[language].unsupported); return; }
+      if (!kind || (snapshot?.inklingVision && kind !== "image")) {
+        setError(snapshot?.inklingVision ? imageInputWords[language].invalid : mediaWords[language].unsupported);
+        return;
+      }
+      setBudgetPreview(null);
       setMediaDraft({ path, name, kind });
     } catch (e) {
       setError(String(e));
@@ -599,7 +612,7 @@ function App() {
   function selectPromptFolder(files: FileList | null) {
     if (!files?.length) return;
     closePromptFolder();
-    const candidates = Array.from(files).filter(file => /\.(txt|md|markdown|csv|json)$/i.test(file.name));
+    const candidates = Array.from(files).filter(file => promptFileType.test(file.name));
     if (!candidates.length || candidates.length > 500) {
       setError(candidates.length ? promptFileWords[language].tooMany : promptFileWords[language].empty);
       return;
@@ -615,18 +628,24 @@ function App() {
     const encoder = new TextEncoder();
     const existingBytes = promptFiles.reduce((total, file) => total + encoder.encode(file.content).length, 0);
     if (files.length + promptFiles.length > promptFileCount ||
-        files.reduce((total, file) => total + file.size, existingBytes) > promptFileLimit ||
-        files.some(file => !/\.(txt|md|markdown|csv|json)$/i.test(file.name))) {
+        files.some(file => file.size > (isPromptPdf(file) ? promptPdfLimit : promptFileLimit)) ||
+        files.some(file => !promptFileType.test(file.name))) {
       setError(invalid);
       return;
     }
     setReadingPromptFiles(true);
     try {
-      const selected = await Promise.all(files.map(async file => {
-        const content = new TextDecoder("utf-8", { fatal: true }).decode(await file.arrayBuffer());
-        if (!content.trim() || content.includes("\0")) throw new Error(invalid);
-        return { name: file.webkitRelativePath || file.name, content };
-      }));
+      const selected: PromptFile[] = [];
+      let remaining = promptFileLimit - existingBytes;
+      for (const file of files) {
+        if (epoch !== conversationEpoch.current) return;
+        const content = isPromptPdf(file)
+          ? await (await import("./promptPdf")).extractPromptPdf(file, remaining)
+          : new TextDecoder("utf-8", { fatal: true }).decode(await file.arrayBuffer());
+        remaining -= encoder.encode(content).length;
+        if (remaining < 0 || !content.trim() || content.includes("\0")) throw new Error(invalid);
+        selected.push({ name: file.webkitRelativePath || file.name, content });
+      }
       if (epoch === conversationEpoch.current && !busyRef.current) {
         setError("");
         setPromptFiles(current => [...current, ...selected]);
@@ -643,20 +662,23 @@ function App() {
       `--- ${JSON.stringify(file.name)} ---\n${file.content}`
     )].filter(Boolean).join("\n\n");
   const budgetConversation = snapshot?.document.conversations?.activeId;
-  const canCheckBudget = snapshot?.status === "ready" && !mediaDraft &&
+  const canAttachMedia = snapshot?.settings.engine === "lfm3Omni" || snapshot?.inklingVision;
+  const hasBudgetDraft = Boolean(draftText || mediaDraft);
+  const canCheckTextBudget = snapshot && !mediaDraft &&
     !messages.some(message => message.attachments?.length) &&
-    (snapshot.backend === "Inkling Metal (experimental)" ||
+    (snapshot.backend === "Inkling Metal (experimental)" || snapshot.settings.engine === "mlxPrefix" ||
       (snapshot.settings.engine === "vllmApple" && snapshot.settings.vllm.backend === "mlx_lm" &&
         Boolean(snapshot.settings.vllm.evidence)));
+  const canCheckBudget = snapshot?.status === "ready" && (canAttachMedia || canCheckTextBudget);
   const budgetKey = canCheckBudget ? JSON.stringify([
-    budgetConversation, snapshot.engineSession, settings.maxTokens, draftText,
-    messages.map(message => [message.role, message.content]),
+    budgetConversation, snapshot.engineSession, settings.maxTokens, draftText, mediaDraft,
+    messages.map(message => [message.role, message.content, message.attachments]),
   ]) : "";
   const shownBudget = budgetPreview?.key === budgetKey ? budgetPreview.budget : null;
   const budgetWords = chatBudgetWords[language];
 
   async function checkDraftBudget() {
-    if (!canCheckBudget || !budgetConversation || !draftText || busyRef.current || checkingBudget) return;
+    if (!canCheckBudget || !budgetConversation || !hasBudgetDraft || busyRef.current || checkingBudget) return;
     const epoch = conversationEpoch.current;
     setCheckingBudget(true);
     setBudgetPreview(null);
@@ -664,6 +686,7 @@ function App() {
     try {
       const budget: ChatBudget = await request("/studio/chat/budget", {
         conversationId: budgetConversation, content: draftText, max_tokens: settings.maxTokens,
+        ...(mediaDraft ? { media: { path: mediaDraft.path, kind: mediaDraft.kind } } : {}),
       }).then(response => response.json());
       if (epoch === conversationEpoch.current) setBudgetPreview({ key: budgetKey, budget });
     } catch (error) {
@@ -676,7 +699,7 @@ function App() {
   async function send() {
     if (
       (!prompt.trim() && !mediaDraft && !promptFiles.length) ||
-      (mediaDraft && snapshot?.settings.engine !== "lfm3Omni") ||
+      (mediaDraft && !canAttachMedia) ||
       busyRef.current ||
       readingPromptFiles ||
       busy ||
@@ -1602,13 +1625,13 @@ function App() {
             </div>
           </section>
         )}
-        {canCheckBudget && draftText && (
+        {canCheckBudget && hasBudgetDraft && (
           <div className="chat-budget">
             <button type="button"
               disabled={busy || checkingBudget || readingPromptFiles || snapshot?.document.generating}
               onClick={() => void checkDraftBudget()}>{checkingBudget ? budgetWords.pending : budgetWords.check}</button>
             {shownBudget && <output>
-              {budgetWords.input} {shownBudget.inputTokens.toLocaleString()} · {budgetWords.output} {shownBudget.outputTokens.toLocaleString()} · {budgetWords.context} {shownBudget.context.toLocaleString()}
+              {shownBudget.inputTokens !== null && <>{budgetWords.input} {shownBudget.inputTokens.toLocaleString()} · </>}{budgetWords.output} {shownBudget.outputTokens.toLocaleString()} · {budgetWords.context} {shownBudget.context.toLocaleString()}
               {!shownBudget.fits && <strong> · {budgetWords.over}</strong>}
             </output>}
           </div>
@@ -1621,7 +1644,7 @@ function App() {
           }}
         >
           <input ref={promptFilePicker} type="file" hidden multiple
-            accept=".txt,.md,.markdown,.csv,.json"
+            accept=".txt,.md,.markdown,.csv,.json,.pdf"
             onChange={event => {
               const files = Array.from(event.currentTarget.files ?? []);
               event.currentTarget.value = "";
@@ -1642,9 +1665,10 @@ function App() {
             onClick={() => promptFolderPicker.current?.click()}>
             <FolderOpen size={16} />
           </button>
-          {desktop && status === "ready" && snapshot?.settings.engine === "lfm3Omni" && (
-            <button type="button" disabled={busy || snapshot.document.generating}
-              aria-label={mediaWords[language].attach} title={mediaWords[language].attach}
+          {desktop && status === "ready" && canAttachMedia && (
+            <button type="button" disabled={busy || snapshot?.document.generating}
+              aria-label={snapshot?.inklingVision ? imageInputWords[language].attach : mediaWords[language].attach}
+              title={snapshot?.inklingVision ? imageInputWords[language].attach : mediaWords[language].attach}
               onClick={() => void selectMedia()}><Paperclip size={16} /></button>
           )}
           <textarea
@@ -1684,7 +1708,7 @@ function App() {
                 status !== "ready" ||
                 readingPromptFiles ||
                 snapshot?.document.generating ||
-                (mediaDraft && snapshot?.settings.engine !== "lfm3Omni") ||
+                (mediaDraft && !canAttachMedia) ||
                 (!prompt.trim() && !mediaDraft && !promptFiles.length)
               }
             >

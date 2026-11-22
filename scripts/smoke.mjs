@@ -42,6 +42,10 @@ try {
     { timeout: 30000 },
   );
   await closePreferences(page);
+  const pdfPage = await browser.newPage();
+  await pdfPage.setContent("<p>PDF reference code 9735.</p>");
+  const pdf = await pdfPage.pdf();
+  await pdfPage.close();
   await page
     .locator('.composer input[type="file"]:not([webkitdirectory])')
     .setInputFiles([
@@ -50,6 +54,7 @@ try {
         mimeType: "text/markdown",
         buffer: Buffer.from("Handoff code 7429"),
       },
+      { name: "reference.pdf", mimeType: "application/pdf", buffer: pdf },
       {
         name: "remove.txt",
         mimeType: "text/plain",
@@ -74,7 +79,7 @@ try {
   await page.route("**/studio/state", async (route) => {
     const response = await route.fetch();
     const state = await response.json();
-    state.backend = "Inkling Metal (experimental)";
+    state.settings.engine = "mlxPrefix";
     await route.fulfill({ response, json: state });
   });
   let previewPayload;
@@ -82,15 +87,20 @@ try {
     previewPayload = route.request().postDataJSON();
     await route.fulfill({
       json: {
-        inputTokens: 4000,
+        inputTokens: null,
         outputTokens: 128,
-        context: 4096,
+        context: 512,
         fits: false,
       },
     });
   });
   await budgetButton.click();
   await page.getByText("Over limit", { exact: false }).waitFor();
+  assert.match(
+    await page.locator(".chat-budget output").innerText(),
+    /Reserved output 128 · Context 512/,
+  );
+  assert.match(previewPayload.content, /PDF reference code 9735\./);
   assert.match(previewPayload.content, /Handoff code 7429/);
   assert.match(previewPayload.content, /Folder reference 8316/);
   assert.doesNotMatch(previewPayload.content, /Never include this text/);
@@ -100,6 +110,7 @@ try {
     .waitFor({ state: "hidden" });
   await page.unroute("**/studio/state");
   await page.unroute("**/studio/chat/budget");
+  await budgetButton.waitFor({ state: "hidden" });
   await prompt.fill("Hello Strata");
   await prompt.press("Enter");
   assert.equal(await prompt.inputValue(), "Hello Strata\n");
@@ -135,7 +146,7 @@ try {
   assert.equal(shared.document.messages.length, 2);
   assert.equal(
     shared.document.messages[0].content,
-    `Hello Strata\n\n--- "keep.md" ---\nHandoff code 7429\n\n--- "${basename(folder)}/chosen.txt" ---\nFolder reference 8316`,
+    `Hello Strata\n\n--- "keep.md" ---\nHandoff code 7429\n\n--- "reference.pdf" ---\nPDF reference code 9735.\n\n--- "${basename(folder)}/chosen.txt" ---\nFolder reference 8316`,
   );
   assert.equal(
     shared.document.messages[1].content,

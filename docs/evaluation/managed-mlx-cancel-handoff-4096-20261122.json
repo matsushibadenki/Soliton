@@ -1,0 +1,80 @@
+{
+  "model": "Gemma 2 2B",
+  "engine": "managed MLX-LM 0.32.2",
+  "context": 4096,
+  "route": "authenticated /studio/chat",
+  "qualificationSha256": "b67df33fa7d83f00c1e01816799dc1f4dc5de7b468cecf0f4b5d60b15a629324",
+  "method": "Disconnect after first visible content, wait for cancelled state, switch to a new conversation, send once, then switch back and compare the original saved messages.",
+  "shortCancellation": [
+    {
+      "trial": 1,
+      "firstAttempt": true,
+      "answer": "91 \n",
+      "firstOutputMs": 474.08,
+      "completionMs": 550.6,
+      "previousPartialPreserved": true
+    },
+    {
+      "trial": 2,
+      "firstAttempt": true,
+      "answer": "91 \n",
+      "firstOutputMs": 462.24,
+      "completionMs": 534.85,
+      "previousPartialPreserved": true
+    },
+    {
+      "trial": 3,
+      "firstAttempt": true,
+      "answer": "91 \n",
+      "firstOutputMs": 466.3,
+      "completionMs": 543.09,
+      "previousPartialPreserved": true
+    },
+    {
+      "trial": 4,
+      "firstAttempt": true,
+      "answer": "91 \n",
+      "firstOutputMs": 461.57,
+      "completionMs": 537.85,
+      "previousPartialPreserved": true
+    }
+  ],
+  "nearLimitCancellation": [
+    {
+      "trial": 1,
+      "cancelInputPreviewTokens": 3960,
+      "firstAttempt": true,
+      "answer": "91 \n",
+      "firstOutputMs": 502.15,
+      "completionMs": 576.01,
+      "previousPartialPreserved": true
+    },
+    {
+      "trial": 2,
+      "cancelInputPreviewTokens": 3960,
+      "firstAttempt": true,
+      "answer": "91 \n",
+      "firstOutputMs": 499.37,
+      "completionMs": 577.23,
+      "previousPartialPreserved": true
+    },
+    {
+      "trial": 3,
+      "cancelInputPreviewTokens": 3960,
+      "firstAttempt": true,
+      "answer": "91 \n",
+      "firstOutputMs": 469.64,
+      "completionMs": 541.13,
+      "previousPartialPreserved": true
+    },
+    {
+      "trial": 4,
+      "cancelInputPreviewTokens": 3960,
+      "firstAttempt": true,
+      "answer": "91 \n",
+      "firstOutputMs": 486.01,
+      "completionMs": 562.96,
+      "previousPartialPreserved": true
+    }
+  ]
+}
