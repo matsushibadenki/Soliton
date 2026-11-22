@@ -1,0 +1,526 @@
+{
+  "hostBoot": "2026-11-22T17:30:19+09:00",
+  "oldDmgSha256": "78ee5e5d81adb1beb15eabe9014a2ce869b99439238d3af0d837cbd4c9e36ffa",
+  "newDmgSha256": "a380d968f5c4391c228c7ce2360e13b84f0e2377de4cba21fe93e63a904c74e0",
+  "initialSwapLimitMiB": 256,
+  "runs": [
+    {
+      "variant": "old",
+      "model": "AD-IQ3_S",
+      "runtime": "b12600",
+      "context": 4096,
+      "parallel": 1,
+      "host": "Apple M4 / 32 GiB",
+      "mode": "vision",
+      "swapBefore": "total = 0.00M  used = 0.00M  free = 0.00M  (encrypted)",
+      "appToSessionSeconds": [
+        3.764
+      ],
+      "engineBaseline": {
+        "seconds": 3.78,
+        "swap": "total = 0.00M  used = 0.00M  free = 0.00M  (encrypted)",
+        "swapUsedMiB": 0.0,
+        "pressureLevel": 1,
+        "swapInsPages": 0,
+        "swapOutsPages": 0
+      },
+      "engineStarts": [
+        {
+          "startToReadySeconds": 8.317,
+          "startActionSeconds": 6.627,
+          "actionToReadyObservedSeconds": 1.69,
+          "startup": {
+            "childSpawnMs": 0.315,
+            "controlReadyObservedMs": null,
+            "counterPreparation": null,
+            "counterSpawnedMs": null,
+            "inferenceReadyObservedMs": null,
+            "launchPreparationMs": 6624.503916,
+            "modelLoadingObservedMs": null
+          }
+        }
+      ],
+      "passed": true,
+      "hostMemorySamplingErrors": [],
+      "hostMemorySamples": [
+        {
+          "seconds": 0.006,
+          "swap": "total = 0.00M  used = 0.00M  free = 0.00M  (encrypted)",
+          "swapUsedMiB": 0.0,
+          "pressureLevel": 1,
+          "swapInsPages": 0,
+          "swapOutsPages": 0
+        },
+        {
+          "seconds": 3.78,
+          "swap": "total = 0.00M  used = 0.00M  free = 0.00M  (encrypted)",
+          "swapUsedMiB": 0.0,
+          "pressureLevel": 1,
+          "swapInsPages": 0,
+          "swapOutsPages": 0
+        },
+        {
+          "seconds": 3.791,
+          "swap": "total = 0.00M  used = 0.00M  free = 0.00M  (encrypted)",
+          "swapUsedMiB": 0.0,
+          "pressureLevel": 1,
+          "swapInsPages": 0,
+          "swapOutsPages": 0
+        },
+        {
+          "seconds": 4.813,
+          "swap": "total = 0.00M  used = 0.00M  free = 0.00M  (encrypted)",
+          "swapUsedMiB": 0.0,
+          "pressureLevel": 1,
+          "swapInsPages": 0,
+          "swapOutsPages": 0
+        },
+        {
+          "seconds": 5.833,
+          "swap": "total = 0.00M  used = 0.00M  free = 0.00M  (encrypted)",
+          "swapUsedMiB": 0.0,
+          "pressureLevel": 1,
+          "swapInsPages": 0,
+          "swapOutsPages": 0
+        },
+        {
+          "seconds": 6.853,
+          "swap": "total = 0.00M  used = 0.00M  free = 0.00M  (encrypted)",
+          "swapUsedMiB": 0.0,
+          "pressureLevel": 1,
+          "swapInsPages": 0,
+          "swapOutsPages": 0
+        },
+        {
+          "seconds": 7.88,
+          "swap": "total = 0.00M  used = 0.00M  free = 0.00M  (encrypted)",
+          "swapUsedMiB": 0.0,
+          "pressureLevel": 1,
+          "swapInsPages": 0,
+          "swapOutsPages": 0
+        },
+        {
+          "seconds": 8.907,
+          "swap": "total = 0.00M  used = 0.00M  free = 0.00M  (encrypted)",
+          "swapUsedMiB": 0.0,
+          "pressureLevel": 1,
+          "swapInsPages": 0,
+          "swapOutsPages": 0
+        },
+        {
+          "seconds": 9.925,
+          "swap": "total = 0.00M  used = 0.00M  free = 0.00M  (encrypted)",
+          "swapUsedMiB": 0.0,
+          "pressureLevel": 1,
+          "swapInsPages": 0,
+          "swapOutsPages": 0
+        },
+        {
+          "seconds": 10.948,
+          "swap": "total = 0.00M  used = 0.00M  free = 0.00M  (encrypted)",
+          "swapUsedMiB": 0.0,
+          "pressureLevel": 1,
+          "swapInsPages": 0,
+          "swapOutsPages": 0
+        },
+        {
+          "seconds": 11.974,
+          "swap": "total = 0.00M  used = 0.00M  free = 0.00M  (encrypted)",
+          "swapUsedMiB": 0.0,
+          "pressureLevel": 1,
+          "swapInsPages": 0,
+          "swapOutsPages": 0
+        },
+        {
+          "seconds": 12.105,
+          "swap": "total = 0.00M  used = 0.00M  free = 0.00M  (encrypted)",
+          "swapUsedMiB": 0.0,
+          "pressureLevel": 1,
+          "swapInsPages": 0,
+          "swapOutsPages": 0
+        }
+      ],
+      "swapEnd": "total = 0.00M  used = 0.00M  free = 0.00M  (encrypted)",
+      "swapObservationCount": 12,
+      "maxSwapUsedMiB": 0.0,
+      "samples": 0
+    },
+    {
+      "variant": "new",
+      "model": "AD-IQ3_S",
+      "runtime": "b12600",
+      "context": 4096,
+      "parallel": 1,
+      "host": "Apple M4 / 32 GiB",
+      "mode": "vision",
+      "swapBefore": "total = 0.00M  used = 0.00M  free = 0.00M  (encrypted)",
+      "appToSessionSeconds": [
+        5.03
+      ],
+      "engineBaseline": {
+        "seconds": 5.043,
+        "swap": "total = 0.00M  used = 0.00M  free = 0.00M  (encrypted)",
+        "swapUsedMiB": 0.0,
+        "pressureLevel": 1,
+        "swapInsPages": 0,
+        "swapOutsPages": 0
+      },
+      "engineStarts": [
+        {
+          "startToReadySeconds": 7.072,
+          "startActionSeconds": 5.497,
+          "actionToReadyObservedSeconds": 1.575,
+          "startup": {
+            "artifactVerificationMs": 5493.829374999999,
+            "childSpawnMs": 0.300167,
+            "controlReadyObservedMs": null,
+            "counterPreparation": null,
+            "counterSpawnedMs": null,
+            "inferenceReadyObservedMs": 1575,
+            "launchPreparationMs": 5494.07025,
+            "modelLoadingObservedMs": 1575
+          }
+        }
+      ],
+      "passed": true,
+      "hostMemorySamplingErrors": [],
+      "hostMemorySamples": [
+        {
+          "seconds": 0.005,
+          "swap": "total = 0.00M  used = 0.00M  free = 0.00M  (encrypted)",
+          "swapUsedMiB": 0.0,
+          "pressureLevel": 1,
+          "swapInsPages": 0,
+          "swapOutsPages": 0
+        },
+        {
+          "seconds": 5.043,
+          "swap": "total = 0.00M  used = 0.00M  free = 0.00M  (encrypted)",
+          "swapUsedMiB": 0.0,
+          "pressureLevel": 1,
+          "swapInsPages": 0,
+          "swapOutsPages": 0
+        },
+        {
+          "seconds": 5.049,
+          "swap": "total = 0.00M  used = 0.00M  free = 0.00M  (encrypted)",
+          "swapUsedMiB": 0.0,
+          "pressureLevel": 1,
+          "swapInsPages": 0,
+          "swapOutsPages": 0
+        },
+        {
+          "seconds": 6.074,
+          "swap": "total = 0.00M  used = 0.00M  free = 0.00M  (encrypted)",
+          "swapUsedMiB": 0.0,
+          "pressureLevel": 1,
+          "swapInsPages": 0,
+          "swapOutsPages": 0
+        },
+        {
+          "seconds": 7.099,
+          "swap": "total = 0.00M  used = 0.00M  free = 0.00M  (encrypted)",
+          "swapUsedMiB": 0.0,
+          "pressureLevel": 1,
+          "swapInsPages": 0,
+          "swapOutsPages": 0
+        },
+        {
+          "seconds": 8.119,
+          "swap": "total = 0.00M  used = 0.00M  free = 0.00M  (encrypted)",
+          "swapUsedMiB": 0.0,
+          "pressureLevel": 1,
+          "swapInsPages": 0,
+          "swapOutsPages": 0
+        },
+        {
+          "seconds": 9.14,
+          "swap": "total = 0.00M  used = 0.00M  free = 0.00M  (encrypted)",
+          "swapUsedMiB": 0.0,
+          "pressureLevel": 1,
+          "swapInsPages": 0,
+          "swapOutsPages": 0
+        },
+        {
+          "seconds": 10.162,
+          "swap": "total = 0.00M  used = 0.00M  free = 0.00M  (encrypted)",
+          "swapUsedMiB": 0.0,
+          "pressureLevel": 1,
+          "swapInsPages": 0,
+          "swapOutsPages": 0
+        },
+        {
+          "seconds": 11.186,
+          "swap": "total = 0.00M  used = 0.00M  free = 0.00M  (encrypted)",
+          "swapUsedMiB": 0.0,
+          "pressureLevel": 1,
+          "swapInsPages": 0,
+          "swapOutsPages": 0
+        },
+        {
+          "seconds": 12.125,
+          "swap": "total = 0.00M  used = 0.00M  free = 0.00M  (encrypted)",
+          "swapUsedMiB": 0.0,
+          "pressureLevel": 1,
+          "swapInsPages": 0,
+          "swapOutsPages": 0
+        }
+      ],
+      "swapEnd": "total = 0.00M  used = 0.00M  free = 0.00M  (encrypted)",
+      "swapObservationCount": 10,
+      "maxSwapUsedMiB": 0.0,
+      "samples": 0
+    },
+    {
+      "variant": "new",
+      "model": "AD-IQ3_S",
+      "runtime": "b12600",
+      "context": 4096,
+      "parallel": 1,
+      "host": "Apple M4 / 32 GiB",
+      "mode": "vision",
+      "swapBefore": "total = 0.00M  used = 0.00M  free = 0.00M  (encrypted)",
+      "appToSessionSeconds": [
+        3.242
+      ],
+      "engineBaseline": {
+        "seconds": 3.268,
+        "swap": "total = 0.00M  used = 0.00M  free = 0.00M  (encrypted)",
+        "swapUsedMiB": 0.0,
+        "pressureLevel": 1,
+        "swapInsPages": 0,
+        "swapOutsPages": 0
+      },
+      "engineStarts": [
+        {
+          "startToReadySeconds": 6.91,
+          "startActionSeconds": 5.539,
+          "actionToReadyObservedSeconds": 1.372,
+          "startup": {
+            "artifactVerificationMs": 5535.827875,
+            "childSpawnMs": 0.277375,
+            "controlReadyObservedMs": null,
+            "counterPreparation": null,
+            "counterSpawnedMs": null,
+            "inferenceReadyObservedMs": 1371,
+            "launchPreparationMs": 5536.12825,
+            "modelLoadingObservedMs": 1371
+          }
+        }
+      ],
+      "passed": true,
+      "hostMemorySamplingErrors": [],
+      "hostMemorySamples": [
+        {
+          "seconds": 0.006,
+          "swap": "total = 0.00M  used = 0.00M  free = 0.00M  (encrypted)",
+          "swapUsedMiB": 0.0,
+          "pressureLevel": 1,
+          "swapInsPages": 0,
+          "swapOutsPages": 0
+        },
+        {
+          "seconds": 3.268,
+          "swap": "total = 0.00M  used = 0.00M  free = 0.00M  (encrypted)",
+          "swapUsedMiB": 0.0,
+          "pressureLevel": 1,
+          "swapInsPages": 0,
+          "swapOutsPages": 0
+        },
+        {
+          "seconds": 3.276,
+          "swap": "total = 0.00M  used = 0.00M  free = 0.00M  (encrypted)",
+          "swapUsedMiB": 0.0,
+          "pressureLevel": 1,
+          "swapInsPages": 0,
+          "swapOutsPages": 0
+        },
+        {
+          "seconds": 4.297,
+          "swap": "total = 0.00M  used = 0.00M  free = 0.00M  (encrypted)",
+          "swapUsedMiB": 0.0,
+          "pressureLevel": 1,
+          "swapInsPages": 0,
+          "swapOutsPages": 0
+        },
+        {
+          "seconds": 5.322,
+          "swap": "total = 0.00M  used = 0.00M  free = 0.00M  (encrypted)",
+          "swapUsedMiB": 0.0,
+          "pressureLevel": 1,
+          "swapInsPages": 0,
+          "swapOutsPages": 0
+        },
+        {
+          "seconds": 6.347,
+          "swap": "total = 0.00M  used = 0.00M  free = 0.00M  (encrypted)",
+          "swapUsedMiB": 0.0,
+          "pressureLevel": 1,
+          "swapInsPages": 0,
+          "swapOutsPages": 0
+        },
+        {
+          "seconds": 7.373,
+          "swap": "total = 0.00M  used = 0.00M  free = 0.00M  (encrypted)",
+          "swapUsedMiB": 0.0,
+          "pressureLevel": 1,
+          "swapInsPages": 0,
+          "swapOutsPages": 0
+        },
+        {
+          "seconds": 8.394,
+          "swap": "total = 0.00M  used = 0.00M  free = 0.00M  (encrypted)",
+          "swapUsedMiB": 0.0,
+          "pressureLevel": 1,
+          "swapInsPages": 0,
+          "swapOutsPages": 0
+        },
+        {
+          "seconds": 9.419,
+          "swap": "total = 0.00M  used = 0.00M  free = 0.00M  (encrypted)",
+          "swapUsedMiB": 0.0,
+          "pressureLevel": 1,
+          "swapInsPages": 0,
+          "swapOutsPages": 0
+        },
+        {
+          "seconds": 10.187,
+          "swap": "total = 0.00M  used = 0.00M  free = 0.00M  (encrypted)",
+          "swapUsedMiB": 0.0,
+          "pressureLevel": 1,
+          "swapInsPages": 0,
+          "swapOutsPages": 0
+        }
+      ],
+      "swapEnd": "total = 0.00M  used = 0.00M  free = 0.00M  (encrypted)",
+      "swapObservationCount": 10,
+      "maxSwapUsedMiB": 0.0,
+      "samples": 0
+    },
+    {
+      "variant": "old",
+      "model": "AD-IQ3_S",
+      "runtime": "b12600",
+      "context": 4096,
+      "parallel": 1,
+      "host": "Apple M4 / 32 GiB",
+      "mode": "vision",
+      "swapBefore": "total = 0.00M  used = 0.00M  free = 0.00M  (encrypted)",
+      "appToSessionSeconds": [
+        3.038
+      ],
+      "engineBaseline": {
+        "seconds": 3.053,
+        "swap": "total = 0.00M  used = 0.00M  free = 0.00M  (encrypted)",
+        "swapUsedMiB": 0.0,
+        "pressureLevel": 1,
+        "swapInsPages": 0,
+        "swapOutsPages": 0
+      },
+      "engineStarts": [
+        {
+          "startToReadySeconds": 6.928,
+          "startActionSeconds": 5.557,
+          "actionToReadyObservedSeconds": 1.371,
+          "startup": {
+            "childSpawnMs": 0.30804200000000004,
+            "controlReadyObservedMs": null,
+            "counterPreparation": null,
+            "counterSpawnedMs": null,
+            "inferenceReadyObservedMs": null,
+            "launchPreparationMs": 5551.720833,
+            "modelLoadingObservedMs": null
+          }
+        }
+      ],
+      "passed": true,
+      "hostMemorySamplingErrors": [],
+      "hostMemorySamples": [
+        {
+          "seconds": 0.006,
+          "swap": "total = 0.00M  used = 0.00M  free = 0.00M  (encrypted)",
+          "swapUsedMiB": 0.0,
+          "pressureLevel": 1,
+          "swapInsPages": 0,
+          "swapOutsPages": 0
+        },
+        {
+          "seconds": 3.053,
+          "swap": "total = 0.00M  used = 0.00M  free = 0.00M  (encrypted)",
+          "swapUsedMiB": 0.0,
+          "pressureLevel": 1,
+          "swapInsPages": 0,
+          "swapOutsPages": 0
+        },
+        {
+          "seconds": 3.071,
+          "swap": "total = 0.00M  used = 0.00M  free = 0.00M  (encrypted)",
+          "swapUsedMiB": 0.0,
+          "pressureLevel": 1,
+          "swapInsPages": 0,
+          "swapOutsPages": 0
+        },
+        {
+          "seconds": 4.092,
+          "swap": "total = 0.00M  used = 0.00M  free = 0.00M  (encrypted)",
+          "swapUsedMiB": 0.0,
+          "pressureLevel": 1,
+          "swapInsPages": 0,
+          "swapOutsPages": 0
+        },
+        {
+          "seconds": 5.115,
+          "swap": "total = 0.00M  used = 0.00M  free = 0.00M  (encrypted)",
+          "swapUsedMiB": 0.0,
+          "pressureLevel": 1,
+          "swapInsPages": 0,
+          "swapOutsPages": 0
+        },
+        {
+          "seconds": 6.137,
+          "swap": "total = 0.00M  used = 0.00M  free = 0.00M  (encrypted)",
+          "swapUsedMiB": 0.0,
+          "pressureLevel": 1,
+          "swapInsPages": 0,
+          "swapOutsPages": 0
+        },
+        {
+          "seconds": 7.162,
+          "swap": "total = 0.00M  used = 0.00M  free = 0.00M  (encrypted)",
+          "swapUsedMiB": 0.0,
+          "pressureLevel": 1,
+          "swapInsPages": 0,
+          "swapOutsPages": 0
+        },
+        {
+          "seconds": 8.188,
+          "swap": "total = 0.00M  used = 0.00M  free = 0.00M  (encrypted)",
+          "swapUsedMiB": 0.0,
+          "pressureLevel": 1,
+          "swapInsPages": 0,
+          "swapOutsPages": 0
+        },
+        {
+          "seconds": 9.213,
+          "swap": "total = 0.00M  used = 0.00M  free = 0.00M  (encrypted)",
+          "swapUsedMiB": 0.0,
+          "pressureLevel": 1,
+          "swapInsPages": 0,
+          "swapOutsPages": 0
+        },
+        {
+          "seconds": 9.993,
+          "swap": "total = 0.00M  used = 0.00M  free = 0.00M  (encrypted)",
+          "swapUsedMiB": 0.0,
+          "pressureLevel": 1,
+          "swapInsPages": 0,
+          "swapOutsPages": 0
+        }
+      ],
+      "swapEnd": "total = 0.00M  used = 0.00M  free = 0.00M  (encrypted)",
+      "swapObservationCount": 10,
+      "maxSwapUsedMiB": 0.0,
+      "samples": 0
+    }
+  ]
+}
