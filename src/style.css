@@ -1888,7 +1888,9 @@ button:focus-visible {
   }
   .conversation-sidebar {
     flex: 0 1 42%;
-    max-height: 42%;
+    /* Reserve room for the chat header, message viewport and composer in short dock slots. */
+    max-height: min(42%, max(0px, calc(100% - 200px)));
+    overflow: auto;
     border-inline-end: 0;
     border-bottom: 1px solid var(--line);
   }

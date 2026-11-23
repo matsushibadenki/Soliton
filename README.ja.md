@@ -1,6 +1,6 @@
 # Soliton
 
-依存更新（2026-11-21）：Strata 0.2.15とTauri 2.12.7を検証済みです。Strata 0.2.17の配置移行は次の工程です。[バージョンと検証範囲](docs/DEPENDENCY_UPDATE_20261121.md)。
+通常ビルドのStrataを0.2.20に更新しました。候補は自動移行、新規Q2_0準備、Appleの公証とGatekeeperに合格しました。[検証結果](docs/evaluation/strata-split-migration-020-20261123.json)。
 
 0.1.11では、Apple Siliconで資格確認済みのLFM3-Omni-2B Realtime APIを追加し、知識ラボの編集画面と環境設定を改善しました。[Realtimeの適用手順](docs/LFM3_OMNI.md#qualified-realtime-setup)と[変更履歴](CHANGELOG.md)を参照してください。
 

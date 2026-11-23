@@ -1,0 +1,48 @@
+{
+  "revision": "a34979fc94f3d126b9bb8210f4ad311345688b52",
+  "scope": "isolated native candidate; production pin unchanged",
+  "model": "Q2_0",
+  "maxContext": 512,
+  "memoryReserveGb": 7,
+  "repreparation": false,
+  "unauthorizedStatus": 401,
+  "response": {
+    "id": "chatcmpl-a17f256b23cb498596719d89",
+    "object": "chat.completion",
+    "created": 1795392492,
+    "model": "qwen3.8-flash-next-q2_0",
+    "choices": [
+      {
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": "SOLITON123"
+        },
+        "finish_reason": "stop"
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 25,
+      "completion_tokens": 8,
+      "total_tokens": 33,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "timings": {
+      "cache_n": 0,
+      "prompt_n": 25,
+      "prompt_ms": 10015.0,
+      "prompt_per_token_ms": 400.6,
+      "prompt_per_second": 2.5,
+      "predicted_n": 8,
+      "predicted_ms": 4936.6,
+      "predicted_per_token_ms": 617.075,
+      "predicted_per_second": 1.6,
+      "draft_n": 0,
+      "draft_n_accepted": 0
+    }
+  },
+  "exitCode": 0,
+  "modelMetadataUnchanged": true
+}

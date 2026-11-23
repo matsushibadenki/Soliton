@@ -1,6 +1,7 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 mod hub;
 mod installation;
+mod strata_migration;
 #[cfg(target_os = "macos")]
 mod microphone;
 use std::{path::PathBuf, sync::Arc};
@@ -654,12 +655,7 @@ fn install_runtime_files(
     result
 }
 fn managed_strata_root(app_data: &std::path::Path) -> PathBuf {
-    let split = option_env!("SOLITON_STRATA_SPLIT_CANDIDATE") == Some("1");
-    app_data.join(if split {
-        "Strata-metal-v2"
-    } else {
-        "Strata-metal-v1"
-    })
+    app_data.join("Strata-metal-v2")
 }
 
 fn bundled_strata_paths(root: &std::path::Path) -> (&'static str, &'static str, &'static str) {
@@ -724,8 +720,7 @@ fn install_bundled_engine(
                 .join("serve/server.py")
                 .is_file()
             || !studio_core::strata_setup_path(&staging).is_file()
-            || (option_env!("SOLITON_STRATA_SPLIT_CANDIDATE") == Some("1")
-                && !staging.join("engine/build-metal/strata").is_file())
+            || !staging.join("engine/build-metal/strata").is_file()
         {
             return Err("Bundled Strata extraction failed".to_string());
         }
@@ -776,13 +771,29 @@ fn main() {
                     .into();
             }
             // Match the headless runtime's explicit state override for isolated native QA.
-            let studio = Arc::new(if let Some(path) = std::env::var_os("STUDIO_STATE_PATH") {
+            let mut studio = if let Some(path) = std::env::var_os("STUDIO_STATE_PATH") {
                 studio.with_storage(PathBuf::from(path))
             } else {
                 studio.with_legacy_storage(app_data.join("studio.json"), legacy)
-            });
+            };
             let listener = std::net::TcpListener::bind("127.0.0.1:8080")?;
             listener.set_nonblocking(true)?;
+            if managed && install_error.is_none()
+            {
+                match strata_migration::stage(studio.settings.get_mut(), &app_data) {
+                    Ok(Some((next, path))) => {
+                        let previous = std::mem::replace(studio.settings.get_mut(), next);
+                        if let Err(error) = tauri::async_runtime::block_on(studio.persist()) {
+                            *studio.settings.get_mut() = previous;
+                            let _ = std::fs::remove_file(path);
+                            eprintln!("Soliton kept its legacy Strata configuration: {error}");
+                        }
+                    }
+                    Ok(None) => {}
+                    Err(error) => eprintln!("Soliton kept its legacy Strata configuration: {error}"),
+                }
+            }
+            let studio = Arc::new(studio);
             let (tx, rx) = tokio::sync::oneshot::channel();
             let s = studio.clone();
             tauri::async_runtime::spawn(async move {
@@ -1003,10 +1014,12 @@ mod bundled_engine_tests {
             std::env::temp_dir().join(format!("soliton-install-test-{}", uuid::Uuid::new_v4()));
         let source = base.join("source");
         let data = base.join("data");
-        std::fs::create_dir_all(source.join("serve")).unwrap();
-        std::fs::create_dir_all(source.join("metal")).unwrap();
-        std::fs::write(source.join("serve/server.py"), "original").unwrap();
-        std::fs::write(source.join("metal/setup_mac.py"), "setup").unwrap();
+        std::fs::create_dir_all(source.join("terminal/serve")).unwrap();
+        std::fs::create_dir_all(source.join("engine/metal")).unwrap();
+        std::fs::write(source.join("terminal/serve/server.py"), "original").unwrap();
+        std::fs::write(source.join("engine/metal/setup_mac.py"), "setup").unwrap();
+        std::fs::create_dir_all(source.join("engine/build-metal")).unwrap();
+        std::fs::write(source.join("engine/build-metal/strata"), "engine").unwrap();
         let archive = base.join("strata.tar.gz");
         assert!(std::process::Command::new("/usr/bin/tar")
             .arg("-czf")
@@ -1018,16 +1031,16 @@ mod bundled_engine_tests {
             .unwrap()
             .success());
         let root = install_bundled_engine(&archive, &data).unwrap();
-        std::fs::write(root.join("serve/server.py"), "user data").unwrap();
+        std::fs::write(root.join("terminal/serve/server.py"), "user data").unwrap();
         install_bundled_engine(&archive, &data).unwrap();
         assert_eq!(
-            std::fs::read_to_string(root.join("serve/server.py")).unwrap(),
+            std::fs::read_to_string(root.join("terminal/serve/server.py")).unwrap(),
             "user data"
         );
-        std::fs::remove_file(root.join("serve/server.py")).unwrap();
+        std::fs::remove_file(root.join("terminal/serve/server.py")).unwrap();
         std::fs::write(root.join("keep-user-config.json"), "preserve").unwrap();
         install_bundled_engine(&archive, &data).unwrap();
-        assert!(root.join("serve/server.py").is_file());
+        assert!(root.join("terminal/serve/server.py").is_file());
         let backup = std::fs::read_dir(&data)
             .unwrap()
             .flatten()

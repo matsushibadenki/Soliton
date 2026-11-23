@@ -1,0 +1,164 @@
+{
+  "appVersion": "0.1.14",
+  "strataRevision": "a34979fc94f3d126b9bb8210f4ad311345688b52",
+  "dmgSha256": "eb16554bce0aa9864b1488e5ba600bc1e6b45e846bdfa254193c510f58a52e23",
+  "nativeFilesChecked": 66,
+  "sourceCommit": "5b7d2ad859bda66b47033f6d64422eaa294b9f80",
+  "workingTreeDirty": true,
+  "scope": "Automatic candidate migration of copied managed Q2_0 configuration and existing prepared pack on M4 / 32 GiB",
+  "checks": {
+    "freshSplitProvisioned": true,
+    "automaticSwitch": true,
+    "preservedHistoryOnOpen": true,
+    "pythonMigrated": true,
+    "pathsPreserved": true,
+    "legacyConfigUnchanged": true,
+    "persistedBeforeStartingEngine": true,
+    "chat": {
+      "answer": "4",
+      "usage": {
+        "prompt_tokens": 65,
+        "completion_tokens": 37,
+        "total_tokens": 102,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "anonymousStatus": 401
+    },
+    "sourceShardStatsUnchanged": true,
+    "passed": true,
+    "processExitCode": 0,
+    "preservedHistoryAfterChat": true
+  },
+  "freshPreparation": {
+    "freshSplitProvisioned": true,
+    "emptyBeforePreparation": true,
+    "diskPlan": {
+      "freeBytes": 144659460096,
+      "requiredBytes": 45600000000,
+      "shortfallBytes": 0,
+      "status": "sufficient"
+    },
+    "preparationSeconds": 103.74,
+    "preparedPack": true,
+    "expertCopyBytes": 33973878784,
+    "chat": {
+      "answer": "4",
+      "usage": {
+        "prompt_tokens": 65,
+        "completion_tokens": 37,
+        "total_tokens": 102,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "anonymousStatus": 401
+    },
+    "historyUnchangedBySharedChat": true,
+    "sourceShardStatsUnchanged": true,
+    "passed": true,
+    "processExitCode": 0
+  },
+  "dispatcher": {
+    "behavioralContract": "passed: Q2_0 Terminal and Control, Inkling family and explicit SQ-20, Hy4 family",
+    "unmodifiedUpstreamMacSuite": {
+      "passed": 45,
+      "failed": 2,
+      "failures": [
+        "Exact Darwin dispatcher source string",
+        "Compiler warning expected by the missing-tools fixture"
+      ]
+    }
+  },
+  "macSuiteRecheck": {
+    "pristineUpstream": {
+      "passed": 46,
+      "failed": 1,
+      "failure": "Exact Darwin dispatcher source string predates the Inkling branch"
+    },
+    "bundledSource": {
+      "passed": 45,
+      "failed": 2,
+      "additionalFailure": "Compiler-warning fixture uses packaged prebuilt-engine setup, which deliberately skips the compiler check"
+    },
+    "solitonContractSuite": {
+      "pristinePassed": 47,
+      "bundledPassed": 47,
+      "replacements": [
+        "Dispatch behavior for supported Mac routes",
+        "Compiler requirement for source versus prebuilt distribution"
+      ]
+    },
+    "notarization": {
+      "appSignature": "ad hoc; integrity verified",
+      "appStaplerExit": 65,
+      "dmgStaplerExit": 65,
+      "gatekeeperExit": 3,
+      "gatekeeperResult": "rejected",
+      "developerIdIdentitiesPresent": true,
+      "notaryCredentialsConfiguredInEnvironment": false,
+      "submitted": false
+    },
+    "promotion": "deferred; production remains Strata 0.2.15"
+  },
+  "developerIdRecheck": {
+    "signedDMG": "Soliton_0.1.14_aarch64_strata-split-candidate_developer-id.dmg",
+    "sha256": "5c91ce03cb535fd7b4b06984d143cc561d275958e4c72a7dc57947619038a49b",
+    "teamId": "3WH28SSRZC",
+    "appHardenedRuntime": true,
+    "appleTimestamp": true,
+    "appAndDiskImageSignatureVerified": true,
+    "imageChecksumVerified": true,
+    "stapler": {
+      "appExit": 65,
+      "dmgExit": 65
+    },
+    "gatekeeper": {
+      "appExit": 3,
+      "dmgExit": 3,
+      "source": "Unnotarized Developer ID"
+    },
+    "notaryProfileProbe": "soliton-notary not found; no configured profile or environment credentials",
+    "submitted": false,
+    "productionStrata": "0.2.15"
+  },
+  "candidateNotarization": {
+    "initialSubmission": "e5c7fce1-ecd6-42b1-a5c1-828d55975d8d",
+    "initialStatus": "Invalid",
+    "cause": "Unsigned, untimestamped Mach-O executables and libraries inside the bundled runtime archives",
+    "signedRuntimeMachO": 65,
+    "submission": "6efe1669-60bc-4e24-83a8-d91b19a956b1",
+    "status": "Accepted",
+    "appCopyTicketValidated": true,
+    "dmgTicketValidated": true,
+    "gatekeeperAppFromMountedDMG": "Notarized Developer ID",
+    "gatekeeperDMG": "Notarized Developer ID",
+    "sha256": "0a92e2941db30a895e3b7248d937215e7881bef0aced5ac648926ddccbbe75e6",
+    "signedDMGMigration": {
+      "freshSplitProvisioned": true,
+      "automaticSwitch": true,
+      "preservedHistoryOnOpen": true,
+      "pythonMigrated": true,
+      "pathsPreserved": true,
+      "legacyConfigUnchanged": true,
+      "persistedBeforeStartingEngine": true,
+      "chat": {
+        "answer": "4",
+        "usage": {
+          "prompt_tokens": 65,
+          "completion_tokens": 37,
+          "total_tokens": 102,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "anonymousStatus": 401
+      },
+      "preservedHistoryAfterExplicitSwitch": true,
+      "sourceShardStatsUnchanged": true,
+      "passed": true,
+      "processExitCode": 0
+    }
+  }
+}

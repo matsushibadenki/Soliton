@@ -1,0 +1,15 @@
+{
+  "revision": "a34979fc94f3d126b9bb8210f4ad311345688b52",
+  "engine": "engine/build-metal/strata",
+  "sha256": "31a39ca4fcf1f62c0bf628f773dcc2c50a44bfc7be5bc63e452bef20a33eb87d",
+  "deploymentTarget": "15.0",
+  "upstreamMacSetupTests": {
+    "total": 47,
+    "passed": 46,
+    "failed": 1,
+    "test": "ControlMode.test_other_platforms_and_the_terminal_still_use_their_own_setup",
+    "reason": "The test expects the old exact Darwin dispatch guard; terminal/setup.py now adds `and not _ink_ask`. The unmodified upstream suite still fails this assertion."
+  },
+  "productionPin": "c77572806996349b49995e4f98d41b5294d36a21",
+  "promotedToProduction": false
+}

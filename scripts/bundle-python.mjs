@@ -14,10 +14,8 @@ const revision = readFileSync(resolve(root, 'src-tauri/strata-revision.txt'), 'u
 if (!/^[0-9a-f]{40}$/.test(revision)) throw new Error('Invalid pinned Strata revision');
 const checkout = spawnSync('git', ['-C', resolve(root, 'Strata'), 'rev-parse', 'HEAD'], { encoding: 'utf8' });
 if (checkout.status !== 0 || checkout.stdout.trim() !== revision) throw new Error('Strata checkout does not match distribution pin');
-const split = process.env.SOLITON_STRATA_SPLIT_CANDIDATE === '1';
 const requirements = spawnSync(
-  'git', ['-C', resolve(root, 'Strata'), 'show',
-    split ? '12d491da4a6904eb49aaa6f2f63ec4b1a17582e3:terminal/requirements.txt' : `${revision}:requirements.txt`],
+  'git', ['-C', resolve(root, 'Strata'), 'show', `${revision}:terminal/requirements.txt`],
   { encoding: 'utf8' },
 );
 if (requirements.status !== 0) throw new Error('Cannot read pinned Strata Python requirements');

@@ -14,14 +14,9 @@ parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--verify-split-candidate', action='store_true',
                     help='Build Strata 0.2.20 without replacing packaged resources')
 args = parser.parse_args()
-split = args.verify_split_candidate or os.environ.get("SOLITON_STRATA_SPLIT_CANDIDATE") == "1"
-revision = (
-    'a34979fc94f3d126b9bb8210f4ad311345688b52'
-    if split
-    else (root / 'src-tauri/strata-revision.txt').read_text().strip()
-)
-requirements_path = 'terminal/requirements-build.txt' if split else 'requirements-build.txt'
-setup_path = 'engine/metal/setup_mac.py' if split else 'metal/setup_mac.py'
+revision = (root / 'src-tauri/strata-revision.txt').read_text().strip()
+requirements_path = 'terminal/requirements-build.txt'
+setup_path = 'engine/metal/setup_mac.py'
 if len(revision) != 40 or any(c not in '0123456789abcdef' for c in revision):
     raise RuntimeError('Invalid pinned Strata revision')
 
@@ -109,8 +104,7 @@ def _soliton_dependencies(*args, **kwargs):
     import numpy, jinja2, regex, PIL, requests, yaml, psutil
 S.pip_install = _soliton_dependencies
 '''
-if split:
-    adapter = adapter.replace("(ROOT / '.bundled-metal.json')", "(ROOT.parent / '.bundled-metal.json')")
+adapter = adapter.replace("(ROOT / '.bundled-metal.json')", "(ROOT.parent / '.bundled-metal.json')")
 if '# Soliton distribution:' not in text:
     setup.write_text(text.replace('if __name__ == "__main__":', adapter + '\nif __name__ == "__main__":'))
 gemma_spec = importlib.util.spec_from_file_location('bundled_gemma', root / 'scripts/build-bundled-gemma.py')
@@ -126,10 +120,10 @@ with tarfile.open(archive, 'w:gz') as handle:
         path = source / name
         if path.is_file():
             handle.add(path, arcname=name, recursive=False)
-    engine_source = source / 'engine' if split else source
-    metal_build = 'engine/build-metal' if split else 'build-metal'
-    quant_header = 'include/strata/quant/strata-quant-common.h' if split else 'third_party/strata-ggml/strata-quant-common.h'
-    data = source / ('terminal/data' if split else 'data')
+    engine_source = source / 'engine'
+    metal_build = 'engine/build-metal'
+    quant_header = 'include/strata/quant/strata-quant-common.h'
+    data = source / 'terminal/data'
     handle.add(engine, arcname=f'{metal_build}/strata')
     handle.add(engine_source / 'metal/kernels', arcname=f'{metal_build}/metal/kernels')
     handle.add(engine_source / 'metal/src/engine/msl', arcname=f'{metal_build}/metal/engine-msl')

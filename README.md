@@ -1,6 +1,6 @@
 # Soliton
 
-Dependency update (2026-11-21): validated Strata 0.2.15 and Tauri 2.12.7; Strata 0.2.17 layout migration is next. [Versions and verification](docs/DEPENDENCY_UPDATE_20261121.md).
+Strata 0.2.20 is the default build pin. The candidate passed automatic migration, fresh Q2_0 preparation, Apple notarization and Gatekeeper. [Verification](docs/evaluation/strata-split-migration-020-20261123.json).
 
 Version 0.1.11 adds the qualified LFM3-Omni-2B Realtime API on Apple Silicon and improves the Knowledge Lab editor and Preferences. See the [Realtime setup](docs/LFM3_OMNI.md#qualified-realtime-setup) and [changelog](CHANGELOG.md).
 
@@ -172,7 +172,7 @@ On 2026-11-17, the Apple Silicon Soliton 0.1.11 DMG passed SHA-256 and app signa
 
 简体中文：使用空数据目录首次启动，确认了内置运行时自动安装、本地 Gemma 3 1B IT 的选择与准备，以及实模型回复。本次验证使用已有模型文件，并在当前 Mac 上完成。
 
-For public distribution, configure the Tauri macOS signing identity with a Developer ID Application certificate and supply Apple notarization credentials to the build environment. Run `SOLITON_DMG_PUBLIC=1 npm run desktop:dmg` to require a stapled notarization ticket and Gatekeeper approval for the app before creating the DMG. The default local build uses ad hoc signing.
+For public distribution, set `SOLITON_DMG_SIGN_IDENTITY` to a Developer ID Application signing identity when running `npm run desktop:dmg`. This signs the native code inside both runtime archives, refreshes the engine checksums, and signs the staged app and the DMG. Submit the signed DMG to Apple using a Keychain profile, staple the accepted ticket, rerun Gatekeeper checks on the DMG and its mounted app, and regenerate the SHA-256 checksum after stapling.
 
 For end-to-end tests, keep the Rust server and Vite running, install the Playwright Chromium runtime (`npx playwright install chromium`), then run `npm run test:e2e`. `STUDIO_TEST_PYTHON` selects the test interpreter; `PLAYWRIGHT_CHROMIUM_EXECUTABLE` can select an existing Chromium installation. Use an isolated `STUDIO_STATE_PATH` for test runs and keep the desktop app closed. `npm run test:roadmap` additionally checks preparation diagnostics, config discovery/selection, consent enforcement without downloading, tabbed preferences and workspace navigation. `npm run test:menus` checks menus, About, editing, export, shortcuts, three locales and responsive preferences. Rust tests use a fake setup script to verify completion, failure, cancellation and environment isolation without model downloads. The base test covers lifecycle, streamed GUI chat, API compatibility/authentication, three languages, and 320/375/414/768/1440px widths.
 

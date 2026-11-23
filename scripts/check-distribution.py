@@ -128,11 +128,8 @@ def check(app, smoke=False):
             roots.append((kind,destination))
         strata = work/'strata'
         expected = (ROOT/'src-tauri/strata-revision.txt').read_text().strip()
-        split = os.environ.get('SOLITON_STRATA_SPLIT_CANDIDATE') == '1'
-        if split:
-            expected = 'a34979fc94f3d126b9bb8210f4ad311345688b52'
-        native = 'engine/' if split else ''
-        terminal = 'terminal/' if split else ''
+        native = 'engine/'
+        terminal = 'terminal/'
         bundled = json.loads((strata/'.bundled-metal.json').read_text()).get('revision')
         report['strataRevision'] = bundled
         report['errors'] += revision_errors(expected, bundled)
