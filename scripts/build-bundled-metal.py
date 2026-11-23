@@ -12,11 +12,11 @@ import tarfile
 root = pathlib.Path(__file__).resolve().parent.parent
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--verify-split-candidate', action='store_true',
-                    help='Build Strata 0.2.17 without replacing packaged resources')
+                    help='Build Strata 0.2.20 without replacing packaged resources')
 args = parser.parse_args()
 split = args.verify_split_candidate or os.environ.get("SOLITON_STRATA_SPLIT_CANDIDATE") == "1"
 revision = (
-    '12d491da4a6904eb49aaa6f2f63ec4b1a17582e3'
+    'a34979fc94f3d126b9bb8210f4ad311345688b52'
     if split
     else (root / 'src-tauri/strata-revision.txt').read_text().strip()
 )

@@ -114,7 +114,9 @@ try {
   const advanced = page.getByText("Advanced settings", { exact: true });
   const pythonPath = page.getByRole("textbox", { name: "Python path" });
   assert.equal(await pythonPath.isVisible(), false);
+  await preferences(page, "status");
   assert(await page.locator(".engine-memory-overview").isVisible());
+  await preferences(page, "engine");
   await advanced.click();
   await page.getByRole("textbox", { name: "Preset name" }).fill("Fixture Strata");
   await page.getByRole("button", { name: "Save preset" }).click();

@@ -21,7 +21,10 @@ def load(name, path):
 
 class UpstreamCompatibility(unittest.TestCase):
     def test_mac_setup_local_only_contract(self):
-        metal = load('studio_upstream_contract', UPSTREAM / 'metal/setup_mac.py')
+        setup = UPSTREAM / 'engine/metal/setup_mac.py'
+        if not setup.is_file():
+            setup = UPSTREAM / 'metal/setup_mac.py'
+        metal = load('studio_upstream_contract', setup)
         wrapper = load('studio_local_wrapper', ROOT / 'crates/studio-core/src/local_setup.py')
         with tempfile.TemporaryDirectory(prefix='strata-upstream-contract-') as folder:
             base = Path(folder)
