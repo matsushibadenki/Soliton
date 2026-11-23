@@ -172,7 +172,25 @@ On 2026-11-17, the Apple Silicon Soliton 0.1.11 DMG passed SHA-256 and app signa
 
 简体中文：使用空数据目录首次启动，确认了内置运行时自动安装、本地 Gemma 3 1B IT 的选择与准备，以及实模型回复。本次验证使用已有模型文件，并在当前 Mac 上完成。
 
-For public distribution, set `SOLITON_DMG_SIGN_IDENTITY` to a Developer ID Application signing identity when running `npm run desktop:dmg`. This signs the native code inside both runtime archives, refreshes the engine checksums, and signs the staged app and the DMG. Submit the signed DMG to Apple using a Keychain profile, staple the accepted ticket, rerun Gatekeeper checks on the DMG and its mounted app, and regenerate the SHA-256 checksum after stapling.
+For public distribution, set a Developer ID Application signing identity and an existing Apple notarization Keychain profile.
+
+```sh
+SOLITON_DMG_SIGN_IDENTITY='Developer ID Application: …' \
+SOLITON_DMG_NOTARY_PROFILE='soliton-notary' \
+npm run desktop:dmg
+```
+
+The command signs the native code inside both runtime archives, refreshes the engine checksums, and signs the staged app and DMG. With a profile, it submits the DMG to Apple, waits up to 30 minutes, staples the accepted ticket, and checks the DMG and mounted app with Gatekeeper before generating the final SHA-256 checksum. If a step fails after staging, the candidate and available receipts remain in the printed `.notary-*` directory. After a timeout, use the ID in `submission.json` with `xcrun notarytool info <id> --keychain-profile soliton-notary` to check the existing submission. Omit the profile for a local build or to handle notarization manually.
+
+日本語：署名IDと登録済みのキーチェーンプロファイルを指定すると、Appleへの提出、公証チケットの添付、DMGとアプリのGatekeeper検証、最終チェックサムの生成まで実行します。提出後に処理が停止した場合は、表示されたディレクトリの `submission.json` で提出IDを確認できます。
+
+简体中文：指定签名身份和已注册的钥匙串配置后，命令会提交 Apple 公证、附加公证票据、通过 Gatekeeper 验证 DMG 和应用，再生成最终校验文件。如果提交后流程中断，可在输出目录的 `submission.json` 中查看提交 ID。
+
+Set `SOLITON_DMG_OUTPUT_DIR` to a separate directory to keep a validation build alongside an existing release of the same version.
+
+日本語：同じバージョンの配布ファイルを保持するには、検証用に別の `SOLITON_DMG_OUTPUT_DIR` を指定します。
+
+简体中文：指定独立的 `SOLITON_DMG_OUTPUT_DIR`，即可在保留同版本发布文件的同时生成验证包。
 
 For end-to-end tests, keep the Rust server and Vite running, install the Playwright Chromium runtime (`npx playwright install chromium`), then run `npm run test:e2e`. `STUDIO_TEST_PYTHON` selects the test interpreter; `PLAYWRIGHT_CHROMIUM_EXECUTABLE` can select an existing Chromium installation. Use an isolated `STUDIO_STATE_PATH` for test runs and keep the desktop app closed. `npm run test:roadmap` additionally checks preparation diagnostics, config discovery/selection, consent enforcement without downloading, tabbed preferences and workspace navigation. `npm run test:menus` checks menus, About, editing, export, shortcuts, three locales and responsive preferences. Rust tests use a fake setup script to verify completion, failure, cancellation and environment isolation without model downloads. The base test covers lifecycle, streamed GUI chat, API compatibility/authentication, three languages, and 320/375/414/768/1440px widths.
 
