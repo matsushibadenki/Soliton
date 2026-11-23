@@ -789,7 +789,7 @@ See [design and validation scope](INFERENCE.md#kapitsaから取り入れた計�
 - 🟢 [Done] Reproduced the original Mac suite at 46/47 on pristine 0.2.20 and 45/47 on Soliton's bundled source. The exact Darwin source assertion predates the Inkling branch. The compiler-warning assertion also fails on the bundle because Soliton uses a prebuilt engine. The local compatibility runner replaces those assertions with dispatch behavior and separate source/prebuilt compiler contracts. Both trees pass 47/47 with those replacements. The upstream tree and product runtime are unchanged. [Compatibility runner](../scripts/upstream-compatibility.py)
 - 🟢 [Done] Signed a separate 0.2.20 candidate app and DMG with Developer ID Application, Team `3WH28SSRZC`, and Apple timestamps. The app has Hardened Runtime. Signature integrity and image checksums passed. [Verification](evaluation/strata-split-migration-020-20261123.json)
 - 🟢 [Done] Apple accepted the Developer ID candidate after Soliton signed all 65 Mach-O files in the Python and Strata runtime archives and refreshed the engine checksums. The stapled DMG and the app mounted from it both passed Gatekeeper as `Notarized Developer ID`. Signed-DMG migration also retained history and passed authenticated Q2_0 inference. [Notarization and migration results](evaluation/strata-split-migration-020-20261123.json)
-- 🟠 [Next] Verify the ordinary 0.1.15 distribution artifact, built with Strata 0.2.20 as the default, before publishing it.
+- 🟢 [Done] Promoted Strata 0.2.20 to the standard 0.1.15 distribution. Apple accepted the final DMG, its stapled ticket validated, and Gatekeeper accepted the DMG and mounted app. The final signed build passed the 66-file audit, automatic Q2_0 migration and authenticated real-model chat on M4 / 32 GiB. Rust reported 190 passes and one ignored test. Browser regressions passed. [Final verification](evaluation/strata-production-notarization-20261123.json)
 - ⭕️ [Pending] Full model re-preparation and another-Mac/native-pointer validation.
 - 🔴 [Later] Repeat installed-version migration qualification against the split layout.
 - 日本語：既存機能の回帰検証とQ2_0実推論を通過。0.2.17の候補DMGで分割ランタイムの初回展開、既存Q2_0の再利用、認証付き応答を確認しました。既存設定の移行と完全なモデル準備を検証してから配布版を切り替えます。
@@ -801,5 +801,5 @@ See [design and validation scope](INFERENCE.md#kapitsaから取り入れた計�
 - 🟠 [Next] Resolve the candidate upstream suite's stale dispatch-string assertion, then qualify managed configuration migration and full model preparation. Production remains 0.2.15.
 - ⭕️ [Pending] Another-Mac and native-pointer checks.
 - 🔴 [Later] Public installer qualification after the split migration.
-- 日本語：0.2.20候補で自動移行と、パック未作成の状態からの準備・実推論を確認しました。上流テストの2件は配布形態に合った検証に置き換え、両ソースで47件通過しました。公証付き候補の検証まで通常版は0.2.15を維持します。
-- 简体中文：已验证 0.2.20 候选版的自动迁移、无现成模型包时的准备及真实推理。替换两项不适用的断言后，两种源码均通过47项测试。正式版保留0.2.15，等待候选安装包通过公证和分发验证。
+- 日本語：0.2.20候補で自動移行と、パック未作成の状態からの準備・実推論を確認しました。上流テストの2件は配布形態に合った検証に置き換え、両ソースで47件通過しました。通常版0.1.15をStrata 0.2.20に切り替え、Appleの公証とGatekeeperを確認しました。
+- 简体中文：已验证 0.2.20 候选版的自动迁移、无现成模型包时的准备及真实推理。替换两项不适用的断言后，两种源码均通过47项测试。正式版0.1.15已切换至Strata 0.2.20，并通过Apple公证和Gatekeeper验证。

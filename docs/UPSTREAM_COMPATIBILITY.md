@@ -4,9 +4,9 @@
 - 🟢 [Done] Strata 0.2.20 candidate (`a34979fc94f3d126b9bb8210f4ad311345688b52`) rebuilt Metal source 0.1.66 and passed authenticated existing-Q2_0 inference, unauthorized 401 and clean shutdown.
 - 🟢 [Done] Workspace/docking/floating fixtures and the final macOS build passed. Fixed composer clipping in short split slots while retaining the conversation sidebar. Distribution verification checked 66 native files and relocated Python imports without errors. [Report](evaluation/dependency-distribution-20261123.json).
 - 🟢 [Done] The original tests pass 46/47 on pristine source and 45/47 with Soliton's prebuilt-engine overlay. The compatibility runner checks the actual dispatcher and each build's compiler requirement in place of the two stale assertions. Both variants pass 47/47. [Compatibility runner](../scripts/upstream-compatibility.py)
-- ⭕️ [Pending] The candidate DMG is ad hoc signed and Gatekeeper rejected the app. Production remains on 0.2.15 pending successful notarized distribution assessment. [Verification](evaluation/strata-split-migration-020-20261123.json)
-- 日本語：未加工・同梱用の両ソースで修正後の47件が通過しました。通常版は、公証付き候補の検証まで0.2.15を維持します。
-- 简体中文：修正后，原始源码和打包源码均通过47项测试。正式版保留0.2.15，等待公证后的安装包验证。
+- 🟢 [Done] The standard Soliton 0.1.15 DMG with Strata 0.2.20 passed notarization, ticket validation, Gatekeeper and signed-runtime Q2_0 migration. [Final distribution verification](evaluation/strata-production-notarization-20261123.json)
+- 日本語：未加工・同梱用の両ソースで修正後の47件が通過しました。0.2.20を同梱した通常版DMGも公証とGatekeeperに合格しました。
+- 简体中文：修正后，原始源码和打包源码均通过47项测试。内置0.2.20的正式DMG也通过了Apple公证和Gatekeeper验证。
 
 # Dependency update · 2026-11-21
 
