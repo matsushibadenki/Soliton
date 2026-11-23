@@ -317,7 +317,8 @@ mod tests {
         }
         fs::write(root.join("serve/server.py"), "").unwrap();
         fs::copy(
-            Path::new(env!("CARGO_MANIFEST_DIR")).join("../../Strata/tools/gguf_reader.py"),
+            crate::strata_terminal_root(&Path::new(env!("CARGO_MANIFEST_DIR")).join("../../Strata"))
+                .join("tools/gguf_reader.py"),
             root.join("tools/gguf_reader.py"),
         )
         .unwrap();

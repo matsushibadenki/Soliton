@@ -98,7 +98,7 @@ def check(app, smoke=False):
     report['minimumMacOS'] = minimum
     try:
         report['sourceCommit'] = subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
-        report['workingTreeDirty'] = bool(subprocess.check_output(['git','status','--porcelain'],cwd=ROOT,text=True).strip())
+        report['workingTreeDirty'] = bool(subprocess.check_output(['git','status','--porcelain','--ignore-submodules=untracked'],cwd=ROOT,text=True).strip())
     except subprocess.SubprocessError:
         report['sourceCommit'] = None
     with tempfile.TemporaryDirectory(prefix='soliton-preflight-') as temp:
